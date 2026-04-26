@@ -143,7 +143,95 @@
     color: var(--fg);
   }
 
-  /* timeline */
+  /* life stages (age-grouped bullets) */
+  ol.life-stages {
+    list-style: none;
+  }
+
+  .life-stage {
+    border: 1px solid var(--line);
+    background: #fff;
+    margin-bottom: 18px;
+    padding: 24px 28px;
+  }
+
+  .life-stage:last-child { margin-bottom: 0; }
+
+  .ls-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ls-age {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+
+  .ls-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-left: auto;
+  }
+
+  ul.ls-body {
+    list-style: none;
+  }
+
+  ul.ls-body li {
+    position: relative;
+    padding: 4px 0 4px 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #222;
+  }
+
+  ul.ls-body li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 14px;
+    width: 4px;
+    height: 4px;
+    background: var(--fg);
+    border-radius: 50%;
+  }
+
+  ul.ls-body li strong {
+    font-weight: 600;
+  }
+
+  .ls-callout {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: #fafafa;
+    border-left: 2px solid var(--fg);
+    font-size: 13px;
+    line-height: 1.75;
+    color: #333;
+  }
+
+  .ls-callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .ls-callout-body strong { font-weight: 600; color: #0a0a0a; }
+
+  /* timeline (legacy) */
   ol.timeline {
     list-style: none;
     border-left: 1px solid var(--line);
@@ -833,14 +921,14 @@
             <span class="person-name">久保田 翔己 <span class="person-en">Shoki Kubota</span></span>
             <span class="person-tag">KBC同期 / 同居人</span>
           </div>
-          <div class="person-body">慶應義塾高校野球部出身、笹塚出身の4人兄弟末っ子。大学入学後、起業サークル KBC で出会う。GMOコネクトのインターン、Wanderlust への参画もすべて翔己さんの紹介。二人で起業を志した時期もあり、現在は1Kで一緒に暮らしている。</div>
+          <div class="person-body">慶應義塾高校野球部出身、笹塚出身の4人兄弟末っ子。大学入学後、起業サークル KBC で出会う。GMOコネクト株式会社のインターン、Wanderlust への参画もすべて翔己さんの紹介。二人で起業を志した時期もあり、現在は1Kで一緒に暮らしている。</div>
         </li>
         <li>
           <div class="person-head">
             <span class="person-name">岸 正太郎 <span class="person-en">Shotaro Kishi</span></span>
             <span class="person-tag">GMO・Wanderlust 同期</span>
           </div>
-          <div class="person-body">吉祥寺出身・弟あり。大学1年の GMOコネクトインターンで翔己さんの紹介で出会う。休学して Wanderlust で営業も担当。現在は起業中。元々、岸さん・優成さん・翔太・もう1人の母親同士で「犬会」を定期開催しており、このタイミングで偶然再会した。</div>
+          <div class="person-body">吉祥寺出身・弟あり。大学1年の GMOコネクト株式会社インターンで翔己さんの紹介で出会う。休学して Wanderlust で営業も担当。現在は起業中。元々、岸さん・優成さん・翔太・もう1人の母親同士で「犬会」を定期開催しており、このタイミングで偶然再会した。</div>
         </li>
         <li>
           <div class="person-head">
@@ -877,7 +965,7 @@
         <li>
           <span class="year">2023.10</span>
           <span class="event">
-            <strong>GMO Connect 株式会社 インターン</strong>（3ヶ月間）
+            <strong>GMOコネクト株式会社 インターン</strong>（3ヶ月間）
             <span class="meta">久保田翔己さん・岸翔太郎さんと立ち上げから関わる。上場企業役員食事会に週1で参加、社長インタビュー記事のオウンドメディアを立ち上げ・運営。</span>
           </span>
         </li>
@@ -908,7 +996,7 @@
       <h2><span class="num">▸</span>references</h2>
       <ul class="refs-list">
         <li>
-          <div class="ref-name"><a href="https://gmo-connect.jp/" target="_blank" rel="noopener">GMO Connect ↗</a></div>
+          <div class="ref-name"><a href="https://gmo-connect.jp/" target="_blank" rel="noopener">GMOコネクト株式会社 ↗</a></div>
           <div class="ref-desc">B2Bマッチングサービス</div>
         </li>
         <li>
@@ -924,161 +1012,109 @@
 
     <section>
       <h2><span class="num">▸</span>life timeline</h2>
-      <ol class="timeline">
-        <li>
-          <div class="yr">2004</div>
-          <div class="ttl">東京・東京衛生病院にて誕生</div>
-          <div class="body">父は元水上スキー日本代表で兼松出身、現在は祖父の不動産会社を継ぐ実業家。母は商社事務職を経て専業主婦。</div>
+      <ol class="life-stages">
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">幼少期</span>
+            <span class="ls-en">~ 6 yrs · pre-elementary</span>
+          </div>
+          <ul class="ls-body">
+            <li>東京衛生病院にて誕生（2004年11月30日）</li>
+            <li>0歳から水泳、幼稚園からサッカーを習う</li>
+            <li>あまり泣かず、比較的子育てしやすい子供だった</li>
+          </ul>
         </li>
-        <li>
-          <div class="yr">2010 — 杉並区立天沼小学校</div>
-          <div class="ttl">野球との出会い</div>
-          <div class="body">父に神宮球場へ連れていかれ、ホワイトセル選手のサヨナラホームランを目撃。野球クラブチーム「ポルテ」に所属、以降ずっとキャッチャー一筋。生粋のヤクルトファンで、山田哲人選手と川端慎吾選手を推し続けている。</div>
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">小学1年生 〜 小学3年生</span>
+            <span class="ls-en">6–9 yrs · elementary, lower grades</span>
+          </div>
+          <ul class="ls-body">
+            <li>習い事は <strong>サッカー / 水泳 / 野球</strong> の3つ。学校のサッカーチームでも活動</li>
+            <li>小学3年生で野球に出会う — 父に神宮球場へ連れていかれ、ホワイトセル選手のサヨナラホームランを目撃</li>
+            <li>小学1年生時点で野球がメインの習い事に。小学3年生の終わりに野球一本に絞ると自分で決断</li>
+            <li>最初は野球クラブチーム「ポルテ」に所属。小3終わり頃に天沼小学校の野球部へ移籍</li>
+            <li>低学年ながら高学年の試合で <strong>1番バッターとしてスタメン出場</strong>、毎年首位打者を獲得</li>
+            <li>野球部では副主将を務める</li>
+            <li>放課後は児童館で過ごす活発な少年。<strong>ドラゴンボールに大ハマり</strong></li>
+          </ul>
         </li>
-        <li>
-          <div class="yr">2017 — 明治大学付属明治中学校</div>
-          <div class="ttl">TWICEとの出会い、日韓関係への関心</div>
-          <div class="body">サナ推しに。中3時、サナがInstagramで日韓関係を理由に炎上した件をきっかけに、日韓政治への強い関心が芽生える。これが後のAO入試の志望理由の原点となる。</div>
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">小学4年生 〜 小学6年生</span>
+            <span class="ls-en">9–12 yrs · elementary, upper grades</span>
+          </div>
+          <ul class="ls-body">
+            <li>小4で日能研、小5から地元塾「お義心」に通塾（中学受験）</li>
+            <li>習い事は野球のみに絞った時期</li>
+            <li>ゲーム全盛期 — モンスト / パズドラ / 妖怪ウォッチ / モンスターハンター / イナズマイレブン / ポケモン（3DS）</li>
+            <li><strong>ドラゴンボールに引き続きどハマり</strong>。LINEのアイコンを「身勝手の極意」の悟空にするほど</li>
+            <li>中学受験で明治大学付属明治中学校に合格</li>
+          </ul>
         </li>
-        <li>
-          <div class="yr">2020 — 明治大学付属明治高等学校</div>
-          <div class="ttl">野球部 副主将 / AO入試への決断</div>
-          <div class="body">周囲の99%がエスカレーターで明治大学へ進む中、AO入試で慶應を志望。日韓団体・政治家・弁護士・障害者団体・バイセクシュアル当事者との交流会を主催し、世界の貧困問題にも実地で取り組む。</div>
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">中学1年生 〜 中学3年生</span>
+            <span class="ls-en">12–15 yrs · 明治大学付属明治中学校</span>
+          </div>
+          <ul class="ls-body">
+            <li>明治大学付属明治中学校に入学</li>
+            <li><strong>TWICEに出会う</strong> — サナ推し。アルバム・ライブグッズなど、たくさんお金を使う</li>
+            <li>ゲームは Wearing 11 / Private Spirits / 荒野行動 にハマる</li>
+            <li><strong>引き続きドラゴンボールに大ハマり</strong>（小中学校を通じての一番のオタ活）</li>
+            <li>学校の成績は優秀で、優秀者インタビューを受ける（学校HPに掲載）</li>
+            <li>野球部ではキャッチャーとしてスタメン、副主将を務める</li>
+            <li>中3で体育祭のクラス副キャプテンも兼任</li>
+          </ul>
         </li>
-        <li>
-          <div class="yr">2023 — 慶應義塾大学 法学部政治学科</div>
-          <div class="ttl">AO入試で合格・入学</div>
-          <div class="body">志望理由書に「TWICEのサナ」の名前を明記。SFCには「アイドルグループを作り、韓国側のマーケターとして日韓の架け橋になる」と提出。インカレ野球サークル / 日韓サークルKNOCK（企画部長・副サークル長）/ ゴルフ部 / 起業サークルKBCなど多方面で活動。</div>
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">高校1年生 〜 高校3年生</span>
+            <span class="ls-en">15–18 yrs · 明治大学付属明治高等学校</span>
+          </div>
+          <ul class="ls-body">
+            <li>明治大学付属明治高等学校に進学</li>
+            <li>野球部では再び <strong>副主将</strong> を務める</li>
+            <li><strong>英検準1級</strong> を取得</li>
+            <li>AO入試で慶應義塾大学 法学部 政治学科に合格</li>
+          </ul>
+          <div class="ls-callout">
+            <div class="ls-callout-label">AO入試 ストーリー</div>
+            <div class="ls-callout-body">
+              テーマは <strong>日韓関係の改善・関係値回復</strong>。日韓団体、政治家、弁護士、障害者団体、当事者などと積極的に交流。
+              <br><br>
+              志望理由書には <strong>TWICEのSANAの名前を明記</strong>。SFCには「アイドルグループを作り、韓国側のマーケターとして日韓の架け橋になる」と提出。自由記述では TWICEのペンライトとサナのうちわを持ったオタ活写真をそのまま提出した。
+            </div>
+          </div>
         </li>
-        <li>
-          <div class="yr">2024.09</div>
-          <div class="ttl">Wanderlust にJoin、大学を休学</div>
-          <div class="body">起業サークル KBC で出会った久保田翔己さんの紹介で、西川響さんと西原薫さんが創業した株式会社Wanderlustに出会う。月270時間労働でフルコミット。Engineer → Sales → CoS（経営室秘書）→ Biz PM と役割を変えながら成長。インド人エンジニアと3段ベッド×6台の共同生活も経験。</div>
+
+        <li class="life-stage">
+          <div class="ls-head">
+            <span class="ls-age">大学1年生 〜 現在</span>
+            <span class="ls-en">18 yrs ~ · 慶應義塾大学 法学部政治学科</span>
+          </div>
+          <ul class="ls-body">
+            <li><strong>日韓サークル KNOCK 企画部長 / 副サークル長</strong> を務める</li>
+            <li>所属サークル: 野球サークル / 企業サークル / ゴルフサークル / 起業サークル KBC</li>
+            <li>多様なアルバイト・インターンを経験（ライブハウス / ゴルフショップ / 塾講師 / 引っ越し / 4社のインターン）</li>
+            <li>大学2年生の秋から <strong>1年間休学</strong>、2026年4月から復学（現在は大学3年生）</li>
+            <li>2024年9月から <strong>株式会社Wanderlustでフルコミット</strong>勤務</li>
+            <li>月270時間労働。Engineer → Sales → Chief of Staff → Biz PM と役割を横断的に経験</li>
+            <li>インド人エンジニアと <strong>3段ベッド×6台の共同生活</strong> も経験</li>
+            <li>現在は <strong>次期COO候補</strong> として動いている</li>
+            <li>海外旅行にもたくさん行った（20+ ヶ国訪問）</li>
+            <li>2025年11月 〜 2026年3月にスモビジ挑戦も短期間経験 → 撤退、価値観を「家族＞仕事＞友達＞お金」と再定義</li>
+          </ul>
         </li>
-        <li>
-          <div class="yr">2025.11 — 2026.03</div>
-          <div class="ttl">スモールビジネス挑戦・撤退</div>
-          <div class="body">CEOとして挑戦したい想いから一度Wanderlustを離れ、起業アイデアメディア設立に約30万円を投資。20代後半で数億円を稼ぐ道筋は見えたが、その未来にワクワクできず撤退を決意。価値観を「家族＞仕事＞友達＞お金」と再定義。</div>
-        </li>
-        <li>
-          <div class="yr">2026.04 — 現在</div>
-          <div class="ttl">Wanderlust 復帰、次期COOへ</div>
-          <div class="body">"最強のナンバー2" を人生のモットーに、1日14時間の泊まり込み稼働で修行中。話の冗長性を削り、構造的に物事を抽出して話す力を磨く日々。</div>
-        </li>
+
       </ol>
     </section>
 
-    <section>
-      <h2><span class="num">▸</span>album</h2>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">01</span>
-          <span class="stage-ttl">幼少期</span>
-          <span class="stage-en">childhood · 0–6 yrs</span>
-        </div>
-        <div class="grid cols-2">
-          <figure class="shot wide"><img src="photos/childhood-kidzania.jpg" alt="幼少期 キッザニア"><figcaption>キッザニア / 5 yrs</figcaption></figure>
-          <figure class="shot wide"><img src="photos/elementary-portrait.jpg" alt="小学校に上がる頃"><figcaption>portrait</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">02</span>
-          <span class="stage-ttl">小学校</span>
-          <span class="stage-en">elementary · 杉並区立天沼小学校</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/elementary-sato-teacher.jpg" alt="佐藤龍太先生との2ショット"><figcaption>佐藤龍太先生と</figcaption></figure>
-          <figure class="shot"><img src="photos/elementary-baseball-team.jpg" alt="天沼小学校野球部 集合写真"><figcaption>天沼小学校 野球部 集合写真</figcaption></figure>
-          <figure class="shot"><img src="photos/elementary-yusei.jpg" alt="少年野球 優成との2ショット"><figcaption>優成と</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">03</span>
-          <span class="stage-ttl">中学校</span>
-          <span class="stage-en">middle school · 明治大学付属明治中学</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/middle-friends-1.jpg" alt="中1 優成と前田"><figcaption>中1 / 優成・前田と</figcaption></figure>
-          <figure class="shot"><img src="photos/middle-friends-2.jpg" alt="中2 上田との写真"><figcaption>中2 / 上田と</figcaption></figure>
-          <figure class="shot"><img src="photos/middle-baseball-team.jpg" alt="中学野球部集合写真"><figcaption>中学野球部 集合写真</figcaption></figure>
-          <figure class="shot"><img src="photos/middle-catcher.jpg" alt="中学キャッチャー"><figcaption>キャッチャー</figcaption></figure>
-          <figure class="shot"><img src="photos/middle-sports-day.jpg" alt="中学3年 体育祭"><figcaption>中3 体育祭 / クラス副主将</figcaption></figure>
-          <figure class="shot"><img src="photos/middle-school-hp.jpg" alt="15歳 学校HP掲載"><figcaption>15 yrs / 学校HP掲載</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">04</span>
-          <span class="stage-ttl">高校</span>
-          <span class="stage-en">high school · 明治大学付属明治高校</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/high-class-photo.jpg" alt="高校集合写真"><figcaption>高校 集合写真</figcaption></figure>
-          <figure class="shot"><img src="photos/high-class-friends.jpg" alt="高1 D組の仲良いメンツ"><figcaption>高1 / D組メンバー</figcaption></figure>
-          <figure class="shot"><img src="photos/high-baseball.jpg" alt="高校野球"><figcaption>高校野球部 / 副主将</figcaption></figure>
-          <figure class="shot"><img src="photos/high-twice-sana.jpg" alt="AO入試で使用 オタ活写真"><figcaption>AO入試 / TWICEオタ活</figcaption></figure>
-          <figure class="shot"><img src="photos/high-sana-2.jpg" alt="サナ 推し活"><figcaption>推し活 / SANA</figcaption></figure>
-          <figure class="shot"><img src="photos/high-diplomat.jpg" alt="外交官 翔太"><figcaption>外交官志望</figcaption></figure>
-          <figure class="shot wide"><img src="photos/high-korea-activity.jpg" alt="18歳 韓国活動"><figcaption>18 yrs / 日韓活動</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">05</span>
-          <span class="stage-ttl">大学</span>
-          <span class="stage-en">university · 慶應義塾大学 法学部政治学科</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/univ-knock.jpg" alt="KNOCK"><figcaption>KNOCK / 副サークル長</figcaption></figure>
-          <figure class="shot"><img src="photos/univ-knock-overseas.jpg" alt="KNOCK 海外渡航"><figcaption>KNOCK 海外渡航 / 韓国</figcaption></figure>
-          <figure class="shot"><img src="photos/univ-niseko.jpg" alt="ニセコ留学"><figcaption>大1 / ニセコ留学</figcaption></figure>
-          <figure class="shot"><img src="photos/univ-baseball.jpg" alt="リコタイ野球部"><figcaption>リコタイ野球部</figcaption></figure>
-          <figure class="shot"><img src="photos/univ-golf.jpg" alt="ゴルフ with ミッシー / みくな"><figcaption>2024.08 / ゴルフ with ミッシー・みくな</figcaption></figure>
-          <figure class="shot"><img src="photos/univ-torihada-intern.jpg" alt="TORIHADA インターン"><figcaption>株式会社TORIHADA</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">06</span>
-          <span class="stage-ttl">株式会社Wanderlust</span>
-          <span class="stage-en">work · 生成AI / RAG コンサルティング</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/univ-wanderlust.jpg" alt="Wanderlust にJoin"><figcaption>Wanderlust にJoin</figcaption></figure>
-          <figure class="shot"><img src="photos/wl-shota-2.jpg" alt="Wanderlust 業務中"><figcaption>working at Wanderlust</figcaption></figure>
-          <figure class="shot wide"><img src="photos/wl-team.jpg" alt="Wanderlust 集合写真"><figcaption>Wanderlust 集合写真</figcaption></figure>
-          <figure class="shot wide"><img src="photos/univ-wanderlust-startup.jpg" alt="東大松尾研発スタートアップ記念写真"><figcaption>20 yrs / 東大松尾研発スタートアップ</figcaption></figure>
-        </div>
-      </div>
-
-      <div class="album-stage">
-        <div class="stage-head">
-          <span class="stage-num">07</span>
-          <span class="stage-ttl">旅行</span>
-          <span class="stage-en">travel · 20+ countries</span>
-        </div>
-        <div class="grid">
-          <figure class="shot"><img src="photos/travel-us.jpg" alt="アメリカ"><figcaption>🇺🇸 USA / 19 yrs</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-sf.jpg" alt="サンフランシスコ"><figcaption>🇺🇸 San Francisco</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-vancouver.jpg" alt="バンクーバー"><figcaption>🇨🇦 Vancouver</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-southeast-asia.jpg" alt="東南アジア"><figcaption>🇹🇭🇰🇭🇻🇳 SE Asia</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-cambodia.jpg" alt="カンボジア"><figcaption>🇰🇭 Angkor Wat</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-china.jpg" alt="中国"><figcaption>🇨🇳 China</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-dubai.jpg" alt="ドバイ"><figcaption>🇦🇪 Dubai</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-egypt.jpg" alt="エジプト"><figcaption>🇪🇬 Egypt</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-europe.jpg" alt="ヨーロッパ"><figcaption>🇪🇺 Europe</figcaption></figure>
-          <figure class="shot"><img src="photos/travel-india.jpg" alt="インド"><figcaption>🇮🇳 India</figcaption></figure>
-        </div>
-      </div>
-    </section>
 
     <section>
       <h2><span class="num">▸</span>travel log</h2>
