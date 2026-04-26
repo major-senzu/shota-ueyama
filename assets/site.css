@@ -215,6 +215,12 @@ body.drawer-open .menu-toggle span:nth-child(3) {
   display: flex;
   margin-bottom: 36px;
   justify-content: flex-end;
+  position: sticky;
+  top: 64px;
+  z-index: 50;
+  background: #fff;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .tab-nav .tab {
@@ -387,7 +393,7 @@ body.drawer-open .menu-toggle span:nth-child(3) {
 @media (max-width: 600px) {
   .box-grid.cols-2, .box-grid.cols-3 { grid-template-columns: 1fr; }
   .box-grid .cell { padding: 18px 20px; }
-  .tab-nav { justify-content: stretch; }
+  .tab-nav { justify-content: stretch; top: 56px; padding: 8px 0; }
   .tab-nav .tab { flex: 1; padding: 9px 6px; font-size: 10px; }
   .career-list li { grid-template-columns: 1fr; gap: 4px; padding: 14px 18px; }
 }
