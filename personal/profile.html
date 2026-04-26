@@ -179,22 +179,49 @@
     box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 0 12px rgba(255,59,48,0.5);
   }
 
-  .countries {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-    padding: 16px 18px;
+  .country-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--line);
     border: 1px solid var(--line);
-    background: #fff;
+    margin-top: 16px;
   }
 
-  .countries span {
+  .country-list .country {
+    background: #fff;
+    padding: 14px 18px 16px;
+  }
+
+  .country-list .flag-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+
+  .country-list .cities {
+    list-style: none;
+  }
+
+  .country-list .cities li {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    padding: 4px 10px;
-    border: 1px solid var(--line);
-    color: var(--fg);
+    color: #555;
+    padding: 2px 0 2px 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .country-list .cities li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--fg);
   }
 
   .map-legend {
@@ -462,27 +489,27 @@
         <div id="travel-map"></div>
       </div>
       <div class="map-legend">● 訪問済み · <span style="color:#ff3b30">●</span> Tokyo (home) · powered by OpenStreetMap</div>
-      <div class="countries">
-        <span>🇺🇸 USA</span>
-        <span>🇨🇦 Canada</span>
-        <span>🇰🇭 Cambodia</span>
-        <span>🇹🇭 Thailand</span>
-        <span>🇻🇳 Vietnam</span>
-        <span>🇰🇷 Korea</span>
-        <span>🇨🇳 China</span>
-        <span>🇲🇾 Malaysia</span>
-        <span>🇰🇼 Kuwait</span>
-        <span>🇪🇬 Egypt</span>
-        <span>🇸🇦 Saudi</span>
-        <span>🇦🇪 UAE</span>
-        <span>🇵🇭 Philippines</span>
-        <span>🇮🇳 India</span>
-        <span>🇹🇷 Türkiye</span>
-        <span>🇩🇪 Germany</span>
-        <span>🇮🇹 Italy</span>
-        <span>🇬🇧 UK</span>
-        <span>🇪🇸 Spain</span>
-        <span>🇩🇰 Denmark</span>
+      <div class="country-list">
+        <div class="country"><div class="flag-name">🇪🇸 スペイン</div><ul class="cities"><li>マドリード</li><li>マジョルカ</li></ul></div>
+        <div class="country"><div class="flag-name">🇬🇧 イギリス</div><ul class="cities"><li>ロンドン</li></ul></div>
+        <div class="country"><div class="flag-name">🇮🇹 イタリア</div><ul class="cities"><li>ローマ</li></ul></div>
+        <div class="country"><div class="flag-name">🇩🇪 ドイツ</div><ul class="cities"><li>ベルリン</li></ul></div>
+        <div class="country"><div class="flag-name">🇩🇰 デンマーク</div><ul class="cities"><li>コペンハーゲン</li></ul></div>
+        <div class="country"><div class="flag-name">🇹🇷 トルコ</div><ul class="cities"><li>イスタンブール</li></ul></div>
+        <div class="country"><div class="flag-name">🇪🇬 エジプト</div><ul class="cities"><li>カイロ</li><li>ルクソール</li></ul></div>
+        <div class="country"><div class="flag-name">🇸🇦 サウジアラビア</div><ul class="cities"><li>リヤド</li></ul></div>
+        <div class="country"><div class="flag-name">🇦🇪 UAE</div><ul class="cities"><li>ドバイ</li><li>アブダビ</li></ul></div>
+        <div class="country"><div class="flag-name">🇰🇼 クウェート</div><ul class="cities"><li>クウェートシティ</li></ul></div>
+        <div class="country"><div class="flag-name">🇮🇳 インド</div><ul class="cities"><li>デリー</li><li>アーグラ</li></ul></div>
+        <div class="country"><div class="flag-name">🇹🇭 タイ</div><ul class="cities"><li>バンコク</li></ul></div>
+        <div class="country"><div class="flag-name">🇰🇭 カンボジア</div><ul class="cities"><li>シェムリアップ</li></ul></div>
+        <div class="country"><div class="flag-name">🇻🇳 ベトナム</div><ul class="cities"><li>ホーチミン</li></ul></div>
+        <div class="country"><div class="flag-name">🇲🇾 マレーシア</div><ul class="cities"><li>クアラルンプール</li></ul></div>
+        <div class="country"><div class="flag-name">🇵🇭 フィリピン</div><ul class="cities"><li>マニラ</li><li>セブ</li></ul></div>
+        <div class="country"><div class="flag-name">🇰🇷 韓国</div><ul class="cities"><li>ソウル</li><li>38度線付近</li></ul></div>
+        <div class="country"><div class="flag-name">🇨🇳 中国</div><ul class="cities"><li>北京</li><li>上海</li></ul></div>
+        <div class="country"><div class="flag-name">🇺🇸 アメリカ</div><ul class="cities"><li>サンフランシスコ</li><li>ロサンゼルス</li><li>ラスベガス</li><li>ユタ州</li></ul></div>
+        <div class="country"><div class="flag-name">🇨🇦 カナダ</div><ul class="cities"><li>バンクーバー</li></ul></div>
       </div>
     </div>
 
@@ -512,28 +539,56 @@
         maxZoom: 18
       }).addTo(map);
       var visited = [
-        [37.7749, -122.4194, 'San Francisco, USA'],
-        [34.0522, -118.2437, 'Los Angeles, USA'],
-        [36.1699, -115.1398, 'Las Vegas, USA'],
-        [49.2827, -123.1207, 'Vancouver, Canada'],
-        [13.3633, 103.8564, 'Siem Reap, Cambodia'],
-        [13.7563, 100.5018, 'Bangkok, Thailand'],
-        [10.8231, 106.6297, 'Ho Chi Minh, Vietnam'],
-        [37.5665, 126.9780, 'Seoul, Korea'],
-        [39.9042, 116.4074, 'Beijing, China'],
-        [3.1390, 101.6869, 'Kuala Lumpur, Malaysia'],
-        [29.3759, 47.9774, 'Kuwait City, Kuwait'],
-        [30.0444, 31.2357, 'Cairo, Egypt'],
-        [24.7136, 46.6753, 'Riyadh, Saudi Arabia'],
-        [25.2048, 55.2708, 'Dubai, UAE'],
-        [14.5995, 120.9842, 'Manila, Philippines'],
-        [28.6139, 77.2090, 'Delhi, India'],
-        [41.0082, 28.9784, 'Istanbul, Türkiye'],
-        [52.5200, 13.4050, 'Berlin, Germany'],
-        [41.9028, 12.4964, 'Rome, Italy'],
-        [51.5074, -0.1278, 'London, UK'],
-        [40.4168, -3.7038, 'Madrid, Spain'],
-        [55.6761, 12.5683, 'Copenhagen, Denmark']
+        // Spain
+        [40.4168, -3.7038, 'マドリード, スペイン'],
+        [39.6953, 3.0176, 'マジョルカ, スペイン'],
+        // UK
+        [51.5074, -0.1278, 'ロンドン, イギリス'],
+        // Italy
+        [41.9028, 12.4964, 'ローマ, イタリア'],
+        // Germany
+        [52.5200, 13.4050, 'ベルリン, ドイツ'],
+        // Denmark
+        [55.6761, 12.5683, 'コペンハーゲン, デンマーク'],
+        // Türkiye
+        [41.0082, 28.9784, 'イスタンブール, トルコ'],
+        // Egypt
+        [30.0444, 31.2357, 'カイロ, エジプト'],
+        [25.6872, 32.6396, 'ルクソール, エジプト'],
+        // Saudi Arabia
+        [24.7136, 46.6753, 'リヤド, サウジアラビア'],
+        // UAE
+        [25.2048, 55.2708, 'ドバイ, UAE'],
+        [24.4539, 54.3773, 'アブダビ, UAE'],
+        // Kuwait
+        [29.3759, 47.9774, 'クウェートシティ, クウェート'],
+        // India
+        [28.6139, 77.2090, 'デリー, インド'],
+        [27.1767, 78.0081, 'アーグラ, インド'],
+        // Thailand
+        [13.7563, 100.5018, 'バンコク, タイ'],
+        // Cambodia
+        [13.3633, 103.8564, 'シェムリアップ, カンボジア'],
+        // Vietnam
+        [10.8231, 106.6297, 'ホーチミン, ベトナム'],
+        // Malaysia
+        [3.1390, 101.6869, 'クアラルンプール, マレーシア'],
+        // Philippines
+        [14.5995, 120.9842, 'マニラ, フィリピン'],
+        [10.3157, 123.8854, 'セブ, フィリピン'],
+        // Korea
+        [37.5665, 126.9780, 'ソウル, 韓国'],
+        [37.9550, 126.6800, '38度線付近, 韓国'],
+        // China
+        [39.9042, 116.4074, '北京, 中国'],
+        [31.2304, 121.4737, '上海, 中国'],
+        // USA
+        [37.7749, -122.4194, 'サンフランシスコ, アメリカ'],
+        [34.0522, -118.2437, 'ロサンゼルス, アメリカ'],
+        [36.1699, -115.1398, 'ラスベガス, アメリカ'],
+        [40.7608, -111.8910, 'ユタ州, アメリカ'],
+        // Canada
+        [49.2827, -123.1207, 'バンクーバー, カナダ']
       ];
       var pin = L.divIcon({ className: 'travel-pin', html: '<span></span>', iconSize: [12,12], iconAnchor: [6,6] });
       visited.forEach(function (p) { L.marker([p[0], p[1]], {icon: pin}).addTo(map).bindPopup('<strong>' + p[2] + '</strong>'); });
