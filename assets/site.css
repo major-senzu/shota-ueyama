@@ -305,9 +305,89 @@ body.drawer-open .menu-toggle span:nth-child(3) {
   margin-bottom: 16px;
 }
 
+/* career-list (timeline-style chronological list) */
+.career-list {
+  list-style: none;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.career-list li {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e5e5;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.career-list li:last-child { border-bottom: none; }
+
+.career-list .year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.career-list .event {
+  font-size: 15px;
+  color: #0a0a0a;
+}
+
+.career-list .event strong {
+  font-weight: 600;
+}
+
+.career-list .event .meta {
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+  display: block;
+  line-height: 1.6;
+}
+
+/* references */
+.refs-list {
+  list-style: none;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.refs-list li {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.refs-list li:last-child { border-bottom: none; }
+
+.refs-list .ref-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.refs-list .ref-name a {
+  color: #0a0a0a;
+  text-decoration: none;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+
+.refs-list .ref-name a:hover { border-bottom-color: #0a0a0a; }
+
+.refs-list .ref-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
 @media (max-width: 600px) {
   .box-grid.cols-2, .box-grid.cols-3 { grid-template-columns: 1fr; }
   .box-grid .cell { padding: 18px 20px; }
   .tab-nav { justify-content: stretch; }
   .tab-nav .tab { flex: 1; padding: 9px 6px; font-size: 10px; }
+  .career-list li { grid-template-columns: 1fr; gap: 4px; padding: 14px 18px; }
 }
