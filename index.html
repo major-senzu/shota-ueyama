@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="./assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 56px 48px;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  h1 .kanji {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+  }
+
+  .role {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 56px;
+  }
+
+  section.cat {
+    margin-bottom: 40px;
+  }
+
+  .cat-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .cat-head .num { color: var(--fg); font-weight: 500; }
+
+  ul.list { list-style: none; }
+
+  ul.list li {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  ul.list .n {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    width: 38px;
+    flex-shrink: 0;
+  }
+
+  ul.list a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: border-color 0.15s;
+  }
+
+  ul.list a:hover { border-bottom-color: var(--fg); }
+
+  ul.list .desc {
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    margin-left: auto;
+  }
+
+  ul.list li.disabled a {
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  ul.list li.disabled a::after {
+    content: '  ·  coming soon';
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 32px 22px; }
+    h1 { font-size: 22px; }
+    .role { margin-bottom: 36px; }
+    ul.list .desc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="./index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="./index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="./personal/profile.html" class="nav-link">profile</a>
+    <a class="nav-link disabled">health</a>
+    <a class="nav-link disabled">travel</a>
+    <a class="nav-link disabled">book</a>
+    <a class="nav-link disabled">kpop</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a class="nav-link disabled">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <h1>Shota Ueyama <span class="kanji">（植山翔太）</span></h1>
+    <div class="role">慶應義塾大学 法学部政治学科 / 株式会社Wanderlust</div>
+
+    <section class="cat" id="personal">
+      <div class="cat-head"><span class="num">010</span><span>personal</span></div>
+      <ul class="list">
+        <li><span class="n">011</span><a href="./personal/profile.html">profile</a><span class="desc">自己紹介・経歴・人生史</span></li>
+        <li class="disabled"><span class="n">012</span><a>health</a><span class="desc">身体・トレーニングの記録</span></li>
+        <li class="disabled"><span class="n">013</span><a>travel</a><span class="desc">渡航・旅行記録</span></li>
+        <li class="disabled"><span class="n">014</span><a>book</a><span class="desc">読書ログ・書評</span></li>
+        <li class="disabled"><span class="n">015</span><a>kpop</a><span class="desc">TWICE / K-POPオタ活</span></li>
+      </ul>
+    </section>
+
+    <section class="cat" id="research">
+      <div class="cat-head"><span class="num">020</span><span>research</span></div>
+      <ul class="list">
+        <li class="disabled"><span class="n">021</span><a>geo-history</a><span class="desc">地政学・歴史リサーチ</span></li>
+        <li class="disabled"><span class="n">022</span><a>legend</a><span class="desc">偉人・人物分析</span></li>
+        <li class="disabled"><span class="n">023</span><a>startup</a><span class="desc">スタートアップ・企業分析</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="./assets/site.js"></script>
+</body>
+</html>

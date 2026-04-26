@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>profile · detail / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 32px 48px 48px;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* breadcrumb */
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    letter-spacing: 0.04em;
+  }
+
+  .crumb a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .crumb a:hover { border-bottom-color: var(--muted); color: var(--fg); }
+
+  .crumb .sep { margin: 0 8px; }
+
+  /* hero */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero h1 {
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .hero h1 .kanji {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  .hero .ja {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .hero .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--fg);
+    padding: 6px 12px;
+    background: var(--soft);
+    display: inline-block;
+    letter-spacing: 0.02em;
+  }
+
+  /* sections */
+  section {
+    margin-bottom: 56px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; }
+
+  p { margin-bottom: 14px; }
+
+  p.lead {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  /* facts grid */
+  .facts {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    row-gap: 12px;
+    column-gap: 24px;
+    font-size: 14px;
+  }
+
+  .facts dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    padding-top: 2px;
+  }
+
+  .facts dd {
+    color: var(--fg);
+  }
+
+  /* timeline */
+  ol.timeline {
+    list-style: none;
+    border-left: 1px solid var(--line);
+    padding-left: 24px;
+  }
+
+  ol.timeline li {
+    position: relative;
+    padding-bottom: 24px;
+  }
+
+  ol.timeline li::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    background: var(--bg);
+    border: 1.5px solid var(--fg);
+    border-radius: 50%;
+  }
+
+  ol.timeline .yr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  ol.timeline .ttl {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  ol.timeline .body {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* quote */
+  blockquote {
+    border-left: 2px solid var(--fg);
+    padding: 4px 0 4px 20px;
+    margin: 24px 0;
+    font-style: normal;
+  }
+
+  blockquote .q {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+
+  blockquote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* values */
+  .values {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .values .v {
+    background: var(--bg);
+    padding: 18px 20px;
+  }
+
+  .values .v .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .values .v .t {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.55;
+  }
+
+  /* favorites */
+  .fav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px;
+    margin-top: 8px;
+  }
+
+  .fav-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .fav-en {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  ul.fav-list {
+    list-style: none;
+  }
+
+  ul.fav-list li {
+    padding: 6px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  ul.fav-list .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg);
+    flex-shrink: 0;
+  }
+
+  ul.fav-list .dot.like { background: #0a0a0a; }
+
+  ul.fav-list .dot.avoid {
+    background: transparent;
+    border: 1px solid #999;
+  }
+
+  /* key persons */
+  ol.people {
+    list-style: none;
+    counter-reset: person;
+    margin-top: 16px;
+  }
+
+  ol.people li {
+    counter-increment: person;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    padding-left: 44px;
+  }
+
+  ol.people li::before {
+    content: counter(person, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  ol.people li:last-child { border-bottom: none; }
+
+  .person-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .person-name {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .person-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .person-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .person-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* career */
+  ol.career {
+    list-style: none;
+  }
+
+  ol.career li {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  ol.career li:last-child { border-bottom: none; }
+
+  ol.career .period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  ol.career .company {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  ol.career .company a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1px;
+    transition: border-color 0.15s;
+  }
+
+  ol.career .company a:hover { border-bottom-color: var(--fg); }
+
+  ol.career .role-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+  }
+
+  ol.career .desc {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ol.career .desc a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 1px;
+  }
+
+  ol.career .bullets {
+    list-style: none;
+    margin-top: 4px;
+  }
+
+  ol.career .bullets li {
+    padding: 2px 0;
+    border-bottom: none;
+    position: relative;
+    padding-left: 14px;
+  }
+
+  ol.career .bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--muted);
+  }
+
+  /* world map (leaflet + OSM) */
+  .map-wrap {
+    margin: 20px 0 16px;
+    background: #fafafa;
+    border: 1px solid var(--line);
+    padding: 6px;
+    overflow: hidden;
+  }
+
+  #travel-map {
+    width: 100%;
+    height: 480px;
+    background: #f0f0f0;
+  }
+
+  .map-wrap .legend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    padding: 0 6px 4px;
+    text-align: right;
+    letter-spacing: 0.04em;
+  }
+
+  /* leaflet pin styling */
+  .travel-pin span {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+    transition: transform 0.15s;
+  }
+
+  .travel-pin:hover span {
+    transform: scale(1.4);
+    background: #ff3b30;
+  }
+
+  .travel-pin.home span {
+    width: 16px;
+    height: 16px;
+    background: #ff3b30;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 0 12px rgba(255,59,48,0.5);
+  }
+
+  .leaflet-popup-content {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    #travel-map { height: 360px; }
+  }
+
+  /* album */
+  .album-stage {
+    margin-bottom: 48px;
+  }
+
+  .album-stage:last-child { margin-bottom: 0; }
+
+  .stage-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stage-head .stage-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .stage-head .stage-ttl {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .stage-head .stage-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-left: auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  figure.shot {
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    background: #f4f4f4;
+    aspect-ratio: 4 / 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  figure.shot.wide { aspect-ratio: 4 / 3; }
+  figure.shot.tall { aspect-ratio: 3 / 4; }
+  figure.shot.square { aspect-ratio: 1 / 1; }
+
+  figure.shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: grayscale(8%);
+    transition: filter 0.4s, transform 0.5s;
+  }
+
+  figure.shot:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+  }
+
+  figure.shot figcaption {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 8px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #fff;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  figure.shot:hover figcaption { opacity: 1; }
+
+  /* tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    color: var(--fg);
+  }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer .socials { display: flex; gap: 14px; }
+
+  footer .socials a {
+    color: var(--fg);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  footer .socials a:hover { background: var(--fg); color: var(--bg); }
+
+  @media (max-width: 600px) {
+    body { padding: 40px 22px 32px; }
+    .hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hero h1 { font-size: 26px; }
+    .facts { grid-template-columns: 1fr; row-gap: 4px; }
+    .facts dt { padding-top: 10px; }
+    .values { grid-template-columns: 1fr; }
+    .fav-grid { grid-template-columns: 1fr; gap: 24px; }
+    .grid, .grid.cols-2 { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .stage-head { flex-wrap: wrap; }
+    .stage-head .stage-en { margin-left: 0; flex-basis: 100%; }
+    footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="./profile.html" class="nav-link">profile</a>
+    <a class="nav-link disabled">health</a>
+    <a class="nav-link disabled">travel</a>
+    <a class="nav-link disabled">book</a>
+    <a class="nav-link disabled">kpop</a>
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a class="nav-link disabled">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <nav class="tab-nav">
+      <a href="./profile.html" class="tab">Plain</a>
+      <a href="./profile-detail.html" class="tab active">Detail</a>
+      <a href="./photo.html" class="tab">Photo</a>
+    </nav>
+
+    <div class="hero">
+      <div>
+        <h1>Shota Ueyama <span class="kanji">（植山翔太）</span></h1>
+        <div class="ja">うえやま しょうた</div>
+        <div class="tagline">"最強のナンバー2" になる</div>
+      </div>
+    </div>
+
+    <section>
+      <h2><span class="num">▸</span>about</h2>
+      <p class="lead">
+        慶應義塾大学法学部政治学科の学生。
+        生成AI / RAGコンサルティング会社「株式会社Wanderlust」に参画し、
+        Engineer → Sales → CoS → Biz PM と役割を変えながら、現在は次期COOを目指して修行中。
+      </p>
+      <p>
+        「家族 &gt; 仕事 &gt; 友達 &gt; お金」という優先順位を軸に、
+        急がず・余裕を持って・優しく生きることを大切にしている。
+        稲盛和夫やWarren Buffettのような長期的な経営者像に共感を覚えるタイプ。
+      </p>
+      <div class="tags">
+        <span>#法学部政治学科</span>
+        <span>#日韓関係</span>
+        <span>#RAG</span>
+        <span>#生成AI</span>
+        <span>#TWICE</span>
+        <span>#野球</span>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>facts</h2>
+      <dl class="facts">
+        <dt>born</dt><dd>2004.11.30 / 東京・都立家政駅（東京衛生病院）</dd>
+        <dt>hometown</dt><dd>実家: 荻窪 / 現住: 九段下（1K・シェアオフィス兼用）</dd>
+        <dt>family</dt><dd>父（姉・妹あり）／ 母（兄・弟あり）／ 翔太は第一子</dd>
+        <dt>current</dt><dd>慶應義塾大学 法学部政治学科（学籍番号 32351697）</dd>
+        <dt>company</dt><dd>株式会社Wanderlust — 次期COO候補</dd>
+        <dt>activity</dt><dd>KNOCK（慶應 国際関係会 日韓プロジェクト）</dd>
+        <dt>position</dt><dd>常に "副" の立場で力を発揮 — 副キャプテン・副主将・副委員長・副サークル長</dd>
+        <dt>education</dt><dd>明治大学付属明治中学校・高等学校 → 慶應義塾大学（AO入試）</dd>
+        <dt>sport</dt><dd>野球（中学・高校）／ ポジション: キャッチャー一筋</dd>
+        <dt>language</dt><dd>日本語（母語）／ 韓国語</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>motto</h2>
+      <blockquote>
+        <div class="q">"最強のナンバー2" になること。</div>
+        <div>CEOを務められる実力を持った者が、哲学を持ってCOOを担っている状態が最強。</div>
+        <div class="src">— shota's manifesto, 2026.04</div>
+      </blockquote>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>values</h2>
+      <div class="values">
+        <div class="v">
+          <div class="k">priority</div>
+          <div class="t">家族 &gt; 仕事 &gt; 友達 &gt; お金</div>
+        </div>
+        <div class="v">
+          <div class="k">style</div>
+          <div class="t">急がない・余裕・優しさ</div>
+        </div>
+        <div class="v">
+          <div class="k">role</div>
+          <div class="t">"副" として組織を支える</div>
+        </div>
+        <div class="v">
+          <div class="k">thinking</div>
+          <div class="t">逆張り志向 / 異質でありたい</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>favorites</h2>
+      <div class="fav-grid">
+        <div class="fav-col">
+          <div class="fav-head">趣味 <span class="fav-en">hobbies</span></div>
+          <ul class="fav-list">
+            <li><span class="dot"></span>野球（生粋のヤクルトファン）</li>
+            <li><span class="dot"></span>ゴルフ</li>
+            <li><span class="dot"></span>ポーカー</li>
+            <li><span class="dot"></span>TWICE（サナ推し）</li>
+          </ul>
+        </div>
+        <div class="fav-col">
+          <div class="fav-head">好きな食べ物 <span class="fav-en">love</span></div>
+          <ul class="fav-list">
+            <li><span class="dot like"></span>さつまいも</li>
+            <li><span class="dot like"></span>かぼちゃ</li>
+            <li><span class="dot like"></span>しゃけ（サーモン）</li>
+          </ul>
+          <div class="fav-head" style="margin-top:24px;">苦手な食べ物 <span class="fav-en">avoid</span></div>
+          <ul class="fav-list">
+            <li><span class="dot avoid"></span>アルコール（アレルギー）</li>
+            <li><span class="dot avoid"></span>貝類</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>key persons</h2>
+      <p>翔太の人生に大きな影響を与え続けている人たち。</p>
+      <ol class="people">
+        <li>
+          <div class="person-head">
+            <span class="person-name">石原 優成 <span class="person-en">Yusei Ishihara</span></span>
+            <span class="person-tag">一番の親友</span>
+          </div>
+          <div class="person-body">小中学校の野球部、高校も同じ。家族ぐるみで仲が良く、お母様 Makiko さん・妹の Mei さんとも親交が深い。現在は伊藤忠商事に勤務。</div>
+        </li>
+        <li>
+          <div class="person-head">
+            <span class="person-name">前田 康太 <span class="person-en">Kota Maeda</span></span>
+            <span class="person-tag">高1からの親友</span>
+          </div>
+          <div class="person-body">小学校の塾・中高大すべてが同じ、荻窪出身の一人っ子。高校1年のクラスメンバーで、今でも定期的に電話する数少ない友人。</div>
+        </li>
+        <li>
+          <div class="person-head">
+            <span class="person-name">田中 怜生 <span class="person-en">Reo Tanaka</span></span>
+            <span class="person-tag">高校野球部 / Wanderlust 同士</span>
+          </div>
+          <div class="person-body">高校野球部の同期、川崎在住・弟あり。Wanderlust に翔太が誘い、一緒に1年間休学した盟友。エンジニアリングと金融に強い。</div>
+        </li>
+        <li>
+          <div class="person-head">
+            <span class="person-name">久保田 翔己 <span class="person-en">Shoki Kubota</span></span>
+            <span class="person-tag">KBC同期 / 同居人</span>
+          </div>
+          <div class="person-body">慶應義塾高校野球部出身、笹塚出身の4人兄弟末っ子。大学入学後、起業サークル KBC で出会う。GMOコネクトのインターン、Wanderlust への参画もすべて翔己さんの紹介。二人で起業を志した時期もあり、現在は1Kで一緒に暮らしている。</div>
+        </li>
+        <li>
+          <div class="person-head">
+            <span class="person-name">岸 正太郎 <span class="person-en">Shotaro Kishi</span></span>
+            <span class="person-tag">GMO・Wanderlust 同期</span>
+          </div>
+          <div class="person-body">吉祥寺出身・弟あり。大学1年の GMOコネクトインターンで翔己さんの紹介で出会う。休学して Wanderlust で営業も担当。現在は起業中。元々、岸さん・優成さん・翔太・もう1人の母親同士で「犬会」を定期開催しており、このタイミングで偶然再会した。</div>
+        </li>
+        <li>
+          <div class="person-head">
+            <span class="person-name">西川 響 <span class="person-en">Kyo Nishikawa</span></span>
+            <span class="person-tag">Wanderlust CEO / 恩師</span>
+          </div>
+          <div class="person-body">武蔵小金井出身、国分寺高校卒。兄と妹あり。10兆円企業を作り上げる起業家。翔太のビジネス・海外旅行・ポーカーの基礎土台を作り上げてくれた恩師。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>career</h2>
+      <ol class="career">
+        <li>
+          <div class="period">2024.09 — present</div>
+          <div class="company"><a href="https://wander-lust.io/" target="_blank" rel="noopener">株式会社 Wanderlust ↗</a> <span class="role-tag">Biz PM / 次期COO候補</span></div>
+          <div class="desc">生成AI / RAGコンサルティング会社にフルコミット。月270時間稼働。Engineer → Sales → CoS（経営室秘書） → Biz PM と役割を横断的に経験。エンタープライズ向けRAG構築・PoC設計・組織立ち上げを担当。</div>
+        </li>
+        <li>
+          <div class="period">2024.01 — 2024.08</div>
+          <div class="company"><a href="https://www.torihada.co.jp/" target="_blank" rel="noopener">株式会社 TORIHADA ↗</a> <span class="role-tag">SEO / Content</span></div>
+          <div class="desc">TikTokマーケティング会社にてインターン。SEO記事の企画・執筆を担当。<a href="https://www.torihada.co.jp/media/2197/" target="_blank" rel="noopener">執筆記事の例 ↗</a></div>
+        </li>
+        <li>
+          <div class="period">2023.06 — 2023.12</div>
+          <div class="company"><a href="https://gmo-connect.jp/" target="_blank" rel="noopener">GMOコネクト ↗</a> <span class="role-tag">Intern</span></div>
+          <div class="desc">
+            久保田翔己さん・岸翔太郎さんと共に立ち上げから関わる。
+            <ul class="bullets">
+              <li>上場企業役員食事会に週1で参加し、経営層との直接対話を経験</li>
+              <li>社長インタビュー記事をまとめるオウンドメディアの立ち上げ・運営</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>life timeline</h2>
+      <ol class="timeline">
+        <li>
+          <div class="yr">2004</div>
+          <div class="ttl">東京・東京衛生病院にて誕生</div>
+          <div class="body">父は元水上スキー日本代表で兼松出身、現在は祖父の不動産会社を継ぐ実業家。母は商社事務職を経て専業主婦。</div>
+        </li>
+        <li>
+          <div class="yr">2010 — 杉並区立天沼小学校</div>
+          <div class="ttl">野球との出会い</div>
+          <div class="body">父に神宮球場へ連れていかれ、ホワイトセル選手のサヨナラホームランを目撃。野球クラブチーム「ポルテ」に所属、以降ずっとキャッチャー一筋。生粋のヤクルトファンで、山田哲人選手と川端慎吾選手を推し続けている。</div>
+        </li>
+        <li>
+          <div class="yr">2017 — 明治大学付属明治中学校</div>
+          <div class="ttl">TWICEとの出会い、日韓関係への関心</div>
+          <div class="body">サナ推しに。中3時、サナがInstagramで日韓関係を理由に炎上した件をきっかけに、日韓政治への強い関心が芽生える。これが後のAO入試の志望理由の原点となる。</div>
+        </li>
+        <li>
+          <div class="yr">2020 — 明治大学付属明治高等学校</div>
+          <div class="ttl">野球部 副主将 / AO入試への決断</div>
+          <div class="body">周囲の99%がエスカレーターで明治大学へ進む中、AO入試で慶應を志望。日韓団体・政治家・弁護士・障害者団体・バイセクシュアル当事者との交流会を主催し、世界の貧困問題にも実地で取り組む。</div>
+        </li>
+        <li>
+          <div class="yr">2023 — 慶應義塾大学 法学部政治学科</div>
+          <div class="ttl">AO入試で合格・入学</div>
+          <div class="body">志望理由書に「TWICEのサナ」の名前を明記。SFCには「アイドルグループを作り、韓国側のマーケターとして日韓の架け橋になる」と提出。インカレ野球サークル / 日韓サークルKNOCK（企画部長・副サークル長）/ ゴルフ部 / 起業サークルKBCなど多方面で活動。</div>
+        </li>
+        <li>
+          <div class="yr">2024.09</div>
+          <div class="ttl">Wanderlust にJoin、大学を休学</div>
+          <div class="body">起業サークル KBC で出会った久保田翔己さんの紹介で、西川響さんと西原薫さんが創業した株式会社Wanderlustに出会う。月270時間労働でフルコミット。Engineer → Sales → CoS（経営室秘書）→ Biz PM と役割を変えながら成長。インド人エンジニアと3段ベッド×6台の共同生活も経験。</div>
+        </li>
+        <li>
+          <div class="yr">2025.11 — 2026.03</div>
+          <div class="ttl">スモールビジネス挑戦・撤退</div>
+          <div class="body">CEOとして挑戦したい想いから一度Wanderlustを離れ、起業アイデアメディア設立に約30万円を投資。20代後半で数億円を稼ぐ道筋は見えたが、その未来にワクワクできず撤退を決意。価値観を「家族＞仕事＞友達＞お金」と再定義。</div>
+        </li>
+        <li>
+          <div class="yr">2026.04 — 現在</div>
+          <div class="ttl">Wanderlust 復帰、次期COOへ</div>
+          <div class="body">"最強のナンバー2" を人生のモットーに、1日14時間の泊まり込み稼働で修行中。話の冗長性を削り、構造的に物事を抽出して話す力を磨く日々。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>album</h2>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">01</span>
+          <span class="stage-ttl">幼少期</span>
+          <span class="stage-en">childhood · 0–6 yrs</span>
+        </div>
+        <div class="grid cols-2">
+          <figure class="shot wide"><img src="photos/childhood-kidzania.jpg" alt="幼少期 キッザニア"><figcaption>キッザニア / 5 yrs</figcaption></figure>
+          <figure class="shot wide"><img src="photos/elementary-portrait.jpg" alt="小学校に上がる頃"><figcaption>portrait</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">02</span>
+          <span class="stage-ttl">小学校</span>
+          <span class="stage-en">elementary · 杉並区立天沼小学校</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/elementary-sato-teacher.jpg" alt="佐藤龍太先生との2ショット"><figcaption>佐藤龍太先生と</figcaption></figure>
+          <figure class="shot"><img src="photos/elementary-baseball-team.jpg" alt="天沼小学校野球部 集合写真"><figcaption>天沼小学校 野球部 集合写真</figcaption></figure>
+          <figure class="shot"><img src="photos/elementary-yusei.jpg" alt="少年野球 優成との2ショット"><figcaption>優成と</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">03</span>
+          <span class="stage-ttl">中学校</span>
+          <span class="stage-en">middle school · 明治大学付属明治中学</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/middle-friends-1.jpg" alt="中1 優成と前田"><figcaption>中1 / 優成・前田と</figcaption></figure>
+          <figure class="shot"><img src="photos/middle-friends-2.jpg" alt="中2 上田との写真"><figcaption>中2 / 上田と</figcaption></figure>
+          <figure class="shot"><img src="photos/middle-baseball-team.jpg" alt="中学野球部集合写真"><figcaption>中学野球部 集合写真</figcaption></figure>
+          <figure class="shot"><img src="photos/middle-catcher.jpg" alt="中学キャッチャー"><figcaption>キャッチャー</figcaption></figure>
+          <figure class="shot"><img src="photos/middle-sports-day.jpg" alt="中学3年 体育祭"><figcaption>中3 体育祭 / クラス副主将</figcaption></figure>
+          <figure class="shot"><img src="photos/middle-school-hp.jpg" alt="15歳 学校HP掲載"><figcaption>15 yrs / 学校HP掲載</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">04</span>
+          <span class="stage-ttl">高校</span>
+          <span class="stage-en">high school · 明治大学付属明治高校</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/high-class-photo.jpg" alt="高校集合写真"><figcaption>高校 集合写真</figcaption></figure>
+          <figure class="shot"><img src="photos/high-class-friends.jpg" alt="高1 D組の仲良いメンツ"><figcaption>高1 / D組メンバー</figcaption></figure>
+          <figure class="shot"><img src="photos/high-baseball.jpg" alt="高校野球"><figcaption>高校野球部 / 副主将</figcaption></figure>
+          <figure class="shot"><img src="photos/high-twice-sana.jpg" alt="AO入試で使用 オタ活写真"><figcaption>AO入試 / TWICEオタ活</figcaption></figure>
+          <figure class="shot"><img src="photos/high-sana-2.jpg" alt="サナ 推し活"><figcaption>推し活 / SANA</figcaption></figure>
+          <figure class="shot"><img src="photos/high-diplomat.jpg" alt="外交官 翔太"><figcaption>外交官志望</figcaption></figure>
+          <figure class="shot wide"><img src="photos/high-korea-activity.jpg" alt="18歳 韓国活動"><figcaption>18 yrs / 日韓活動</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">05</span>
+          <span class="stage-ttl">大学</span>
+          <span class="stage-en">university · 慶應義塾大学 法学部政治学科</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/univ-knock.jpg" alt="KNOCK"><figcaption>KNOCK / 副サークル長</figcaption></figure>
+          <figure class="shot"><img src="photos/univ-knock-overseas.jpg" alt="KNOCK 海外渡航"><figcaption>KNOCK 海外渡航 / 韓国</figcaption></figure>
+          <figure class="shot"><img src="photos/univ-niseko.jpg" alt="ニセコ留学"><figcaption>大1 / ニセコ留学</figcaption></figure>
+          <figure class="shot"><img src="photos/univ-baseball.jpg" alt="リコタイ野球部"><figcaption>リコタイ野球部</figcaption></figure>
+          <figure class="shot"><img src="photos/univ-golf.jpg" alt="ゴルフ with ミッシー / みくな"><figcaption>2024.08 / ゴルフ with ミッシー・みくな</figcaption></figure>
+          <figure class="shot"><img src="photos/univ-torihada-intern.jpg" alt="TORIHADA インターン"><figcaption>株式会社TORIHADA</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">06</span>
+          <span class="stage-ttl">株式会社Wanderlust</span>
+          <span class="stage-en">work · 生成AI / RAG コンサルティング</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/univ-wanderlust.jpg" alt="Wanderlust にJoin"><figcaption>Wanderlust にJoin</figcaption></figure>
+          <figure class="shot"><img src="photos/wl-shota-2.jpg" alt="Wanderlust 業務中"><figcaption>working at Wanderlust</figcaption></figure>
+          <figure class="shot wide"><img src="photos/wl-team.jpg" alt="Wanderlust 集合写真"><figcaption>Wanderlust 集合写真</figcaption></figure>
+          <figure class="shot wide"><img src="photos/univ-wanderlust-startup.jpg" alt="東大松尾研発スタートアップ記念写真"><figcaption>20 yrs / 東大松尾研発スタートアップ</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="album-stage">
+        <div class="stage-head">
+          <span class="stage-num">07</span>
+          <span class="stage-ttl">旅行</span>
+          <span class="stage-en">travel · 20+ countries</span>
+        </div>
+        <div class="grid">
+          <figure class="shot"><img src="photos/travel-us.jpg" alt="アメリカ"><figcaption>🇺🇸 USA / 19 yrs</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-sf.jpg" alt="サンフランシスコ"><figcaption>🇺🇸 San Francisco</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-vancouver.jpg" alt="バンクーバー"><figcaption>🇨🇦 Vancouver</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-southeast-asia.jpg" alt="東南アジア"><figcaption>🇹🇭🇰🇭🇻🇳 SE Asia</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-cambodia.jpg" alt="カンボジア"><figcaption>🇰🇭 Angkor Wat</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-china.jpg" alt="中国"><figcaption>🇨🇳 China</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-dubai.jpg" alt="ドバイ"><figcaption>🇦🇪 Dubai</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-egypt.jpg" alt="エジプト"><figcaption>🇪🇬 Egypt</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-europe.jpg" alt="ヨーロッパ"><figcaption>🇪🇺 Europe</figcaption></figure>
+          <figure class="shot"><img src="photos/travel-india.jpg" alt="インド"><figcaption>🇮🇳 India</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>travel log</h2>
+      <p>これまで20カ国以上を訪問。Wanderlustでの活動の中で、世界中を旅しながら働くスタイルを実践している。</p>
+
+      <div class="map-wrap">
+        <div id="travel-map"></div>
+        <div class="legend">● 訪問済み · <span style="color:#ff3b30">●</span> Tokyo (home) · powered by OpenStreetMap</div>
+      </div>
+
+      <div class="tags">
+        <span>🇺🇸 USA</span>
+        <span>🇨🇦 Canada</span>
+        <span>🇰🇭 Cambodia</span>
+        <span>🇹🇭 Thailand</span>
+        <span>🇻🇳 Vietnam</span>
+        <span>🇰🇷 Korea</span>
+        <span>🇨🇳 China</span>
+        <span>🇲🇾 Malaysia</span>
+        <span>🇰🇼 Kuwait</span>
+        <span>🇪🇬 Egypt</span>
+        <span>🇸🇦 Saudi</span>
+        <span>🇦🇪 UAE</span>
+        <span>🇵🇭 Philippines</span>
+        <span>🇮🇳 India</span>
+        <span>🇹🇷 Türkiye</span>
+        <span>🇩🇪 Germany</span>
+        <span>🇮🇹 Italy</span>
+        <span>🇬🇧 UK</span>
+        <span>🇪🇸 Spain</span>
+        <span>🇩🇰 Denmark</span>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>contact</h2>
+      <p>仕事のご相談・お問い合わせは X / Facebook の DM までお気軽にどうぞ。</p>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      var el = document.getElementById('travel-map');
+      if (!el || typeof L === 'undefined') return;
+
+      var map = L.map(el, {
+        center: [25, 50],
+        zoom: 2,
+        scrollWheelZoom: false,
+        attributionControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+      }).addTo(map);
+
+      var visited = [
+        [37.7749, -122.4194, 'San Francisco, USA'],
+        [34.0522, -118.2437, 'Los Angeles, USA'],
+        [36.1699, -115.1398, 'Las Vegas, USA'],
+        [49.2827, -123.1207, 'Vancouver, Canada'],
+        [13.3633, 103.8564, 'Siem Reap, Cambodia'],
+        [13.7563, 100.5018, 'Bangkok, Thailand'],
+        [10.8231, 106.6297, 'Ho Chi Minh, Vietnam'],
+        [37.5665, 126.9780, 'Seoul, Korea'],
+        [39.9042, 116.4074, 'Beijing, China'],
+        [3.1390, 101.6869, 'Kuala Lumpur, Malaysia'],
+        [29.3759, 47.9774, 'Kuwait City, Kuwait'],
+        [30.0444, 31.2357, 'Cairo, Egypt'],
+        [24.7136, 46.6753, 'Riyadh, Saudi Arabia'],
+        [25.2048, 55.2708, 'Dubai, UAE'],
+        [14.5995, 120.9842, 'Manila, Philippines'],
+        [28.6139, 77.2090, 'Delhi, India'],
+        [41.0082, 28.9784, 'Istanbul, Türkiye'],
+        [52.5200, 13.4050, 'Berlin, Germany'],
+        [41.9028, 12.4964, 'Rome, Italy'],
+        [51.5074, -0.1278, 'London, UK'],
+        [40.4168, -3.7038, 'Madrid, Spain'],
+        [55.6761, 12.5683, 'Copenhagen, Denmark']
+      ];
+
+      var pinIcon = L.divIcon({
+        className: 'travel-pin',
+        html: '<span></span>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      visited.forEach(function (p) {
+        L.marker([p[0], p[1]], { icon: pinIcon })
+          .addTo(map)
+          .bindPopup('<strong>' + p[2] + '</strong>');
+      });
+
+      var homeIcon = L.divIcon({
+        className: 'travel-pin home',
+        html: '<span></span>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+      });
+      L.marker([35.6762, 139.6503], { icon: homeIcon })
+        .addTo(map)
+        .bindPopup('<strong>Tokyo, Japan</strong> — home');
+    })();
+  </script>
+</body>
+</html>

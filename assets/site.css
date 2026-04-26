@@ -1,0 +1,313 @@
+/* shared layout: fixed topbar / bottombar / drawer */
+
+:root {
+  --bar-bg: #0a0a0a;
+  --bar-fg: #ffffff;
+}
+
+body {
+  padding-top: 72px !important;
+  padding-bottom: 72px !important;
+}
+
+/* topbar */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--bar-bg);
+  color: var(--bar-fg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 100;
+}
+
+.topbar .logo {
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--bar-fg);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--bar-fg);
+  transition: transform 0.25s, opacity 0.2s;
+}
+
+/* bottombar */
+.bottombar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--bar-bg);
+  color: var(--bar-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 0 32px;
+  z-index: 100;
+}
+
+.bottombar a {
+  color: var(--bar-fg);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  opacity: 0.85;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.bottombar a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.bottombar svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* drawer */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.5);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 85vw;
+  background: var(--bar-bg);
+  color: var(--bar-fg);
+  z-index: 201;
+  padding: 92px 40px 80px;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.2, 1);
+  overflow-y: auto;
+}
+
+body.drawer-open .drawer {
+  transform: translateX(0);
+}
+
+body.drawer-open .drawer-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.drawer-open .menu-toggle span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+body.drawer-open .menu-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+body.drawer-open .menu-toggle span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.drawer .home-link {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 36px;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+
+.drawer .home-link:hover {
+  color: var(--bar-fg);
+}
+
+.drawer .cat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  margin-top: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.drawer .cat-label:first-of-type {
+  margin-top: 0;
+}
+
+.drawer .nav-link {
+  display: block;
+  color: var(--bar-fg);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 9px 0;
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s, transform 0.2s;
+}
+
+.drawer .nav-link:hover {
+  opacity: 0.7;
+  transform: translateX(4px);
+}
+
+.drawer .nav-link.disabled {
+  color: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+
+.drawer .nav-link.disabled::after {
+  content: ' · soon';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+  .topbar { height: 56px; padding: 0 20px; }
+  .bottombar { height: 52px; padding: 0 20px; gap: 18px; }
+  body { padding-top: 64px !important; padding-bottom: 60px !important; }
+  .drawer { padding: 80px 28px 60px; width: 320px; }
+  .drawer .nav-link { font-size: 16px; }
+}
+
+/* tab nav (Plain / Detail / Photo) */
+.tab-nav {
+  display: flex;
+  margin-bottom: 36px;
+  justify-content: flex-end;
+}
+
+.tab-nav .tab {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #555;
+  text-decoration: none;
+  border: 1px solid #e5e5e5;
+  padding: 10px 22px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  background: #fff;
+}
+
+.tab-nav .tab + .tab { border-left: none; }
+
+.tab-nav .tab:hover {
+  color: #0a0a0a;
+  background: #fafafa;
+}
+
+.tab-nav .tab.active {
+  background: #0a0a0a;
+  color: #fff;
+  border-color: #0a0a0a;
+}
+
+.tab-nav .tab.active + .tab { border-left-color: #0a0a0a; }
+
+/* box-grid (kyo-style data table) */
+.box-grid {
+  display: grid;
+  border: 1px solid #e5e5e5;
+  background: #e5e5e5;
+  gap: 1px;
+  margin-bottom: 8px;
+}
+
+.box-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.box-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.box-grid .cell {
+  background: #fff;
+  padding: 22px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.box-grid .cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: #888;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.box-grid .cell-value {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #0a0a0a;
+  font-weight: 400;
+}
+
+.box-grid .cell-sub {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* section wrapper */
+.section-wrap {
+  margin-bottom: 48px;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .box-grid.cols-2, .box-grid.cols-3 { grid-template-columns: 1fr; }
+  .box-grid .cell { padding: 18px 20px; }
+  .tab-nav { justify-content: stretch; }
+  .tab-nav .tab { flex: 1; padding: 9px 6px; font-size: 10px; }
+}
