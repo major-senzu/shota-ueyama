@@ -294,7 +294,6 @@
 
   <!-- ============ RAW DATA ============ -->
   <section class="panel" id="panel-raw">
-    <div class="note">※ Gmail MCP連携完了（<code>major513323@gmail.com</code>）。Trip.com / Air Japan / Emirates / AJet 等の予約確認メール+予約画面スクショから2024-2025年の便名・航空会社・時刻を抽出。一部往路や経由便の情報がないものは "—" のまま。家族旅行(2010-2012)は航空会社のみ記録。<code>NRT→DEL</code> はDMKトランジット経由（XJ607→XJ230）。<code>IST→BER</code> はSabiha Gökçen (SAW) 発。</div>
     <div class="filter-bar">
       <select id="year-filter"></select>
       <select id="class-filter">
@@ -367,7 +366,11 @@ const airports = {
   AUH: { city: 'Abu Dhabi',     country: 'UAE',          cc: '🇦🇪', lat: 24.4330, lon: 54.6511 },
   PVG: { city: 'Shanghai',      country: 'China',        cc: '🇨🇳', lat: 31.1443, lon: 121.8083 },
   SHA: { city: 'Shanghai',      country: 'China',        cc: '🇨🇳', lat: 31.1979, lon: 121.3364 },
-  YVR: { city: 'Vancouver',     country: 'Canada',       cc: '🇨🇦', lat: 49.1939, lon: -123.1844 }
+  YVR: { city: 'Vancouver',     country: 'Canada',       cc: '🇨🇦', lat: 49.1939, lon: -123.1844 },
+  TPE: { city: 'Taipei',        country: 'Taiwan',       cc: '🇹🇼', lat: 25.0797, lon: 121.2342 },
+  LAX: { city: 'Los Angeles',   country: 'USA',          cc: '🇺🇸', lat: 33.9416, lon: -118.4085 },
+  SFO: { city: 'San Francisco', country: 'USA',          cc: '🇺🇸', lat: 37.6213, lon: -122.3790 },
+  LAS: { city: 'Las Vegas',     country: 'USA',          cc: '🇺🇸', lat: 36.0840, lon: -115.1537 }
 };
 
 // ============ FLIGHTS (placeholder estimates) ============
@@ -400,8 +403,12 @@ const flights = [
   // 2024-03 Korea RT #1 (確認メールなし — 推定日)
   F('2024-03-15', '—', '—', 'NRT', 'ICN', '—', '—'),
   F('2024-03-18', '—', '—', 'ICN', 'NRT', '—', '—'),
-  // 2024-09 北米旅行 帰路 (Trip.com予約 33227878154)
-  F('2024-09-18', 'ZG 021', 'ZIPAIR', 'YVR', 'NRT', '10:45', '12:25'),
+  // 2024-09 北米旅行 (NRT→LAX→LAS→SFO→YVR→NRT)
+  F('2024', '—', '—', 'NRT', 'LAX', '—', '—'),
+  F('2024', '—', '—', 'LAX', 'LAS', '—', '—'),
+  F('2024', '—', '—', 'LAS', 'SFO', '—', '—'),
+  F('2024-09-15', 'AC 571', 'Air Canada', 'SFO', 'YVR', '17:00', '19:16'),
+  F('2024-09-18', 'ZG 021', 'ZIPAIR', 'YVR', 'NRT', '10:45', '12:25'),  // Trip.com 33227878154
   // 2024-11 SE Asia loop (実際はNov、Octではない / 一部不明)
   F('2024-11-19', '—', '—', 'NRT', 'SGN', '—', '—'),  // 推定 (NRT→SGN往路、確認メールなし)
   F('2024-11-21', 'VN 3825', 'Vietnam Airlines', 'SGN', 'SAI', '12:00', '13:15'),  // 35639173128
@@ -442,14 +449,13 @@ const flights = [
   F('2025-11-22', '5J 5055', 'Cebu Pacific', 'NRT', 'MNL', '12:50', '17:10'),
   F('2025-11-24', 'Z2 787', 'Philippines AirAsia', 'MNL', 'CEB', '18:35', '20:05'),  // 1688895043788040
   F('2025-11-26', 'Z2 782', 'Philippines AirAsia', 'CEB', 'MNL', '10:35', '12:00'),  // 1688895043902408
-  F('2025-11-26', 'ZG 096', 'ZIPAIR', 'MNL', 'NRT', '14:30', '19:50')
+  F('2025-11-26', 'ZG 096', 'ZIPAIR', 'MNL', 'NRT', '14:30', '19:50'),
+  // 2026-05 Taiwan (UEYAMA AYAKO + 1 / 123,520円)
+  F('2026-05-03', 'MM 859', 'Peach Aviation', 'HND', 'TPE', '05:55', '08:35')
 ];
 
 // 飛行記録のない訪問都市（マップ表示用）
 const visitedExtra = [
-  { city: 'San Francisco', country: 'USA',    cc: '🇺🇸', lat: 37.7749, lon: -122.4194 },
-  { city: 'Los Angeles',   country: 'USA',    cc: '🇺🇸', lat: 34.0522, lon: -118.2437 },
-  { city: 'Las Vegas',     country: 'USA',    cc: '🇺🇸', lat: 36.1699, lon: -115.1398 },
   { city: 'Utah',          country: 'USA',    cc: '🇺🇸', lat: 40.7608, lon: -111.8910 }
 ];
 
