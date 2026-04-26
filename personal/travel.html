@@ -240,6 +240,29 @@
 </style>
 </head>
 <body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="./profile.html" class="nav-link">profile</a>
+    <a class="nav-link disabled">health</a>
+    <a href="./travel.html" class="nav-link">travel</a>
+    <a class="nav-link disabled">book</a>
+    <a class="nav-link disabled">kpop</a>
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a class="nav-link disabled">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
 <main class="wrap">
   <div class="crumb">
     <a href="../index.html">~</a><span class="sep">/</span>
@@ -803,5 +826,6 @@ renderStats();
 initFilters();
 renderRaw();
 </script>
+<script src="../assets/site.js"></script>
 </body>
 </html>
