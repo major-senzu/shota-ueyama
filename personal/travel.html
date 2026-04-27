@@ -354,6 +354,7 @@ const airports = {
   DPS: { city: 'Bali',          country: 'Indonesia',    cc: '🇮🇩', lat: -8.7467, lon: 115.1670 },
   GUM: { city: 'Tumon',         country: 'Guam',         cc: '🇬🇺', lat: 13.4839, lon: 144.7960 },
   ICN: { city: 'Seoul',         country: 'Korea',        cc: '🇰🇷', lat: 37.4602, lon: 126.4407 },
+  PUS: { city: 'Busan',         country: 'Korea',        cc: '🇰🇷', lat: 35.1795, lon: 128.9382 },
   MNL: { city: 'Manila',        country: 'Philippines',  cc: '🇵🇭', lat: 14.5086, lon: 121.0198 },
   CEB: { city: 'Cebu',          country: 'Philippines',  cc: '🇵🇭', lat: 10.3070, lon: 123.9794 },
   SGN: { city: 'Ho Chi Minh',   country: 'Vietnam',      cc: '🇻🇳', lat: 10.8188, lon: 106.6520 },
@@ -466,8 +467,10 @@ const flights = [
   F('2025-11-24', 'Z2 787', 'Philippines AirAsia', 'MNL', 'CEB', '18:35', '20:05'),  // 1688895043788040
   F('2025-11-26', 'Z2 782', 'Philippines AirAsia', 'CEB', 'MNL', '10:35', '12:00'),  // 1688895043902408
   F('2025-11-26', 'ZG 096', 'ZIPAIR', 'MNL', 'NRT', '14:30', '19:50'),
-  // 2026-05 Taiwan (UEYAMA AYAKO + 1 / 123,520円)
-  F('2026-05-03', 'MM 859', 'Peach Aviation', 'HND', 'TPE', '05:55', '08:35')
+  // 2026-05 Taiwan → Busan → Tokyo (UEYAMA AYAKO + 1 / 123,520円 + 釜山追加)
+  F('2026-05-03', 'MM 859', 'Peach Aviation', 'HND', 'TPE', '05:55', '08:35'),
+  F('2026-05-06', 'BX 794', 'Air Busan',      'TPE', 'PUS', '13:30', '17:05'),
+  F('2026-05-08', 'LJ 223', 'Jin Air',        'PUS', 'NRT', '14:00', '16:10')
 ];
 
 // 飛行記録のない訪問都市（マップ表示用）
