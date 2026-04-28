@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colonial Empires — geo-history / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; }
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  /* HERO */
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--muted); margin-bottom: 16px; letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom-color: var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .hero .ja { font-size: 16px; color: var(--muted); margin-bottom: 18px; letter-spacing: 0.02em; }
+  .hero .lead { font-size: 15px; line-height: 1.85; color: #333; max-width: 820px; }
+  .hero .lead strong { font-weight: 600; color: var(--fg); }
+
+  /* SUBNAV */
+  .subnav {
+    display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--line);
+  }
+  .subnav a {
+    text-decoration: none; color: var(--muted);
+    font-size: 14px; font-weight: 500;
+    padding: 12px 18px; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: color 0.15s;
+  }
+  .subnav a:hover { color: var(--fg); }
+  .subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  /* YEAR TABS */
+  .year-tabs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .year-tabs button {
+    background: var(--bg); border: 1px solid var(--line); cursor: pointer;
+    font-family: inherit; font-weight: 600;
+    padding: 16px 14px; color: var(--muted);
+    transition: all 0.15s;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+    text-align: left;
+  }
+  .year-tabs button:hover { background: var(--soft); color: var(--fg); }
+  .year-tabs button.active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .year-tabs button .yr-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .year-tabs button .yr-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+  }
+  .year-tabs button .yr-tag {
+    font-size: 11.5px; font-weight: 500;
+  }
+
+  @media (max-width: 760px) {
+    .year-tabs { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* CONTEXT NOTE */
+  .context {
+    border: 1px solid var(--line);
+    background: var(--soft);
+    padding: 16px 22px;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+  .context .ctx-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .context .ctx-headline {
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .context .ctx-desc {
+    font-size: 13.5px; color: #333;
+  }
+
+  /* MAP */
+  .map-wrap { border: 1px solid var(--line); margin-bottom: 24px; background: var(--soft); }
+  #world-map { width: 100%; height: 600px; }
+
+  /* LEGEND */
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .legend .lg-item {
+    background: var(--bg);
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+  }
+  .legend .lg-swatch {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .legend .lg-name {
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .legend .lg-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* COUNTRY LIST per power */
+  .powers-list { margin-bottom: 32px; }
+  .power-section { border: 1px solid var(--line); margin-bottom: 12px; }
+  .power-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .power-head .pw-swatch {
+    width: 22px; height: 22px;
+    border: 1px solid rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+  .power-head .pw-name {
+    font-size: 14.5px; font-weight: 700;
+  }
+  .power-head .pw-count {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .power-body {
+    padding: 12px 18px;
+    font-size: 12.5px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: #fff8e1;
+    border: 1px solid #f0e6b3;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #5a4a00;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* leaflet polygon style baseline */
+  .leaflet-popup-content {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; line-height: 1.5;
+  }
+  .leaflet-popup-content .name {
+    font-weight: 700; font-size: 15px; margin-bottom: 4px;
+  }
+  .leaflet-popup-content .pwr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    margin-top: 4px; letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 28px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    #world-map { height: 460px; }
+    .year-tabs button .yr-num { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="./index.html" class="nav-link active">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <header class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; <a href="./index.html">geo-history</a> &nbsp;/&nbsp; colonial</div>
+      <h1>Colonial Empires</h1>
+      <div class="ja">大航海時代以後の植民地支配 — 1500 → 1700 → 1800 → 1900 → 1945</div>
+      <p class="lead">
+        コロンブスの新大陸到達（1492）以降、約450年にわたる<strong>欧州列強の植民地支配</strong>の流れを5つの転換点で可視化。
+        各年代ボタンを押すと、その時点で<strong>どの地域がどの国の支配下にあったか</strong>が地図上で色分け表示される。
+      </p>
+    </header>
+
+    <nav class="subnav">
+      <a href="./koppen.html">Köppen</a>
+      <a href="./chart.html">Chart</a>
+      <a href="./geography.html">Geography</a>
+      <a href="./colonial.html" class="active">Colonial</a>
+    </nav>
+
+    <!-- ============ YEAR TABS ============ -->
+    <nav class="year-tabs" aria-label="year">
+      <button class="active" data-year="1500">
+        <span class="yr-label">▣ Era 01</span>
+        <span class="yr-num">1500</span>
+        <span class="yr-tag">大航海時代の黎明</span>
+      </button>
+      <button data-year="1700">
+        <span class="yr-label">▣ Era 02</span>
+        <span class="yr-num">1700</span>
+        <span class="yr-tag">重商主義のピーク</span>
+      </button>
+      <button data-year="1800">
+        <span class="yr-label">▣ Era 03</span>
+        <span class="yr-num">1800</span>
+        <span class="yr-tag">ナポレオン戦争前夜</span>
+      </button>
+      <button data-year="1900">
+        <span class="yr-label">▣ Era 04</span>
+        <span class="yr-num">1900</span>
+        <span class="yr-tag">帝国主義のピーク</span>
+      </button>
+      <button data-year="1945">
+        <span class="yr-label">▣ Era 05</span>
+        <span class="yr-num">1945</span>
+        <span class="yr-tag">脱植民地化の前夜</span>
+      </button>
+    </nav>
+
+    <!-- ============ CONTEXT ============ -->
+    <div class="context">
+      <div class="ctx-title">Context — 時代背景</div>
+      <div class="ctx-headline" id="ctx-headline">—</div>
+      <div class="ctx-desc" id="ctx-desc">—</div>
+    </div>
+
+    <!-- ============ MAP ============ -->
+    <div class="map-wrap"><div id="world-map"></div></div>
+
+    <!-- ============ LEGEND ============ -->
+    <div class="legend" id="legend"></div>
+
+    <div class="disclaimer">
+      <strong>注意</strong>: 地図は<em>現代の国境線</em>を使い、各時代の支配勢力を近似的に塗り分けている。実際の歴史的な境界は当時の現代国境とは大きく異なり（例: オスマン帝国は現在の20カ国以上にまたがる、清朝の領土は現中国と異なる）、また各国内でも時期や地域によって支配の性質（直接統治／保護領／租借地等）が異なる。あくまで<strong>大まかな傾向</strong>を掴むための簡略図。
+    </div>
+
+    <!-- ============ COUNTRIES BY POWER ============ -->
+    <section class="powers-list" id="powers-list"></section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shota_122937/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+  </footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// ============ POWERS / 色分け ============
+const POWERS = {
+  spanish:    {ja:'スペイン',     en:'Spanish Empire',     color:'#d32f2f'},
+  portuguese: {ja:'ポルトガル',   en:'Portuguese Empire',  color:'#f57c00'},
+  french:     {ja:'フランス',     en:'French Empire',      color:'#1976d2'},
+  british:    {ja:'英国',         en:'British Empire',     color:'#7b1fa2'},
+  dutch:      {ja:'オランダ',     en:'Dutch Empire',       color:'#fbc02d'},
+  belgian:    {ja:'ベルギー',     en:'Belgian',            color:'#9e9d24'},
+  german:     {ja:'ドイツ',       en:'German Empire',      color:'#37474f'},
+  italian:    {ja:'イタリア',     en:'Italian',            color:'#558b2f'},
+  russian:    {ja:'ロシア帝国',   en:'Russian Empire',     color:'#00838f'},
+  soviet:     {ja:'ソ連',         en:'Soviet Union',       color:'#c62828'},
+  ottoman:    {ja:'オスマン帝国', en:'Ottoman Empire',     color:'#5d4037'},
+  austrian:   {ja:'オーストリア=ハンガリー', en:'Austria-Hungary', color:'#795548'},
+  japanese:   {ja:'日本',         en:'Japanese Empire',    color:'#e91e63'},
+  usa:        {ja:'米国',         en:'United States',      color:'#1a237e'},
+  independent:{ja:'独立／土着勢力', en:'Independent / Indigenous', color:'#bdbdbd'},
+};
+
+// ============ ERA / 時代別データ ============
+// ISO_A3 → power のマッピング
+// 未指定の国は 'independent' 扱い
+const ERAS = {
+  '1500': {
+    headline: '大航海時代の黎明 — コロンブスとトルデシリャス条約',
+    desc: 'コロンブスのアメリカ到達（1492）、ヴァスコ・ダ・ガマのインド航路発見（1498）、トルデシリャス条約（1494）でスペイン・ポルトガルが世界を二分。だが実効支配はまだ沿岸部の点的な拠点と西インド諸島のみ。アジア・アフリカ・南北アメリカ大陸の内陸はほぼ全て土着王朝・帝国の支配下。',
+    countries: {
+      'CUB':'spanish','HTI':'spanish','DOM':'spanish','PRI':'spanish','JAM':'spanish','BHS':'spanish',
+      'BRA':'portuguese',  // Cabral 1500 (claim)
+      // Existing major powers (shown as their own color for context)
+      'TUR':'ottoman','EGY':'ottoman','SYR':'ottoman','IRQ':'ottoman','LBN':'ottoman','PSE':'ottoman','ISR':'ottoman','JOR':'ottoman','SAU':'ottoman','LBY':'ottoman',
+      'GRC':'ottoman','BGR':'ottoman','SRB':'ottoman','BIH':'ottoman','MKD':'ottoman','ALB':'ottoman','MNE':'ottoman','ROU':'ottoman',
+    }
+  },
+
+  '1700': {
+    headline: '重商主義のピーク — 七つの海をめぐる争い',
+    desc: 'スペイン・ポルトガルに加え、英・仏・蘭が植民地獲得競争に参入。北米は英(13植民地)・仏(ニューフランス・ルイジアナ)・露(シベリア)が三分割。アジアでは英東インド会社が拠点を拡大、蘭東インド会社がジャワを支配。アフリカは沿岸部のみ。中国(清)・日本・オスマン・ムガールはまだ独立した大帝国。',
+    countries: {
+      // Spanish Americas
+      'MEX':'spanish','GTM':'spanish','HND':'spanish','SLV':'spanish','NIC':'spanish','CRI':'spanish','PAN':'spanish',
+      'CUB':'spanish','DOM':'spanish','PRI':'spanish',
+      'COL':'spanish','VEN':'spanish','ECU':'spanish','PER':'spanish','BOL':'spanish','CHL':'spanish','ARG':'spanish','PRY':'spanish','URY':'spanish',
+      'PHL':'spanish',
+      // Portuguese
+      'BRA':'portuguese','AGO':'portuguese','MOZ':'portuguese','GNB':'portuguese','CPV':'portuguese','STP':'portuguese',
+      // British
+      'USA':'british',  // 13 colonies (eastern part of modern USA)
+      'BMU':'british','BHS':'british','JAM':'british','BRB':'british','TTO':'british',
+      'IRL':'british',
+      // French
+      'CAN':'french','HTI':'french',  // Saint-Domingue from 1697
+      // Dutch
+      'IDN':'dutch','SUR':'dutch','ZAF':'dutch',
+      // Russian
+      'RUS':'russian',
+      // Ottoman
+      'TUR':'ottoman','SYR':'ottoman','IRQ':'ottoman','LBN':'ottoman','PSE':'ottoman','ISR':'ottoman','JOR':'ottoman','SAU':'ottoman','LBY':'ottoman','EGY':'ottoman','TUN':'ottoman','DZA':'ottoman','YEM':'ottoman',
+      'GRC':'ottoman','BGR':'ottoman','SRB':'ottoman','BIH':'ottoman','MKD':'ottoman','ALB':'ottoman','MNE':'ottoman','ROU':'ottoman','HUN':'ottoman',
+      // Habsburg / Austria
+      'AUT':'austrian','CZE':'austrian','SVK':'austrian','SVN':'austrian','HRV':'austrian',
+    }
+  },
+
+  '1800': {
+    headline: 'ナポレオン戦争前夜 — 米独立とラテンアメリカ独立の前夜',
+    desc: 'アメリカ独立(1776)、フランス革命(1789)、ナポレオンの台頭。スペイン・ポルトガルのラテンアメリカ支配は健在だが、ナポレオン戦争による混乱(1810s〜)で各地で独立運動が始まる。英国は産業革命を背景にインド支配を加速(プラッシーの戦い1757以降)、オーストラリア入植開始(1788)。',
+    countries: {
+      // Independent USA
+      'USA':'independent',
+      // Spanish Americas (still)
+      'MEX':'spanish','GTM':'spanish','HND':'spanish','SLV':'spanish','NIC':'spanish','CRI':'spanish','PAN':'spanish',
+      'CUB':'spanish','DOM':'spanish','PRI':'spanish',
+      'COL':'spanish','VEN':'spanish','ECU':'spanish','PER':'spanish','BOL':'spanish','CHL':'spanish','ARG':'spanish','PRY':'spanish','URY':'spanish',
+      'PHL':'spanish',
+      // Portuguese
+      'BRA':'portuguese','AGO':'portuguese','MOZ':'portuguese','GNB':'portuguese','CPV':'portuguese','STP':'portuguese',
+      // British
+      'CAN':'british',  // got from French in 1763
+      'IND':'british','PAK':'british','BGD':'british',  // EIC controlled most by 1800
+      'IRL':'british',
+      'AUS':'british',  // First Fleet 1788
+      'JAM':'british','BHS':'british','BRB':'british','BLZ':'british','TTO':'british','GUY':'british',
+      'ZAF':'british',  // Cape from Dutch 1795
+      'LKA':'british',  // Ceylon from Dutch 1796
+      // French
+      'HTI':'french',  // Haitian revolution 1791-1804 ongoing
+      // Dutch
+      'IDN':'dutch','SUR':'dutch',
+      // Russian
+      'RUS':'russian','KAZ':'russian',
+      // Ottoman
+      'TUR':'ottoman','SYR':'ottoman','IRQ':'ottoman','LBN':'ottoman','PSE':'ottoman','ISR':'ottoman','JOR':'ottoman','SAU':'ottoman','LBY':'ottoman','EGY':'ottoman','TUN':'ottoman','DZA':'ottoman','YEM':'ottoman',
+      'GRC':'ottoman','BGR':'ottoman','SRB':'ottoman','BIH':'ottoman','MKD':'ottoman','ALB':'ottoman','MNE':'ottoman','ROU':'ottoman',
+      // Austria
+      'AUT':'austrian','CZE':'austrian','SVK':'austrian','SVN':'austrian','HRV':'austrian','HUN':'austrian',
+    }
+  },
+
+  '1900': {
+    headline: '帝国主義のピーク — 太陽の沈まない大英帝国',
+    desc: 'アフリカ分割(ベルリン会議1884-85)が完了、欧州列強が地球の陸地の約84%を支配。「太陽の沈まない大英帝国」は約4億人を統治。米西戦争(1898)で米国も植民地保有開始(フィリピン・キューバ・プエルトリコ)。日本が台湾領有(1895)、朝鮮を保護国化進行中。中国(清)はアヘン戦争以降列強に半植民地化。',
+    countries: {
+      // British Empire
+      'IND':'british','PAK':'british','BGD':'british','MMR':'british','LKA':'british',
+      'CAN':'british','AUS':'british','NZL':'british','IRL':'british',
+      'ZAF':'british','EGY':'british','SDN':'british','NGA':'british','GHA':'british','SLE':'british','GMB':'british',
+      'KEN':'british','UGA':'british','ZWE':'british','ZMB':'british','MWI':'british','BWA':'british','SWZ':'british','LSO':'british',
+      'JAM':'british','BHS':'british','BRB':'british','BLZ':'british','GUY':'british','TTO':'british',
+      'MYS':'british','SGP':'british','BRN':'british','HKG':'british',
+      'CYP':'british','YEM':'british',  // Aden = British protectorate
+      // French Empire
+      'DZA':'french','TUN':'french',
+      'MLI':'french','BFA':'french','CIV':'french','BEN':'french','SEN':'french','NER':'french','GIN':'french','TCD':'french','MRT':'french',
+      'GAB':'french','COG':'french','CAF':'french',
+      'MDG':'french','COM':'french','DJI':'french',
+      'VNM':'french','KHM':'french','LAO':'french',
+      // Belgian
+      'COD':'belgian',  // Congo Free State (Leopold's personal possession until 1908)
+      // Portuguese
+      'AGO':'portuguese','MOZ':'portuguese','GNB':'portuguese','STP':'portuguese','CPV':'portuguese','TLS':'portuguese',
+      // German
+      'NAM':'german',  // German South West Africa
+      'TZA':'german','BDI':'german','RWA':'german',  // German East Africa
+      'TGO':'german','CMR':'german',
+      // Italian
+      'ERI':'italian','SOM':'italian',
+      // Dutch
+      'IDN':'dutch','SUR':'dutch',
+      // Spanish (greatly diminished after 1898)
+      'ESH':'spanish','GNQ':'spanish',
+      // USA
+      'PHL':'usa','CUB':'usa','PRI':'usa',
+      // Russian Empire
+      'RUS':'russian','KAZ':'russian','UZB':'russian','TKM':'russian','KGZ':'russian','TJK':'russian',
+      'GEO':'russian','ARM':'russian','AZE':'russian',
+      'POL':'russian','FIN':'russian','EST':'russian','LVA':'russian','LTU':'russian',
+      'BLR':'russian','UKR':'russian','MDA':'russian',
+      // Ottoman (greatly diminished from 1800)
+      'TUR':'ottoman','SYR':'ottoman','IRQ':'ottoman','LBN':'ottoman','PSE':'ottoman','ISR':'ottoman','JOR':'ottoman','SAU':'ottoman','LBY':'ottoman','YEM':'ottoman','ALB':'ottoman','MKD':'ottoman',
+      // Austria-Hungary
+      'AUT':'austrian','HUN':'austrian','CZE':'austrian','SVK':'austrian','SVN':'austrian','HRV':'austrian','BIH':'austrian',
+      // Japanese
+      'TWN':'japanese',
+    }
+  },
+
+  '1945': {
+    headline: '第二次世界大戦終結 — 脱植民地化の前夜',
+    desc: '日独伊枢軸国敗北。欧州植民地保有国は戦争で疲弊し、植民地独立運動が活発化。米ソ冷戦の構図が形成される。インド独立(1947)、インドネシア独立宣言(1945)、ベトナム独立宣言(1945)。中東はオスマン帝国解体後の英仏委任統治を経て独立国誕生(イラク1932、サウジ1932、シリア・レバノン1946)。',
+    countries: {
+      // British Empire (still huge, but Commonwealth members "independent" by 1931)
+      'IND':'british','PAK':'british','MMR':'british','LKA':'british','MYS':'british','SGP':'british','BRN':'british','HKG':'british',
+      'SDN':'british','NGA':'british','GHA':'british','SLE':'british','GMB':'british',
+      'KEN':'british','UGA':'british','TZA':'british',  // Tanganyika British mandate post-WWI
+      'ZWE':'british','ZMB':'british','MWI':'british','BWA':'british','SWZ':'british','LSO':'british',
+      'JAM':'british','BHS':'british','BRB':'british','BLZ':'british','GUY':'british','TTO':'british',
+      'CYP':'british',
+      'JOR':'british','PSE':'british','ISR':'british',  // British Mandate of Palestine, Transjordan
+      'YEM':'british',  // Aden
+      // French Empire
+      'DZA':'french','TUN':'french','MAR':'french',
+      'MLI':'french','BFA':'french','CIV':'french','BEN':'french','SEN':'french','NER':'french','GIN':'french','TCD':'french','MRT':'french',
+      'CMR':'french','GAB':'french','COG':'french','CAF':'french',
+      'MDG':'french','COM':'french','DJI':'french',
+      'VNM':'french','KHM':'french','LAO':'french',
+      'SYR':'french','LBN':'french',  // French Mandates (granted independence 1943-46)
+      // Belgian
+      'COD':'belgian','BDI':'belgian','RWA':'belgian',
+      // Portuguese
+      'AGO':'portuguese','MOZ':'portuguese','GNB':'portuguese','STP':'portuguese','CPV':'portuguese','TLS':'portuguese',
+      // Dutch
+      'IDN':'dutch','SUR':'dutch',
+      // Spanish
+      'ESH':'spanish','GNQ':'spanish',
+      // USSR
+      'RUS':'soviet','KAZ':'soviet','UZB':'soviet','TKM':'soviet','KGZ':'soviet','TJK':'soviet',
+      'GEO':'soviet','ARM':'soviet','AZE':'soviet',
+      'EST':'soviet','LVA':'soviet','LTU':'soviet',
+      'BLR':'soviet','UKR':'soviet','MDA':'soviet',
+      // USA territories
+      'PHL':'usa','PRI':'usa',
+      // Independent (notable post-Ottoman/post-empire)
+      'EGY':'independent','IRQ':'independent','SAU':'independent','TUR':'independent','IRN':'independent','AFG':'independent','THA':'independent','ETH':'independent','LBR':'independent',
+      'CHN':'independent','JPN':'independent','KOR':'independent','PRK':'independent','MNG':'independent','TWN':'independent',
+      // Independent Latin America
+      'MEX':'independent','GTM':'independent','HND':'independent','SLV':'independent','NIC':'independent','CRI':'independent','PAN':'independent',
+      'CUB':'independent','DOM':'independent','HTI':'independent',
+      'COL':'independent','VEN':'independent','ECU':'independent','PER':'independent','BOL':'independent','CHL':'independent','ARG':'independent','BRA':'independent','PRY':'independent','URY':'independent',
+    }
+  },
+};
+
+// ============ MAP SETUP ============
+const map = L.map('world-map', {
+  center: [25, 30],
+  zoom: 2,
+  minZoom: 2,
+  maxZoom: 5,
+  worldCopyJump: true,
+  scrollWheelZoom: false
+});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom: 18
+}).addTo(map);
+
+let geoLayer = null;
+let geoData = null;
+let currentYear = '1500';
+
+function getISO(feature) {
+  const p = feature.properties;
+  // Natural Earth uses ISO_A3 mostly; fallback to ADM0_A3 / NAME_LONG / NAME
+  return p.ISO_A3 || p.iso_a3 || p.ADM0_A3 || p.adm0_a3 || p.NAME || p.name;
+}
+
+function getCountryName(feature) {
+  const p = feature.properties;
+  return p.NAME_JA || p.name_ja || p.NAME_LONG || p.NAME || p.ADMIN || p.admin || p.name || '?';
+}
+
+function powerOf(iso) {
+  const era = ERAS[currentYear];
+  return era.countries[iso] || 'independent';
+}
+
+function styleFeature(feature) {
+  const iso = getISO(feature);
+  const power = powerOf(iso);
+  return {
+    fillColor: POWERS[power].color,
+    weight: 0.5,
+    color: '#fff',
+    fillOpacity: 0.78,
+    opacity: 1,
+  };
+}
+
+function onEachFeature(feature, layer) {
+  const iso = getISO(feature);
+  const name = getCountryName(feature);
+  layer.on({
+    mouseover: e => e.target.setStyle({ weight: 2, color: '#0a0a0a' }),
+    mouseout:  e => geoLayer.resetStyle(e.target),
+    click:     e => {
+      const power = powerOf(iso);
+      const p = POWERS[power];
+      layer.bindPopup(
+        `<div class="name">${name}</div>` +
+        `<div>支配勢力: <strong>${p.ja}</strong> (${p.en})</div>` +
+        `<div class="pwr">${currentYear} · ISO ${iso}</div>`
+      ).openPopup();
+    }
+  });
+}
+
+// ============ RENDER ============
+function renderEra(year) {
+  currentYear = year;
+  const era = ERAS[year];
+
+  // Update context
+  document.getElementById('ctx-headline').textContent = era.headline;
+  document.getElementById('ctx-desc').textContent = era.desc;
+
+  // Re-style geo layer
+  if (geoLayer && geoData) {
+    geoLayer.setStyle(styleFeature);
+  }
+
+  // Compute legend (only powers that appear in this era)
+  const usedPowers = new Set();
+  Object.values(era.countries).forEach(p => usedPowers.add(p));
+  // Always show 'independent' since it's the default
+  usedPowers.add('independent');
+
+  // Render legend (only powers that are visible in current era)
+  const legendOrder = [
+    'spanish','portuguese','french','british','dutch','belgian',
+    'german','italian','russian','soviet','ottoman','austrian',
+    'japanese','usa','independent'
+  ];
+  document.getElementById('legend').innerHTML = legendOrder
+    .filter(k => usedPowers.has(k))
+    .map(k => {
+      const p = POWERS[k];
+      return `<div class="lg-item">
+        <div class="lg-swatch" style="background:${p.color}"></div>
+        <div>
+          <div class="lg-name">${p.ja}</div>
+          <div class="lg-en">${p.en}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+  // Powers list with countries
+  const powerCountries = {};
+  Object.entries(era.countries).forEach(([iso, power]) => {
+    if (!powerCountries[power]) powerCountries[power] = [];
+    powerCountries[power].push(iso);
+  });
+
+  document.getElementById('powers-list').innerHTML = legendOrder
+    .filter(k => k !== 'independent' && powerCountries[k] && powerCountries[k].length > 0)
+    .map(k => {
+      const p = POWERS[k];
+      const isos = powerCountries[k];
+      // Convert ISO codes to country names using geoData if available
+      const names = isos.map(iso => {
+        if (!geoData) return iso;
+        const f = geoData.features.find(f => getISO(f) === iso);
+        return f ? getCountryName(f) : iso;
+      }).sort((a,b) => a.localeCompare(b));
+      return `<div class="power-section">
+        <div class="power-head">
+          <div class="pw-swatch" style="background:${p.color}"></div>
+          <div class="pw-name">${p.ja} <span style="color:#888;font-weight:500;font-size:12px;margin-left:6px;">${p.en}</span></div>
+          <div class="pw-count">${names.length} 地域</div>
+        </div>
+        <div class="power-body">${names.join(' · ')}</div>
+      </div>`;
+    }).join('');
+}
+
+// ============ LOAD GEO DATA ============
+fetch('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson')
+  .then(r => r.json())
+  .then(data => {
+    geoData = data;
+    geoLayer = L.geoJSON(data, {
+      style: styleFeature,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+    renderEra(currentYear);
+  })
+  .catch(err => {
+    console.error('failed to load geojson', err);
+    document.getElementById('world-map').innerHTML =
+      '<div style="padding:40px;text-align:center;color:#888;">地図データの読み込みに失敗しました。ネットワーク接続を確認してください。</div>';
+  });
+
+// ============ TAB HANDLERS ============
+document.querySelectorAll('.year-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.year-tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderEra(btn.dataset.year);
+    setTimeout(() => map.invalidateSize(), 50);
+  });
+});
+
+// initial context (before geo loads)
+renderEra('1500');
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

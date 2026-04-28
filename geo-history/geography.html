@@ -19,6 +19,7 @@
     --river: #2563eb;
     --canal: #ea580c;
     --sea: #0891b2;
+    --civilization: #b45309;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -170,10 +171,11 @@
     box-shadow: 0 0 0 1.5px rgba(0,0,0,0.4);
     cursor: pointer;
   }
-  .geo-pin.mountain .pin-dot { background: var(--mountain); }
-  .geo-pin.river    .pin-dot { background: var(--river); }
-  .geo-pin.canal    .pin-dot { background: var(--canal); }
-  .geo-pin.sea      .pin-dot { background: var(--sea); }
+  .geo-pin.mountain     .pin-dot { background: var(--mountain); }
+  .geo-pin.river        .pin-dot { background: var(--river); }
+  .geo-pin.canal        .pin-dot { background: var(--canal); }
+  .geo-pin.sea          .pin-dot { background: var(--sea); }
+  .geo-pin.civilization .pin-dot { background: var(--civilization); width: 18px; height: 18px; }
 
   /* permanent label tooltip */
   .leaflet-tooltip.geo-label {
@@ -188,10 +190,11 @@
     letter-spacing: 0.01em;
     white-space: nowrap;
   }
-  .leaflet-tooltip.geo-label.cat-mountain { color: var(--mountain); }
-  .leaflet-tooltip.geo-label.cat-river    { color: var(--river); }
-  .leaflet-tooltip.geo-label.cat-canal    { color: var(--canal); }
-  .leaflet-tooltip.geo-label.cat-sea      { color: var(--sea); }
+  .leaflet-tooltip.geo-label.cat-mountain     { color: var(--mountain); }
+  .leaflet-tooltip.geo-label.cat-river        { color: var(--river); }
+  .leaflet-tooltip.geo-label.cat-canal        { color: var(--canal); }
+  .leaflet-tooltip.geo-label.cat-sea          { color: var(--sea); }
+  .leaflet-tooltip.geo-label.cat-civilization { color: var(--civilization); font-weight: 700; }
   .leaflet-tooltip.geo-label::before { display: none; }
 
   .leaflet-popup-content {
@@ -312,10 +315,10 @@
     <header class="hero">
       <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; <a href="./index.html">geo-history</a> &nbsp;/&nbsp; geography</div>
       <h1>Geography</h1>
-      <div class="ja">世界地理 — Mountains / Rivers / Canals & Straits / Seas</div>
+      <div class="ja">世界地理 — Mountains / Rivers / Canals & Straits / Seas / Civilizations</div>
       <p class="lead">
-        地球上の<strong>抑えるべき山・川・運河（海峡）・海</strong>を世界地図上にプロット。
-        タブを切り替えるとカテゴリごとに地図が更新される。地政学・物流・気候を理解するための土台となる<strong>固有名詞ファイル</strong>。
+        地球上の<strong>抑えるべき山・川・運河（海峡）・海・古代文明</strong>を世界地図上にプロット。
+        タブを切り替えるとカテゴリごとに地図が更新される。地政学・物流・気候・歴史を理解するための土台となる<strong>固有名詞ファイル</strong>。
       </p>
     </header>
 
@@ -323,6 +326,7 @@
       <a href="./koppen.html">Köppen</a>
       <a href="./chart.html">Chart</a>
       <a href="./geography.html" class="active">Geography</a>
+      <a href="./colonial.html">Colonial</a>
     </nav>
 
     <!-- ============ CATEGORY TABS ============ -->
@@ -346,6 +350,11 @@
         <span class="cat-icon">🌊</span>
         <span class="cat-label">▣ Cat 04</span>
         <span class="cat-ja">Seas / 海</span>
+      </button>
+      <button data-cat="civilization">
+        <span class="cat-icon">𓂀</span>
+        <span class="cat-label">▣ Cat 05</span>
+        <span class="cat-ja">Civilizations / 4大文明</span>
       </button>
     </nav>
 
@@ -492,6 +501,16 @@ const DATA = {
       {name:'エーゲ海',       en:'Aegean Sea',                lat:38.5000, lon: 25.0000, desc:'ギリシャとトルコの間、地中海の北東部。多島海。'},
       {name:'タスマン海',     en:'Tasman Sea',                lat:-40.0000, lon:160.0000, desc:'オーストラリアとニュージーランドの間。'},
       {name:'珊瑚海',         en:'Coral Sea',                 lat:-15.0000, lon:155.0000, desc:'オーストラリア北東岸、グレートバリアリーフ。WWIIの転換点。'},
+    ]
+  },
+
+  civilization: {
+    title: 'Civilizations — 世界4大文明',
+    items: [
+      {name:'メソポタミア文明', en:'Mesopotamia (~3500 BCE〜)', lat:32.5360, lon:44.4209, desc:'ティグリス・ユーフラテス両川流域（現イラク）。シュメール都市国家、楔形文字、ハンムラビ法典、60進法・暦・車輪など人類最初の文明。'},
+      {name:'エジプト文明',     en:'Ancient Egypt (~3100 BCE〜)', lat:29.9792, lon:31.1342, desc:'ナイル川流域。一系王朝による約3000年の連続性、ピラミッド、ヒエログリフ、太陽暦。「エジプトはナイルの賜物」（ヘロドトス）。'},
+      {name:'インダス文明',     en:'Indus Valley (~2600 BCE〜)', lat:27.3294, lon:68.1356, desc:'インダス川流域（現パキスタン）。モヘンジョ・ダロ／ハラッパー。整然と区画された都市計画、上下水道、未解読のインダス文字。'},
+      {name:'黄河文明',         en:'Yellow River / 黄河 (~5000 BCE〜)', lat:34.7472, lon:113.6249, desc:'黄河中下流域（現中国河南省・山東省）。仰韶文化・龍山文化を経て殷・周王朝へ。甲骨文字、青銅器、漢字の起源。'},
     ]
   }
 };
