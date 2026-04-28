@@ -57,9 +57,12 @@
   /* YEAR TABS */
   .year-tabs {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
     margin-bottom: 24px;
+  }
+  @media (max-width: 1100px) {
+    .year-tabs { grid-template-columns: repeat(4, 1fr); }
   }
   .year-tabs button {
     background: var(--bg); border: 1px solid var(--line); cursor: pointer;
@@ -279,6 +282,16 @@
         <span class="yr-num">1945</span>
         <span class="yr-tag">脱植民地化の前夜</span>
       </button>
+      <button data-year="1980">
+        <span class="yr-label">▣ Era 06</span>
+        <span class="yr-num">1980</span>
+        <span class="yr-tag">冷戦のピーク</span>
+      </button>
+      <button data-year="2024">
+        <span class="yr-label">▣ Era 07</span>
+        <span class="yr-num">2024</span>
+        <span class="yr-tag">現代</span>
+      </button>
     </nav>
 
     <!-- ============ CONTEXT ============ -->
@@ -333,6 +346,9 @@ const POWERS = {
   austrian:   {ja:'オーストリア=ハンガリー', en:'Austria-Hungary', color:'#795548'},
   japanese:   {ja:'日本',         en:'Japanese Empire',    color:'#e91e63'},
   usa:        {ja:'米国',         en:'United States',      color:'#1a237e'},
+  us_aligned: {ja:'NATO・西側陣営', en:'Western Bloc (NATO+)', color:'#3949ab'},
+  chinese:    {ja:'PRC・中国陣営', en:'PRC (Communist China)', color:'#f9a825'},
+  danish:     {ja:'デンマーク',    en:'Danish Realm',        color:'#8e24aa'},
   independent:{ja:'独立／土着勢力', en:'Independent / Indigenous', color:'#bdbdbd'},
 };
 
