@@ -98,6 +98,119 @@
   .subnav a:hover { color: var(--fg); }
   .subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
 
+  /* ============ INTERACTIVE CHART ============ */
+  .chart-section { margin-bottom: 48px; }
+
+  .chart-buttons {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    width: fit-content;
+    flex-wrap: wrap;
+  }
+  .chart-buttons button {
+    background: transparent;
+    border: none;
+    padding: 12px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-right: 1px solid var(--line);
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .chart-buttons button:last-child { border-right: none; }
+  .chart-buttons button:hover { color: var(--fg); background: var(--soft); }
+  .chart-buttons button.active { color: #fff; background: var(--fg); }
+
+  .chart-canvas {
+    border: 1px solid var(--line);
+    background: var(--bg);
+    padding: 26px 24px 28px;
+  }
+  .chart-canvas .chart-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chart-canvas .chart-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .chart-canvas .chart-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .chart-row {
+    display: grid;
+    grid-template-columns: 28px 168px 1fr 78px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 7px;
+    font-size: 13px;
+  }
+  .chart-row .c-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .chart-row .c-name { font-weight: 500; }
+  .chart-row .c-name .flag {
+    margin-right: 8px;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+  .chart-row .c-track {
+    height: 16px;
+    background: var(--soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .chart-row .c-bar {
+    height: 100%;
+    background: var(--fg);
+    width: 0;
+    transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .chart-row.jp .c-bar { background: var(--accent); }
+  .chart-row.jp .c-name { font-weight: 700; }
+  .chart-row.jp .c-name::after {
+    content: '★';
+    color: var(--accent);
+    margin-left: 6px;
+    font-size: 11px;
+  }
+  .chart-row .c-value {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  .chart-row .c-value .unit { color: var(--muted); margin-left: 2px; font-size: 10px; }
+
+  @media (max-width: 600px) {
+    .chart-row { grid-template-columns: 24px 110px 1fr 64px; gap: 8px; }
+    .chart-buttons button { padding: 10px 14px; font-size: 11px; }
+    .chart-canvas { padding: 18px 16px 20px; }
+    .chart-canvas .chart-title { font-size: 16px; }
+  }
+
   /* ============ RANKING GRID ============ */
   .ranking-grid {
     display: grid;
@@ -295,6 +408,26 @@
       <a href="./chart.html" class="active">Chart</a>
     </nav>
 
+    <!-- ================== INTERACTIVE CHART ================== -->
+    <section class="chart-section">
+      <div class="chart-buttons" id="chartButtons">
+        <button data-key="population" class="active">Population</button>
+        <button data-key="gdp">GDP</button>
+        <button data-key="gdpPerCapita">GDP per capita</button>
+        <button data-key="wage">Average Wage</button>
+      </div>
+
+      <div class="chart-canvas">
+        <div class="chart-head">
+          <div>
+            <div class="chart-title" id="chartTitle">Population</div>
+            <div class="chart-sub" id="chartSub">人口 / UN 2024 — TOP 10 + Japan</div>
+          </div>
+        </div>
+        <div id="chartBody"></div>
+      </div>
+    </section>
+
     <div class="ranking-grid">
 
       <!-- ================== POPULATION ================== -->
@@ -470,5 +603,119 @@
   </footer>
 
   <script src="../assets/site.js"></script>
+  <script>
+    // ============ Interactive chart data ============
+    // Each row: { rank, country, flag, value (numeric for bar scaling), display (formatted) }
+    // jp: true highlights Japan in accent color.
+    const CHART_DATA = {
+      population: {
+        title: 'Population',
+        sub: '人口 / UN 2024 — TOP 10 + Japan',
+        rows: [
+          { rank: 1,  country: 'India',      flag: '🇮🇳', value: 1450, display: '1,450', unit: 'M' },
+          { rank: 2,  country: 'China',      flag: '🇨🇳', value: 1419, display: '1,419', unit: 'M' },
+          { rank: 3,  country: 'USA',        flag: '🇺🇸', value: 340,  display: '340',   unit: 'M' },
+          { rank: 4,  country: 'Indonesia',  flag: '🇮🇩', value: 283,  display: '283',   unit: 'M' },
+          { rank: 5,  country: 'Pakistan',   flag: '🇵🇰', value: 245,  display: '245',   unit: 'M' },
+          { rank: 6,  country: 'Nigeria',    flag: '🇳🇬', value: 232,  display: '232',   unit: 'M' },
+          { rank: 7,  country: 'Brazil',     flag: '🇧🇷', value: 217,  display: '217',   unit: 'M' },
+          { rank: 8,  country: 'Bangladesh', flag: '🇧🇩', value: 173,  display: '173',   unit: 'M' },
+          { rank: 9,  country: 'Russia',     flag: '🇷🇺', value: 144,  display: '144',   unit: 'M' },
+          { rank: 10, country: 'Mexico',     flag: '🇲🇽', value: 131,  display: '131',   unit: 'M' },
+          { rank: 12, country: 'Japan',      flag: '🇯🇵', value: 123,  display: '123',   unit: 'M', jp: true },
+        ],
+      },
+      gdp: {
+        title: 'GDP (Nominal)',
+        sub: '名目GDP / IMF 2024 — TOP 10 (Japan in TOP 10)',
+        rows: [
+          { rank: 1,  country: 'USA',     flag: '🇺🇸', value: 29.2, display: '29.2', unit: 'T' },
+          { rank: 2,  country: 'China',   flag: '🇨🇳', value: 18.7, display: '18.7', unit: 'T' },
+          { rank: 3,  country: 'Germany', flag: '🇩🇪', value: 4.7,  display: '4.7',  unit: 'T' },
+          { rank: 4,  country: 'Japan',   flag: '🇯🇵', value: 4.1,  display: '4.1',  unit: 'T', jp: true },
+          { rank: 5,  country: 'India',   flag: '🇮🇳', value: 3.9,  display: '3.9',  unit: 'T' },
+          { rank: 6,  country: 'UK',      flag: '🇬🇧', value: 3.6,  display: '3.6',  unit: 'T' },
+          { rank: 7,  country: 'France',  flag: '🇫🇷', value: 3.2,  display: '3.2',  unit: 'T' },
+          { rank: 8,  country: 'Italy',   flag: '🇮🇹', value: 2.4,  display: '2.4',  unit: 'T' },
+          { rank: 9,  country: 'Canada',  flag: '🇨🇦', value: 2.2,  display: '2.2',  unit: 'T' },
+          { rank: 10, country: 'Brazil',  flag: '🇧🇷', value: 2.2,  display: '2.2',  unit: 'T' },
+        ],
+      },
+      gdpPerCapita: {
+        title: 'GDP per capita',
+        sub: '一人当たりGDP / IMF 2024 — TOP 10 + Japan',
+        rows: [
+          { rank: 1,  country: 'Luxembourg',  flag: '🇱🇺', value: 135, display: '135', unit: 'K' },
+          { rank: 2,  country: 'Switzerland', flag: '🇨🇭', value: 105, display: '105', unit: 'K' },
+          { rank: 3,  country: 'Ireland',     flag: '🇮🇪', value: 103, display: '103', unit: 'K' },
+          { rank: 4,  country: 'Norway',      flag: '🇳🇴', value: 87,  display: '87',  unit: 'K' },
+          { rank: 5,  country: 'USA',         flag: '🇺🇸', value: 86,  display: '86',  unit: 'K' },
+          { rank: 6,  country: 'Singapore',   flag: '🇸🇬', value: 85,  display: '85',  unit: 'K' },
+          { rank: 7,  country: 'Iceland',     flag: '🇮🇸', value: 84,  display: '84',  unit: 'K' },
+          { rank: 8,  country: 'Qatar',       flag: '🇶🇦', value: 72,  display: '72',  unit: 'K' },
+          { rank: 9,  country: 'Macau SAR',   flag: '🇲🇴', value: 70,  display: '70',  unit: 'K' },
+          { rank: 10, country: 'Denmark',     flag: '🇩🇰', value: 68,  display: '68',  unit: 'K' },
+          { rank: '~38', country: 'Japan',    flag: '🇯🇵', value: 33,  display: '33',  unit: 'K', jp: true },
+        ],
+      },
+      wage: {
+        title: 'Average Wage',
+        sub: '平均賃金 / OECD 2023 (USD PPP) — TOP 10 + Japan',
+        rows: [
+          { rank: 1,  country: 'Iceland',     flag: '🇮🇸', value: 79.5, display: '79.5', unit: 'K' },
+          { rank: 2,  country: 'Luxembourg',  flag: '🇱🇺', value: 78.3, display: '78.3', unit: 'K' },
+          { rank: 3,  country: 'USA',         flag: '🇺🇸', value: 77.5, display: '77.5', unit: 'K' },
+          { rank: 4,  country: 'Switzerland', flag: '🇨🇭', value: 73.0, display: '73.0', unit: 'K' },
+          { rank: 5,  country: 'Belgium',     flag: '🇧🇪', value: 66.4, display: '66.4', unit: 'K' },
+          { rank: 6,  country: 'Denmark',     flag: '🇩🇰', value: 65.9, display: '65.9', unit: 'K' },
+          { rank: 7,  country: 'Netherlands', flag: '🇳🇱', value: 65.1, display: '65.1', unit: 'K' },
+          { rank: 8,  country: 'Norway',      flag: '🇳🇴', value: 64.0, display: '64.0', unit: 'K' },
+          { rank: 9,  country: 'Australia',   flag: '🇦🇺', value: 63.0, display: '63.0', unit: 'K' },
+          { rank: 10, country: 'Austria',     flag: '🇦🇹', value: 60.0, display: '60.0', unit: 'K' },
+          { rank: '~25', country: 'Japan',    flag: '🇯🇵', value: 41.5, display: '41.5', unit: 'K', jp: true },
+        ],
+      },
+    };
+
+    function renderChart(key) {
+      const data = CHART_DATA[key];
+      if (!data) return;
+      document.getElementById('chartTitle').textContent = data.title;
+      document.getElementById('chartSub').textContent = data.sub;
+
+      const max = Math.max(...data.rows.map(r => r.value));
+      const body = document.getElementById('chartBody');
+
+      // Build all rows with width=0 first, then animate to actual width
+      body.innerHTML = data.rows.map(r => {
+        const cls = r.jp ? 'chart-row jp' : 'chart-row';
+        return `
+          <div class="${cls}">
+            <div class="c-rank">${r.rank}</div>
+            <div class="c-name"><span class="flag">${r.flag}</span>${r.country}</div>
+            <div class="c-track"><div class="c-bar" data-pct="${(r.value / max * 100).toFixed(2)}"></div></div>
+            <div class="c-value">${r.display}<span class="unit">${r.unit}</span></div>
+          </div>`;
+      }).join('');
+
+      // Trigger transition on next frame
+      requestAnimationFrame(() => {
+        body.querySelectorAll('.c-bar').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+      });
+    }
+
+    document.getElementById('chartButtons').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-key]');
+      if (!btn) return;
+      document.querySelectorAll('#chartButtons button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderChart(btn.dataset.key);
+    });
+
+    // Initial render
+    renderChart('population');
+  </script>
 </body>
 </html>
