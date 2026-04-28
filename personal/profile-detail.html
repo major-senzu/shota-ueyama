@@ -727,6 +727,60 @@
     color: var(--fg);
   }
 
+  /* books TOP 5 */
+  .books-list {
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .books-list .book-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .books-list .book-row:last-child { border-bottom: none; }
+  .books-list .book-row .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .books-list .book-row .title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 2px;
+    letter-spacing: -0.005em;
+  }
+  .books-list .book-row .meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .books-list .book-row .meta .sep { margin: 0 7px; opacity: 0.6; }
+  .books-list .book-row a.amazon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .books-list .book-row a.amazon:hover { color: var(--fg); }
+  .books-list .book-row a.amazon .arrow { display: inline-block; margin-left: 3px; transition: transform 0.15s; }
+  .books-list .book-row a.amazon:hover .arrow { transform: translateX(2px); }
+  .books-more {
+    margin-top: 10px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .books-more a { color: var(--muted); text-decoration: none; }
+  .books-more a:hover { color: var(--fg); border-bottom: 1px solid var(--fg); }
+
   @media (max-width: 600px) {
     body { padding: 40px 22px 32px; }
     .hero { flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -738,6 +792,8 @@
     .grid, .grid.cols-2 { grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .stage-head { flex-wrap: wrap; }
     .stage-head .stage-en { margin-left: 0; flex-basis: 100%; }
+    .books-list .book-row { grid-template-columns: 28px 1fr; gap: 12px; padding: 12px 16px; }
+    .books-list .book-row a.amazon { grid-column: 2; padding-top: 4px; }
   }
 </style>
 </head>
@@ -755,9 +811,9 @@
     <a href="../index.html" class="home-link">↑ home</a>
     <div class="cat-label">PERSONAL</div>
     <a href="./profile.html" class="nav-link">profile</a>
-    <a class="nav-link disabled">health</a>
-    <a class="nav-link disabled">travel</a>
-    <a class="nav-link disabled">book</a>
+    <a href="./health.html" class="nav-link">health</a>
+    <a href="./travel.html" class="nav-link">travel</a>
+    <a href="./book.html" class="nav-link">book</a>
     <a class="nav-link disabled">kpop</a>
     <div class="cat-label">RESEARCH</div>
     <a class="nav-link disabled">geo-history</a>
@@ -900,6 +956,13 @@
           </ul>
         </div>
       </div>
+    </section>
+
+    <section>
+      <h2><span class="num">▸</span>books · top 5</h2>
+      <p>翔太の人生・思考・キャリアに大きな影響を与えた5冊。</p>
+      <div class="books-list" id="profile-detail-top5"></div>
+      <div class="books-more"><a href="./book.html">→ all books</a></div>
     </section>
 
     <section>
@@ -1156,6 +1219,7 @@
         <div class="country"><span class="flag">🇵🇭</span><span class="name">Philippines</span><span class="cities">(Manila, Cebu)</span></div>
         <div class="country"><span class="flag">🇰🇷</span><span class="name">Korea</span><span class="cities">(Seoul, DMZ, Busan)</span></div>
         <div class="country"><span class="flag">🇨🇳</span><span class="name">China</span><span class="cities">(Beijing, Shanghai)</span></div>
+        <div class="country"><span class="flag">🇹🇼</span><span class="name">Taiwan</span><span class="cities">(Taipei)</span></div>
         <div class="country"><span class="flag">🇺🇸</span><span class="name">USA</span><span class="cities">(SF, LA, Las Vegas, Utah, Hawaii)</span></div>
         <div class="country"><span class="flag">🇬🇺</span><span class="name">Guam</span><span class="cities">(Tumon)</span></div>
         <div class="country"><span class="flag">🇨🇦</span><span class="name">Canada</span><span class="cities">(Vancouver)</span></div>
@@ -1186,6 +1250,29 @@
   </footer>
 
   <script src="../assets/site.js"></script>
+  <script src="./data/books.js"></script>
+  <script>
+    (function () {
+      var box = document.getElementById('profile-detail-top5');
+      if (!box || !window.BOOKS || !window.BOOK_TOP5) return;
+      var byId = {};
+      window.BOOKS.forEach(function (b) { byId[b.id] = b; });
+      var top5 = window.BOOK_TOP5.map(function (id) { return byId[id]; }).filter(Boolean);
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      box.innerHTML = top5.map(function (b, i) {
+        var sep = (b.author && b.titleEn) ? ' <span class="sep">·</span> ' : '';
+        var amazon = b.amazon || '#';
+        return '<div class="book-row">' +
+          '<div class="num">' + pad(i + 1) + '</div>' +
+          '<div>' +
+            '<div class="title">' + (b.title || '') + '</div>' +
+            '<div class="meta">' + (b.author || '') + sep + (b.titleEn || '') + '</div>' +
+          '</div>' +
+          '<a class="amazon" href="' + amazon + '" target="_blank" rel="noopener">Amazon <span class="arrow">→</span></a>' +
+        '</div>';
+      }).join('');
+    })();
+  </script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     (function () {
@@ -1231,6 +1318,7 @@
         [35.1796, 129.0756, 'Busan, Korea'],
         [39.9042, 116.4074, 'Beijing, China'],
         [31.2304, 121.4737, 'Shanghai, China'],
+        [25.0330, 121.5654, 'Taipei, Taiwan'],
         [37.7749, -122.4194, 'San Francisco, USA'],
         [34.0522, -118.2437, 'Los Angeles, USA'],
         [36.1699, -115.1398, 'Las Vegas, USA'],
