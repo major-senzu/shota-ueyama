@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tim Cook — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* =================================== */
+  /* HERO (黒背景)                         */
+  /* =================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  /* =================================== */
+  /* SECTION COMMON                       */
+  /* =================================== */
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* =================================== */
+  /* ORIGINS (生い立ち・学歴)              */
+  /* =================================== */
+  .origins-head {
+    margin-bottom: 18px;
+  }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child {
+    border-top: none;
+  }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* =================================== */
+  /* TL;DR CALLOUT                        */
+  /* =================================== */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  /* =================================== */
+  /* TIMELINE (微分ポイント)               */
+  /* =================================== */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* DUO TIMELINE / RELATIONSHIP STAGES   */
+  /* =================================== */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* VALUE GRID                           */
+  /* =================================== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* TYPE NAMING (No.2の型)               */
+  /* =================================== */
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* =================================== */
+  /* LESSONS (翔太への設計図)              */
+  /* =================================== */
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* TRIVIA                               */
+  /* =================================== */
+  ul.trivia {
+    list-style: none;
+  }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* =================================== */
+  /* SOURCES                              */
+  /* =================================== */
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* =================================== */
+  /* RELATED PEOPLE                       */
+  /* =================================== */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* =================================== */
+  /* RESPONSIVE                           */
+  /* =================================== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="TC"><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Tim_Cook_March_2026_%28cropped%29.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+      <h1>Tim Cook</h1>
+        </div>
+      </div>
+      <p class="summary">
+        米アラバマ州の造船所労働者の家庭に生まれ、IBMで12年・Compaqで半年を経た37歳のとき、瀕死のApple
+        にSteve Jobsから誘われた寡黙なオペレーション屋。 在庫日数を31日から2日に縮め、Appleの土台を
+        サプライチェーンとして再構築した。Jobs没後にCEOを継承し、Appleを世界初の$3兆企業へ。"創業者の
+        後継者" として最も成功したNo.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Steve Jobs（Apple 創業者・1998–2011 / 13年間）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1960年（65歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">アラバマ州 Robertsdale（米国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / ゲイ（2014年公表）</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $2.4B (2026)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">未婚 / 子供なし</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">フィットネス（ジム・サイクリング・ハイキング）/ Auburn Tigers 観戦</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Donald Cook（造船所労働者・故人）/ 母 Geraldine Cook（薬局勤務・2015年没）/ 兄 Gerald Cook</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Apple CEO (2011–2026予定) / Apple COO (2005–2011) / SVP Worldwide Operations (1998–2005)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者の哲学を継承し、創業者にはできなかった規模で実装した実行型No.2</strong>」。
+        Steve Jobsが "Cookは製品の人間ではない" と評しながらも後継に指名した理由は、Jobsの製品哲学を
+        守るための<strong>"構造"</strong>—サプライチェーン・組織・財務—を作れる唯一の人間だったから。
+        13年間の COO 期間に Apple のオペレーションを完成させ、CEO 継承後は <strong>Jobs を真似ず、
+        自分の強みに賭けた</strong>。 結果、Apple は時価総額 $400B → $3.7T へ。
+        "Don't ask what I would do. Just do the right thing." — これが Jobs から Cook への最後の遺言。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1960年11月1日</strong>、米アラバマ州 Robertsdale 生まれ。父 <strong>Donald Cook</strong> はモバイル湾近郊の造船所で働く労働者、母 <strong>Geraldine Cook</strong> は地元の薬局勤務。 アラバマ南部・モバイル郊外の小さな町で、典型的な南部労働者階級の家庭に育つ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">信仰</div>
+          <div class="origins-body">
+            南部バプテスト教会で洗礼を受けて育つ。 アラバマ南部の保守的なキリスト教文化の中で、規律・倫理観・労働の尊厳という価値観の原型が形成された。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            <strong>家にタイプライターを買う余裕すらない</strong> 家庭。12歳のとき、 大学費用を貯めるため Mobile Press Register の新聞配達を始める。 高校時代には地元の薬局でアルバイト。 「家族みんなが働くもの」 という労働倫理の中で育った。 青年期に形成された価値観は——<strong>勤勉・規律・自助・節制</strong>。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">いじめ・差別</div>
+          <div class="origins-body">
+            ボーイスカウト時代、KKK (クー・クラックス・クラン) のメンバーが黒人家庭の前で十字架を燃やすのを目撃。Cook が思わず "Stop!" と叫び、KKK のメンバーは去っていった。 のちに本人は「あの瞬間が、人生で最も大きな影響を受けた出来事の一つ」と語る。 多様性・人権への信念の原点。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>Robertsdale High School（1978年卒）</strong>。学年2位（salutatorian）で卒業。 「Auburn 大学に行く」と決めたのは小学7年生のとき——南部労働者階級の少年にとって Auburn は "野心と現実の交差点" だった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Auburn 大学 工業工学部（1982年卒・B.S.）</strong>。 工業工学を選んだ理由は単純で、就職に強いから。 夢想家ではなく、最短で家族を支えるための実務的選択。 在学中は学生寮で過ごし、1980年の Apple II との出会いがコンピュータへの興味の原点となる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>Duke 大学 Fuqua School of Business・MBA（1988年取得）</strong>。 IBM 在籍中に <strong>働きながら夜間で取得</strong>。 Fuqua Scholar（卒業生上位10%）に選ばれる。 金で買った肩書きではなく、勤労者の延長として手に入れた学位。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            アラバマ労働者階級の子として「<strong>個ではなく構造で勝つ</strong>」思考が確立。 後の Apple サプライチェーン革命（在庫日数 31日 → 2日） の原点は、 ここで形成された "規律と節制" のメンタリティ。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"Life's most persistent and urgent question is: What are you doing for others?"</div>
+        <div class="src">— Martin Luther King Jr.（Cook が幼少期から心に刻む座右の銘 / 2014年カミングアウトの動機にもなった言葉）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1960</td>
+            <td>米アラバマ州 Robertsdale 生まれ。父は造船所労働者、母は薬局勤務。「家族みんなが働くもの」という労働倫理の中で育つ。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">12</td>
+            <td class="col-year">1972</td>
+            <td>新聞配達で初の仕事。大学費用を貯めるため。"自助"を体得。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">1982</td>
+            <td>Auburn 大学 工業工学卒（高校はsalutatorian / 学年2位）。同年 IBM 入社。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">1988</td>
+            <td>Duke 大学で MBA、Fuqua Scholar（上位10%）。IBM 在籍のまま夜間で取得。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">1998</td>
+            <td><strong>Steve Jobs と初対面 → 5分で Apple 入社決断</strong>。当時 Apple は瀕死、Compaq に来た直後の安全な選択を捨てる。"Caution and logic to the wind"。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">1999</td>
+            <td>入社7ヶ月で在庫を31日 → 2日へ。$400M の不良在庫を $78M に。Apple のオペレーション基盤完成。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">2005</td>
+            <td>COO 昇格。Jobs の "右腕" として正式に位置づけられる。iPhone 発売の2年前。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2009</td>
+            <td>Jobs の肝臓移植手術期間、Cook が事実上の CEO 代行。Cook は自らの肝臓の一部を Jobs に提供しようとしたが Jobs に拒否される。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2011.08</td>
+            <td><strong>CEO 就任（Jobs 退任の翌月、Jobs 死去の6週前）</strong>。"Don't ask what I would do" の遺言を受け継ぐ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">53</td>
+            <td class="col-year">2014</td>
+            <td><strong>Fortune 500 CEO として初のカミングアウト</strong>。"Being gay is among the greatest gifts God has given me."</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">57</td>
+            <td class="col-year">2018</td>
+            <td>Apple が世界初の時価総額 $1T 企業に。Jobs 時代の $400B から 2.5倍。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">63</td>
+            <td class="col-year">2024</td>
+            <td>Apple Intelligence 発表。AI 時代への舵取り開始（Jobs なしで初のプラットフォーム転換）。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">65</td>
+            <td class="col-year">2026</td>
+            <td><strong>CEO 退任予定、John Ternus に継承</strong>。Jobs から自分への継承を、自分の代でも繰り返す。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（Steve Jobs）との出会いと関係構造    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Steve Jobs）との関係構造</h2>
+      <p>
+        1998年初頭、Cook は Compaq に転職してまだ半年。当時の Compaq は世界最大の PC 企業で、Cook の
+        ポジションは安全で給与も高い。一方の Apple は <strong>90日後に倒産する</strong> と言われていた。
+        合理的に判断すれば Apple 入社はあり得ない選択だった。
+      </p>
+      <p>
+        だが、Jobs との初対面で Cook は5分以内に決断する。Jobs はその場で "後に iMac と呼ばれる製品" の
+        ビジョンを語った。Cook の言葉:
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "No more than five minutes into my initial interview with Steve, I wanted to throw caution
+        and logic to the wind and join Apple."<br>
+        — Tim Cook, Auburn 大学 卒業式スピーチ
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">5分で人生を賭ける</div>
+          <div class="stage-body">37歳の Cook は、Jobs の "vision" に賭けた。後に Jobs は "Cook は製品の人間ではないが、私と同じビジョンを持っていた" と評する。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">在庫を消す男</div>
+          <div class="stage-body">入社7ヶ月で在庫日数を1/15に。"I just forget about a lot of things unless he came and pinged me" — Jobs に "考えなくていい領域" を渡す。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">補完で完成する Apple</div>
+          <div class="stage-body">Jobs = ビジョン・製品 / Cook = オペ・サプライチェーン。役割分担が明確で衝突がない。Cook は Jobs を直そうとせず、Jobs が苦手な領域を全て引き受けた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継承</div>
+          <div class="stage-title">死の前の遺言</div>
+          <div class="stage-body">2009年の肝臓提供申し出を Jobs は拒否。2011年8月の継承時、Jobs は "私を真似るな" と Cook に告げる。Disney がウォルト没後に陥った "What would Walt do?" の罠を避けるため。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Cook の興味深い点は、<strong>13年間 No.2 を全うした後にトップになった</strong> こと。"なれなかった No.2" でも
+        "ならなかった No.2" でもない、<strong>"準備していた No.2"</strong>。
+      </p>
+      <p>
+        Jobs と出会った時点で、Cook は明確に「自分はビジョナリーではない」と自己認識していた。アラバマ州の
+        労働者階級から這い上がってきた人間として、彼が信じるのは <strong>規律 (discipline)・運用 (operations)・
+        構造 (structure)</strong>。Jobs の "現実歪曲フィールド" の対極にある。
+      </p>
+      <p>
+        Cook 自身の言葉: "I think the most important thing about a leader is to be a learner." —
+        Jobs を真似るのではなく、Jobs から学び続けるという No.2 のスタンスを最後まで保った。CEO に
+        なってからもこの姿勢は変わらず、それが <strong>Jobs 没後 15年の Apple 拡大</strong> に繋がっている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">サプライチェーン / オペレーション。「Inventory is fundamentally evil」を信条とし、戦略サプライヤー数を100→24、倉庫を半分に、JIT を実装。Apple を "デジタルの乳製品工場" に変えた。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 (Complement)。Jobs の製品ビジョンを "実装可能な構造" に変換する翻訳者。Jobs が苦手な領域を全て引き受け、Jobs に "考えなくていい時間" を作った。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Cook がいなければ、Apple は iPod 時代に在庫過多で再倒産していた可能性が高い。製品が売れても出荷できない / 部品が足りない / コストが合わない、で利益を出せない構造になっていた。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">Apple Services (App Store, iCloud, Apple Music) を $100B 事業に成長。Apple Watch・AirPods という新カテゴリを創出。Jobs 時代になかった "サブスクモデル" を Apple に実装した。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2009年の肝臓提供申し出。</strong> Jobs の肝臓移植が決まった時、Cook は自身の肝臓の一部
+        を提供すると申し出た。Jobs は "Never, never. I'll never let you do that." と拒否。No.2 が
+        No.1 のために身体を差し出そうとした、文字通りの忠義のシーン。
+      </p>
+      <p>
+        <strong>② 2014年のカミングアウト。</strong> Fortune 500 CEO として初。母国アラバマは LGBT に
+        厳しい州。"プライバシーを守る価値以上に、苦しんでいる若者のためにできることがあるなら" という
+        Martin Luther King Jr. の言葉に動かされた決断。これは経済合理性を超えた、Cook の "個人としての"
+        最大の決断。
+      </p>
+      <p>
+        <strong>③ 中国市場での FBI との対立 (2016)。</strong> サンバーナーディーノ銃乱射事件で、FBI は
+        Apple に容疑者の iPhone のロック解除を要求。Cook は公開書簡で拒否し、企業の自由とユーザーの
+        プライバシーを守った。Jobs にはなかった "倫理を経営判断に組み込む" 意思決定。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2026年4月、Cook は CEO 退任を発表。後継は Hardware Engineering 担当 SVP の John Ternus。Cook
+        は Jobs から受け取った "Don't ask what I would do, just do the right thing." を、そのまま
+        Ternus に引き継いだという。
+      </p>
+      <p>
+        Cook の引き際の特徴は、<strong>"創業者の影を残さなかった" こと</strong>。Jobs 没後に Apple が "What
+        would Steve do?" の罠に陥らなかったのは Cook の最大の功績の一つ。Disney がウォルト没後に
+        数十年 "ウォルトの影" に苦しんだのとは対照的。
+      </p>
+      <p>
+        Cook は Apple にとって、<strong>"創業者なしでも回る構造" を 15年かけて実装した男</strong> として記憶される
+        だろう。CEO 在任 15年は Jobs の在任期間（実質14年）を超えた。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Tim Cook の No.2 型</div>
+        <div class="type-name">継承型 × 補完型</div>
+        <div class="type-body">
+          創業者のビジョンに賭けながらも、ビジョンそのものは作らない。代わりに <strong>"創業者の哲学を実装する
+          構造"</strong> を作り、その構造があるからこそ創業者がいなくなっても組織が回る。No.2 期間に
+          オペを完成させ、CEO 継承後はそのオペの上に新しい価値（Services・Wearables）を積み上げる。
+          <br><br>
+          ▸ <strong>引き際型</strong> でもある: 自らも CEO を 15年で降り、次の継承を Jobs と同じ流儀で行う。
+          "創業者を真似るな" という遺言を自分の代でも反復する。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">5分で人生を賭ける覚悟を持て、ただし13年待てる胆力も持て</div>
+          <div class="lesson-body">
+            Cook は Jobs との5分の対話で Compaq を捨てた。だが入社後は13年間 No.2 として黙々と動いた。
+            <strong>"瞬発的な決断"と"持続的な実行"</strong>—この両極端が一人の中に同居していたことが、彼を最強の No.2 にした。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">No.1 を直そうとせず、No.1 が苦手な領域を全部引き受けろ</div>
+          <div class="lesson-body">
+            Cook は Jobs のカリスマ性・気まぐれ・短気を変えようとしなかった。代わりに <strong>Jobs が "考えなくていい"
+            領域</strong>—在庫・物流・人事・財務—を全て引き受けた。最強の No.2 とは "No.1 の能力の倍率器"
+            ではなく "No.1 の不在を埋める存在"。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">継承後は前任を真似るな。"Just do the right thing." だけを継承しろ</div>
+          <div class="lesson-body">
+            Jobs から Cook への遺言は方針ではなく <strong>"判断軸"</strong> だった。 No.2 が CEO になった時、最大の罠は
+            "前任ならどう判断したか" の問い。 Cook はこれを完全に捨て、自分の強み（オペ・規律・倫理）に
+            賭けた。これが Apple を $400B から $3.7T に成長させた。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>朝3:45起床。 5時前にメールを処理し、ジムに通う。 これを 20年以上続けている。</li>
+        <li>ジムは Apple Park 内ではなく、プライバシーのために <strong>キャンパス外のジム</strong> を使う。</li>
+        <li>独身、子供なし。 食事は基本一人。 自宅は質素で、車も控えめ。 シリコンバレーの CEO の中で最も "貧乏に見える" CEO と言われる。</li>
+        <li>母 Geraldine が亡くなった時、Cook は Apple Park の Steve Jobs Theater で Apple 全社員に向けて泣きながらスピーチした。 公の場で Cook が泣いたのは数えるほど。</li>
+        <li>Auburn 大学の熱狂的な Tigers ファン。 College Football の試合は出張をずらしてでも見る。</li>
+        <li>"Apple の CEO になって最も学んだのは、ノーと言うことだ" と語る。 Jobs と同じ哲学を、Cook の言葉で表現したもの。</li>
+        <li>Donald Trump 大統領との関係を慎重に維持。 政治的に対立する場面でも対話を切らさない外交家。</li>
+        <li>Charlie Rose のインタビューで Jobs を語る時、 Cook は4語で表現した: <strong>"He was a genius."</strong></li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steve Jobs <span class="ja">スティーブ・ジョブズ</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            Cook が13年間仕えた相手。1998年の5分の対話で Cook の人生を変えた人物。"Cookは製品の人間ではないが、私と同じビジョンを持っていた" と評し、後継に指名。Cook の存在意義を定義した男。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jony Ive <span class="ja">ジョナサン・アイブ</span></div>
+            <span class="rel-tag">並列 No.2 / デザイン</span>
+          </div>
+          <div class="rel-body">
+            Jobs 時代の "もう一人の右腕"。Cook = オペ / Ive = デザイン と役割が完全に分かれていたため衝突がなかった。Cook が CEO になった後、Ive は徐々に距離を取り 2019年に Apple を離れた。並列 No.2 が交差する例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jeff Williams <span class="ja">ジェフ・ウィリアムズ</span></div>
+            <span class="rel-tag">後継 COO / 自分の影</span>
+          </div>
+          <div class="rel-body">
+            Cook が CEO に昇格した2011年に COO を引き継いだ男。"Cook の Cook" と呼ばれるオペレーション屋。Cook の構造を継承する役割を担い、Apple Watch の立ち上げを主導。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">John Ternus <span class="ja">ジョン・ターナス</span></div>
+            <span class="rel-tag">後継 CEO / 次世代</span>
+          </div>
+          <div class="rel-body">
+            2026年に Cook から CEO を継承する Hardware Engineering 担当 SVP。Cook が Jobs から受けた "Don't ask what I would do" の遺言を、そのまま Ternus に渡した。継承の連鎖。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Charlie Munger <span class="ja">チャーリー・マンガー</span></div>
+            <span class="rel-tag muted">比較対象 / 補完型</span>
+          </div>
+          <div class="rel-body">
+            Buffett の60年の相棒。Cook と同じく "創業者を補完する規律家" の典型。違いは Munger は最後まで No.2 を貫いたこと。"継承型" と "全う型" の対照例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag muted">比較対象 / 同時代</span>
+          </div>
+          <div class="rel-body">
+            Zuckerberg の COO として Meta を広告事業として完成させた。 Cook = ハードのオペ / Sandberg = ソフトの収益化。 同時代の "Tech No.2" の双璧。両者とも、創業者にはできない領域を担当した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Walter Isaacson <span class="ja">ウォルター・アイザックソン</span></div>
+            <span class="rel-tag muted">記録者 / 評伝</span>
+          </div>
+          <div class="rel-body">
+            『Steve Jobs』(2011) の著者。Cook と Jobs の関係性の一次資料を後世に残した。 Cook 自身も Isaacson に多くを語っており、 Jobs–Cook 関係の "公式記録者"。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Donald Cook <span class="ja">父 / Donald Cook</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            アラバマ州の造船所労働者。Cook の "勤勉・規律・自助" の価値観の原点。Cook が12歳から働き始めたのも、家族の労働倫理を引き継いだもの。Apple の規律文化のルーツでもある。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Tim_Cook" target="_blank">Tim Cook — Wikipedia (英語版)</a></li>
+        <li><a href="https://www.cnbc.com/2018/04/09/how-steve-jobs-convinced-tim-cook-to-join-apple.html" target="_blank">Steve Jobs had to convince Tim Cook to join Apple in 1998 — CNBC</a></li>
+        <li><a href="https://fortune.com/2008/11/24/apple-the-genius-behind-steve/" target="_blank">Apple's Tim Cook: The Genius Behind Steve Jobs — Fortune (2008)</a></li>
+        <li><a href="https://www.supplychaintoday.com/how-tim-cook-transformed-apples-supply-chain/" target="_blank">How Tim Cook Transformed Apple's Supply Chain — Supply Chain Today</a></li>
+        <li><a href="https://fortune.com/2026/03/11/apple-ceo-tim-cook-late-predecessor-steve-jobs-unusual-advice-never-ask-what-i-would-do/" target="_blank">"Never ask what I would do" — Tim Cook on Steve Jobs' final advice (Fortune, 2026)</a></li>
+        <li><a href="https://www.cnn.com/2018/10/24/tech/tim-cook-gay-apple" target="_blank">Tim Cook: Being gay is God's greatest gift to me — CNN Business</a></li>
+        <li><a href="https://www.cnbc.com/2026/04/21/tim-cook-apple-steve-jobs-legacy.html" target="_blank">Tim Cook turned Apple into a $4 trillion juggernaut — CNBC (2026)</a></li>
+        <li>Walter Isaacson『Steve Jobs』(2011) — Cook の hiring エピソード一次資料</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

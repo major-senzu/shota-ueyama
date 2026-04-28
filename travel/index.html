@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>013 · travel / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .tabs button:hover { color: var(--fg); }
+  .tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* counters */
+  .counters {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); margin-bottom: 48px;
+  }
+  .counter { background: var(--bg); padding: 22px 18px; }
+  .counter .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .counter .value { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+  .counter .unit { font-size: 13px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+
+  @media (max-width: 760px) {
+    .counters { grid-template-columns: repeat(2, 1fr); }
+    body { padding: 24px 20px 32px; }
+  }
+
+  .top-blocks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; margin-bottom: 48px; }
+  @media (max-width: 760px) { .top-blocks { grid-template-columns: 1fr; } }
+  .top-block h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .top-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 0; font-size: 13px;
+    border-bottom: 1px solid var(--soft);
+  }
+  .top-row:last-child { border-bottom: none; }
+  .top-row .key { color: var(--fg); flex: 0 0 auto; min-width: 90px; }
+  .top-row .val { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex: 0 0 24px; text-align: right; }
+  .bar { background: var(--soft); height: 6px; flex: 1; }
+  .bar > span { display: block; height: 100%; background: var(--fg); }
+
+  /* place lists — same design as profile-detail.html .country-list */
+  .place-section { margin-bottom: 40px; }
+  .place-section h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .country-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 4px 24px;
+    margin-top: 16px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .country-list .country {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .country-list .flag {
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .country-list .name {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .country-list .cities {
+    color: #666;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  /* map */
+  .map-wrap { border: 1px solid var(--line); margin-bottom: 16px; }
+  #travel-map, #travel-map-jp { width: 100%; height: 480px; }
+  #city-info, #city-info-jp {
+    border: 1px solid var(--line); padding: 20px;
+    min-height: 120px; font-size: 14px;
+  }
+  #city-info .title, #city-info-jp .title { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  #city-info .subtitle, #city-info-jp .subtitle { color: var(--muted); font-size: 12px; margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; }
+  #city-info .empty, #city-info-jp .empty { color: var(--muted); font-style: italic; }
+  #city-info .visit-row {
+    padding: 6px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    border-bottom: 1px dashed var(--line); display: flex; gap: 14px;
+  }
+  #city-info .visit-row:last-child { border-bottom: none; }
+  #city-info .visit-date { color: var(--fg); flex: 0 0 95px; }
+  #city-info .visit-route { color: var(--fg); flex: 0 0 130px; }
+  #city-info .visit-airline { color: var(--muted); }
+  #city-info-jp .pref-name { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  #city-info-jp .pref-list { font-size: 13px; }
+
+  /* leaflet pin */
+  .travel-pin { background: transparent; border: none; }
+  .travel-pin span {
+    display: block; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--fg);
+    border: 2px solid #fff; box-shadow: 0 0 0 1px var(--fg);
+    cursor: pointer;
+  }
+  .travel-pin.home span { width: 16px; height: 16px; background: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .leaflet-popup-content { font-family: 'Inter', sans-serif; font-size: 13px; }
+
+  /* raw data */
+  .filter-bar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .filter-bar select {
+    border: 1px solid var(--line); background: var(--bg);
+    padding: 8px 28px 8px 12px; font-family: inherit; font-size: 13px;
+    cursor: pointer; min-width: 130px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4 L5 7 L8 4' stroke='%23888' fill='none' stroke-width='1.2'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .filter-bar .count {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--muted);
+  }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); }
+  table.flights {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; min-width: 980px;
+  }
+  table.flights thead { background: var(--soft); }
+  table.flights th {
+    text-align: left; padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  table.flights th:hover { color: var(--fg); }
+  table.flights th .arrow { margin-left: 4px; opacity: 0.4; font-size: 9px; }
+  table.flights th.sort-asc .arrow,
+  table.flights th.sort-desc .arrow { opacity: 1; color: var(--fg); }
+  table.flights td {
+    padding: 14px; border-bottom: 1px solid var(--line);
+    vertical-align: middle; white-space: nowrap;
+  }
+  table.flights tbody tr:last-child td { border-bottom: none; }
+  table.flights tbody tr:hover { background: var(--soft); }
+  .iata { font-weight: 700; }
+  .city { color: var(--muted); margin-left: 6px; font-size: 12px; }
+  .pill {
+    display: inline-block; padding: 3px 10px;
+    border: 1px solid var(--line);
+    font-size: 10px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .pill.business { background: #fff8dc; border-color: #d4a017; color: #6b4f0a; }
+
+  .note {
+    background: var(--soft); padding: 12px 16px;
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 24px; border-left: 3px solid var(--muted);
+    line-height: 1.55;
+  }
+  .note code {
+    background: var(--bg); padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    border: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="./index.html" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+<main class="wrap">
+  <header class="hero">
+    <h1>travel</h1>
+    <div class="ja">013 / flight log &amp; visited places</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" data-tab="stats">Stats</button>
+    <button data-tab="map">Map</button>
+    <button data-tab="map-jp">Map (Japan)</button>
+    <button data-tab="raw">Raw Data</button>
+  </nav>
+
+  <!-- ============ STATS ============ -->
+  <section class="panel active" id="panel-stats">
+    <div class="counters" id="counters"></div>
+    <div class="top-blocks">
+      <div class="top-block"><h3>Top Airports</h3><div id="top-airports"></div></div>
+      <div class="top-block"><h3>Top Airlines</h3><div id="top-airlines"></div></div>
+      <div class="top-block"><h3>Flights by Year</h3><div id="flights-by-year"></div></div>
+    </div>
+    <div class="place-section">
+      <h3>Countries Visited</h3>
+      <div class="country-list" id="countries-grid"></div>
+    </div>
+    <div class="place-section">
+      <h3>Prefectures Visited (Japan)</h3>
+      <div class="country-list" id="prefectures-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ MAP ============ -->
+  <section class="panel" id="panel-map">
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">都市のピンをクリックすると、訪問日と経路が下に表示されます。</p>
+    <div class="map-wrap"><div id="travel-map"></div></div>
+    <div id="city-info"><div class="empty">▸ ピンをクリックしてください</div></div>
+  </section>
+
+  <!-- ============ MAP (JAPAN) ============ -->
+  <section class="panel" id="panel-map-jp">
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">日本国内で訪問した都市・スポット。ピンをクリックすると詳細が下に表示されます。</p>
+    <div class="map-wrap"><div id="travel-map-jp"></div></div>
+    <div id="city-info-jp"><div class="empty">▸ ピンをクリックしてください</div></div>
+  </section>
+
+  <!-- ============ RAW DATA ============ -->
+  <section class="panel" id="panel-raw">
+    <div class="filter-bar">
+      <select id="year-filter"></select>
+      <select id="class-filter">
+        <option value="all">All Classes</option>
+        <option value="Economy">Economy</option>
+        <option value="Business">Business</option>
+      </select>
+      <span class="count"><span id="flight-count">0</span> flights</span>
+    </div>
+    <div class="table-scroll">
+      <table class="flights" id="flights-table">
+        <thead>
+          <tr>
+            <th data-key="date">DATE <span class="arrow">↕</span></th>
+            <th data-key="num">FLIGHT <span class="arrow">↕</span></th>
+            <th data-key="airline">AIRLINE <span class="arrow">↕</span></th>
+            <th data-key="from">FROM <span class="arrow">↕</span></th>
+            <th data-key="to">TO <span class="arrow">↕</span></th>
+            <th data-key="dep">DEP</th>
+            <th data-key="arr">ARR</th>
+            <th data-key="seat">SEAT <span class="arrow">↕</span></th>
+            <th data-key="cls">CLASS <span class="arrow">↕</span></th>
+            <th data-key="dist">DIST <span class="arrow">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="flights-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// ============ AIRPORTS ============
+const airports = {
+  HND: { city: 'Tokyo',         country: 'Japan',        cc: '🇯🇵', lat: 35.5494, lon: 139.7798 },
+  NRT: { city: 'Tokyo',         country: 'Japan',        cc: '🇯🇵', lat: 35.7720, lon: 140.3929 },
+  CTS: { city: 'Sapporo',       country: 'Japan',        cc: '🇯🇵', lat: 42.7752, lon: 141.6924 },
+  OKA: { city: 'Naha',          country: 'Japan',        cc: '🇯🇵', lat: 26.1958, lon: 127.6458 },
+  FUK: { city: 'Fukuoka',       country: 'Japan',        cc: '🇯🇵', lat: 33.5859, lon: 130.4506 },
+  HNL: { city: 'Honolulu',      country: 'USA',          cc: '🇺🇸', lat: 21.3187, lon: -157.9224 },
+  DPS: { city: 'Bali',          country: 'Indonesia',    cc: '🇮🇩', lat: -8.7467, lon: 115.1670 },
+  GUM: { city: 'Tumon',         country: 'Guam',         cc: '🇬🇺', lat: 13.4839, lon: 144.7960 },
+  ICN: { city: 'Seoul',         country: 'Korea',        cc: '🇰🇷', lat: 37.4602, lon: 126.4407 },
+  PUS: { city: 'Busan',         country: 'Korea',        cc: '🇰🇷', lat: 35.1795, lon: 128.9382 },
+  MNL: { city: 'Manila',        country: 'Philippines',  cc: '🇵🇭', lat: 14.5086, lon: 121.0198 },
+  CEB: { city: 'Cebu',          country: 'Philippines',  cc: '🇵🇭', lat: 10.3070, lon: 123.9794 },
+  SGN: { city: 'Ho Chi Minh',   country: 'Vietnam',      cc: '🇻🇳', lat: 10.8188, lon: 106.6520 },
+  SAI: { city: 'Siem Reap',     country: 'Cambodia',     cc: '🇰🇭', lat: 13.5400, lon: 103.8133 },
+  BKK: { city: 'Bangkok',       country: 'Thailand',     cc: '🇹🇭', lat: 13.6900, lon: 100.7501 },
+  DMK: { city: 'Bangkok',       country: 'Thailand',     cc: '🇹🇭', lat: 13.9123, lon: 100.6068 },
+  DEL: { city: 'Delhi',         country: 'India',        cc: '🇮🇳', lat: 28.5562, lon: 77.1000 },
+  DXB: { city: 'Dubai',         country: 'UAE',          cc: '🇦🇪', lat: 25.2532, lon: 55.3657 },
+  IST: { city: 'Istanbul',      country: 'Türkiye',      cc: '🇹🇷', lat: 41.2753, lon: 28.7519 },
+  SAW: { city: 'Istanbul',      country: 'Türkiye',      cc: '🇹🇷', lat: 40.8986, lon: 29.3092 },
+  BER: { city: 'Berlin',        country: 'Germany',      cc: '🇩🇪', lat: 52.3625, lon: 13.5006 },
+  FCO: { city: 'Rome',          country: 'Italy',        cc: '🇮🇹', lat: 41.8003, lon: 12.2389 },
+  MAD: { city: 'Madrid',        country: 'Spain',        cc: '🇪🇸', lat: 40.4719, lon: -3.5626 },
+  PMI: { city: 'Mallorca',      country: 'Spain',        cc: '🇪🇸', lat: 39.5517, lon: 2.7388 },
+  LGW: { city: 'London',        country: 'UK',           cc: '🇬🇧', lat: 51.1537, lon: -0.1821 },
+  LHR: { city: 'London',        country: 'UK',           cc: '🇬🇧', lat: 51.4700, lon: -0.4543 },
+  CPH: { city: 'Copenhagen',    country: 'Denmark',      cc: '🇩🇰', lat: 55.6181, lon: 12.6561 },
+  PEK: { city: 'Beijing',       country: 'China',        cc: '🇨🇳', lat: 40.0801, lon: 116.5847 },
+  SIN: { city: 'Singapore',     country: 'Singapore',    cc: '🇸🇬', lat: 1.3644,  lon: 103.9915 },
+  KUL: { city: 'Kuala Lumpur',  country: 'Malaysia',     cc: '🇲🇾', lat: 2.7456,  lon: 101.7099 },
+  MAA: { city: 'Chennai',       country: 'India',        cc: '🇮🇳', lat: 12.9941, lon: 80.1709 },
+  KWI: { city: 'Kuwait City',   country: 'Kuwait',       cc: '🇰🇼', lat: 29.2266, lon: 47.9689 },
+  CAI: { city: 'Cairo',         country: 'Egypt',        cc: '🇪🇬', lat: 30.1219, lon: 31.4056 },
+  LXR: { city: 'Luxor',         country: 'Egypt',        cc: '🇪🇬', lat: 25.6710, lon: 32.7066 },
+  RUH: { city: 'Riyadh',        country: 'Saudi Arabia', cc: '🇸🇦', lat: 24.9576, lon: 46.6988 },
+  AUH: { city: 'Abu Dhabi',     country: 'UAE',          cc: '🇦🇪', lat: 24.4330, lon: 54.6511 },
+  PVG: { city: 'Shanghai',      country: 'China',        cc: '🇨🇳', lat: 31.1443, lon: 121.8083 },
+  SHA: { city: 'Shanghai',      country: 'China',        cc: '🇨🇳', lat: 31.1979, lon: 121.3364 },
+  YVR: { city: 'Vancouver',     country: 'Canada',       cc: '🇨🇦', lat: 49.1939, lon: -123.1844 },
+  TPE: { city: 'Taipei',        country: 'Taiwan',       cc: '🇹🇼', lat: 25.0797, lon: 121.2342 },
+  LAX: { city: 'Los Angeles',   country: 'USA',          cc: '🇺🇸', lat: 33.9416, lon: -118.4085 },
+  SFO: { city: 'San Francisco', country: 'USA',          cc: '🇺🇸', lat: 37.6213, lon: -122.3790 },
+  LAS: { city: 'Las Vegas',     country: 'USA',          cc: '🇺🇸', lat: 36.0840, lon: -115.1537 }
+};
+
+// ============ FLIGHTS (placeholder estimates) ============
+const F = (date, num, airline, from, to, dep, arr, seat='—', cls='Economy') =>
+  ({ date, num, airline, from, to, dep, arr, seat, cls });
+
+// Gmail (major513323@gmail.com) + Trip.com予約画面スクショから2024-2025年の便名・航空会社・時刻を確定。
+// 出典なきものは"—"のまま。家族旅行(2010-2012)はANA/JAL確定のみ記録。
+const flights = [
+  // 家族旅行 (ANA 3 / JAL 3 / 日付不明)
+  F('2010', '—', 'ANA', 'NRT', 'DPS', '—', '—'),  // Bali out
+  F('2010', '—', 'ANA', 'DPS', 'NRT', '—', '—'),  // Bali back
+  F('2010', '—', 'JAL', 'NRT', 'GUM', '—', '—'),  // Guam out
+  F('2010', '—', 'ANA', 'GUM', 'NRT', '—', '—'),  // Guam back
+  F('2012', '—', 'JAL', 'HND', 'HNL', '—', '—'),  // Hawaii out
+  F('2012', '—', 'JAL', 'HNL', 'HND', '—', '—'),  // Hawaii back
+  // Domestic Sapporo RT x2 (確定情報なし)
+  F('—', '—', '—', 'HND', 'CTS', '—', '—'),
+  F('—', '—', '—', 'CTS', 'HND', '—', '—'),
+  F('—', '—', '—', 'HND', 'CTS', '—', '—'),
+  F('—', '—', '—', 'CTS', 'HND', '—', '—'),
+  // Domestic Okinawa RT x2 (確定情報なし)
+  F('—', '—', '—', 'HND', 'OKA', '—', '—'),
+  F('—', '—', '—', 'OKA', 'HND', '—', '—'),
+  F('—', '—', '—', 'HND', 'OKA', '—', '—'),
+  F('—', '—', '—', 'OKA', 'HND', '—', '—'),
+  // Domestic Fukuoka RT x1 (確定情報なし)
+  F('—', '—', '—', 'NRT', 'FUK', '—', '—'),
+  F('—', '—', '—', 'FUK', 'NRT', '—', '—'),
+  // 2024-03 Korea RT #1 (確認メールなし — 推定日)
+  F('2024-03-15', '—', '—', 'NRT', 'ICN', '—', '—'),
+  F('2024-03-18', '—', '—', 'ICN', 'NRT', '—', '—'),
+  // 2024-09 北米旅行 (NRT→LAX→LAS→SFO→YVR→NRT)
+  F('2024', '—', '—', 'NRT', 'LAX', '—', '—'),
+  F('2024', '—', '—', 'LAX', 'LAS', '—', '—'),
+  F('2024', '—', '—', 'LAS', 'SFO', '—', '—'),
+  F('2024-09-15', 'AC 571', 'Air Canada', 'SFO', 'YVR', '17:00', '19:16'),
+  F('2024-09-18', 'ZG 021', 'ZIPAIR', 'YVR', 'NRT', '10:45', '12:25'),  // Trip.com 33227878154
+  // 2024-11 SE Asia loop (実際はNov、Octではない / 一部不明)
+  F('2024-11-19', 'VJ 821', 'VietJet Air', 'HND', 'SGN', '02:30', '07:20'),  // スクショ (A321)
+  F('2024-11-21', 'VN 3825', 'Vietnam Airlines', 'SGN', 'SAI', '12:00', '13:15'),  // 35639173128
+  F('2024-11-22', 'FD 619', 'Thai AirAsia', 'SAI', 'DMK', '20:45', '21:55'),  // スクショ (A320)
+  F('2024-11-25', 'XJ 600', 'Thai AirAsia X', 'DMK', 'NRT', '23:55', '08:00'),  // 35637459400
+  // 2025-03 Korea RT #2
+  F('2025-03-10', '—', '—', 'NRT', 'ICN', '—', '—'),  // 推定 (NRT→ICN往路、確認メールなし)
+  F('2025-03-13', 'NQ 022', 'Air Japan', 'ICN', 'NRT', '13:40', '16:00'),  // 1688888011676168
+  // 2025-04 China trip (PEK→SHA虹橋→HND羽田、上海17h50m乗継)
+  F('2025-04-03', 'IJ 017', 'Spring Japan', 'NRT', 'PEK', '17:55', '21:15'),  // 1688889262536136
+  F('2025-04-06', 'MU 5110', 'China Eastern', 'PEK', 'SHA', '12:00', '14:30'),  // スクショ
+  F('2025-04-07', 'MU 8631', 'China Eastern', 'SHA', 'HND', '08:20', '12:30'),  // スクショ (運営: 上海航空 FM)
+  // 2025-04/05 ME / Asia long trip (実ルート: HND→KUL→SIN→MAA→KWI→CAI→LXR→CAI→...→MNL→NRT)
+  F('2025-04-21', 'D7 523', 'AirAsia X', 'HND', 'KUL', '23:50', '06:10'),  // 1688889491542984
+  F('2025-04-24', '3K 684', 'Jetstar Asia', 'KUL', 'SIN', '08:50', '10:00'),  // 1688889491456008 / 16B
+  F('2025-04-24', 'IX 677', 'Air India Express', 'SIN', 'MAA', '13:00', '14:55'),  // スクショ
+  F('2025-04-24', 'IX 697', 'Air India Express', 'MAA', 'KWI', '18:55', '22:05'),  // スクショ
+  F('2025-04-26', 'SM 408', 'Air Cairo', 'KWI', 'CAI', '14:55', '17:50'),  // スクショ
+  F('2025-04-27', 'MS 272', 'EgyptAir', 'CAI', 'LXR', '21:35', '22:40'),  // 1688889700599944
+  F('2025-04-29', 'NP 078', 'Nile Air', 'LXR', 'CAI', '01:15', '02:20'),  // 1688889700598728
+  F('2025-04-29', 'F3 614', 'flyadeal', 'CAI', 'RUH', '12:10', '14:55'),  // スクショ
+  F('2025-05-01', 'XY 235', 'Flynas', 'RUH', 'AUH', '14:35', '17:35'),  // 1688889490745480
+  F('2025-05-03', '5J 15', 'Cebu Pacific', 'DXB', 'MNL', '22:10', '11:10'),  // スクショ (+1日 2025-05-04 11:10着)
+  F('2025-05-06', 'GK 040', 'Jetstar Japan', 'MNL', 'NRT', '00:40', '06:10'),  // 1688889492266568
+  // 2025-08 Europe loop (NRT→DELはDMKでトランジット)
+  F('2025-08-03', 'XJ 607', 'Thai AirAsia X', 'NRT', 'DMK', '21:15', '02:40'),  // 1688891939028680 leg1
+  F('2025-08-04', 'XJ 230', 'Thai AirAsia X', 'DMK', 'DEL', '12:40', '15:50'),  // 1688891939028680 leg2
+  F('2025-08-06', 'EK 511', 'Emirates', 'DEL', 'DXB', '11:00', '13:00'),  // 1688891939616136 leg1
+  F('2025-08-06', 'EK 121', 'Emirates', 'DXB', 'IST', '14:20', '17:55'),  // 1688891939616136 leg2
+  F('2025-08-08', 'VF 057', 'AJet', 'SAW', 'BER', '09:25', '11:20'),  // 1688891938452232 (SAW=Sabiha Gökçen)
+  F('2025-08-09', '—', '—', 'BER', 'FCO', '—', '—'),  // 確認メールなし
+  F('2025-08-11', 'W4 6011', 'Wizz Air', 'FCO', 'MAD', '06:05', '08:45'),  // 1688891939573960
+  F('2025-08-12', 'FR 2061', 'Ryanair', 'MAD', 'PMI', '—', '—'),  // スクショ
+  F('2025-08-14', 'U2 8096', 'easyJet', 'PMI', 'LGW', '11:45', '13:20'),  // 1688892053950280
+  F('2025-08-17', '—', '—', 'LHR', 'CPH', '—', '—'),  // 確認メールなし
+  F('2025-08-18', '—', '—', 'CPH', 'HND', '—', '—'),  // 確認メールなし
+  // 2025-11 Philippines (実日程 11/22-26)
+  F('2025-11-22', '5J 5055', 'Cebu Pacific', 'NRT', 'MNL', '12:50', '17:10'),
+  F('2025-11-24', 'Z2 787', 'Philippines AirAsia', 'MNL', 'CEB', '18:35', '20:05'),  // 1688895043788040
+  F('2025-11-26', 'Z2 782', 'Philippines AirAsia', 'CEB', 'MNL', '10:35', '12:00'),  // 1688895043902408
+  F('2025-11-26', 'ZG 096', 'ZIPAIR', 'MNL', 'NRT', '14:30', '19:50'),
+  // 2026-05 Taiwan → Busan → Tokyo (UEYAMA AYAKO + 1 / 123,520円 + 釜山追加)
+  F('2026-05-03', 'MM 859', 'Peach Aviation', 'HND', 'TPE', '05:55', '08:35'),
+  F('2026-05-06', 'BX 794', 'Air Busan',      'TPE', 'PUS', '13:30', '17:05'),
+  F('2026-05-08', 'LJ 223', 'Jin Air',        'PUS', 'NRT', '14:00', '16:10')
+];
+
+// 飛行記録のない訪問都市（マップ表示用）
+const visitedExtra = [
+  { city: 'Utah',          country: 'USA',    cc: '🇺🇸', lat: 40.7608, lon: -111.8910 }
+];
+
+// 日本国内訪問都市・スポット
+const japanCities = [
+  // 北海道
+  { name: '札幌',         pref: '北海道',   lat: 43.0642, lon: 141.3469 },
+  { name: 'ニセコ',       pref: '北海道',   lat: 42.8047, lon: 140.6878 },
+  { name: '小樽',         pref: '北海道',   lat: 43.1907, lon: 140.9947 },
+  // 新潟
+  { name: '長岡',         pref: '新潟県',   lat: 37.4458, lon: 138.8511 },
+  { name: '越後湯沢',     pref: '新潟県',   lat: 36.9356, lon: 138.8154 },
+  // 栃木
+  { name: '日光',         pref: '栃木県',   lat: 36.7197, lon: 139.6986 },
+  // 茨城
+  { name: '日立',         pref: '茨城県',   lat: 36.5993, lon: 140.6517 },
+  // 群馬
+  { name: '赤城山',       pref: '群馬県',   lat: 36.5570, lon: 139.1922 },
+  // 埼玉
+  { name: 'さいたま',     pref: '埼玉県',   lat: 35.8617, lon: 139.6455 },
+  // 千葉
+  { name: '千葉',         pref: '千葉県',   lat: 35.6074, lon: 140.1063 },
+  // 東京
+  { name: '東京（居住）', pref: '東京都',   lat: 35.6762, lon: 139.6503, home: true },
+  // 神奈川
+  { name: '横浜',         pref: '神奈川県', lat: 35.4437, lon: 139.6380 },
+  // 静岡
+  { name: '伊豆',         pref: '静岡県',   lat: 34.9748, lon: 138.9460 },
+  { name: '熱海',         pref: '静岡県',   lat: 35.0950, lon: 139.0719 },
+  // 愛知
+  { name: '名古屋',       pref: '愛知県',   lat: 35.1815, lon: 136.9066 },
+  // 長野
+  { name: '軽井沢',       pref: '長野県',   lat: 36.3486, lon: 138.6346 },
+  // 石川
+  { name: '金沢',         pref: '石川県',   lat: 36.5613, lon: 136.6562 },
+  // 三重
+  { name: '伊勢神宮',     pref: '三重県',   lat: 34.4548, lon: 136.7257 },
+  // 大阪
+  { name: 'USJ',          pref: '大阪府',   lat: 34.6657, lon: 135.4323 },
+  { name: '難波',         pref: '大阪府',   lat: 34.6661, lon: 135.5021 },
+  { name: '梅田',         pref: '大阪府',   lat: 34.7024, lon: 135.4959 },
+  // 兵庫
+  { name: '淡路島',       pref: '兵庫県',   lat: 34.3601, lon: 134.8748 },
+  { name: '甲子園',       pref: '兵庫県',   lat: 34.7211, lon: 135.3614 },
+  { name: '六甲',         pref: '兵庫県',   lat: 34.7649, lon: 135.2387 },
+  // 香川
+  { name: '高屋神社',     pref: '香川県',   lat: 34.1499, lon: 133.6588 },
+  // 徳島
+  { name: '徳島',         pref: '徳島県',   lat: 34.0703, lon: 134.5547 },
+  // 島根
+  { name: '出雲大社',     pref: '島根県',   lat: 35.4019, lon: 132.6857 },
+  // 広島
+  { name: '原爆ドーム',   pref: '広島県',   lat: 34.3955, lon: 132.4536 },
+  { name: '広島球場',     pref: '広島県',   lat: 34.3919, lon: 132.4843 },
+  // 福岡
+  { name: '博多',         pref: '福岡県',   lat: 33.5904, lon: 130.4017 },
+  // 沖縄
+  { name: '今帰仁',       pref: '沖縄県',   lat: 26.6936, lon: 127.9783 },
+  { name: '読谷村',       pref: '沖縄県',   lat: 26.3938, lon: 127.7349 },
+  { name: '美浜',         pref: '沖縄県',   lat: 26.3151, lon: 127.7561 }
+];
+
+// ============ PREFECTURES ============
+const prefectures = [
+  { name: '北海道',   loc: '札幌, ニセコ, 小樽' },
+  { name: '新潟県',   loc: '長岡, 越後湯沢' },
+  { name: '栃木県',   loc: '日光' },
+  { name: '茨城県',   loc: '日立' },
+  { name: '群馬県',   loc: '赤城' },
+  { name: '埼玉県',   loc: '' },
+  { name: '千葉県',   loc: '' },
+  { name: '東京都',   loc: '居住中' },
+  { name: '神奈川県', loc: '' },
+  { name: '静岡県',   loc: '伊豆, 熱海' },
+  { name: '愛知県',   loc: '名古屋' },
+  { name: '長野県',   loc: '軽井沢' },
+  { name: '石川県',   loc: '金沢' },
+  { name: '三重県',   loc: '伊勢神宮' },
+  { name: '大阪府',   loc: 'USJ, 難波, 梅田' },
+  { name: '兵庫県',   loc: '淡路島, 甲子園, 六甲' },
+  { name: '香川県',   loc: '高屋神社' },
+  { name: '徳島県',   loc: '' },
+  { name: '島根県',   loc: '出雲大社' },
+  { name: '広島県',   loc: '原爆ドーム, 広島球場' },
+  { name: '福岡県',   loc: '博多' },
+  { name: '沖縄県',   loc: '今帰仁, 読谷村, 美浜' }
+];
+
+// ============ HELPERS ============
+function gc(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const tr = x => x * Math.PI / 180;
+  const dLat = tr(lat2 - lat1), dLon = tr(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(tr(lat1))*Math.cos(tr(lat2))*Math.sin(dLon/2)**2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(a)));
+}
+
+flights.forEach(f => {
+  const a = airports[f.from], b = airports[f.to];
+  f.dist = gc(a.lat, a.lon, b.lat, b.lon);
+  f.year = parseInt(f.date.substring(0,4));
+});
+
+// ============ STATS RENDER ============
+function renderStats() {
+  const totalFlights = flights.length;
+  const totalDist = flights.reduce((s, f) => s + f.dist, 0);
+  const countriesSet = new Set();
+  flights.forEach(f => { countriesSet.add(airports[f.from].country); countriesSet.add(airports[f.to].country); });
+  visitedExtra.forEach(c => countriesSet.add(c.country));
+  const airportsSet = new Set();
+  flights.forEach(f => { airportsSet.add(f.from); airportsSet.add(f.to); });
+
+  document.getElementById('counters').innerHTML = `
+    <div class="counter"><div class="label">Total Flights</div><div class="value">${totalFlights}</div></div>
+    <div class="counter"><div class="label">Total Distance</div><div class="value">${totalDist.toLocaleString()}<span class="unit">km</span></div></div>
+    <div class="counter"><div class="label">Countries</div><div class="value">${countriesSet.size}</div></div>
+    <div class="counter"><div class="label">Prefectures</div><div class="value">${prefectures.length}</div></div>
+    <div class="counter"><div class="label">Airports</div><div class="value">${airportsSet.size}</div></div>
+  `;
+
+  // top airports
+  const apCount = {};
+  flights.forEach(f => { apCount[f.from]=(apCount[f.from]||0)+1; apCount[f.to]=(apCount[f.to]||0)+1; });
+  const topAp = Object.entries(apCount).sort((a,b)=>b[1]-a[1]).slice(0, 8);
+  const maxAp = topAp[0][1];
+  document.getElementById('top-airports').innerHTML = topAp.map(([code, n]) => `
+    <div class="top-row">
+      <span class="key"><strong>${code}</strong> <span style="color:var(--muted);font-size:11px;">${airports[code].city}</span></span>
+      <span class="bar"><span style="width:${n/maxAp*100}%"></span></span>
+      <span class="val">${n}</span>
+    </div>`).join('');
+
+  // top airlines (skip unknown "—")
+  const alCount = {};
+  flights.forEach(f => { if (f.airline !== '—') alCount[f.airline] = (alCount[f.airline]||0)+1; });
+  const topAl = Object.entries(alCount).sort((a,b)=>b[1]-a[1]).slice(0, 8);
+  const maxAl = topAl.length ? topAl[0][1] : 1;
+  document.getElementById('top-airlines').innerHTML = topAl.length
+    ? topAl.map(([name, n]) => `
+      <div class="top-row">
+        <span class="key" style="font-size:12px;">${name}</span>
+        <span class="bar"><span style="width:${n/maxAl*100}%"></span></span>
+        <span class="val">${n}</span>
+      </div>`).join('')
+    : '<div style="color:var(--muted);font-size:12px;padding:8px 0;">Gmail連携後に表示</div>';
+
+  // by year (skip unknown)
+  const yrCount = {};
+  flights.forEach(f => { if (!isNaN(f.year)) yrCount[f.year] = (yrCount[f.year]||0)+1; });
+  const yrs = Object.entries(yrCount).sort((a,b)=>a[0]-b[0]);
+  const maxYr = Math.max(...yrs.map(y=>y[1]));
+  document.getElementById('flights-by-year').innerHTML = yrs.map(([y, n]) => `
+    <div class="top-row">
+      <span class="key">${y}</span>
+      <span class="bar"><span style="width:${n/maxYr*100}%"></span></span>
+      <span class="val">${n}</span>
+    </div>`).join('');
+
+  // countries grid — flag + name + (cities), same design as profile-detail
+  const countryMap = {};
+  const addCity = (country, cc, city) => {
+    if (!countryMap[country]) countryMap[country] = { cc, cities: [] };
+    if (city && !countryMap[country].cities.includes(city)) countryMap[country].cities.push(city);
+  };
+  flights.forEach(f => {
+    [f.from, f.to].forEach(code => {
+      const a = airports[code];
+      addCity(a.country, a.cc, a.city);
+    });
+  });
+  visitedExtra.forEach(c => addCity(c.country, c.cc, c.city));
+  document.getElementById('countries-grid').innerHTML = Object.entries(countryMap)
+    .sort((a,b) => a[0].localeCompare(b[0]))
+    .map(([name, d]) => `<div class="country"><span class="flag">${d.cc}</span><span class="name">${name}</span>${d.cities.length ? `<span class="cities">(${d.cities.join(', ')})</span>` : ''}</div>`)
+    .join('');
+
+  // prefectures grid — same design (🗾 + 県名 + (都市名))
+  document.getElementById('prefectures-grid').innerHTML = prefectures
+    .map(p => `<div class="country"><span class="flag">🗾</span><span class="name">${p.name}</span>${p.loc ? `<span class="cities">(${p.loc})</span>` : ''}</div>`).join('');
+}
+
+// ============ MAP RENDER ============
+let mapInstance = null;
+function renderMap() {
+  if (mapInstance) { setTimeout(() => mapInstance.invalidateSize(), 50); return; }
+  const el = document.getElementById('travel-map');
+  mapInstance = L.map(el, { center: [25, 60], zoom: 2, scrollWheelZoom: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(mapInstance);
+
+  const pinIcon  = L.divIcon({ className: 'travel-pin',      html: '<span></span>', iconSize:[12,12], iconAnchor:[6,6] });
+  const homeIcon = L.divIcon({ className: 'travel-pin home', html: '<span></span>', iconSize:[16,16], iconAnchor:[8,8] });
+
+  Object.entries(airports).forEach(([code, ap]) => {
+    const isHome = (code === 'HND' || code === 'NRT');
+    const m = L.marker([ap.lat, ap.lon], { icon: isHome ? homeIcon : pinIcon }).addTo(mapInstance);
+    m.bindTooltip(`${code} · ${ap.city}`, { direction: 'top', offset: [0, -8] });
+    m.on('click', () => showCityInfo(code, 'airport'));
+  });
+
+  visitedExtra.forEach((ex, i) => {
+    const m = L.marker([ex.lat, ex.lon], { icon: pinIcon }).addTo(mapInstance);
+    m.bindTooltip(`${ex.city}`, { direction: 'top', offset: [0, -8] });
+    m.on('click', () => showCityInfo(i, 'extra'));
+  });
+}
+
+// ============ MAP (JAPAN) RENDER ============
+let mapJpInstance = null;
+function renderMapJp() {
+  if (mapJpInstance) { setTimeout(() => mapJpInstance.invalidateSize(), 50); return; }
+  const el = document.getElementById('travel-map-jp');
+  mapJpInstance = L.map(el, { center: [37.5, 137.5], zoom: 5, scrollWheelZoom: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(mapJpInstance);
+
+  const pinIcon  = L.divIcon({ className: 'travel-pin',      html: '<span></span>', iconSize:[12,12], iconAnchor:[6,6] });
+  const homeIcon = L.divIcon({ className: 'travel-pin home', html: '<span></span>', iconSize:[16,16], iconAnchor:[8,8] });
+
+  japanCities.forEach((c, i) => {
+    const m = L.marker([c.lat, c.lon], { icon: c.home ? homeIcon : pinIcon }).addTo(mapJpInstance);
+    m.bindTooltip(`${c.name} (${c.pref})`, { direction: 'top', offset: [0, -8] });
+    m.on('click', () => showJpCityInfo(i));
+  });
+}
+
+function showJpCityInfo(i) {
+  const c = japanCities[i];
+  const sameP = japanCities.filter(x => x.pref === c.pref);
+  document.getElementById('city-info-jp').innerHTML = `
+    <div class="title">${c.name}${c.home ? ' 🏠' : ''}</div>
+    <div class="pref-name">🗾 ${c.pref}</div>
+    <div class="pref-list">同県内の訪問地: ${sameP.map(x => x.name).join(' · ')}</div>
+  `;
+}
+
+function showCityInfo(key, kind) {
+  if (kind === 'extra') {
+    const ex = visitedExtra[key];
+    document.getElementById('city-info').innerHTML = `
+      <div class="title">${ex.cc} ${ex.city} <span style="color:var(--muted);font-weight:400;font-size:13px;">(${ex.country})</span></div>
+      <div class="subtitle">visited (no flight record / 経由地は別都市)</div>
+    `;
+    return;
+  }
+  const code = key;
+  const ap = airports[code];
+  const visits = flights.filter(f => f.from === code || f.to === code).sort((a,b) => a.date.localeCompare(b.date));
+  const dates = [...new Set(visits.map(v => v.date))];
+  const rows = visits.map(v => {
+    const parts = [];
+    if (v.airline !== '—') parts.push(v.airline);
+    if (v.num !== '—') parts.push(v.num);
+    return `<div class="visit-row">
+      <span class="visit-date">${v.date}</span>
+      <span class="visit-route">${v.from} → ${v.to}</span>
+      <span class="visit-airline">${parts.join(' · ')}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('city-info').innerHTML = `
+    <div class="title">${ap.cc} ${ap.city} <span style="color:var(--muted);font-weight:400;font-size:13px;">(${code} · ${ap.country})</span></div>
+    <div class="subtitle">${visits.length} flights · ${dates.length} dates</div>
+    ${rows || '<div class="empty">記録なし</div>'}
+  `;
+}
+
+// ============ RAW DATA RENDER ============
+let currentSort = { key: 'date', dir: 'desc' };
+let currentYear = 'all', currentClass = 'all';
+
+function initFilters() {
+  const sel = document.getElementById('year-filter');
+  sel.innerHTML = '<option value="all">All Years</option>' +
+    [...new Set(flights.map(f => f.year).filter(y => !isNaN(y)))].sort((a,b) => b-a).map(y => `<option value="${y}">${y}</option>`).join('');
+}
+
+function renderRaw() {
+  let rows = flights.slice();
+  if (currentYear !== 'all') rows = rows.filter(f => f.year == currentYear);
+  if (currentClass !== 'all') rows = rows.filter(f => f.cls === currentClass);
+
+  rows.sort((a,b) => {
+    let va = a[currentSort.key], vb = b[currentSort.key];
+    if (typeof va === 'number') return currentSort.dir === 'asc' ? va-vb : vb-va;
+    va = String(va); vb = String(vb);
+    return currentSort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  document.getElementById('flight-count').textContent = rows.length;
+
+  document.getElementById('flights-tbody').innerHTML = rows.map(f => {
+    const fa = airports[f.from], ta = airports[f.to];
+    return `<tr>
+      <td>${f.date}</td>
+      <td>${f.num}</td>
+      <td>${f.airline}</td>
+      <td><span class="iata">${f.from}</span><span class="city">${fa.city}</span></td>
+      <td><span class="iata">${f.to}</span><span class="city">${ta.city}</span></td>
+      <td>${f.dep}</td>
+      <td>${f.arr}</td>
+      <td>${f.seat}</td>
+      <td><span class="pill ${f.cls === 'Business' ? 'business' : ''}">${f.cls}</span></td>
+      <td>${f.dist.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+
+  document.querySelectorAll('table.flights th').forEach(th => {
+    th.classList.remove('sort-asc','sort-desc');
+    if (th.dataset.key === currentSort.key) th.classList.add('sort-' + currentSort.dir);
+  });
+}
+
+document.querySelectorAll('table.flights th').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.key;
+    if (!k) return;
+    if (currentSort.key === k) currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    else { currentSort.key = k; currentSort.dir = 'asc'; }
+    renderRaw();
+  });
+});
+document.getElementById('year-filter').addEventListener('change', e => { currentYear = e.target.value; renderRaw(); });
+document.getElementById('class-filter').addEventListener('change', e => { currentClass = e.target.value; renderRaw(); });
+
+// ============ TABS ============
+document.querySelectorAll('.tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    const tab = b.dataset.tab;
+    document.getElementById('panel-' + tab).classList.add('active');
+    if (tab === 'map') renderMap();
+    if (tab === 'map-jp') renderMapJp();
+  });
+});
+
+// ============ INIT ============
+renderStats();
+initFilters();
+renderRaw();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
