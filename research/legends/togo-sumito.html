@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東後澄人 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>東後 澄人</h1>
+      <p class="summary">
+        兵庫県明石市出身。東大工学部から大学院でJAXAの次世代ロケット推進薬を研究した後、McKinsey・Google
+        を経て、創業1年目の freee に <strong>3人目の経営陣</strong> として参画した COO。佐々木大輔さん（freee CEO・創業者）
+        を支えながら COO → CFO → CPO と <strong>役割を3度変えて11年半</strong> 組織を支え、SaaS史上初の
+        グローバル IPO を主導。2024年 freee を退任し、原点である宇宙領域 (AstroX) に CSO として戻った
+        ——「役割を変えながら全うする」型の、日本スタートアップ史上稀な No.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">佐々木大輔さん（freee CEO・創業者・2013–2024 / 11年半）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1981年頃（推定 / 約45歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">兵庫県 明石市（日本）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">freee 累計調達 161億円 / 2019年 マザーズ上場主導 / 時価総額ピーク約 5,000億円</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味・関心</div>
+          <div class="fact-value">宇宙・ロケット工学（学生時代から継続）/ SMB 経営の構造設計 / SaaS 経営論</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">非公開</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き（時系列）</div>
+          <div class="fact-value">JAXA 学生研究員 → McKinsey & Company（2005–2010）→ Google 日本（2010–2013、SMB マーケ・Google Maps BD）→ freee COO（2013–2018）→ freee CFO（2018–2022）→ freee CPO（2022–2024）→ freee 監査等委員（2024–）/ AstroX CSO（2025–）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>役割を3度変えて全うする、可変型No.2</strong>」。
+        マッキンゼー × Google というエリートパスの最中に、創業1年目の freee に 3人目の経営陣として飛び込み、
+        COO → CFO → CPO と役割を変えながら <strong>同じトップ（佐々木大輔さん）の隣に11年半居続けた</strong>。
+        専門性に固執せず、組織のフェーズが変わるたびに自分の置き場所を変える。 161億円の累計調達を背負って
+        毎ラウンド「アグレッシブな事業計画」を達成し続け、SaaS 史上初のグローバル IPO を実現。
+        引き際も美しく、2024年に取締役を退いて原点である <strong>宇宙領域 (AstroX)</strong> に CSO として戻った。
+        日本のスタートアップ No.2 像を最も柔らかく、最も長く保ち続けた人物。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1981年頃、兵庫県明石市生まれ（推定）</strong>。 瀬戸内海と日本標準時子午線の街・明石で育った関西人。 公開情報は限定的だが、地方都市の堅実な家庭で「専門性で勝負する」価値観の中で育ったと見られる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            関西の地方都市で育ち、東京大学を志して上京。  幼少期から理工系志向が強く、 のちに JAXA で次世代ロケット推進薬の研究をするほどに <strong>"宇宙"</strong> への興味が突出していた。 「最先端の技術を、社会の最前線に届ける」 という志向の原型がここで形成された。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>東京大学 工学部</strong>。 関西から東京へ単身上京。 入学時から大学院進学を視野に置いた研究志向の学部生活を送った。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>東京大学大学院 工学系研究科 化学システム工学専攻</strong>。  在学中、<strong>JAXA（宇宙航空研究開発機構）にて次世代ハイブリッド・ロケット推進薬の研究</strong>に従事。 ここで身につけた "理学+工学+システム思考" の3層構造が、後の SaaS 経営における <strong>「事業計画 → 実装 → 運用」</strong> の発想のベースになる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            JAXA 経由で「宇宙開発こそ最高の知的職業」と一度は信じた青年が、 「日本の社会・経済を動かすには技術だけでなく <strong>"事業構造"</strong> の理解が必要」 と気づき、 大学院修了とともに進路を <strong>マッキンゼー</strong> に切る。 純粋な理工系青年から、 "技術 × 経営" のバイリンガルへ。 これが後に Google での SMB マーケ・freee での経営、 そして AstroX で宇宙へ戻る伏線となる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">McKinsey時代</div>
+          <div class="origins-body">
+            <strong>2005年に McKinsey & Company 入社</strong>。 IT・テクノロジー・製造業界を中心に、 経営戦略からオペレーション・サプライチェーン改革までを5年間担当。 ここで得た「論点設計力」「経営者と話す言語」が freee CFO 時代の <strong>毎年アグレッシブな事業計画作成</strong> の地力になる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">Google時代</div>
+          <div class="origins-body">
+            <strong>2010年2月、Google日本 入社</strong>。 日本の中小企業 (SMB) 向けマーケティング、および Google マップのパートナーシップ・事業開発を担当。 ここで <strong>「日本の中小企業の生産性こそ国の課題だ」</strong> という実感を得る。 同じ Google で SMB 領域に精通していたのが、 のちの freee 創業者 <strong>佐々木大輔さん</strong>。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"一人で専門知識を網羅する必要はない。チームで専門性を持ち寄ればいい。"</div>
+        <div class="src">— 東後澄人さん（freee CFO 時代・経営ハッカーインタビュー）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1981頃</td>
+            <td>兵庫県明石市生まれ（推定）。瀬戸内海と日本標準時子午線の街で育つ。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">2000頃</td>
+            <td>東京大学 工学部 入学。関西から単身上京し、研究志向のキャリアを志す。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">2003頃</td>
+            <td>東大大学院 工学系研究科 化学システム工学に進学。<strong>JAXA で次世代ロケット推進薬の研究</strong>に従事。「宇宙 × 技術」の原点。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">24</td>
+            <td class="col-year">2005</td>
+            <td><strong>McKinsey & Company 入社</strong>。「技術だけでは社会は動かない、経営という言語が要る」と気づき、純粋研究者の道を捨てる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">2010.02</td>
+            <td><strong>Google日本 入社</strong>。SMB マーケと Google Maps BD を担当。「日本の中小企業の生産性こそ国の課題」と実感。同じ社内に佐々木大輔さん（後の freee 創業者）。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2013.07</td>
+            <td><strong>freee 入社・COO 就任</strong>。創業1年目、社員10数名規模、「freee会計」リリース直後。Google の安全な席を捨て、SMB の課題を直接解きにいく決断。<strong>3人目の経営陣として参画</strong>。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2016</td>
+            <td>取締役就任のプレスリリース。COO として事業拡大を主導。社員数十名規模 → 数百人規模へ。「事業計画から逆算した幹部採用とカルチャー作り」を確立。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2018</td>
+            <td><strong>COO → CFO に役割転換</strong>。1度目の役割可変。資金調達の前線へ。1年に1回以上のペースで調達を回し、累計161億円を未上場で実現。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2019.12</td>
+            <td><strong>freee マザーズ上場（4478）を CFO として主導</strong>。 SaaS 企業として日本初のグローバルオファリングを実現。 創業から7年、東後さん入社から6年半。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">41</td>
+            <td class="col-year">2022.10</td>
+            <td><strong>CFO → CPO に役割転換</strong>。2度目の役割可変。「投資判断をしてきた自分が、責任を持ってやる側に回りたい」と本人が語る、極めて稀な逆転移動。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2024.09</td>
+            <td><strong>freee 取締役 退任（11年半でフル離任）</strong>。 監査等委員（社外）のみ残し、 執行から完全に退く。日本のNo.2 では珍しい <strong>「全うしてから去る」</strong> 引き際。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">44</td>
+            <td class="col-year">2025.02</td>
+            <td><strong>AstroX (民間宇宙スタートアップ) CSO 就任</strong>。気球による空中発射方式 (Rockoon) を開発する宇宙企業へ。 <strong>JAXA 時代の "宇宙" に20年越しで戻る</strong>。 原点回帰の最美形。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">2026</td>
+            <td>AstroX で宇宙領域、freee 監査等委員として SaaS 領域の双方に関与。「宇宙 × 経営」の交差点で第二章。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（佐々木大輔）との関係構造            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（佐々木大輔さん）との関係構造</h2>
+      <p>
+        東後さんと佐々木さんは、ともに <strong>Google 日本</strong> の出身。 佐々木さんは2008年から Google で日本の SMB
+        マーケのヘッドを務めており、 東後さんは2010年に同領域へ入社。 <strong>つまり2人は、 freee 設立前から「日本の中小企業
+        の生産性」 を共通課題として共有していた</strong>。
+      </p>
+      <p>
+        2012年7月、佐々木さんは Google を辞して横路隆さん（CTO）と freee を設立。 2013年に最初のプロダクト
+        「freee 会計」 をリリース。 そして同年7月、 東後さんが 3人目の経営陣として COO で参画する。 当時 freee は
+        社員10数名・売上ほぼゼロ・倒産までの距離も遠くない、 典型的なシードスタートアップだった。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「事業計画から逆算して、こういう人材が要る、という採用をやってきた。 freee はその逆算が最も
+        ハードだった会社だ」<br>
+        — 東後澄人さん（ICC サミット 講演）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">Google で同じ風景を見ていた2人</div>
+          <div class="stage-body">2010〜2012年、Google 日本の SMB チームで佐々木さんと東後さんは同じ「日本の中小企業の生産性」 という風景を見ていた。 1年後、佐々木さんが先に Google を辞めて freee を起こし、 東後さんは10数名規模の創業期に COO で合流する。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">「事業計画から逆算」する男</div>
+          <div class="stage-body">COO 時代に確立したのが <strong>「事業計画から逆算した幹部採用とカルチャー作り」</strong>。 アグレッシブな事業計画 → そこに必要な人材像を逆算 → ピンポイントで採用。 freee の急成長を構造で支えた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">役割を変えながら隣に居続ける</div>
+          <div class="stage-body">COO（事業）→ CFO（財務・調達・IPO）→ CPO（プロダクト）と役割を変えながら、佐々木さんの隣に居続けた11年半。 自分の専門性を主張せず、 「いま会社に最も必要な役割」 に自分を当てる。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 引き際</div>
+          <div class="stage-title">原点（宇宙）に20年ぶりに戻る</div>
+          <div class="stage-body">2024年9月、freee の取締役を退任。 監査等委員として社外に残るのみ。 そして2025年、 学生時代に研究していた宇宙領域（AstroX）に CSO として参画する。 「全うしたから、 原点に帰れる」 引き際の美学。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        東後さんは <strong>"なれなかった No.2"</strong> ではない。 マッキンゼー × Google のキャリアを経た時点で、 自分で
+        起業する選択肢は十分にあった。 また、 freee の COO として入った瞬間に共同創業者扱いになるほどの初期段階だった。
+        それでも彼は <strong>"佐々木さんの隣で、 役割を変えながら、 一つの会社を全うする"</strong> という選択をした。
+      </p>
+      <p>
+        その背景にあるのは、 <strong>「専門性ではなく、組織のフェーズに自分を合わせる」</strong> という哲学。
+        東後さん自身がインタビューで繰り返し語るのは、「一人で専門知識を網羅する必要はない、自分より力を発揮して
+        くれるメンバーを採用し、活躍できる場にアサインする」 という権限委譲の姿勢。 これは典型的な
+        <strong>「自分が主役にならない」</strong> No.2 の価値観。
+      </p>
+      <p>
+        加えて、 CFO 時代に語った <strong>「161億円のプレッシャー — ハードルの高い事業計画でも諦めずにいられた理由」</strong>
+        からは、 トップが背負う数字とトップ自身を切り分けて、 数字側を引き受ける姿勢が読み取れる。 これは "ならなかった No.2" ではなく、 "選び続けた No.2"。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">「マッキンゼー × Google × JAXA」の3層スタック。  経営戦略の論点設計力（McK）+ プロダクト・SMB ドメイン知識（Google）+ 理工系のシステム思考（東大院・JAXA）。 これを SaaS 経営に統合した稀有な人物。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv"><strong>役割可変型 (Role-Shifting)</strong>。 COO → CFO → CPO と11年半で3度役割を変える。 組織のフェーズが変わるたびに、 自分が最も価値を出せる場所に移動する。 専門性ではなく組織の必要に従う。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし東後さんがいなければ、freee は (a) COO 期に幹部採用とカルチャーが整わず急成長段階で崩れていたか、 (b) CFO 期に161億円の累計調達と SaaS 史上初のグローバル IPO を実現できていなかったか、 (c) CPO 期にプロダクト戦略の責任者不在になっていた可能性が高い。 つまり <strong>3つの局面で別々の人物が必要だった</strong>。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">2024年取締役退任後、 freee には監査等委員として残りつつ、 民間宇宙 AstroX の CSO として宇宙領域に挑戦。 「学んだ知見を別領域に再投資する」 という、 No.2 引退後のロールモデル。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2013年、Google を辞めて創業1年目の freee に COO で合流する決断。</strong> Google の SMB チームは
+        当時の優秀層が集まる場所であり、 安全な席だった。 そこから社員10数名・売上ほぼゼロのスタートアップ
+        に COO で行く決断は、 マッキンゼー → Google で築いたエリートパスからの大きな逸脱。 「日本の SMB の
+        生産性を本当に動かすには、 SaaS を作る側に回るしかない」 という覚悟。
+      </p>
+      <p>
+        <strong>② 2018–2019年、161億円の累計調達と毎年アグレッシブな事業計画の達成。</strong> 「1年に1回以上の調達」
+        を成立させるには、 前のラウンドより高いバリュエーションを実現する必要がある。 そのため毎ラウンド
+        ハードルの高い事業計画を立て、 達成し続ける必要があった。 東後さんはのちに 「最もしんどかったのは
+        事業目標を達成し続けることだった」 と語る。 マザーズ上場 (2019年12月) でこの圧力にピリオドを打つ。
+      </p>
+      <p>
+        <strong>③ 2022年、CFO から CPO への自発的な役割転換。</strong> 「投資判断をしてきた自分が、 責任を
+        持って実際にやる側に回りたい」 という本人の発意。 通常、 上場企業の CFO は「上がり」 のポジションだが、
+        東後さんは未経験のプロダクト責任者へ自ら降りる。 これは <strong>"自分の専門性に固執しない" No.2 像</strong>
+        の最も鮮明な例。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2024年9月、東後さんは freee の取締役を退任。 監査等委員（社外）として残るのみで、 執行からは
+        完全に離れる。 <strong>11年半で会社を全うし、 トップ（佐々木さん）を CEO のまま残して降りる</strong>
+        という、 シェリル・サンドバーグ型の引き際。
+      </p>
+      <p>
+        引退後の東後さんは、 民間宇宙スタートアップ <strong>AstroX</strong> に CSO として参画する。 AstroX は
+        「気球による空中発射方式 (Rockoon)」 で衛星を軌道投入する宇宙企業。 これは東大院時代に JAXA で
+        「次世代ハイブリッド・ロケット推進薬」 を研究していた <strong>20年前の自分</strong> への完全な回帰。
+      </p>
+      <p>
+        日本のスタートアップ史上、 11年半でトップから去り、 原点（宇宙）に戻った No.2 は極めて珍しい。
+        東後さんの引き際は <strong>「全うしたから、 原点に帰れる」</strong> という、 翔太の人生哲学（急がない・余裕・優しさ）
+        に最も近い型の No.2 引退モデル。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">東後澄人さん の No.2 型</div>
+        <div class="type-name">役割可変型 × 全う型 × 翻訳型</div>
+        <div class="type-body">
+          <strong>役割可変型 (Role-Shifting)</strong>: COO → CFO → CPO と11年半で3度役割を変える。 自分の専門性に固執せず、
+          組織のフェーズに合わせて自分の置き場所を変える。 これは日本の No.2 の中で極めて珍しい型。
+          <br><br>
+          <strong>全う型</strong>: 11年半、 同じトップ（佐々木さん）の隣で、 同じ会社で全うした。 途中で別の会社に
+          移ることなく、 freee の創業期 → 急成長期 → 上場期 → 上場後成熟期を通して隣に居続けた。
+          <br><br>
+          <strong>翻訳型</strong>: McKinsey × Google × JAXA で身につけた "技術 × 経営" のバイリンガル能力で、
+          佐々木さんのビジョン（"スモールビジネスを支える OS"）を、 事業計画 → 採用 → 資金調達 → プロダクトへと
+          実装可能な形に翻訳し続けた。
+          <br><br>
+          ▸ <strong>引き際型</strong> でもある: 11年半で取締役を退任し、 原点である宇宙領域 (AstroX) に戻る。
+          「全うしたから帰れる」 という美しい引き際。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">専門性ではなく、組織のフェーズに自分を合わせろ</div>
+          <div class="lesson-body">
+            東後さんは COO（事業）→ CFO（財務）→ CPO（プロダクト）と役割を変えた。 「自分はXX が専門だから XX を
+            やる」 ではなく、 「いま会社に最も必要な役割は何か、 そこに自分を当てる」。 翔太が WL で COO 候補と
+            して動くなら、 <strong>"COO として何をやる" より、 "WL のフェーズで最も足りないものを引き受ける"</strong> 発想を
+            最初から持て。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">トップの隣で「数字を引き受ける」覚悟を持て</div>
+          <div class="lesson-body">
+            東後さんがしんどかったと語るのは、 161億円のプレッシャーではなく <strong>「アグレッシブな事業計画を毎ラウンド
+            達成し続ける」</strong> こと。 トップ（佐々木さん）が背負うビジョンと、 そのビジョンを実装する数字を切り分け、
+            数字側を全部引き受けた。 No.2 とは、 トップの夢を <strong>"逃げ場のない数字"</strong> に変換する人間だ。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">11年で全うしてから、原点に戻る勇気を持て</div>
+          <div class="lesson-body">
+            東後さんは11年半で freee を全うした上で、 学生時代に研究していた宇宙（AstroX）に戻った。 これは
+            「100億円ユニコーン」 を量産する型ではなく、 <strong>「一つの会社で骨を埋めるほど深く貢献し、 学んだ
+            知見を原点に再投資する」</strong> 型の生き方。 翔太が「急がない・余裕・優しさ」 を核とするなら、 これが
+            最も近いキャリアモデル。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>東大院時代、JAXA で <strong>次世代ハイブリッド・ロケット推進薬</strong> を研究していた。 freee 退任後の AstroX 参画は、 20年越しの "宇宙への帰還"。</li>
+        <li>マッキンゼーの IT・テクノロジーチーム、Google の SMB チーム、freee の創業初期幹部、AstroX の戦略責任者——4つの組織すべてで <strong>"高密度な専門集団の中の経営役"</strong> を担っている。</li>
+        <li>佐々木大輔さん（freee CEO）とは Google 日本時代からの同僚。 freee 創業の翌年、 佐々木さんに呼ばれて3人目の経営陣で参画した。</li>
+        <li>口癖は <strong>「一人で専門知識を網羅する必要はない」</strong>。 自分より力を発揮してくれるメンバーを採用し、 育成し、 アサインする——これが彼の経営哲学の核。</li>
+        <li>CFO 時代の最大の試練として 「161億円の累計調達と毎ラウンド達成必須のアグレッシブな事業計画」 を挙げており、 IPO の達成をその "ピリオド" と語っている。</li>
+        <li>2022年、<strong>CFO（投資判断する側）から CPO（実装する側）に自ら降りた</strong>のは、 上場企業の役員人事として日本では極めて珍しい。 「責任を持ってやる側に回りたかった」 と本人が語る。</li>
+        <li>家族・私生活はほぼ非公開。 表舞台ではプロダクトと経営の話しかしない、 典型的な "プライバシー守備型" のNo.2。</li>
+        <li>引退後すぐ宇宙領域に戻ったのは、 単なる懐古ではなく <strong>「freee で得た SaaS 経営の知見を宇宙ビジネスに転用する」</strong> という戦略的な選択。 ANOBAKA も同じ理由で出資を続けている。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">佐々木大輔さん <span class="ja">ささき だいすけ / freee CEO</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            東後さんが11年半仕えたトップ。 一橋大商学部 → 博報堂 → CLSA → ALBERT → Google を経て2012年に freee 創業。 ともに Google 日本の SMB 領域で同じ風景を見ていた同僚から、 創業者と COO の関係に。 東後さんを CEO のまま残して送り出した側の人物。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">横路隆さん <span class="ja">よこじ たかし / freee 共同創業 CTO</span></div>
+            <span class="rel-tag">並列 No.2</span>
+          </div>
+          <div class="rel-body">
+            佐々木さんと2012年4月に出会い、 GW に2日でプロトタイプを作った freee 共同創業 CTO。 東後さんが COO で参画した時の "もう一人のNo.2"。 技術側 (横路さん) × 経営側 (東後さん) で役割が分かれていたため衝突なく11年。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小泉文明さん <span class="ja">こいずみ ふみあき / メルカリ</span></div>
+            <span class="rel-tag muted">比較対象 / 同時代日本のNo.2</span>
+          </div>
+          <div class="rel-body">
+            山田進太郎さんを支えたメルカリの COO → 社長 → 会長。 東後さんと同時代に、 同じ「日本SaaS/プラットフォーム創業者を支えた」No.2。 違いは、 小泉さんが社長を経て山田さんに返した <strong>"逆継承型"</strong> なのに対し、 東後さんは役割を変えながら CEO を譲り受けない <strong>"全う型"</strong> という対照。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ / Meta</span></div>
+            <span class="rel-tag muted">比較対象 / 引き際型</span>
+          </div>
+          <div class="rel-body">
+            Zuckerberg を CEO のまま残して14年で Meta を退いた COO。 東後さんとの共通点は <strong>「トップを残して降りる」</strong> 引き際。 違いは Sandberg が COO 一筋だったのに対し、 東後さんは COO → CFO → CPO と役割を変え続けた点。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック / Apple</span></div>
+            <span class="rel-tag muted">比較対象 / 翻訳型</span>
+          </div>
+          <div class="rel-body">
+            Jobs を13年支えた COO。 東後さんとの共通点は <strong>「創業者のビジョンを実装可能な構造に翻訳する」</strong> 翻訳型。 違いは Cook が CEO を継承したのに対し、 東後さんは継承せずに退いた点。 翻訳型 No.2 の継承パターンと全うパターンの対比。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小池良次さん（AstroX CEO） <span class="ja">こいけ りょうじ / 宇宙</span></div>
+            <span class="rel-tag muted">第二章のNo.1</span>
+          </div>
+          <div class="rel-body">
+            東後さんが2025年から CSO として支える "次のNo.1"。 民間宇宙スタートアップ AstroX の CEO で、 気球による空中発射方式 (Rockoon) の開発を主導。 東後さんにとって、 freee の佐々木さんに続く2人目のトップ。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">JAXA研究室の指導教官 <span class="ja">東大院時代の恩師</span></div>
+            <span class="rel-tag muted">原点 / 学生時代</span>
+          </div>
+          <div class="rel-body">
+            東大院・化学システム工学専攻で「次世代ハイブリッド・ロケット推進薬」 の研究を指導した恩師。 東後さんの「宇宙 × 技術 × システム思考」 の原点。 20年後、 AstroX で再びこの領域に戻る伏線となった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">McKinsey 同期・先輩 <span class="ja">2005年入社の戦コンエリート群</span></div>
+            <span class="rel-tag muted">同窓 / 経営の言語</span>
+          </div>
+          <div class="rel-body">
+            2005年マッキンゼー入社時の同期・先輩は、 のちに日本のスタートアップ・大企業役員に多数輩出。 東後さんの「経営の言語」 はここで磨かれ、 freee CFO 時代の事業計画作成・グローバル IPO を実現する地力になった。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://corp.freee.co.jp/news/torishimariyaku.html" target="_blank">役員人事のお知らせ〜元 Google 東後澄人が取締役に就任〜（freee プレスリリース）</a></li>
+        <li><a href="https://corp.freee.co.jp/news/20220928freee_cpo.html" target="_blank">取締役の担当変更に関するお知らせ（freee CFO → CPO 役割変更プレスリリース）</a></li>
+        <li><a href="https://www.itmedia.co.jp/business/articles/2212/13/news050.html" target="_blank">「161億円」のプレッシャー〜ハードルの高い事業計画でも諦めずにいられたワケ（ITmedia ビジネスオンライン）</a></li>
+        <li><a href="https://keiei.freee.co.jp/articles/i0102035/" target="_blank">「一人で専門知識を網羅する必要はない」 freee CFOがチームづくりを重視する理由（経営ハッカー）</a></li>
+        <li><a href="https://thebridge.jp/2014/05/takanori-oshiba-interview-series-vol-4" target="_blank">隠れたキーマンを調べるお・freee 東後氏インタビュー（BRIDGE / 2014）</a></li>
+        <li><a href="https://industry-co-creation.com/management/3786" target="_blank">急成長を続ける「freee」の事業計画から逆算した幹部採用とカルチャー作り（ICC サミット）</a></li>
+        <li><a href="https://prtimes.jp/main/html/rd/p/000000018.000101722.html" target="_blank">民間宇宙スタートアップAstroX、CSOに東後澄人が就任（PR TIMES）</a></li>
+        <li><a href="https://jobs.freee.co.jp/recruitblog/aboutus/togo_cpo/" target="_blank">CFOからCPOに役割を変えた東後が今考えていること（freee 採用ブログ）</a></li>
+        <li><a href="https://startup-db.com/officers/qjGyYDBT3VeQvrMX" target="_blank">東後澄人 役員プロフィール（STARTUP DB）</a></li>
+        <li><a href="https://careersearch.work/detail/E1076-tougosumito" target="_blank">東後澄人 経歴・学歴・キャリアパス（CareerSearch）</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>
