@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eric Schmidt — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* HERO */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  /* SECTION COMMON */
+  section.block { margin-bottom: 64px; }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* ORIGINS */
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  /* TIMELINE */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* DUO STAGES */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  /* VALUE GRID */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* TYPE CARD */
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  /* LESSONS */
+  ol.lessons { list-style: none; counter-reset: lesson; }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  /* TRIVIA */
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* SOURCES */
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* RELATED */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history.html" class="nav-link">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="ES"><img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Eric_Schmidt_at_the_37th_G8_Summit_in_Deauville_037_%28cropped%29.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>Eric Schmidt</h1>
+        </div>
+      </div>
+      <p class="summary">
+        ニクソン政権下で財務省勤務の国際経済学者を父に持ち、Princeton から UC Berkeley でコンピュータサイエンス
+        Ph.D.。Sun Microsystems CTO、Novell CEO を経て46歳のとき、当時28歳の Larry Page と Sergey Brin の
+        "adult supervision (大人の監督役)" として Google CEO に招かれた。10年で売上 1億ドル → 400億ドル、
+        IPO・Android 買収・YouTube 買収を主導。"創業者を経営できる構造" の象徴となった No.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Larry Page / Sergey Brin（Google 共同創業者・2001–2011 / 10年間 + 執行会長として6年）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1955年（70歳・2026年4月時点）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">バージニア州 Falls Church（米国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / ストレート（複数の交際で報道あり）</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $37.8B（2024 Bloomberg）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 Wendy Schmidt / 25歳で結婚（1980年）/ 娘2人（Sophie / Alison は2017年病没）/ オープンマリッジと報道</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">セーリング（スーパーヨット Whisper 保有）/ 飛行機操縦（自家用ジェットパイロット資格）/ Burning Man 参加</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Wilson Emerson Schmidt（国際経済学者・Virginia Tech / Johns Hopkins 教授・ニクソン政権財務省勤務）/ 母 Eleanor Schmidt（心理学修士）/ 三兄弟の一人</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Google CEO (2001–2011) / Google・Alphabet 執行会長 (2011–2017) / Alphabet 技術顧問 (2017–2020) / Sun Microsystems CTO (1983–1997) / Novell CEO (1997–2001) / 米国 AI 国家安全保障委員会 委員長 (2019–2021) / Schmidt Futures 創設者 / Relativity Space CEO (2025–)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- TL;DR -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者のビジョンを上場企業の経営構造に翻訳した職業経営者型 No.2</strong>」。
+        Larry Page と Sergey Brin が Google を博士課程の延長で運営していた頃、VC の John Doerr は
+        "adult supervision" を要求した。 75人以上の候補を拒絶した二人が選んだのは、 たった一つの共通点を
+        持つ Schmidt——<strong>"Burning Man に行ったことがある CEO 候補"</strong>。 Schmidt は 10年間、
+        OKR・財務統制・上場準備という "面倒くさい大人の仕事" を全て引き受け、創業者が <strong>製品と研究
+        に集中できる空間</strong> を守った。 そして Page が38歳になった2011年、 "Adult-supervision no longer
+        needed" とツイートして自ら退いた。
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1955年4月27日</strong>、米バージニア州 Falls Church 生まれ。父
+            <strong>Wilson Emerson Schmidt</strong> は Virginia Tech と Johns Hopkins 大学院の国際経済学
+            教授で、ニクソン政権下で米国財務省にも勤務した知識人。母 <strong>Eleanor Schmidt</strong> は
+            心理学修士。 三人兄弟の一人として、ワシントン D.C. 近郊のインテリ家庭に育つ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            父の研究で <strong>イタリアに数年住んだ経験</strong>を持つ。 後に Schmidt は「あの経験が世界観を
+            変えた」と語る。 Tim Cook が南部労働者階級から這い上がった対極の、<strong>知識人家庭で
+            国際感覚を身に付けた少年</strong>——これが彼を「学術と産業を翻訳できる人間」 に育てた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>Yorktown High School（バージニア州 Arlington 郡・1972年卒）</strong>。 長距離ランナーとして
+            8つの varsity letter を獲得。 マラソン選手の規律と粘り強さが、後の40年のキャリアに通底する
+            気質を作った。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Princeton 大学（1976年卒・B.S. Engineering）</strong>。 入学時は <strong>建築学専攻</strong>
+            だったが、 在学中に電気工学に転向。 抽象的な空間設計から、ハードに動く工学の世界へ。 これが
+            後の "アイデアより実装" を重視する Schmidt の哲学の起点。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>UC Berkeley・コンピュータサイエンス（M.S. 1979 / Ph.D. 1982）</strong>。 1976〜1980年、
+            International House Berkeley に住み、 そこで未来の妻 <strong>Wendy Boyle さん</strong>と出会う。
+            博士論文は「ソフトウェア開発の管理問題」——後に Google で実装することになる "技術組織の
+            運営論" の原型。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            アカデミアで育ち、産業に降りてきた人間として「<strong>研究者と経営者の翻訳ができる</strong>」
+            という稀有な職業アイデンティティ。 Bell Labs・Zilog・Stanford 大学コンピュータセンター長を
+            経て Sun Microsystems へ。 後に Google で "Page・Brin と Wall Street を翻訳する仕事" を
+            することになる原型は、ここで完成していた。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"The best advice I ever got was: Find a way to say yes to things. Say yes to invitations to a new country, say yes to meet new friends, say yes to learn something new."</div>
+        <div class="src">— Eric Schmidt（Boston University 卒業式スピーチ・2012年 / "Yes" への姿勢が Burning Man 行きと Google 入社の決断を生んだ）</div>
+      </div>
+    </section>
+
+    <!-- INFLECTION POINTS -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1955</td>
+            <td>米バージニア州 Falls Church 生まれ。父は国際経済学教授・財務省勤務、母は心理学修士。 ワシントン D.C. 近郊のインテリ家庭。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">幼</td>
+            <td class="col-year">1960s</td>
+            <td>父の仕事でイタリアに数年滞在。「世界観が変わった」と本人語る。 国際感覚の原点。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">17</td>
+            <td class="col-year">1972</td>
+            <td>Yorktown 高校卒、長距離ランナーで8つの varsity letter。 規律と粘り強さの確立。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">21</td>
+            <td class="col-year">1976</td>
+            <td>Princeton 大学 卒（B.S. Engineering）。 建築学から電気工学へ転向した経験が「実装」哲学の原点。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">1980</td>
+            <td>Berkeley 大学院在籍中、International House で出会った Wendy Boyle さんと結婚。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">1982</td>
+            <td>UC Berkeley で Ph.D. 取得。Bell Labs / Zilog / Stanford 大学コンピュータセンター長 を経験。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">1983</td>
+            <td>Sun Microsystems 入社、後に CTO 就任。Java 言語の開発戦略を主導。 シリコンバレー有力企業の幹部となる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">42</td>
+            <td class="col-year">1997</td>
+            <td>Novell CEO 就任。 Microsoft の OS 戦略に押される中、 リストラと方針転換を主導するも苦戦。 <strong>"成功の経験ではなく、難局の経験"</strong> を積む。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">46</td>
+            <td class="col-year">2001.03</td>
+            <td><strong>Google 取締役会長として加入</strong>。Page・Brin が拒否し続けた "adult supervision" を、 Steve Jobs が直接推薦したことで実現。 決定打は <strong>"Burning Man に行ったことがある"</strong> ことだった。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">46</td>
+            <td class="col-year">2001.08</td>
+            <td>Google CEO 就任。 当時売上 約$1億 / 200人規模。 Page・Brin と<strong>同じオフィスを共有</strong>させられ、3人で押し合いながら経営を始める。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2004.08</td>
+            <td><strong>Google IPO（DPO 形式）</strong>。 オランダ式オークションで $1.67B 調達。 創業者の支配権を維持しつつ Wall Street 対応をやり切った Schmidt の最大の業績の一つ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2005.07</td>
+            <td><strong>Android 買収を主導（$50M）</strong>。 後に世界スマホ OS 70% を占める。"史上最高の M&A の一つ" と言われる Schmidt 最大の戦略的決断。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">51</td>
+            <td class="col-year">2006.10</td>
+            <td>YouTube 買収（$1.65B）。 メディア戦略の転換点。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">2009.08</td>
+            <td>Apple 取締役を辞任。 Apple と Google の競合（Android vs iPhone）が顕在化、 利益相反で Steve Jobs と決別。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">55</td>
+            <td class="col-year">2011.01</td>
+            <td><strong>CEO 退任発表 → "Day-to-day adult supervision no longer needed!" とツイート</strong>。 Page が38歳になり、独り立ちのタイミング。 自ら退き、執行会長へ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">60</td>
+            <td class="col-year">2015.08</td>
+            <td>Google が Alphabet に再編。 Schmidt は引き続き Alphabet 執行会長。 創業者の "ムーンショット" 経営を構造化。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">62</td>
+            <td class="col-year">2017.12</td>
+            <td>Alphabet 執行会長を退任、 Technical Advisor に。 報酬 $1/年。 段階的な引き際の第二段階。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">62</td>
+            <td class="col-year">2017</td>
+            <td>娘 Alison さん が病気で死去。 同年、 妻 Wendy さんと共に <strong>Schmidt Futures</strong> 設立、 AI・科学研究に巨額寄付を開始。 公的人格の第二フェーズへ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">64</td>
+            <td class="col-year">2019</td>
+            <td><strong>米国 AI 国家安全保障委員会（NSCAI）委員長</strong>就任。 民間人から国家戦略へ移行。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">64</td>
+            <td class="col-year">2020.02</td>
+            <td>Alphabet を完全離脱（19年の関わり終了）。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">69</td>
+            <td class="col-year">2024</td>
+            <td>大英帝国勲章（KBE）名誉受勲、慈善活動への貢献。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">70</td>
+            <td class="col-year">2025</td>
+            <td>Relativity Space（宇宙ロケット 3D プリント企業）CEO 就任。 70歳で再びオペレーターに戻る。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- RELATIONSHIP -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Larry Page / Sergey Brin）との関係構造</h2>
+      <p>
+        2001年、Google は売上 1億ドル規模・200人で、 Page・Brin はスタンフォード博士課程を中退した
+        20代の研究者。 投資家 John Doerr (KPCB) は「<strong>大人の監督役 (adult supervision) が必要</strong>」と
+        強硬に CEO 採用を要求。 だが Page・Brin は <strong>75人以上の候補をすべて拒絶</strong>し、 最終的に
+        Steve Jobs に相談した。 Jobs が推薦した唯一の候補が Eric Schmidt だった。
+      </p>
+      <p>
+        最後の決定要因は「Burning Man に行ったことがあるかどうか」。 Schmidt は唯一の経験者だった。
+        Brin は後に語る:
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Eric was the only one who went to Burning Man. We thought that was an important criterion."<br>
+        — Sergey Brin
+      </p>
+      <p>
+        Page・Brin は Schmidt を CEO にしながらも、 <strong>3人で同じオフィスを共有</strong>させた。 Schmidt は
+        当時 46歳、 Page・Brin は28歳。 親子ほどの年の差を、物理的な距離ゼロで運営し始めた異例の "trio
+        management" がここから10年続く。
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">Burning Man で人選される</div>
+          <div class="stage-body">
+            Page・Brin が拒んだ75人を超えた最終候補。 決定打は Burning Man 経験。 「砂嵐と暑さに耐えた
+            人間なら、Google の異常さにも耐えられる」 という二人の直感が当たった。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">同じオフィスで揉まれる</div>
+          <div class="stage-body">
+            Schmidt CEO の最初の数年、 Page・Brin と物理的に同じ部屋で仕事をさせられた。 <strong>毎日の議論で
+            "trio" の役割分担が自然と決まる</strong>。 Schmidt = 経営・対外 / Page = 製品・人事 / Brin = 技術・特殊案件。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">IPO と Android で世界企業へ</div>
+          <div class="stage-body">
+            2004年 IPO、2005年 Android 買収、2006年 YouTube 買収。 Schmidt が "外向き" を全て引き受け、
+            創業者は内側で製品に集中。 売上は 1億ドル → 400億ドルへ。 上場会社の管理体系を入れながら
+            "創業者の自由" を守った10年。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継承</div>
+          <div class="stage-title">Adult-supervision no longer needed</div>
+          <div class="stage-body">
+            2011年1月、Page が CEO 復帰を希望。 Schmidt は即座に受け入れ、 ツイートで自虐的に "Day-to-day
+            adult supervision no longer needed!" と発信。 執行会長として6年、技術顧問として3年、 段階的に
+            退いていく <strong>"消えていく職業経営者"</strong> の手本。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY NUMBER TWO -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Schmidt は珍しいキャリア経歴を持つ。Sun Microsystems で CTO（No.2 的）→ Novell で CEO（No.1）→
+        Google で再び実質的な No.2（CEO だが創業者がいる）。<strong>"一度 No.1 を経験してから自発的に
+        No.2 に戻った"</strong>パターンは少ない。
+      </p>
+      <p>
+        Novell 時代の苦戦が大きい。 Microsoft の OS 攻勢の中で <strong>創業者なしの会社を率いる難しさを
+        痛感</strong>した彼は、Google を見て直感した——「<strong>Page・Brin のビジョンは、自分には作れない。
+        だが彼らの組織は、自分が作れる</strong>」と。
+      </p>
+      <p>
+        だから Schmidt は典型的な "ならなかった No.2" でも "なれなかった No.2" でもない。<strong>"準備していた
+        No.2"</strong>であり、 同時に <strong>"創業者を受け入れた元 No.1"</strong> という稀有な型。 これが彼を、
+        創業者と職業経営者の最良の組み合わせの代名詞にした。
+      </p>
+    </section>
+
+    <!-- UNIQUE CONTRIBUTION -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">経営構造の設計と実装。 OKR・四半期 review・人事制度・IR・財務統制——上場企業に必要なインフラを Google にインストール。 売上 1億ドル → 400億ドル を <strong>"創業者の文化を壊さずに" 達成</strong> したのが核心価値。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 (Translation)。 Page・Brin の研究者言語を、 Wall Street・規制当局・大企業 CEO・政府 が理解できる言語に翻訳。 Apple での Tim Cook が "実装翻訳" だったのに対し、Schmidt は <strong>"対外翻訳"</strong>。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Schmidt がいなければ、Google は IPO に持っていけなかった可能性が高い。 当時 Page・Brin の年齢では、 投資家・規制当局の信頼を得るのは困難だった。 IPO がなければ Android 買収の資金調達も限定的。 つまり今の Google エコシステムは存在しない。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">執行会長として6年、対政府・対メディアの "外交大使"。 中国・北朝鮮を訪問、 政治家・規制当局との対話を継続。 Google を <strong>"政治的に存続可能な企業"</strong> にする最後の仕事。 退任後は Schmidt Futures で AI 政策・科学研究にシフト。</div>
+      </div>
+    </section>
+
+    <!-- TRIALS -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2009年の Apple 取締役辞任。</strong> 2006年から Schmidt は Apple 取締役だった。 Android が
+        iPhone と競合し始めた時、 Steve Jobs は激怒。 Schmidt は <strong>"二つの巨人の橋渡し"</strong> を諦めて
+        Apple 取締役を辞任。 「友人を失う代わりに、Google の戦略を守る」 決断。 Jobs と Schmidt の関係は
+        この時から修復不能となった。
+      </p>
+      <p>
+        <strong>② 2010年の "delete button" 発言失敗。</strong> ある会議で Schmidt は「インターネットには
+        delete ボタンが必要」と発言、 ユーザーのプライバシー観に逆行する立場として大炎上。 Page・Brin
+        が CEO 復帰を真剣に検討する動機の一つになったとも言われる。 No.2 が "顔" になった結果、 No.2 が
+        最大のリスクにもなる例。
+      </p>
+      <p>
+        <strong>③ 2017年の娘 Alison さんの死。</strong> 病気で娘を失った同年、 Schmidt は執行会長を退任し
+        Schmidt Futures を立ち上げる。 Google を離れ、 <strong>科学・AI・若手研究者支援</strong>に巨額寄付を
+        始める。 個人の悲しみが、 公的人格の第二フェーズの起点となった。
+      </p>
+    </section>
+
+    <!-- SUCCESSION -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        Schmidt の引き際は <strong>"段階的・10年がかり"</strong>という珍しい型。 一気に去らず、 CEO →
+        執行会長 → 技術顧問 → 完全離脱、と <strong>3段階で19年かけて消えた</strong>。 これは「自分が作った
+        構造を、 後継者が完成させる時間を与える」配慮。
+      </p>
+      <p>
+        後継は <strong>Page (CEO 復帰)、 その後 Sundar Pichai (2015年 Google CEO、2019年 Alphabet
+        CEO)</strong>。 Schmidt 自身が Pichai を見出し、 育てた。 自分の役割を "Pichai 型の次世代 No.2 の
+        育成" に再定義した点が、 Tim Cook との大きな違い。
+      </p>
+      <p>
+        Schmidt の "Adult-supervision no longer needed" ツイートは、<strong>引き際の言葉として歴史に残る一句</strong>。
+        自分の役目を最初から有限と認識していた人間にしか言えない、 引き際の美学。 退任後は <strong>Schmidt
+        Futures（AI・科学研究）、米国 AI 国家安全保障委員会、 さらに 70歳で Relativity Space CEO</strong>と、
+        新しい役割で社会に貢献し続けている。
+      </p>
+    </section>
+
+    <!-- TYPE -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Eric Schmidt の No.2 型</div>
+        <div class="type-name">翻訳型 × 補完型 × 引き際型</div>
+        <div class="type-body">
+          <strong>翻訳型</strong>として、 創業者の研究者言語を、 投資家・規制当局・大企業の言語に変換。 IPO・
+          Android 買収・YouTube 買収という対外戦略を担い、 創業者を "外の世界" から守った。
+          <br><br>
+          <strong>補完型</strong>として、 Page・Brin が苦手な "上場企業の経営" を全て引き受けた。 OKR・人事制度・
+          財務統制という地味なインフラ整備が、 後の Alphabet 規模の組織を成立させた。
+          <br><br>
+          ▸ <strong>引き際型</strong>として、 一気に去らずに 10年かけて段階的に退場。 「Adult-supervision no
+          longer needed」と自虐ツイートで退きながら、 6年の執行会長期間で Pichai を後継として育てた。
+          <strong>"消えていく職業経営者"</strong>の典型。
+        </div>
+      </div>
+    </section>
+
+    <!-- LESSONS -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">No.1 を経験してから No.2 に戻れる人間こそ最強の No.2 になれる</div>
+          <div class="lesson-body">
+            Schmidt は Novell CEO で苦戦した経験があったから、Google で「自分にビジョンは作れないが
+            構造は作れる」と <strong>正確に自己認識できた</strong>。 翔太も Wanderlust の COO 期間に "自分が
+            ビジョンを持てる領域" と "支える側に回るべき領域" を見極めるべき。 N1 経験は無駄にならない。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者の言語を "外の世界" の言語に翻訳する仕事を引き受けろ</div>
+          <div class="lesson-body">
+            Schmidt の本質は「Page・Brin の研究を、 Wall Street・規制当局・大企業が理解できる形に
+            翻訳した」こと。 翔太も Wanderlust の創業者ビジョンを、 <strong>クライアント・投資家・大企業
+            役員</strong> に伝わる言語に変換できる人間になれ。 これが No.2 の最大の貢献領域。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">引き際は段階的に。10年かけて消えろ</div>
+          <div class="lesson-body">
+            Schmidt は CEO → 執行会長 → 技術顧問 → 完全離脱、と <strong>19年で4段階の引き際</strong> を踏んだ。
+            一気に去ると、 自分が作った構造ごと崩壊する。 「Adult-supervision no longer needed」 と自虐
+            できる人間だけが、 美しく退ける。 翔太も将来 No.2 を退く時、 後継が完成するまでの "見守る期間"
+            を惜しまない覚悟を持て。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- TRIVIA -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>採用の決定打が <strong>"Burning Man に行ったことがある"</strong>。 Sergey Brin は本気で「重要な選考基準」と語っている。 翔太の Wanderlust の語源（彷徨）と通底する哲学。</li>
+        <li>Page・Brin と <strong>同じオフィスを共有させられた CEO</strong>。 シリコンバレー史でも例の少ない異常な始まり方。</li>
+        <li>2011年の退任ツイート「<strong>Day-to-day adult supervision no longer needed!</strong>」は、 シリコンバレー史上最も有名な引き際の言葉の一つ。</li>
+        <li>純資産は約 $37.8B (2024 Bloomberg)。 シリコンバレー CEO で最も裕福な階層に属する。 妻 Wendy さんと共同で <strong>Schmidt Futures</strong> を運営し、 AI・科学研究に巨額寄付。</li>
+        <li>オープンマリッジと長く報道されている (本人は否定も肯定もせず)。 Kate Bohner との 2007–2010 の交際、 後に Michelle Ritter との関係など多数報道。 妻 Wendy さんとは離婚せず慈善活動を共同で続ける。</li>
+        <li>2024年に <strong>大英帝国勲章（KBE）名誉受勲</strong>。 慈善活動と科学への貢献。</li>
+        <li>セーリング愛好家で、$5億超のスーパーヨット <strong>Whisper</strong> を保有。 自家用ジェットパイロット資格も保持。</li>
+        <li><strong>2025年に 70歳で Relativity Space CEO 就任</strong>。 退任から再起の珍しい例。 「No.2 で消えた人間が、また現場に戻る」 という追加の章を書いている。</li>
+        <li>2012年、<strong>北朝鮮を訪問</strong>。 Google 退任後も外交チャンネルとしての役割を担う。</li>
+        <li>著書 4冊: 『How Google Works』 (2014, Jonathan Rosenberg と)、 『The New Digital Age』 (2013, Jared Cohen と)、 『Trillion Dollar Coach』 (2019, Bill Campbell の伝記)、 『The Age of AI』 (2021, Henry Kissinger と)。</li>
+      </ul>
+    </section>
+
+    <!-- RELATED -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Larry Page <span class="ja">ラリー・ペイジ</span></div>
+            <span class="rel-tag">No.1 / 共同創業者</span>
+          </div>
+          <div class="rel-body">
+            Schmidt が10年支えた Google 共同創業者。 当時28歳。 2011年に CEO 復帰。 Schmidt の "adult supervision" 期間中に経営者として育ち、 Schmidt が退いた後の Google を Alphabet に再編した。 Schmidt にとって「育てて返した No.1」。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sergey Brin <span class="ja">セルゲイ・ブリン</span></div>
+            <span class="rel-tag">No.1 / 共同創業者</span>
+          </div>
+          <div class="rel-body">
+            Google のもう一人の創業者。 「Burning Man に行った CEO 候補」 を採用基準にした男。 Schmidt 期間中は技術と特殊案件 (X) を担当。 Schmidt にとって "もう一人の主君"。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sundar Pichai <span class="ja">スンダー・ピチャイ</span></div>
+            <span class="rel-tag">後継者 / 次世代 No.2</span>
+          </div>
+          <div class="rel-body">
+            Schmidt 自身が見出し、 育てた次世代の No.2。 2015年 Google CEO、 2019年 Alphabet CEO。 Schmidt が10年かけて作った構造を完成させた人物。 Schmidt → Page → Pichai の継承の連鎖。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">John Doerr <span class="ja">ジョン・ドーア</span></div>
+            <span class="rel-tag">後援者 / 投資家</span>
+          </div>
+          <div class="rel-body">
+            KPCB のパートナー。 Page・Brin に "adult supervision" を要求し続けた男。 OKR を Google に持ち込んだ人物でもある。 Schmidt を Google に紹介する原動力となった黒幕。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steve Jobs <span class="ja">スティーブ・ジョブズ</span></div>
+            <span class="rel-tag">推薦者 / 後の対立者</span>
+          </div>
+          <div class="rel-body">
+            Page・Brin に Schmidt を推薦した男。 後に Android が iPhone と競合した際、Schmidt と Apple 取締役での関係が破綻。 Schmidt の人生で最も複雑な対人関係。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Bill Campbell <span class="ja">ビル・キャンベル</span></div>
+            <span class="rel-tag">コーチ / メンター</span>
+          </div>
+          <div class="rel-body">
+            "The Coach of Silicon Valley"。 Schmidt と Page・Brin、 さらに Steve Jobs まで指導した伝説のコーチ。 Schmidt は後に評伝『Trillion Dollar Coach』を執筆。 No.2 を支える "コーチ型 No.3" の存在を世に示した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック</span></div>
+            <span class="rel-tag muted">比較対象 / 同時代</span>
+          </div>
+          <div class="rel-body">
+            Apple の継承型 No.2。 Schmidt = "対外翻訳型 + 引き際型" / Cook = "実装翻訳型 + 継承型" と役割が完全に分かれる。 同時代のシリコンバレー二大 No.2 の対照例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Wendy Schmidt <span class="ja">妻 / Wendy Boyle</span></div>
+            <span class="rel-tag muted">原点 / 妻</span>
+          </div>
+          <div class="rel-body">
+            UC Berkeley 大学院で出会った妻。 1980年結婚以来 45年。 オープンマリッジと噂されながらも、Schmidt Futures の共同設立者として慈善活動を共同運営。 Schmidt の "公的人格" の伴走者。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Eric_Schmidt" target="_blank">Eric Schmidt — Wikipedia (英語版)</a></li>
+        <li><a href="https://www.nbcnews.com/better/careers/what-google-found-burning-man-ceo-art-flow-n723856" target="_blank">What Google Found at Burning Man — NBC News</a></li>
+        <li><a href="https://www.linkedin.com/pulse/forgotten-ceo-saved-google-from-its-own-founders-gaurav-vishwkarma" target="_blank">The Forgotten CEO That Saved Google From Its Own Founders — LinkedIn</a></li>
+        <li><a href="https://www.cnbc.com/2017/12/21/eric-schmidt-is-stepping-down-as-the-executive-chairman-of-alphabet.html" target="_blank">Eric Schmidt is stepping down as the executive chairman of Alphabet — CNBC</a></li>
+        <li><a href="https://siliconangle.com/2020/05/10/eric-schmidt-bows-google-19-years/" target="_blank">Eric Schmidt bows out of Google after 19 years — SiliconANGLE</a></li>
+        <li><a href="https://www.techspot.com/news/79183-google-co-founder-larry-page-made-veiled-threat.html" target="_blank">Larry Page's veiled threat to leave Google in 2011 — TechSpot</a></li>
+        <li><a href="https://airmail.news/issues/2021-6-26/the-adulterer-in-the-room" target="_blank">Eric Schmidt's Open Marriage — Air Mail</a></li>
+        <li><a href="https://techcrunch.com/2011/01/20/techcrunch-interview-with-eric-schmidt-larry-page-and-sergey-brin/" target="_blank">TechCrunch Interview With Eric Schmidt, Larry Page And Sergey Brin (2011)</a></li>
+        <li>Eric Schmidt & Jonathan Rosenberg『How Google Works』(2014) — Google 経営の一次資料</li>
+        <li>Eric Schmidt, Jonathan Rosenberg & Alan Eagle『Trillion Dollar Coach』(2019) — Bill Campbell 評伝</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>

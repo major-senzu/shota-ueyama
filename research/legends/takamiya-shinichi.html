@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高宮 慎一 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* =================================== */
+  /* HERO (黒背景)                         */
+  /* =================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  /* =================================== */
+  /* SECTION COMMON                       */
+  /* =================================== */
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* =================================== */
+  /* ORIGINS (生い立ち・学歴)              */
+  /* =================================== */
+  .origins-head {
+    margin-bottom: 18px;
+  }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child {
+    border-top: none;
+  }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* =================================== */
+  /* TL;DR CALLOUT                        */
+  /* =================================== */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  /* =================================== */
+  /* TIMELINE (微分ポイント)               */
+  /* =================================== */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* DUO TIMELINE / RELATIONSHIP STAGES   */
+  /* =================================== */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* VALUE GRID                           */
+  /* =================================== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* TYPE NAMING (No.2の型)               */
+  /* =================================== */
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* =================================== */
+  /* LESSONS (翔太への設計図)              */
+  /* =================================== */
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* TRIVIA                               */
+  /* =================================== */
+  ul.trivia {
+    list-style: none;
+  }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* =================================== */
+  /* SOURCES                              */
+  /* =================================== */
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* =================================== */
+  /* RELATED PEOPLE                       */
+  /* =================================== */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* =================================== */
+  /* RESPONSIVE                           */
+  /* =================================== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history.html" class="nav-link">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="高宮"><img src="https://images.microcms-assets.io/assets/f99791ccaae94f50b03bcecf5656b592/b756c5955e204e08aa9364290a1b3719/shinichi-takamiya_2.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>高宮 慎一<span style="font-size:18px;font-weight:400;color:#999;margin-left:14px;letter-spacing:0;">Shinichi Takamiya</span></h1>
+        </div>
+      </div>
+      <p class="summary">
+        メーカー駐在員の父に連れられてイギリス・オランダで少年期を過ごした帰国子女。武蔵高校→東大経済→アーサー・D・リトル→ハーバードMBAという王道を歩み、2008年・29歳でグロービス・キャピタル・パートナーズ（GCP）に参画。創業者・堀義人さんがグロービスグループ全体（特に教育）を率いる傍ら、高宮さんはVC事業の現場に張りつき、メルカリ・カヤック・アイスタイル・ピクスタ等のIPOを支援。2019年に代表パートナー昇格。「<strong>起業家の背後にいる起業家</strong>」を信条とする、日本VC界の継承型No.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">堀 義人さん（グロービスグループ代表・GCP創業者 / 2008年〜現在 / 18年目）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1979年生まれ（推定・47歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">日本（幼少期に英・蘭で計約7年）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">Forbes JAPAN Midas List 2018年1位 / 2015年7位 / 2020年10位</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">アウトドア・キャンプ / レコード収集（学生時代から）/ デザイン・カルチャー領域のイベント企画</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父：メーカー勤務（海外駐在を経験）/ 母・兄弟構成は非公開</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">グロービス・キャピタル・パートナーズ 代表パートナー (2019–) / パートナー (2014–2019) / GCP参画 (2008) / アーサー・D・リトル コンサルタント (2002–2006頃) — 加えて：内閣府 起業家教育推進員、経産省「J-Startup」推薦委員、複数スタートアップ社外取・アドバイザー</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者のビジョンを起業家世代に翻訳した、ハンズオン継承型No.2</strong>」。
+        堀義人さんがグロービスグループ全体（教育・出版・スポーツ）に経営リソースを広げる中で、
+        高宮さんは<strong>VC事業のフィールド側</strong>を全部引き受けた。"VCはローカルに深く入り込む
+        相談相手であるべき" を実装した結果、<strong>"起業家の背後にいる起業家"</strong> という独自ポジションを確立。
+        メルカリ・カヤック・アイスタイル等のIPOを支え、Forbes Midas List 日本1位 (2018) に。
+        "資金調達は人気投票じゃない。共感してくれる1人をじっくり見つけて" — 彼の哲学を端的に表す言葉。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1979年（推定）日本生まれ</strong>。父はメーカー勤務で海外駐在を経験する家庭。父の転勤に伴い、幼少期から海外と日本を往復するライフスタイルを送る。<strong>「海外8年・帰国子女」</strong>というアイデンティティが、後の人物形成の決定的なベースとなる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            幼稚園年長〜小学1年: <strong>イギリス</strong>。小学5年〜中学3年: <strong>イギリス・オランダ</strong>に再赴任。
+            日本 → 英 → 日 → 英／蘭 → 日と<strong>2度の海外往復</strong>を経験。 各国で「自分はどこの人間なのか」を問い続けた経験が、 のちに「日本のスタートアップを世界で勝たせたい」という人生のテーマに直結する。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">原体験 / コンプレックス</div>
+          <div class="origins-body">
+            東洋経済のインタビュー (2019) で本人が語った原体験。<strong>「日本の同年代に追いつけないコンプレックス」と「海外を知っているからこそのプライド」</strong>が同居する青年期。 特に中3で帰国した際の "日本の受験文化" との衝突が大きかった。 これが <strong>「日本人としてグローバルで勝つ」</strong> という起業家観のベースに。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>武蔵高等学校（私立武蔵）</strong>。中学3年で英・蘭から帰国した後に編入・進学。 自由な校風・少人数制・教養主義の伝統で知られる学校。 受験エリート校というより<strong>「個性を伸ばす教育」</strong>のスタンスが、 高宮さんの "型にはめない経営者支援" の素地を作った。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>東京大学 経済学部（卒業論文 特選論文受賞）</strong>。在学中はネットバブル世代の真っ只中で、<strong>隣のゼミにミクシィ創業者・笠原健治さんがいた</strong>。 当時の東大には経営を学べるゼミが3つ。 "経営" と "起業" を間近で見ながらも、自分は<strong>レコード収集とイベント企画</strong>に没頭。 デザイナー・写真家・イラストレーターとカルチャー系イベントを企画する青年だった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>Harvard Business School・MBA（2年次優秀賞 / Second Year Honor）</strong>。 アーサー・D・リトル時代の途中でHBS留学。 卒業後 GCP に直接ジョインせず、コンサルに戻った後 2008 年に GCP 参画。 <strong>"日本人としてのアイデンティティを保持しつつ世界基準で訓練を受けた"</strong> 体験が、のちのグローバル投資哲学に直結する。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職</div>
+          <div class="origins-body">
+            <strong>アーサー・D・リトル ジャパン</strong>。世界最古の戦略コンサルティングファーム。 IT サービス・ソフトウェア企業向けに事業戦略・新規事業戦略・イノベーション戦略のプロジェクトをリード。 <strong>"事業の未来を構造で描く"</strong> 訓練を 6年積んだ後、 GCP に転じる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            帰国子女 × ネットバブル世代 × 戦略コンサル経験 = <strong>「グローバル目線で日本のスタートアップを再設計したい」</strong> という独特のスタンスが確立。 学生時代の "カルチャー側" の感性 と コンサルで鍛えた "構造思考" の両方を併せ持つ — これが後に "起業家に最も寄り添うVC" の原型になる。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"資金調達は人気投票じゃない。 共感してくれる1人をじっくり見つけて、 一緒に時間をかけて事業を育てていけばいい。"</div>
+        <div class="src">— 高宮 慎一さん / Startup Next インタビュー（VCとしての本人哲学を端的に表現した言葉）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1979</td>
+            <td>日本生まれ。父はメーカー勤務（海外駐在を経験する家庭）。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">5–7</td>
+            <td class="col-year">1984–86</td>
+            <td>父の転勤で<strong>1度目の英国赴任</strong>。幼稚園年長から小学1年まで現地で過ごす。 言語と文化のスイッチを初めて経験。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">10–14</td>
+            <td class="col-year">1989–94</td>
+            <td><strong>2度目の海外赴任（英・蘭）</strong>。小学5年〜中学3年までを欧州で過ごす。 多文化環境が "アイデンティティ" の問いを刻みつける。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">15</td>
+            <td class="col-year">1994</td>
+            <td>中3で帰国 → <strong>武蔵高校進学</strong>。"日本に追いつくコンプレックス" と "海外を知るプライド" の両立期。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">19</td>
+            <td class="col-year">1998</td>
+            <td><strong>東京大学経済学部入学</strong>。隣のゼミにミクシィ創業者・笠原健治さんがいた、ネットバブル直前の世代。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">20–23</td>
+            <td class="col-year">1999–02</td>
+            <td>東大時代、<strong>レコード収集とカルチャーイベント企画</strong>に没頭。 デザイナー・写真家・イラストレーターと組み、 "事業ではなく文化" を作る経験を積む。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23</td>
+            <td class="col-year">2002</td>
+            <td><strong>東大卒・卒業論文 特選論文受賞</strong> → アーサー・D・リトル ジャパン入社。 戦略コンサルとしてITサービス企業向け事業戦略を担当。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">2006</td>
+            <td><strong>Harvard Business School 留学</strong>。 卒業時 2年次優秀賞（Second Year Honor）。 MBA 在学中に <strong>VCというキャリア</strong> を強く意識する。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">2008</td>
+            <td><strong>グロービス・キャピタル・パートナーズ参画</strong>。創業者・堀義人さんの下でネットサービス・コンシューマー領域の投資を担当。 リーマンショック直後という最悪のタイミングだが、 これが後に "勝負所で動く" 投資スタイルを育てた。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2013</td>
+            <td><strong>メルカリ初期投資（GCP4号ファンド）</strong>。 山田進太郎さんが率いる新興フリマアプリに早期投資。 後のIPO・グローバル展開を伴走することになる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">36</td>
+            <td class="col-year">2015</td>
+            <td><strong>Forbes JAPAN Midas List 7位</strong>に初ランクイン。 投資家としての全国認知が確立。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2018</td>
+            <td><strong>Forbes JAPAN Midas List 1位</strong>。 メルカリ上場（時価総額 7,000億円超）が決定打。 日本VC界における "顔" になる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">40</td>
+            <td class="col-year">2019</td>
+            <td><strong>GCP代表パートナー就任</strong>。 創業者・堀義人さんからVC事業の表向きの代表を継承。 同時に今野穣さんが共同代表パートナーに。 "二代目" としての歩みが正式に始まる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">41</td>
+            <td class="col-year">2020</td>
+            <td>Forbes JAPAN Midas List 10位。 コロナ禍で <strong>"起業家の伴走者" としての価値</strong> が問われる時期、 ハンズオン支援を強化。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">46</td>
+            <td class="col-year">2025</td>
+            <td><strong>"二刀流スタートアップ" を提唱</strong>（Coral Capital Podcast）。 大谷翔平のように国内収益とグローバル展開を両立させるべき、と訴える。 GCP の投資テーマも consumer / web3 / healthcare に拡大。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（堀義人さん）との関係構造            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（堀 義人さん）との関係構造</h2>
+      <p>
+        堀義人さんは1992年に株式会社グロービス、1996年にグロービス・キャピタル・パートナーズ（GCP）を創業した、
+        日本のベンチャー業界の創世記の人物。<strong>「創造と変革の志士を育てる」</strong>を理念にグロービス経営大学院を開校し、
+        グロービスグループ全体を率いる "ビジョナリー創業者"。 高宮さんはその12年後 (2008年) に GCP に参画した
+        <strong>後発の若手パートナー</strong>だった。
+      </p>
+      <p>
+        高宮さんがGCPに参画した理由は、HBS時代に "VC = 起業家と同じ目線で事業を作れる職業" と気づいたことに加えて、
+        当時の日本VC界で<strong>堀さんが体現していた "教育とVCの両輪で起業家を育てる" モデル</strong>に共感したことが大きい。
+        本人インタビューの言葉:
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "VCの強みは、ローカルに深く入り込み、起業家の相談相手として身近な存在であること。 一方で投資先をハネさせる
+        ためには、グローバルに展開させていく必要がある。 そのバランスを取れる場所として、GCPは最適だった。"<br>
+        — 高宮 慎一さん（FastGrow / 東洋経済オンライン 等のインタビューを基に再構成）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">創業者の理念に共感</div>
+          <div class="stage-body">2008年、29歳の高宮さんは戦略コンサル＋HBSという経歴で GCP に参画。 創業者・堀さんは <strong>"教育で日本にアントレプレナーを増やす"</strong> という大きな器を提示した。 高宮さんは <strong>"その器の中で具体的に投資・伴走する"</strong> 役割を選んだ。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">"起業家の背後にいる起業家"</div>
+          <div class="stage-body">堀さんが教育・出版・スポーツへ手を広げる中、 高宮さんは<strong>VC現場のフィールドワーク</strong>を全部引き受ける。 アイスタイル・カヤック・ピクスタ等のIPO支援を通じて "創業者にハンズオンで寄り添えるVC" としての評判が確立する。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">メルカリ・Forbes 1位</div>
+          <div class="stage-body">2013年のメルカリ早期投資が当たり、 2018年にForbes Midas List 日本1位。 GCPの "顔" として外向きの広報・出資先候補との接点を担う。 創業者・堀さんは大局観、 高宮さんは現場の伴走 — <strong>"内と外、抽象と具体" の役割分担</strong>が明確化。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継承</div>
+          <div class="stage-title">代表パートナーへ</div>
+          <div class="stage-body">2019年、 高宮さん40歳で代表パートナー就任。 共同代表として今野穣さん、 そして創業者・堀さんも代表パートナーのまま残るという <strong>"3者並列体制"</strong>。 完全継承ではなく <strong>"ビジョンは創業者、実装は次世代"</strong> という日本型継承の典型例。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        高宮さんの興味深い点は、<strong>"自分で起業しなかった"</strong> ことを明確に選んだ点。 ネットバブル世代の東大生として
+        起業の機会は十分にあったが、彼は "起業家の隣に立つ" 道を選んだ。 これは "なれなかったNo.2" ではなく、
+        <strong>"自覚的にならなかったNo.2"</strong> である。
+      </p>
+      <p>
+        本人の発言を裏読みすると、その理由は<strong>「カルチャーへの愛」と「構造思考」の両立</strong>を活かす場所が
+        VC だったから。 起業家になればビジネス1本に絞らざるを得ないが、 VC なら <strong>複数の起業家のカルチャーに
+        寄り添いながら、戦略コンサル時代の "事業を構造で描く" 訓練を活かせる</strong>。 帰国子女として "1つの旗" に染まれない
+        アイデンティティの構造とも相性が良い。
+      </p>
+      <p>
+        高宮さんの言葉: <strong>"起業家の背後にいる起業家"</strong>。 これは "黒子" ではない。 起業家と同じ熱量で事業を考え、
+        ただし<strong>意思決定権は起業家に渡し続ける</strong>。 GCP内では創業者・堀さんに対しても同じ姿勢: 大局観は堀さんに任せ、
+        自分はVC現場の意思決定を握る。 この <strong>"立場の使い分け"</strong> が、彼を最強のNo.2たらしめている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv"><strong>戦略コンサル × HBS × VC</strong>。 ITサービス業界の事業戦略をコンサルとして設計してきた知見を、 起業家のグロース局面（PMF後〜上場前）の<strong>"事業の整流化"</strong>に投下。 デザイン思考・成長戦略・ファイナンスを横串で扱える日本では稀少なVCタイプ。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv"><strong>翻訳 (Translation) × 補完 (Complement)</strong>。 創業者・堀さんの "教育で日本を変える" 大局観を、 個別の起業家にとって意味のある<strong>"資金と伴走"</strong> という具体に落とす。 また、 帰国子女背景を活かし、 投資先のグローバル展開（北米・東南アジア進出）を翻訳・橋渡しする役割。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">高宮さんがいなければ、 GCPは <strong>"教育会社が片手間でやるVC"</strong> 止まりだった可能性が高い。 メルカリのIPOにつながる早期投資、 アイスタイル/カヤック/ピクスタ等の <strong>"日本のコンシューマーITの中核IPOを支えるVC"</strong> としての立ち位置は、 高宮さんの現場感覚と起業家との関係性によって築かれた。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">2019年代表パートナー就任後は、 GCPの投資テーマを <strong>consumer / web3 / healthcare</strong> へ拡張。 "二刀流スタートアップ" 構想で<strong>日本のスタートアップを「内需 + グローバル」両軸で勝たせる</strong>方法論を提唱。 J-Startup推薦委員等、官民の起業家育成インフラにも貢献。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2008年・リーマンショック直後のジョイン。</strong> アーサー・D・リトル + HBS という安全な経歴を捨て、
+        29歳で日本のVCに飛び込んだ瞬間、世界は金融危機で凍りついていた。 投資業界が縮小する局面で <strong>"投資" を職業にする選択</strong>
+        は、 同期の戦略コンサル組と比べれば明らかに非合理。 だが、 この逆風期にスタートした経験が、 後の "勝負所で動く" スタンスを育てた。
+      </p>
+      <p>
+        <strong>② 2013年・メルカリへの早期投資判断。</strong> 当時のメルカリは創業1年未満、 フリマアプリは飽和すると見られていた市場。
+        山田進太郎さんの過去のexit (ウノウ) は知名度はあったが業界からは "次もうまくいく保証はない" と見られていた。
+        そこに <strong>"消費者の行動変容を信じる"</strong> 仮説で投資した判断が、 のちに国内最大級のスタートアップを生む。
+        VC業界に "消費者を見るコンシューマー枠" の重要性を再認識させた決断。
+      </p>
+      <p>
+        <strong>③ 2019年・代表パートナー就任のタイミング。</strong> 創業者・堀さんが代表のまま残る中で、 高宮さん（40歳）と
+        今野穣さんが共同代表に就任。 "創業者が現役のまま継承を始める" のは、 日本企業ではうまくいかない例が多い。 これを
+        <strong>"3者並列体制"</strong> として<strong>機能させる調整役</strong>を担うのが、 ここからの試練。 創業者を立てつつ、 自分の世代の意思決定権を握る
+        — この微妙なバランス感覚が今も問われている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2026年現在、 高宮さん（47歳）は<strong>引き際を迎えていない現役No.2</strong>。 ここはTim Cookとは異なり、
+        評価が "未確定" のフェーズ。 ただし継承の<strong>受け手側</strong>としては、 すでに2019年に堀さんから代表パートナー
+        を引き継いだ実績がある。
+      </p>
+      <p>
+        高宮さんの特徴は、 <strong>創業者・堀さんを尊重しながら GCPの "顔" を実質的に引き継いだ</strong> こと。
+        日本企業の世襲・継承では「創業者が代表を残したまま実質支配が続く」例が多いが、 GCPでは<strong>VC事業の現場意思決定が
+        高宮さん・今野さんに移っている</strong>。 これは創業者と新世代の<strong>"明確な役割分割"</strong> による継承の成功例。
+      </p>
+      <p>
+        次の問いは、 高宮さん自身が<strong>後進への継承をどう設計するか</strong>。 GCP内にはすでに福島智史さん・湯浅エムレ秀和さん
+        ら次世代パートナーが育っており、 高宮さんが "教育" 領域へ重心を移すことで、 堀さん→高宮さん→次世代という<strong>3代継承</strong>が
+        日本VC界の新たなモデルになる可能性がある。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">高宮 慎一さんの No.2 型</div>
+        <div class="type-name">翻訳型 × 継承型</div>
+        <div class="type-body">
+          創業者・堀義人さんの "教育で日本を変える" という大局観を、 個別の起業家にとっての
+          <strong>"資金 × 伴走 × グローバル翻訳"</strong> という具体に落とす。 創業者が大局を語り、 高宮さんが現場で実装する
+          という<strong>"抽象と具体" の役割分担</strong>を貫いた結果、 GCPは "教育会社の片手間VC" ではなく
+          "日本VC界のトップティア" のポジションを獲得した。
+          <br><br>
+          ▸ <strong>補完型</strong> でもある: 帰国子女のグローバル目線とコンサルの構造思考は、 純血の "教育畑" 出身の堀さんが
+          直接は提供しづらい価値。 補完して初めてGCPの今のポジションがある。
+          <br><br>
+          ▸ <strong>翻訳型</strong> としての真価は、 <strong>"日本人としてグローバルで勝つ"</strong> 文脈を一貫して翻訳し続けたこと。 国内向けには
+          海外を、 海外向けには日本を翻訳する <strong>"双方向の翻訳者"</strong>。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">起業家の「同志」になれ、 「黒子」になるな</div>
+          <div class="lesson-body">
+            高宮さんは <strong>"起業家の背後にいる起業家"</strong> という言葉を使う。 これは黒子ではなく "同志"。
+            起業家と<strong>同じ熱量・同じ視界</strong>で事業を考え、 ただし最終的な意思決定権は起業家に渡し続ける。
+            これは Wanderlust の翔太の立ち位置にもそのまま使える哲学 — クライアントの「同志」として共に走る。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者の「大局観」を立て、 自分は「現場の翻訳者」になれ</div>
+          <div class="lesson-body">
+            高宮さんは堀さんを直そうとせず、 <strong>堀さんの大局観を起業家世代に翻訳する</strong> 役割を引き受けた。
+            創業者がすでに大きな器を作っている組織のNo.2は、 自分のビジョンを上書きするのではなく、
+            <strong>"創業者の言葉を時代と現場の言葉に変換し続ける"</strong> ことに本気を出すべき。 翻訳は最強の継承戦略。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">「資金調達は人気投票じゃない」 — 1人を深く射抜け</div>
+          <div class="lesson-body">
+            高宮さんの言葉: <strong>"共感してくれる1人をじっくり見つけて、 一緒に時間をかけて事業を育てていけばいい"</strong>。
+            VCのみならず、 すべての関係構築に通じる原則。 100人にバラ撒くのではなく、 <strong>"深く理解してくれる1人"</strong>
+            と長期で組む。 翔太のキャリア・パートナー選定・クライアント選定のすべてに効く判断軸。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>X (Twitter) のハンドルは <strong>@s1kun</strong>（"Shin1kun"）。 VC界隈・スタートアップ起業家との情報交換のメインチャネル。 投稿は穏やかで起業家への激励が中心。</li>
+        <li>東大時代の趣味は <strong>レコード収集とカルチャーイベント企画</strong>。 デザイナー・写真家・イラストレーターと組み、 アート寄りのイベントを学生主催で開催していた。</li>
+        <li>少年期に <strong>イギリス・オランダで計約7年</strong> を過ごした帰国子女。 父はメーカー駐在員。 言語と文化のスイッチを早期から経験している。</li>
+        <li>武蔵高校 → 東大経済 → アーサー・D・リトル → HBS という経歴で、 卒論は <strong>"特選論文"</strong>受賞、 HBSは <strong>"2年次優秀賞"</strong> と、 各段階で学術的に上位。</li>
+        <li>東大時代、 隣のゼミにミクシィ創業者・<strong>笠原健治さん</strong>がいた。 ネットバブル世代の起業熱を間近で見ながら、 自分は事業ではなく "カルチャー" 側に没頭していた。</li>
+        <li>趣味の <strong>アウトドア・キャンプ</strong>。 Spacekey の "アウトドア履歴書" 連載に登場。 仕事の対極にある "デジタルから離れる時間" を意識的に確保している。</li>
+        <li>投資哲学の象徴句: <strong>"VCはローカルに深く入り込む相談相手で、 投資先をハネさせるためにグローバルへ展開させる"</strong>。 ローカル × グローバルの両軸を同居させるのが彼の流儀。</li>
+        <li>2025年のCoral Capital Podcast出演で <strong>"スタートアップ版・大谷翔平"</strong> という表現を提唱。 国内収益（投手）と海外展開（打者）の<strong>二刀流</strong>こそが日本の勝ち筋、 と語った。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">堀 義人さん <span class="ja">ほり よしひと</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            グロービスグループ代表、 GCP創業者。 1992年グロービス設立、 1996年GCP設立、 2006年グロービス経営大学院学長就任。 "創造と変革の志士を育てる" 理念で日本の起業エコシステムを創った人物。 高宮さんが2008年に参画して以来、 18年間の "創業者と若手パートナー" の関係。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">今野 穣さん <span class="ja">こんの みのる</span></div>
+            <span class="rel-tag">並列 No.2 / 共同代表</span>
+          </div>
+          <div class="rel-body">
+            GCPの<strong>もう1人の代表パートナー</strong>。 高宮さんと同年に代表昇格 (2019)。 高宮さんがコンシューマー・グロース系を担当する一方、 今野さんはB2B・SaaS・ディープテック寄り。 二人の役割分担で GCPは "幅広いVC" として成立している。 並列No.2が機能している珍しいケース。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">福島 智史さん・湯浅エムレ秀和さん <span class="ja">次世代パートナー</span></div>
+            <span class="rel-tag">後継候補 / 次世代</span>
+          </div>
+          <div class="rel-body">
+            GCPのパートナー陣。 高宮さんから次の世代への継承先候補。 福島さんは web3・ファンダメンタル系、 エムレさんはB2Bソフトウェア領域。 高宮さんが "教育・大局" 側にシフトすれば、 ここが現場の意思決定を担う3代目になる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">山田 進太郎さん <span class="ja">やまだ しんたろう</span></div>
+            <span class="rel-tag">投資先 / 象徴起業家</span>
+          </div>
+          <div class="rel-body">
+            メルカリ創業者。 GCPが2013年に早期投資し、 高宮さんがハンズオンで伴走。 2018年のメルカリ上場 (時価総額7,000億円超) は、 高宮さんがForbes Midas List 1位を取る決定打となった。 "起業家の背後にいる起業家" の最も象徴的な事例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">James W. Higa, Yamamoto Naoki他 <span class="ja">並列 VC界の同世代</span></div>
+            <span class="rel-tag muted">同時代 / VC</span>
+          </div>
+          <div class="rel-body">
+            Coral Capital (旧500 Startups Japan) のJames Riney氏、 ANRIの佐俣アンリ氏ら同世代のVC。 Forbes Midas List で常に上位を競う。 "創業者のVC" のアンリ氏に対し、 高宮さんは "継承パートナーのVC" という対比構造。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">笠原 健治さん <span class="ja">かさはら けんじ</span></div>
+            <span class="rel-tag muted">比較対象 / 起業家側の同期</span>
+          </div>
+          <div class="rel-body">
+            ミクシィ創業者。 東大時代、 高宮さんの隣のゼミにいた "ネットバブル世代の起業家"。 笠原さんが起業家として億万長者になったのに対し、 高宮さんは "起業家の隣に立つ" 道を選んだ。 同じ環境から逆方向に分岐した好対照。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Ben Horowitz <span class="ja">ベン・ホロウィッツ</span></div>
+            <span class="rel-tag muted">比較対象 / 海外No.2型VC</span>
+          </div>
+          <div class="rel-body">
+            a16z共同創業者。 Marc Andreessenとの2人体制で世界トップVCを築いた "並列No.2型"。 起業家経験を持つVCという点で高宮さんとは経歴が違うが、 "起業家への深い共感" を武器にする思想は共通。 海外VCの "No.2モデル" の参考事例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">父（メーカー駐在員） <span class="ja">原点 / 海外経験の与え手</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            メーカー勤務で英・蘭への駐在を経験した父。 高宮さんに <strong>"日本を出て世界を見る原体験"</strong> を与え、 後の "グローバル翻訳者" としての軸を作った人物。 名前・職種詳細は非公開だが、 高宮さんの帰国子女アイデンティティのルーツ。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://www.globiscapital.co.jp/ja/team/shinichi-takamiya" target="_blank">高宮 慎一 | Team — グロービス・キャピタル・パートナーズ 公式</a></li>
+        <li><a href="https://toyokeizai.net/articles/-/332076" target="_blank">投資家「高宮慎一」生んだ憧れとコンプレックス — 東洋経済オンライン (2019)</a></li>
+        <li><a href="https://jp.smartround.com/startup-next/post/globis-takamiya" target="_blank">「資金調達は人気投票じゃない」高宮慎一さん — Startup Next</a></li>
+        <li><a href="https://www.fastgrow.jp/people/623" target="_blank">高宮 慎一 — FastGrow 人物ページ</a></li>
+        <li><a href="https://an-life.jp/article/111" target="_blank">「帰国子女・ネットバブル世代。だから日本からグローバル企業を創りたい」— another life. インタビュー</a></li>
+        <li><a href="https://listen-web.com/story/takamiya-shinichi" target="_blank">「目指すはデカコーン。日本にグローバル産業を育てたい」— LISTEN ストーリー</a></li>
+        <li><a href="https://coralcap.co/2025/01/globis-capital-partners-shinichi-takamiya-on-building-the-shohei-ohtani-of-startups/" target="_blank">"Building the Shohei Ohtani of Startups" — Coral Capital Podcast (2025)</a></li>
+        <li><a href="https://www.linkedin.com/in/shin1/" target="_blank">Shinichi Takamiya — LinkedIn (経歴・現職一次情報)</a></li>
+        <li><a href="https://keyplayers.jp/archives/5230/" target="_blank">VCとして日本の起業家と世界を見る高宮慎一さんの掲げるビジョン — Key Players</a></li>
+        <li><a href="https://www.globiscapital.co.jp/ja/team/yoshito-hori" target="_blank">堀 義人 | Team — GCP公式（No.1の経歴情報）</a></li>
+        <li><a href="https://x.com/s1kun" target="_blank">高宮慎一 (@s1kun) X / Twitter — 本人の発信メインチャネル</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>

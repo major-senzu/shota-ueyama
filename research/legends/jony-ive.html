@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jony Ive — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* =================================== */
+  /* HERO (黒背景)                         */
+  /* =================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  /* =================================== */
+  /* SECTION COMMON                       */
+  /* =================================== */
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* =================================== */
+  /* ORIGINS (生い立ち・学歴)              */
+  /* =================================== */
+  .origins-head {
+    margin-bottom: 18px;
+  }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child {
+    border-top: none;
+  }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* =================================== */
+  /* TL;DR CALLOUT                        */
+  /* =================================== */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  /* =================================== */
+  /* TIMELINE (微分ポイント)               */
+  /* =================================== */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* DUO TIMELINE / RELATIONSHIP STAGES   */
+  /* =================================== */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* VALUE GRID                           */
+  /* =================================== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* TYPE NAMING (No.2の型)               */
+  /* =================================== */
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* =================================== */
+  /* LESSONS (翔太への設計図)              */
+  /* =================================== */
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* TRIVIA                               */
+  /* =================================== */
+  ul.trivia {
+    list-style: none;
+  }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* =================================== */
+  /* SOURCES                              */
+  /* =================================== */
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* =================================== */
+  /* RELATED PEOPLE                       */
+  /* =================================== */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* =================================== */
+  /* RESPONSIVE                           */
+  /* =================================== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history.html" class="nav-link">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="JI"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Jonathan_Ive_%28OTRS%29.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+      <h1>Jony Ive</h1>
+        </div>
+      </div>
+      <p class="summary">
+        ロンドン郊外の銀細工師の家に生まれ、ディスレクシアを抱えながら "手で考える子ども" として育った
+        英国人デザイナー。25歳で Apple に入り辞めかけていた1997年、Steve Jobs と運命的に出会う。 iMac
+        から iPhone まで、Jobs の哲学を "触れる形" に翻訳しつづけた27年間。 Jobs に "If I had a
+        spiritual partner at Apple, it's Jony" と呼ばれた、製品哲学のNo.1にとっての美学のNo.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Steve Jobs（Apple 創業者・1997–2011 / 14年間）／ Tim Cook（2011–2019 / 8年間）／ Sam Altman（OpenAI・2024–）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1967年（59歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">Chingford, London（英国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / ストレート</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $400–700M（2026）／ KBE 受勲</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 Heather Pegg（高校時代から / 1987年結婚・20歳）／ 双子の息子 Charlie & Harry</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">クラシックカー（学生時代から Fiat 500）／ Goodwood Festival of Speed 常連 / 写真</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Michael John Ive（銀細工師・Middlesex Polytechnic 講師）／ 母 Pamela Mary Ive（精神療法士）／ 妹 Alison（2歳下）／ 祖父 = エンジニア</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">LoveFrom 創業者 (2019–) / Apple Chief Design Officer (2015–2019) / SVP Industrial Design (1997–2015) / Royal College of Art Chancellor (2017–) / British Museum Trustee (2025–) / KBE (2012)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>No.1 のビジョンを "触れる形" に翻訳しつづけた、美学の翻訳者型 No.2</strong>」。
+        Jobs はビジョンを語り、Ive はそれを <strong>1mmのR・1nmの面取り・1色のアルマイト</strong> に
+        落とした。 Jobs と Ive のオフィスは渡り廊下で直結され、ふたりは毎日昼食を共にしていた。
+        Jobs は Ive を "spiritual partner" と呼び、 Laurene Powell Jobs は "Most people in Steve's
+        life are replaceable. But not Jony." と語った。 No.1 が消えた後、Ive はトップに座らず、
+        <strong>沈黙のまま8年で退き</strong>、 LoveFrom を作って次の No.1（Sam Altman）を選んだ。
+        ——No.1 にならない覚悟を、3度繰り返した男。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1967年2月27日</strong>、英国ロンドン郊外 <strong>Chingford</strong> 生まれ。父 <strong>Michael John Ive</strong> は<strong>銀細工師（silversmith）</strong>で、後に Middlesex Polytechnic で工芸を教える。母 <strong>Pamela Mary Ive</strong> は精神療法士。 祖父はエンジニア。 妹 Alison は2歳下。 「<strong>手で作ること</strong>」と「<strong>心を読むこと</strong>」が同居する家庭——後の Ive の "プロダクトに感情を宿す" 哲学の原型。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            <strong>"分解する子ども"</strong>。 ラジオ・カセットレコーダーを片端から開けて、 "どうやって組み立てられているか" "どの部品がどの部品と噛み合うか" を執拗に観察した。 父の銀細工工房に出入りし、 物の構造と素材の関係を体得した。 父は息子を毎週工房に連れていき、 ハンマーでアルミを打つ・板金を曲げる・ロウ付けをする工程を教えた。 「夏休みは大学に行って、好きなものを一日で作って良いプロジェクトをしよう」——父からのこの誕生日プレゼントが、後にすべての出発点となる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">いじめ・困難</div>
+          <div class="origins-body">
+            Walton High School 時代に <strong>ディスレクシア（識字障害）</strong> と診断される。 "言葉で考える" のが困難だった少年は、 必然的に "<strong>形と素材で考える</strong>" 方向に進んだ。 後に Ive は語る ——「ディスレクシアがなければ、私はデザイナーになっていなかった」。 <strong>弱点が才能の入り口</strong>になる、典型的なケース。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>Chingford Foundation School</strong>（David Beckham と同窓）→ Stafford の <strong>Walton High School</strong> へ転校。 ここで生涯のパートナー <strong>Heather Pegg</strong>（後の妻、英国の作家）と出会う。 1987年、20歳で結婚。 高校時代から既に "車・素材・形" への執着が際立っていた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Northumbria University（当時 Newcastle Polytechnic）工業デザイン学科（1985–1989・BA）</strong>。 学費は地元のデザイン会社 <strong>Roberts Weaver Group</strong> に奨学金として援助してもらった代わりに、 卒業後同社で働く約束をした。 在学中に <strong>Royal Society of Arts (RSA) Student Design Award を 2 度受賞</strong>。 卒業制作は補聴器のデザインで、 「機能ではなく "つけたいと思える形"」を追求した。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">初の挫折</div>
+          <div class="origins-body">
+            Roberts Weaver Group での仕事は短く、 1990年に独立して友人と <strong>Tangerine</strong>（ロンドンの工業デザイン事務所）を共同創業。 ここで Apple との接点ができる。 <strong>22歳で起業</strong>、25歳で Apple へ——だが起業家の生活は孤独で、 「自分が信じる美学を実装できる場所」を探していた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>言葉ではなく形で世界を考える</strong>」アイデンティティが完成。 父の銀細工の工程・ディスレクシアの経験・RSA Award の自信——これらが「<strong>素材と工程で語る無口な美学者</strong>」というキャラクターを作った。 Ive がのちに Jobs と "話さなくても通じる" 関係を築けたのは、ここに源流がある。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"My dad was very clear with me that you must understand how something is made before you design it. You can't design what you don't understand."</div>
+        <div class="src">— Jony Ive（父 Michael Ive から受け継いだ哲学。"理解なき美はない" を生涯の原則とした）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1960</td>
+            <td>英国ロンドン郊外 Chingford 生まれ。父は銀細工師、母は精神療法士。"工房と心理療法士" の家庭で育つ。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">~12</td>
+            <td class="col-year">~1979</td>
+            <td>Walton High School 時代にディスレクシアと診断される。"言葉でなく形で考える" 方向へ。<strong>弱点が才能の入り口</strong>。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">~17</td>
+            <td class="col-year">~1984</td>
+            <td>Walton High で Heather Pegg と出会う。後の妻。10代から生涯の伴侶を見つけ、人生を "外周固定・内側集中" の構造にした。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">1989</td>
+            <td>Northumbria University（Newcastle Polytechnic）工業デザイン卒。在学中に <strong>RSA Student Design Award を2度受賞</strong>。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23</td>
+            <td class="col-year">1990</td>
+            <td>友人と <strong>Tangerine</strong>（ロンドンの工業デザイン事務所）を共同創業。Apple との接点ができる。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">1992.09</td>
+            <td><strong>Apple 入社</strong>。Cupertino へ移住。だが入社直後の Apple は "デザインがどうでもいい会社"。フラストレーションで <strong>何度も辞めかけた</strong>。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">1996</td>
+            <td>Apple Industrial Design 部長に昇格。だが Apple は瀕死、辞表を引き出しに用意していた。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">1997</td>
+            <td><strong>Steve Jobs が Apple に復帰、地下のデザインスタジオに降りてくる</strong>。「圧倒された。これほど強い繋がりは感じたことがなかった」。 Ive が辞めなかった唯一の理由。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">1998</td>
+            <td><strong>iMac G3 発表</strong>。透明ボディと取っ手付きデザイン。 Apple を倒産から救う製品となり、 Jobs–Ive コンビの神話が始まる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2001</td>
+            <td>iPod 発表。"1000 songs in your pocket" の物体化。 ホイールUIと白いプラスチック筐体は Ive の作。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">40</td>
+            <td class="col-year">2007</td>
+            <td><strong>iPhone 発表</strong>。フォームファクターは Ive 作。 21世紀のオブジェクトを定義した。 Jobs と Ive のオフィスは渡り廊下で直結。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">44</td>
+            <td class="col-year">2011.10</td>
+            <td><strong>Steve Jobs 死去</strong>。 Ive は葬儀で弔辞を読み、 Jobs を "my closest and most loyal friend" と呼ぶ。 <strong>パートナーを失う</strong>。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">2012</td>
+            <td><strong>KBE（Knight Commander of the Order of the British Empire）受勲</strong>。 母国英国から最高位の栄誉。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2015</td>
+            <td><strong>Chief Design Officer (CDO) 昇格</strong>。 Hardware と Software の両デザインを統括。 だが Tim Cook 体制下で <strong>デザインスタジオへの関心が低下</strong>。徐々に消耗。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">2019.06</td>
+            <td><strong>Apple 退社発表（27年勤続）</strong>。 「文化が変わった」と語る。 Tim Cook はこれを "absurd" と否定したが、 内実は Cook と Ive の哲学的距離。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">2019</td>
+            <td>Marc Newson と <strong>LoveFrom</strong> を設立。 Apple は最初のクライアント。 後に Ferrari・Airbnb・OpenAI と契約。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">57</td>
+            <td class="col-year">2024</td>
+            <td>NYT が <strong>LoveFrom と OpenAI が AI ハードウェアを開発中</strong> と報じる。 Sam Altman との新たなパートナーシップが公になる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">58</td>
+            <td class="col-year">2025.05</td>
+            <td><strong>OpenAI が io（Ive のハードウェア会社）を $6.5B で買収</strong>。 LoveFrom が OpenAI 全体のクリエイティブ責任を担う契約。 60歳手前で <strong>2人目の No.1 を見つけた</strong>。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（Steve Jobs）との出会いと関係構造    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Steve Jobs）との関係構造</h2>
+      <p>
+        1997年、Apple は90日で倒産すると言われていた。 Ive は29歳で Industrial Design 部長になっていたが、
+        辞表を引き出しに用意し続ける日々。 そこに Jobs が <strong>NeXT 経由で Apple に復帰</strong>、 地下の
+        デザインスタジオに自ら降りてきた。 これが Ive の人生を変える瞬間だった。
+      </p>
+      <p>
+        Ive が後に語った場面: "I was enormously intimidated, and he came to the design studio, and
+        immediately there was a connection that was so powerful and so strong." Jobs はその場で、
+        山積みのプロトタイプを見て、 即座にこの男の才能を見抜いた。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Jony has more operational power than anyone else at Apple except me. There's no one who
+        can tell him what to do, or to butt out. That's the way I set it up."<br>
+        — Steve Jobs（Walter Isaacson『Steve Jobs』2011）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">辞表を破った日</div>
+          <div class="stage-body">1997年、辞めかけていた30歳の Ive の前に、 復帰した Jobs が地下のスタジオに現れる。 「圧倒された」「即座に強い繋がりを感じた」。 引き出しの辞表は捨てられ、 27年の Apple 生活が始まる。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">渡り廊下のオフィス</div>
+          <div class="stage-body">Jobs は Ive のオフィスを <strong>自分のオフィスと渡り廊下で直結</strong> させた。 ふたりは毎日昼食を共にし、 製品の細部を語り合った。 Jobs は Ive にだけ「Apple で誰よりもオペ権力がある」と公式に認めた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">Spiritual Partner</div>
+          <div class="stage-body">Jobs = ビジョン・製品哲学 / Ive = それを <strong>"触れる形"</strong> に翻訳。 Jobs は Ive を "spiritual partner" と呼び、 Laurene Powell Jobs は "Most people in Steve's life are replaceable. But not Jony" と語る。 iMac/iPod/iPhone/iPad を共に世に出した。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 別離</div>
+          <div class="stage-title">最後の言葉</div>
+          <div class="stage-body">2011年、 Jobs の死の床で。 Ive は床に座り、 ベッドの脇で背中を壁に預けた。 "Steve's last words to me were that he would miss talking together." 弔辞では Jobs を "my closest and most loyal friend" と呼んだ。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Ive は <strong>"ならなかった No.2"</strong>。 CEO になる素質は十二分にあったが、 一度たりともトップを目指す
+        姿勢を見せなかった。 Jobs の死後、 後継者として名前が挙がっても固辞。 Tim Cook が CEO になる流れを
+        妨げず、 自分は <strong>美学の領域に留まった</strong>。
+      </p>
+      <p>
+        理由は、Ive にとって <strong>"作る人" であり続けること</strong> が最も重要だったから。 ディスレクシアで
+        言葉が苦手な彼にとって、 経営会議や投資家対応は本質的に苦痛だった。 父の銀細工工房で覚えた
+        「<strong>手で考える</strong>」感覚を失わない、それが彼の人生戦略。
+      </p>
+      <p>
+        Ive 自身の言葉: "I think we have a more profound relationship with objects than people often
+        realize." — 物との関係こそが、 Ive の存在理由。 Jobs を相棒として選んだのは、 Jobs もまた "製品" を
+        信仰していたから。 ふたりの関係は <strong>"製品教の信徒同士"</strong> だった。 Jobs を失った時、 Ive は
+        信仰の半分を失い、 8年かけて Apple から完全離脱した。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">工業デザイン / 素材エンジニアリング。 アルミ削り出し・ガラス曲面・ホワイトプラスチック・アルマイト処理を <strong>製品言語</strong> として確立。 「製造工程まで含めて美しい」という Apple の物理哲学を一人で築いた。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 (Translator) × 補完 (Complement)。 Jobs の哲学（"シンプルである" "最も少ない要素で最大の表現を"）を <strong>1mmの面取り・1色のアルマイト・1gの軽量化</strong> に翻訳。 抽象を物質化する役割。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Ive がいなければ、 iMac は普通の灰色PCのまま、 iPod はSony製コピー、 iPhone は Blackberry 風キーボード端末になっていた可能性が高い。 Apple の "見て触って分かる差別化" は Ive の存在に依存していた。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">2019年退社後、 LoveFrom を通じて <strong>Apple・Ferrari・Airbnb・OpenAI</strong> という4つの世代代表企業のデザインに関与。 io 売却で OpenAI のフルクリエイティブ責任。 No.1 を変えても <strong>"美の翻訳者" の役割は変わらない</strong>。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 1996年、辞表を破らずに残した日々。</strong> Jobs 復帰前の Apple は、 デザイン軽視の重病人。
+        Ive は何度も辞表を書きかけ、 引き出しに入れたまま帰宅した。 「あと半年で辞めよう」を3年続けた。
+        この <strong>"あと半年" の忍耐</strong> が、 Jobs と出会う偶然の前提となった。
+      </p>
+      <p>
+        <strong>② 2011年、 Jobs の死。</strong> 14年間 spiritual partner として並走した相手の死。 Ive は
+        弔辞を読み、 葬儀後しばらく公の場から消えた。 「何度も泣いた」と妻 Heather が証言。 Ive は
+        この後 8年かけて Apple との距離を取っていく。 <strong>"半身を失った人間が、もう半身で歩き続けた8年"</strong>。
+      </p>
+      <p>
+        <strong>③ 2015–2019、 Tim Cook 体制下の消耗。</strong> Cook は経営者として優秀だが、 デザイン
+        スタジオに来るのは年に数回だけ。 Apple Watch をめぐって、 Ive が押す "ファッション軸" と Cook
+        が押す "フィットネス軸" がぶつかる。 Ive は CDO に昇格しても <strong>"無関心の上位者"</strong> の下で
+        働き続け、 燃え尽きた。 2019年の退社は、戦いではなく <strong>沈黙の撤退</strong>。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2019年6月、 Ive は <strong>27年勤続の Apple を退社</strong> 発表。 後任は明確に置かず、 Hardware
+        を Evans Hankey、 Software を Alan Dye が分担し、 COO の Jeff Williams にレポートする体制
+        に。 Ive 自身は <strong>"後継者を作らなかった"</strong> ——彼の役割は本人にしかできない、 という
+        暗黙のメッセージ。
+      </p>
+      <p>
+        引き際の特徴は <strong>"沈黙の美学"</strong>。 Jobs 派 vs Cook 派の派閥闘争にせず、 公の場で
+        Cook を批判せず、 LoveFrom 設立時には Apple を最初のクライアントとして迎えた。 Cook 体制と
+        の哲学的距離を、 喧嘩ではなく <strong>地理的距離（San Francisco の自宅オフィス）</strong> で
+        解決した。
+      </p>
+      <p>
+        そして 2024–2025年、 Sam Altman と組んで <strong>OpenAI の io を $6.5B で売却</strong>。 60歳手前で
+        2人目の No.1 を見つけ、 「No.2 として再び始める」道を選んだ。 引退ではなく、 <strong>新しい依存先
+        への移籍</strong>——Ive にとって "誰かの右腕" であることが人生の形態だった。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Jony Ive の No.2 型</div>
+        <div class="type-name">翻訳型 × 全う型</div>
+        <div class="type-body">
+          創業者の哲学を <strong>"触れる形"</strong> に翻訳する役割を、 生涯にわたって全うする型。 トップになる
+          素質はあったが、 一度たりとも目指さなかった。 ディスレクシアによる "言葉ではなく形で考える"
+          特性が、 そのまま No.2 のアイデンティティを作った。
+          <br><br>
+          ▸ <strong>美学者型</strong> でもある: 経営判断・財務・組織運営は他人に任せ、 自分は <strong>素材と工程</strong>
+          に集中する純粋主義。 Jobs と組んだのも、 Jobs が "美" を経営判断の中心に置いた稀有な経営者
+          だったから。
+          <br><br>
+          ▸ <strong>移籍型</strong> でもある: No.1 が消えた時、 後継者になるのではなく <strong>次の No.1 を探す</strong>。
+          Jobs → Cook → Altman と、 No.1 を3度更新しながら、 自分は常に右側に立った。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">弱点が才能の入り口になる。"言葉で勝てない領域" を見つけろ</div>
+          <div class="lesson-body">
+            Ive はディスレクシアによって <strong>言葉での思考が困難</strong> だったから、 形と素材で考える方向に進んだ。
+            「不利」を「集中の理由」に変えた。 翔太も、 自分が "言葉でなく〇〇で勝負する" 領域を探せ。
+            <strong>苦手の隣にこそ、誰にも代替されない武器がある</strong>。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">No.1 を変えても、No.2 の役割は変えなくていい</div>
+          <div class="lesson-body">
+            Ive は Jobs → Cook → Altman と <strong>3人の No.1 と組んだ</strong>。 環境が変わっても、 "美の翻訳者"
+            という自分の役割を一度も変えなかった。 No.2 の核心は <strong>"誰の隣にいるか" ではなく "何を翻訳するか"</strong>
+            にある。 翔太が次の No.1 を探す時、 自分が翻訳する核を先に決めろ。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">引き際は喧嘩ではなく沈黙の撤退で。地理的距離で哲学的距離を解け</div>
+          <div class="lesson-body">
+            Cook 体制との不和を、 Ive は <strong>派閥闘争</strong> でも <strong>公開批判</strong> でもなく、 LoveFrom という
+            <strong>地理的・組織的距離</strong> で解決した。 Apple を最初のクライアントに迎え、 関係を断たず冷却した。
+            翔太も、 不一致が起きた時に "戦う" "逃げる" の二択ではなく <strong>"距離を作る" 第三の選択</strong> を持て。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>父 Michael の銀細工工房で育ち、 <strong>13歳で誕生日プレゼントとして "大学の工房で1日好きなものを作る権利"</strong> を父からもらった。 これが彼のデザイナー人生の出発点。</li>
+        <li>ディスレクシア（識字障害）。 後に「もしディスレクシアがなければ、 私はデザイナーになっていなかった」と語る。</li>
+        <li>妻 Heather Pegg は <strong>16〜17歳の高校時代から</strong> の付き合い、20歳で結婚。 双子の息子 Charlie と Harry。 一度も離婚危機の噂が立たない英国式の家族観。</li>
+        <li>Apple の宣伝動画で <strong>1994年から英 Essex 訛りのナレーション</strong> を担当。 「This is the new iPhone…」の声は本人。</li>
+        <li>2012年に <strong>KBE (Knight Commander of the Order of the British Empire)</strong> 受勲——本人の口から「Sir Jony」と呼ぶことは絶対にない。</li>
+        <li><strong>クラシックカー狂</strong>。 大学時代から Fiat 500 に乗り、 Bentley・Aston Martin・Ferrari を所有。 Goodwood Festival of Speed には毎年通う。 LoveFrom が Ferrari と契約したのは趣味と仕事の合致。</li>
+        <li>ファッションは20年以上不変: <strong>シェーブドヘッド・髭・painter's pants・linen shirt・Clarks Wallabees</strong>。 Steve Jobs と同じ "制服戦略"。</li>
+        <li>2017年から <strong>Royal College of Art の Chancellor</strong>、 2025年から <strong>British Museum の Trustee</strong>。 退職後は英国の文化制度に深く関与。</li>
+        <li>2004年 BBC の文化人投票で <strong>"英国文化に最も影響力のある人物" 第1位</strong>。 デザイナーがこの順位を取ったのは異例。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steve Jobs <span class="ja">スティーブ・ジョブズ</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            Ive が14年間 spiritual partner として並走した相手。 1997年の地下スタジオでの邂逅から始まり、 渡り廊下で繋がるオフィスを毎日往復した。 Jobs が "I trust him more than anyone else at Apple" と語り、 Ive は弔辞で Jobs を "my closest and most loyal friend" と呼んだ。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック</span></div>
+            <span class="rel-tag">第2の No.1 / 衝突</span>
+          </div>
+          <div class="rel-body">
+            Jobs 没後の Apple CEO。 Ive と Cook は <strong>役割は分担できたが哲学は共有できなかった</strong>。 Cook がデザインスタジオに来るのは年に数回、 Apple Watch の方向性で衝突。 Ive はこれを "absurd" と公式に否定された後、 沈黙して2019年に退社した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sam Altman <span class="ja">サム・アルトマン</span></div>
+            <span class="rel-tag">第3の No.1 / 再起</span>
+          </div>
+          <div class="rel-body">
+            OpenAI CEO。 Jobs 没後12年、 Ive は Altman に <strong>2人目の Steve Jobs</strong> を見出した。 2024年に AI ハードウェア共同開発、 2025年に io を $6.5B で OpenAI に売却。 LoveFrom は OpenAI 全体のクリエイティブ責任を担う。 60歳手前の Ive の "second wind"。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Marc Newson <span class="ja">マーク・ニューソン</span></div>
+            <span class="rel-tag">並列 No.2 / 共同創業者</span>
+          </div>
+          <div class="rel-body">
+            オーストラリア人デザイナー、 Ive の親友。 2014年から Apple のコンサルタントを経て、 2019年に LoveFrom を共同創業。 Ive にとって唯一の "対等なデザイン仲間"。 Jobs 亡き後、 Ive の精神的な伴走者となった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Heather Pegg Ive <span class="ja">妻 / Heather Pegg</span></div>
+            <span class="rel-tag muted">人生の伴走者</span>
+          </div>
+          <div class="rel-body">
+            16〜17歳の高校時代から付き合い、 1987年に Ive 20歳で結婚。 英国の作家で、 双子の息子の母。 Ive の <strong>"外周固定・内側集中"</strong> 戦略の核——人生の私的な領域を10代から固定したからこそ、 仕事の領域に全リソースを投じられた。 公の場には出ず、 Ive のキャリアを陰で支え続けている。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Dieter Rams <span class="ja">ディーター・ラムス</span></div>
+            <span class="rel-tag muted">比較対象 / 美学の祖父</span>
+          </div>
+          <div class="rel-body">
+            Braun の伝説的デザイナー。 Ive が公式に "唯一のヒーロー" と呼ぶ人物。 Rams の "less, but better" 哲学が Apple の Ive 時代の核心。 Ive はその精神的後継者として、 Rams の十戒を21世紀の製品に翻訳した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Walter Isaacson <span class="ja">ウォルター・アイザックソン</span></div>
+            <span class="rel-tag muted">記録者 / 評伝</span>
+          </div>
+          <div class="rel-body">
+            『Steve Jobs』(2011) の著者。 Jobs–Ive 関係の一次資料を最も豊富に残した記録者。 Jobs が "Jony has more operational power than anyone else at Apple except me" と語った言葉は、 ここから世に出た。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Michael Ive <span class="ja">父 / マイケル・アイブ</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            英国の銀細工師。 後に Middlesex Polytechnic で教鞭を取った。 幼い Ive に "理解しないものはデザインできない" を叩き込み、 "毎週工房で物を作る" 体験を授けた。 Ive の "手で考える" 哲学の根源。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Jony_Ive" target="_blank">Jony Ive — Wikipedia (英語版)</a></li>
+        <li><a href="https://www.britannica.com/money/Jony-Ive" target="_blank">Jony Ive | Biography, Apple, LoveFrom, & Facts — Britannica</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/LoveFrom" target="_blank">LoveFrom — Wikipedia</a></li>
+        <li><a href="https://fortune.com/article/jony-ive-steve-jobs-ai-tech-apple-openai/" target="_blank">Before he revolutionized tech with Steve Jobs, Jony Ive wanted to quit Apple — Fortune</a></li>
+        <li><a href="https://allaboutstevejobs.com/bio/key_people/jony_ive" target="_blank">Jony Ive | All About Steve Jobs — 一次資料アーカイブ</a></li>
+        <li><a href="https://www.npr.org/sections/alltechconsidered/2010/12/30/132477388/undesigned-the-symbiotic-relationship-of-steve-jobs-and-jonathan-ive" target="_blank">Undesigned: The Symbiotic Relationship of Steve Jobs and Jonathan Ive — NPR</a></li>
+        <li><a href="https://www.cnbc.com/2025/05/24/jonny-ive-new-openai-designer-was-steve-jobs-spiritual-partner-at-apple.html" target="_blank">Steve Jobs called Jony Ive his "spiritual partner" — OpenAI bought his startup for $6.4B — CNBC</a></li>
+        <li><a href="https://appleinsider.com/articles/22/05/01/jony-ives-exit-from-apple-caused-by-company-culture-changes-and-growing-frustration" target="_blank">Jony Ive's exit from Apple caused by culture changes — AppleInsider</a></li>
+        <li><a href="https://www.dezeen.com/2019/06/28/jony-ive-leaves-apple-starts-lovefrom/" target="_blank">Jony Ive to leave Apple and start LoveFrom — Dezeen</a></li>
+        <li><a href="https://9to5mac.com/2025/02/24/jony-ive-apple-jobs-bbc/" target="_blank">Jony Ive talks about Apple and Steve Jobs in BBC interview (2025) — 9to5Mac</a></li>
+        <li>Walter Isaacson『Steve Jobs』(2011) — Jobs–Ive 関係の一次資料</li>
+        <li>Leander Kahney『Jony Ive: The Genius Behind Apple's Greatest Products』(2013) — Ive 評伝</li>
+        <li>Tripp Mickle『After Steve』(2022) — Cook と Ive の哲学的衝突を扱った評伝</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>

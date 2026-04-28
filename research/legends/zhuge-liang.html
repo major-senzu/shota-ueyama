@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>諸葛亮 孔明 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* =================================== */
+  /* HERO (黒背景)                         */
+  /* =================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  /* =================================== */
+  /* SECTION COMMON                       */
+  /* =================================== */
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* =================================== */
+  /* ORIGINS (生い立ち・学歴)              */
+  /* =================================== */
+  .origins-head {
+    margin-bottom: 18px;
+  }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child {
+    border-top: none;
+  }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* =================================== */
+  /* TL;DR CALLOUT                        */
+  /* =================================== */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  /* =================================== */
+  /* TIMELINE (微分ポイント)               */
+  /* =================================== */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* DUO TIMELINE / RELATIONSHIP STAGES   */
+  /* =================================== */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* VALUE GRID                           */
+  /* =================================== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* TYPE NAMING (No.2の型)               */
+  /* =================================== */
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* =================================== */
+  /* LESSONS (翔太への設計図)              */
+  /* =================================== */
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* TRIVIA                               */
+  /* =================================== */
+  ul.trivia {
+    list-style: none;
+  }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* =================================== */
+  /* SOURCES                              */
+  /* =================================== */
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* =================================== */
+  /* RELATED PEOPLE                       */
+  /* =================================== */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* =================================== */
+  /* RESPONSIVE                           */
+  /* =================================== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history.html" class="nav-link">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="諸葛"><img src="https://cdn.wikiwiki.jp/to/w/sangokushi14/%E8%AB%B8%E8%91%9B%E4%BA%AE/::ref/%E3%82%B7%E3%83%A7%E3%82%AB%E3%83%84%E3%83%AA%E3%83%A7%E3%82%A6.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; HISTORICAL</div>
+      <h1>諸葛亮 孔明</h1>
+        </div>
+      </div>
+      <p class="summary">
+        後漢末期、徐州琅邪に生まれ、9歳で母、12歳で父を喪った亡命の青年。荊州・隆中で10年隠棲し
+        「臥龍」と呼ばれた27歳のとき、流浪47歳の劉備が三顧の礼で訪れる。隆中対（天下三分の計）を提示し
+        仕官、孫劉同盟・赤壁・益州平定を主導。劉備没後は <strong>白帝城の託孤</strong> で「才なくば君自ら取れ」
+        と帝位の譲渡を許可されながら、「死を以て之を継がん」と固辞。 蜀漢丞相として11年間、未熟な君主の下で
+        全権を握りながら一度も簒奪の素振りを見せず、 五丈原で陣没した（54歳）。
+        <strong>「鞠躬尽瘁、死して後已む」</strong>を文字通り体現した、東アジア最強のNo.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">劉備（207–223 / 16年）&nbsp;/&nbsp;劉禅（223–234 / 11年）</div>
+        </div>
+        <div>
+          <div class="fact-label">生没年</div>
+          <div class="fact-value">181–234（享年54）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">徐州琅邪郡陽都県（現・山東省臨沂市沂南県）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表（後漢期・記録なし）</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">蜀漢丞相 / 武郷侯 / 死後・忠武侯。武廟十哲・諸葛廟は中国全土。歴代「丞相」の代名詞</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 黄夫人（黄月英・黄承彦の娘）/ 子 諸葛瞻（227年生・263年に綿竹で殉国）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">「梁父吟」を吟ずる / 木牛流馬・連弩の発明 / 八陣図（兵学・天文）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 諸葛珪（後漢の郡丞・193年没）/ 母 章氏（190年没）/ 兄 諸葛瑾（呉の大将軍）/ 弟 諸葛均 / 叔父 諸葛玄（豫章太守・197年没）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">軍師中郎将 (208–214) / 軍師将軍 (214–221) / 蜀漢丞相 (221–234) / 司隷校尉・録尚書事 (223–234) / 武郷侯</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>王座に最も近い場所にいながら、そこに座らなかった No.2</strong>」。劉備の遺言は
+        「もし劉禅が才能なくば、君が自ら取れ」——つまり <strong>帝位の譲渡を公式に許可された</strong>。それでも
+        諸葛亮は「臣、敢えて股肱の力を竭くし、忠貞の節を効し、之を継ぐに死を以てせん」と固辞。以後11年、
+        未熟な君主の下で <strong>全権を握りながら一度も簒奪の素振りを見せなかった</strong>。彼の本質は
+        "才能" ではなく "<strong>選択</strong>"。同じ時代、同じ立場にいた魏の司馬懿は逆の選択をして晋を建てた。
+        諸葛亮の偉大さは、 <strong>取れる時に取らなかった</strong>ことそのものにある。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>181年</strong>、後漢末・徐州琅邪郡陽都県（現・山東省臨沂市沂南県）に生まれる。前漢の司隷校尉
+            <strong>諸葛豊</strong>の末裔とされる名門。父 <strong>諸葛珪</strong> は後漢の郡丞（地方副官）。3兄弟の次男（兄 諸葛瑾・弟 諸葛均）。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">信仰・思想素養</div>
+          <div class="origins-body">
+            後漢の士大夫家系として <strong>儒学</strong> を素養とするが、後年は <strong>道家・法家・兵家</strong> を融合した経世観を確立。
+            蜀漢では「蜀科」と呼ばれる成文法を制定し、儒教的徳治より <strong>厳格な法治</strong> を採った。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期・原体験</div>
+          <div class="origins-body">
+            <strong>9歳で母 章氏 を、12歳で父 諸葛珪 を喪う</strong>。叔父・諸葛玄に引き取られ、195年の <strong>曹操による徐州大虐殺</strong>
+            （父祖の墓も略奪された）を逃れて荊州へ南下。家庭の崩壊と戦乱の二重の喪失が、彼の人格を決定づけた。
+            「<strong>孤児</strong>」と「<strong>亡命者</strong>」——No.2を選ぶ青年の原型がここで形成されている。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">いじめ・差別</div>
+          <div class="origins-body">
+            史料に明確な記述はないが、徐州から流入した亡命知識人として、荊州の土着名士からは
+            <strong>"よそ者"</strong> として距離を置かれた可能性が高い。 隆中での10年の隠棲は、悠然とした選択というより、
+            土着ネットワークから疎外された結果でもある。 後の "出師表" に「臣本布衣、躬耕於南陽」と
+            自らを「布衣」と呼ぶ含みは、ここに発する。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">青年期の修学</div>
+          <div class="origins-body">
+            17歳で叔父 諸葛玄 が死去。襄陽郊外の <strong>隆中</strong> に隠棲し、自ら畑を耕しながら独学。
+            「梁父吟」（葬送歌）を口ずさむ寂しい青年だった。書を読むのに大要を観るだけで、字句に拘泥しなかったという。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">人脈形成（"大学"相当）</div>
+          <div class="origins-body">
+            <strong>荊州学派の中で形成</strong>。司馬徽（水鏡先生）・龐徳公・徐庶らとの交流。
+            司馬徽から「<strong>臥龍</strong>」と命名され、龐徳公の甥・龐統と並んで「<strong>伏龍鳳雛</strong>、両者を得れば天下を安んずべし」と
+            称された。 27歳まで世に出ない名士。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">戦略的婚姻</div>
+          <div class="origins-body">
+            黄承彦から「我が娘は黄髪・黒膚で醜いが、<strong>才は君と匹敵する</strong>」と直接申し出を受け、即諾。
+            黄承彦は荊州牧 劉表 の妻の妹を母に持つ <strong>襄陽の最有力家系</strong>。
+            この婚姻で諸葛亮は荊州土着のトップ・ネットワーク（蔡氏・蒯氏・劉表）に接続した。
+            <strong>戦略的な婚姻</strong>であり、後の隆中対の前提条件でもある。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            <strong>「臥龍」</strong>——眠れる龍。後漢の崩壊を田園で待機する自我。「<strong>苟全性命於乱世、不求聞達於諸侯</strong>
+            （苟くも性命を乱世に全うし、聞達を諸侯に求めず）」。出仕に渇望はない。
+            だが <strong>選ばれた瞬間に最大限を返す</strong> という構えだけは持っていた。
+            ——これが27年の隠棲が形成した諸葛亮の原型。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「臣本布衣、躬耕於南陽、苟全性命於乱世、不求聞達於諸侯。」</div>
+        <div class="src">— 諸葛亮『出師表』（自分は本来布衣の身、南陽で田を耕し、乱世に命を全うするのみで、諸侯に名を求めなかった）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">181</td>
+            <td>徐州琅邪郡陽都県に生まれる。後漢の司隷校尉・諸葛豊を祖とする士大夫家系。父は郡丞。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">9</td>
+            <td class="col-year">190</td>
+            <td>母 章氏 死去。幼くして家庭の半分を失う。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">12</td>
+            <td class="col-year">193</td>
+            <td>父 諸葛珪 死去。 叔父 諸葛玄 に引き取られる。「孤児」の自我形成。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">14</td>
+            <td class="col-year">195</td>
+            <td><strong>曹操による徐州大虐殺</strong>。郷里を捨て叔父と共に荊州へ南下。「亡命者」の自我形成。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">17</td>
+            <td class="col-year">197</td>
+            <td>叔父 諸葛玄 死去。 襄陽郊外の <strong>隆中</strong> に隠棲。「臥龍」期の始まり。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">17–26</td>
+            <td class="col-year">197–206</td>
+            <td>10年の隠棲・独学・人脈形成。司馬徽・徐庶・龐統との交流。「臥龍」「伏龍」と称される。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25頃</td>
+            <td class="col-year">206頃</td>
+            <td>黄承彦の娘 <strong>黄月英</strong> を妻に迎える。 戦略的婚姻で荊州土着ネットワークに接続。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">207</td>
+            <td><strong>三顧の礼。劉備に「隆中対」（天下三分の計）を提示。出仕を決断</strong>。20歳の年齢差を超えて主従の契約。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">208</td>
+            <td><strong>赤壁の戦い</strong>。 自ら呉に出使し孫権を説得、孫劉同盟を成立させる。 曹操に大勝。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">214</td>
+            <td>益州平定に成功。 荊州・益州の二州を制覇し、隆中対の前段を実現。 軍師将軍に就任。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">219</td>
+            <td><strong>関羽が呉に殺され荊州喪失</strong>。 隆中対の前提（荊益並有）が崩壊。 戦略の半分を失う。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">41</td>
+            <td class="col-year">221</td>
+            <td>劉備が皇帝に即位、 蜀漢成立。 <strong>諸葛亮、丞相に就任</strong>。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">42</td>
+            <td class="col-year">222</td>
+            <td>夷陵の戦いで劉備が陸遜に大敗。「<strong>法正若し在らば、必ず主上を東行せしめざりしならん</strong>」と嘆く。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">223</td>
+            <td><strong>白帝城の託孤。「君才十倍曹丕、若嗣子可輔輔之、如其不才、君可自取」。帝位譲渡を許可されながら固辞</strong>。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">225</td>
+            <td>南征。 孟獲を「<strong>七擒七縦</strong>」で平定。 力で従えず心で従わせる統治を実証。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">227</td>
+            <td><strong>「出師表」を上奏</strong>。 第一次北伐開始。 「鞠躬尽瘁、死して後已む」の精神を文に刻む。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">228</td>
+            <td>馬謖が街亭で大敗。 <strong>泣いて馬謖を斬り、自らを丞相から右将軍に三階級降格</strong>。法は私情に勝つ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">234</td>
+            <td><strong>五丈原で陣没</strong>。 司馬懿との対峙の中、過労死。「鞠躬尽瘁、死して後已む」を文字通り実行。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（劉備）との関係構造                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（劉備 → 劉禅）との関係構造</h2>
+      <p>
+        207年、劉備47歳、諸葛亮27歳。 <strong>20歳の年齢差は親子に近い</strong>。 劉備は前半生のほぼ全戦に敗北し、
+        地盤なし、配下は関羽・張飛など武人ばかり。 当時の劉備にとって諸葛亮は <strong>「自分にない頭脳」</strong>、
+        諸葛亮にとって劉備は <strong>「世に出る唯一の機会」</strong> だった。 没落した漢室の宗親と、亡命者の隠者——
+        後漢崩壊期の二人の "辺境者" が出会った瞬間。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「先帝、臣の卑鄙なるを以てせず、猥に自ら枉屈し、三たび臣を草廬の中に顧み、臣に諮るに当世の事を以てす。
+        是に由って感激し、遂に先帝に許すに駆馳を以てす。」<br>
+        — 諸葛亮『出師表』
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">三顧の礼 — 敬意の量で測る主君</div>
+          <div class="stage-body">
+            劉備が3度足を運ぶ。 本来は若僧の隠者、相手は天下に名が知られた漢室の宗親・47歳。
+            社会の論理が逆転している。 諸葛亮は「<strong>敬意の量</strong>」で出仕を決めた——能力でも金でもなく。
+            この出会いの構造が、以後27年の関係を規定した。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">水を得た魚</div>
+          <div class="stage-body">
+            出仕直後の赤壁で孫呉同盟を成立させ、 5年で荊州・益州を取る。
+            劉備は諸葛亮を「<strong>水を得た魚</strong>」と評し、 関羽・張飛が嫉妬するほど寵愛した。
+            隆中対の戦略を、 出仕初手から実装で証明した。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">役割の完全分担</div>
+          <div class="stage-body">
+            劉備=政治判断・カリスマ・軍事指揮 / 諸葛亮=戦略・内政・外交。
+            221年、蜀漢成立とともに丞相就任。 だが219年の関羽の死、222年の夷陵の敗戦で関係性は試される。
+            「<strong>法正若し在らば</strong>」の嘆きは、 No.2が主君の暴走を止められなかった自責。
+          </div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 託孤</div>
+          <div class="stage-title">白帝城の遺言 — 帝位を譲るという罠</div>
+          <div class="stage-body">
+            223年、 永安宮で劉備は告げた——「君才十倍曹丕、必能安国、 終定大事。
+            <strong>若嗣子可輔輔之、如其不才、君可自取</strong>」。 諸葛亮は涙して「臣敢竭股肱之力、效忠貞之節、繼之以死」と答えた。
+            これが No.2 を最終的に縛る誓約となる。 譲られたから、取れない。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        諸葛亮は能力的にも、 家柄的にも、 また劉備の遺言によっても、 <strong>皇帝になれる人間</strong>だった。
+        にもかかわらず、 ならなかった。 これは <strong>"ならなかった No.2"</strong> の最も極端な例である。
+        理由は3つに分解できる:
+      </p>
+      <p>
+        <strong>① 後漢儒教における「簒奪は最大の悪」というコード。</strong>
+        曹操（→曹丕）への明確な対立軸として、 蜀漢は「漢室の正統」を看板に掲げた。
+        その看板を作った本人が簒奪すれば、 蜀漢の存在意義が消える。 イデオロギー上の制約。
+      </p>
+      <p>
+        <strong>② 「託孤」の重み。</strong> 遺言で帝位を譲られたからこそ、 それを取らないことが <strong>最大の忠義</strong>になる。
+        譲られなければ取れる。 譲られたから取れない。 劉備の遺言は、 帝位の譲渡であると同時に、
+        <strong>譲渡を不可能にする呪い</strong>でもあった。 劉備の最大の智謀はここにある。
+      </p>
+      <p>
+        <strong>③ 諸葛亮自身の人格。</strong>「淡泊にして以て志を明らかにし、 寧静にして以て遠きを致す」（誡子書）。
+        彼は権力を欲しなかったというより、 権力を欲することの愚かさを知っていた。
+        同時代に対極の選択をした司馬懿——魏で権力を握り、 子の代で晋を建てた——との対比は明確。
+        司馬懿は <strong>取った</strong>。 諸葛亮は <strong>取らなかった</strong>。
+        歴史が後者を「<strong>聖人</strong>」、 前者を「<strong>簒奪者</strong>」と評価したのは、 偶然ではない。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">戦略 × 内政 × 外交 × 軍事 × 技術 のフルスタック。 隆中対（戦略）、 蜀科（法治）、 孫劉同盟（外交）、 北伐（軍事）、 屯田・木牛流馬・連弩（技術）。 <strong>中国史上最も「全部できた」宰相</strong>。 一人で4部門のNo.2を兼任した。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">託孤型（後継者代理）。 劉備の遺志（漢室復興・曹魏討伐）を、 後継者が無能でも継続するための <strong>代理意志</strong>。 劉禅の代わりに「<strong>君主の精神を演じ続ける</strong>」。 形式上のNo.2でありながら、 実質はNo.1の意志の保管庫。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし諸葛亮がいなければ、 劉備死後の蜀漢は1〜2年で内乱か呉魏に併呑されていた。 蜀漢が42年（221–263）も存続したのは、 諸葛亮の11年と、 彼が育てた <strong>蔣琬・費禕・姜維</strong> による継承システムの結果。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">蔣琬→費禕→董允への丞相・大将軍の継承を生前に密奏で確定。 姜維に軍事を託す。 死後30年の蜀漢の存続は、 <strong>彼の人事設計の成果</strong>。 自分が死んでも組織が回る仕組みを、 生前に構築した。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 219〜222年・荊州喪失と夷陵の敗戦。</strong> 関羽が呉に殺され荊州を失い、 劉備は復讐戦で
+        陸遜に大敗。 <strong>隆中対の前提（荊益並有）が崩壊</strong>。 戦略の半分を失った。
+        諸葛亮は「法正若し在らば、 必ず主上を東行せしめざりしならん」と嘆いた——No.2 として主君の暴走を
+        止められなかった自責。 No.2 の最大の試練は、 「No.1 が間違った方向に進むのを止めること」。
+      </p>
+      <p>
+        <strong>② 228年・街亭の敗戦と泣いて馬謖を斬る。</strong> 第一次北伐で、 諸葛亮が信頼した <strong>馬謖</strong>
+        が街亭で大敗。 諸葛亮は法を守るため馬謖を処刑し、 自らを丞相から右将軍に <strong>三階級降格</strong> した。
+        最も愛した部下を、 組織のルールのために自ら処刑する——「<strong>法は私情に勝つ</strong>」を体現した瞬間。
+        No.2 とは「組織のルールの体現者」であることを示した最も鮮烈な事例。
+      </p>
+      <p>
+        <strong>③ 234年・五丈原での過労死。</strong> 司馬懿との対陣中、 自ら罰二十以上の細事まで決裁し、
+        食事は少なく睡眠は3時間。 司馬懿は使者から諸葛亮の生活を聞いて「<strong>亮、寝食を忘る、
+        其の能く久しからんや</strong>」と予言。 まもなくそのとおりになり、 54歳で陣没。
+        「<strong>鞠躬尽瘁、 死して後已む</strong>」を文字通り実行した——だが、 これは <strong>美徳ではなく
+        継承設計の不徹底さの裏返し</strong>。 No.2 の最後の罠。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        諸葛亮は「引き際」を選べなかった。 北伐途上での陣没は、 引退ではなく <strong>燃え尽き</strong>。
+        Tim Cook が13年のCOO期間で構造を作り CEO 継承後さらに15年で丁寧に次代へ渡したのとは対照的に、
+        諸葛亮は <strong>自らを犠牲にして組織を延命させた</strong>。 「美しい引き際」とは言えない。
+      </p>
+      <p>
+        だが彼の偉大さは、 <strong>死後の継承設計</strong>にある:
+      </p>
+      <ul style="margin-left: 24px; margin-bottom: 14px; color: #222; font-size: 14px; line-height: 1.85;">
+        <li>蔣琬→費禕→董允という <strong>後任の三段継承</strong> を生前に劉禅へ密奏済み</li>
+        <li><strong>姜維</strong>（魏の降将）への軍事の継承——血縁ではなく能力で選んだ</li>
+        <li>「死後、 漢中の <strong>定軍山</strong> に葬れ。 家塚は薄く、 財産はわずかな桑樹八百本と田15頃」（自筆の遺命）</li>
+        <li>「<strong>鞠躬尽瘁、 死して後已む</strong>」（後出師表）—— No.2 の自己定義の最終形</li>
+      </ul>
+      <p>
+        私財をほとんど残さなかった。 子・諸葛瞻にも特権を与えず、 263年の蜀滅亡時、 諸葛瞻は綿竹で殉国した。
+        家族にすら蜀の延命を強要する完璧な廉潔。 <strong>生前から死後30年の組織設計</strong>を全て織り込んだ
+        引き際だった。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">諸葛亮 孔明 の No.2 型</div>
+        <div class="type-name">託孤型 × 補完型 × 全う型</div>
+        <div class="type-body">
+          他者から <strong>帝位の譲渡を公式に許可された</strong>にもかかわらず、 それを断って No.2 に留まり、
+          死ぬまで全うした。 「ならなかった No.2」の最高峰。 創業者亡きあとの組織を、
+          <strong>創業者の精神を演じることで延命</strong>させ、 「君主が無能でも組織は回す」を実証した。
+          <br><br>
+          ▸ <strong>燃え尽き型</strong> の側面も併せ持つ。 彼の "全う" は燃え尽きるかたちで完結し、
+          それゆえ Tim Cook 的な "美しい引き際" にはならなかった。 <strong>託孤型 No.2 の完成形である一方、
+          自己保全には失敗した</strong>——という両義性こそが、 諸葛亮を東アジアで最も愛される No.2 にした。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">「譲られたから取らない」——これが最強のNo.2の倫理だ</div>
+          <div class="lesson-body">
+            劉備は帝位の譲渡を公式に許可した。 にもかかわらず諸葛亮は取らなかった。
+            <strong>取れる時に取らない者だけが、 本当の権力を握れる</strong>。 取れない時に取る者は、 必ず崩壊する（司馬懿→晋の短命）。
+            翔太が WL の COO から CEO に移る瞬間、 最大の試金石は「譲られた瞬間、 本当に取りたいか」。
+            欲しいから取るのではなく、 <strong>組織のために取らざるを得ない</strong>から取る——その違いを、 諸葛亮は教えている。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">法と私情を分けろ。 馬謖は泣きながら斬れ</div>
+          <div class="lesson-body">
+            諸葛亮は最も愛した部下を、 組織のルールのために自ら処刑した。 <strong>No.2 は組織のルールの体現者</strong>。
+            創業者が情に流れる時、 ルールを守るのは No.2 の仕事。 Wanderlust でも、
+            <strong>最も親しい仲間こそが、 ルールを破った時に最初に切らねばならない</strong>。
+            「優しさ」を翔太の核とするなら、 その優しさは <strong>「個人への優しさ」ではなく「組織への優しさ」</strong>として
+            現れねばならない。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">燃え尽きるな。 継承は生前に終わらせろ</div>
+          <div class="lesson-body">
+            諸葛亮は五丈原で過労死した。 罰二十以上の細事まで自ら決裁する完璧主義は、
+            <strong>美徳ではなく継承設計の不徹底さの裏返し</strong>。 自分にしかできない仕事を作りすぎた。
+            翔太の人生哲学（「<strong>急がない・余裕</strong>」）に照らせば、 諸葛亮型の燃え尽きは <strong>避けるべき型</strong>。
+            目指すべきは Tim Cook 型——13年で構造を作り、 静かに次代に渡す。
+            <strong>"鞠躬尽瘁" は最後の手段であって、 最初の方針ではない</strong>。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>身長は <strong>8尺＝約185cm</strong>（後漢尺）。 当時としては非常に長身で、容姿は秀麗だったと『三国志』に記される。</li>
+        <li>妻 <strong>黄月英</strong> は歴史書に「黄髪・黒膚で醜い」と記される。 黄承彦が「うちの娘は醜いが <strong>才は君と匹敵する</strong>」と直接申し出を、即諾。 当時の士大夫としては異例。「諸葛が嫁を選んだ法を真似るな」という俗諺が荊州で生まれた。</li>
+        <li>黄月英は <strong>木牛流馬・連弩・自動兵器の設計に関与した</strong> という民間伝承がある（公式記録では諸葛亮の発明とされる）。「中国史上最も賢い妻」とされる。</li>
+        <li>出仕前は田で「<strong>梁父吟</strong>」（葬送歌）を口ずさんでいた。「歩出斉城門、 遥望蕩陰里」——田園で死を歌う孤独な青年。</li>
+        <li>北伐の補給のために発明した「<strong>木牛流馬</strong>」は、 未だに実物が再現されていない。一輪車改造説、 歯車構造説、 滑車システム説など諸説あり。</li>
+        <li>「<strong>空城の計</strong>」（空城のうえで琴を弾いて司馬懿を退ける）は『演義』の創作で、 史実ではない。 だが彼が「常識を逆手に取る心理戦」の達人だったのは事実。</li>
+        <li>劉禅は諸葛亮を <strong>「相父」</strong>（父代わりの丞相）と呼んだ。 劉備の遺言で「丞相を父と思え」と命じられたから。</li>
+        <li>兄 <strong>諸葛瑾</strong> は呉の大将軍。 同じ家系から <strong>蜀の丞相と呉の大将軍</strong> が出るという三国時代屈指の不思議。 二人は公務で何度も対峙したが、 公の場以外では一切私的に会わなかった。</li>
+        <li>死後、 各地に <strong>諸葛廟（武侯祠）</strong> が作られ、 現代まで信仰の対象。 成都の武侯祠は <strong>中国唯一「君臣合祀」</strong>（劉備と諸葛亮が同じ廟に祀られる）で、 主廟は劉備ではなく諸葛亮が事実上の主役になっている。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">劉備 玄徳 <span class="ja">Liu Bei</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            207年に三顧の礼で諸葛亮を迎えた漢室の宗親。 流浪47歳の敗将が、 27歳の隠者に未来を託した瞬間、
+            蜀漢は始まった。「<strong>水を得た魚</strong>」と諸葛亮を評し、 死の床で帝位譲渡を許可した男。
+            諸葛亮の存在意義を定義した No.1。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">劉禅 公嗣 <span class="ja">Liu Shan</span></div>
+            <span class="rel-tag">No.1 (後継) / 補佐対象</span>
+          </div>
+          <div class="rel-body">
+            劉備の長男、 17歳で即位。「相父」と諸葛亮を呼んだ。 諸葛亮存命中は全権を委ね、 死後も
+            国政を維持。 凡庸とされるが、 263年に蜀が滅亡するまで41年間皇帝を務めた事実は再評価されつつある。
+            <strong>諸葛亮 No.2 論は劉禅 No.1 論と表裏一体</strong>。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">司馬懿 仲達 <span class="ja">Sima Yi</span></div>
+            <span class="rel-tag">対極 No.2 / 簒奪者</span>
+          </div>
+          <div class="rel-body">
+            魏の丞相として曹操・曹丕・曹叡・曹芳の四代に仕え、 五丈原で諸葛亮と対峙した男。
+            諸葛亮が <strong>「取らなかった」</strong> 道を、 司馬懿は <strong>「取った」</strong>。
+            子の代で晋を建国。 同じ立場で逆の選択をした、 <strong>諸葛亮の最大の対比軸</strong>。
+            歴史は前者を聖人、 後者を簒奪者と評価した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">関羽 雲長 <span class="ja">Guan Yu</span></div>
+            <span class="rel-tag">並列 No.2 / 武</span>
+          </div>
+          <div class="rel-body">
+            劉備の義兄弟、 武の No.2。 諸葛亮（智）と関羽（武）で劉備を補完した。 219年に呉に殺され、
+            隆中対の前提を崩壊させた。 諸葛亮にとっては「止められなかった暴走」の象徴。 神格化は諸葛亮以上で、
+            関帝廟は世界中にある。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">龐統 士元 <span class="ja">Pang Tong</span></div>
+            <span class="rel-tag">並列軍師 / 鳳雛</span>
+          </div>
+          <div class="rel-body">
+            司馬徽が「臥龍・鳳雛、 両者を得れば天下を安んずべし」と評した、 諸葛亮と並ぶ天才軍師。
+            劉備に仕え益州攻略を主導したが、 36歳で戦死。 <strong>もし龐統が生きていれば、 諸葛亮は北伐に専念
+            できた</strong>——蜀漢の if 史を語る時の最重要人物。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">姜維 伯約 <span class="ja">Jiang Wei</span></div>
+            <span class="rel-tag">後継 / 北伐の意志</span>
+          </div>
+          <div class="rel-body">
+            魏の降将を諸葛亮が見出し、 軍事の継承者として育成。 諸葛亮の死後、 11回の北伐を続け、
+            263年の蜀滅亡時に魏の鍾会と共に魏に反逆を企てるも失敗・自害。 <strong>血縁ではなく能力で選んだ
+            後継</strong>——諸葛亮の人事観の象徴。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">諸葛瑾 子瑜 <span class="ja">Zhuge Jin</span></div>
+            <span class="rel-tag muted">兄 / 呉の大将軍</span>
+          </div>
+          <div class="rel-body">
+            諸葛亮の兄。 呉の孫権に仕え大将軍まで上る。 同じ家系から <strong>蜀の丞相と呉の大将軍</strong> が
+            出るという三国時代屈指の不思議。 公務で何度も外交で対峙しても、 私的には一切会わなかった——
+            <strong>「公私を分ける」の極致</strong>。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">諸葛瞻 思遠 <span class="ja">Zhuge Zhan</span></div>
+            <span class="rel-tag muted">息子 / 殉国</span>
+          </div>
+          <div class="rel-body">
+            諸葛亮の長男（227年生）。 263年の蜀滅亡時、 鄧艾の侵攻に対し綿竹で <strong>父の名を継ぐ</strong>として
+            戦死。「内に黄皓を除けず、 外に姜維を制せず——我に三罪あり」と自責して死んだ。
+            <strong>家族にすら蜀の延命を強要した諸葛亮の廉潔の代償</strong>。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">陳寿 承祚 <span class="ja">Chen Shou</span></div>
+            <span class="rel-tag muted">記録者 / 三国志</span>
+          </div>
+          <div class="rel-body">
+            『三国志』の著者。 もとは蜀漢の官僚で、 西晋成立後に正史を編纂。 諸葛亮を「<strong>識治の良才、
+            管・蕭の亜匹</strong>」と評し、 軍事より内政を高く評価した。 諸葛亮 No.2 論の <strong>公式記録者</strong>。
+            演義の神格化前の生身の諸葛亮を伝える唯一の一次資料。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">羅貫中 <span class="ja">Luo Guanzhong</span></div>
+            <span class="rel-tag muted">記録者 / 演義</span>
+          </div>
+          <div class="rel-body">
+            14世紀の『三国志演義』作者。 諸葛亮を「<strong>近於妖（妖怪に近い）</strong>」（魯迅）と批判される
+            ほど神格化。 空城の計、 借東風、 木牛流馬の超人化など、 史実を超えた諸葛亮像を作り、
+            東アジア全体の <strong>"完璧な No.2" のイメージ</strong>を完成させた。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li>陳寿『三国志』蜀書・諸葛亮伝（裴松之注） — 公式正史・一次資料</li>
+        <li>諸葛亮「出師表」「後出師表」「誡子書」 — 諸葛亮自身による一次資料</li>
+        <li><a href="https://en.wikipedia.org/wiki/Zhuge_Liang" target="_blank">Zhuge Liang — Wikipedia (英語版)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Longzhong_Plan" target="_blank">Longzhong Plan — Wikipedia（隆中対）</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/The_Three_Visits" target="_blank">The Three Visits — Wikipedia（三顧茅廬）</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Battle_of_Wuzhang_Plains" target="_blank">Battle of Wuzhang Plains — Wikipedia（五丈原の戦い）</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Lady_Huang" target="_blank">Lady Huang — Wikipedia（妻・黄月英）</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Liu_Shan" target="_blank">Liu Shan — Wikipedia（劉禅・補佐対象）</a></li>
+        <li><a href="https://www.newworldencyclopedia.org/entry/Zhuge_Liang" target="_blank">Zhuge Liang — New World Encyclopedia</a></li>
+        <li><a href="https://kongming.net/novel/sgz/zhugeliang.php" target="_blank">Zhuge Liang — Sanguozhi Biography (English Translation)</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>

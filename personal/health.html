@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>012 · health / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .hero .source {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); margin-top: 10px; letter-spacing: 0.04em;
+  }
+  .hero .memo {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--soft);
+    border-left: 2px solid var(--fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero .memo .memo-label {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    flex-shrink: 0;
+  }
+  .hero .memo code {
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--fg);
+    background: transparent;
+    user-select: all;
+  }
+  .hero .memo .copy-btn {
+    margin-left: auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 10px;
+    color: var(--muted);
+    padding: 4px 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .hero .memo .copy-btn:hover { color: var(--fg); border-color: var(--fg); }
+  .hero .memo .copy-btn.done { color: #2ea44f; border-color: #2ea44f; }
+
+  /* hero counters */
+  .top-counters {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); margin-bottom: 48px;
+  }
+  .top-counter { background: var(--bg); padding: 22px 18px; }
+  .top-counter .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .top-counter .value-row { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .top-counter .value { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .top-counter .unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .top-counter .delta-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.02em;
+    margin-top: 8px; display: block; width: 100%;
+  }
+  .top-counter .delta-inline .down { color: #2ea44f; font-weight: 500; }
+  .top-counter .delta-inline .up { color: var(--accent); font-weight: 500; }
+  .top-counter .delta-inline .flat { color: var(--muted); }
+  .top-counter .target-line {
+    margin-top: 10px; padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .top-counter .target-line .target-label {
+    text-transform: uppercase; letter-spacing: 0.10em; font-size: 9px;
+  }
+  .top-counter .target-line .target-val {
+    color: var(--fg); font-weight: 500; margin-left: 4px;
+  }
+  .top-counter .target-line .progress {
+    display: inline-block; width: 100%; height: 3px;
+    background: var(--soft); margin-top: 6px; position: relative; overflow: hidden;
+  }
+  .top-counter .target-line .progress > span {
+    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  }
+  .top-counter .target-line .progress > span.reached { background: #2ea44f; }
+
+  @media (max-width: 1000px) {
+    .top-counters { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .top-counters { grid-template-columns: repeat(2, 1fr); }
+    .top-counter .value { font-size: 28px; }
+    body { padding: 24px 20px 32px; }
+  }
+
+  /* goal summary */
+  .goal-summary {
+    margin: -32px 0 36px;
+    padding: 10px 14px;
+    border-left: 2px solid var(--fg);
+    background: var(--soft);
+    display: flex; align-items: baseline; gap: 12px;
+    font-size: 13px;
+  }
+  .goal-summary .goal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.10em; text-transform: uppercase;
+  }
+  .goal-summary .goal-text { font-weight: 500; color: var(--fg); }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .tabs button:hover { color: var(--fg); }
+  .tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* sub-tabs (全身 / 部位別) */
+  .subtab-bar { display: flex; gap: 6px; margin-bottom: 20px; }
+  .subtab-btn {
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    padding: 8px 18px; cursor: pointer; color: var(--muted);
+    transition: all 0.15s;
+  }
+  .subtab-btn:hover { color: var(--fg); }
+  .subtab-btn.active {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+
+  /* range selector */
+  .range-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 24px;
+  }
+  .range-bar .range-btns { display: flex; gap: 4px; }
+  .range-bar button {
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 6px 14px; cursor: pointer; color: var(--muted);
+    letter-spacing: 0.06em; transition: all 0.15s;
+  }
+  .range-bar button:hover { color: var(--fg); }
+  .range-bar button.active {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .range-bar .meta {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* charts grid */
+  .charts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
+  .chart-card {
+    border: 1px solid var(--line); padding: 20px 22px 16px;
+    background: var(--bg);
+  }
+  .chart-card .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .chart-card .sub {
+    font-size: 13px; color: var(--fg); margin-bottom: 14px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .chart-card .sub .latest { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .chart-card .sub .latest-unit { font-size: 12px; color: var(--muted); }
+  .chart-card .title-unit { color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .chart-card canvas { width: 100% !important; height: 180px !important; }
+
+  /* 部位別チャート（横長・凡例付き） */
+  .charts-parts { grid-template-columns: 1fr; gap: 20px; }
+  .chart-wide { padding: 20px 22px 18px; }
+  .chart-wide canvas { height: 240px !important; }
+  .chart-wide .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin: 8px 0 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--fg);
+  }
+  .chart-wide .legend .item {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chart-wide .legend .swatch {
+    display: inline-block; width: 10px; height: 2px; border-radius: 1px;
+  }
+
+  /* raw data table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); }
+  table.raw {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; min-width: 880px;
+  }
+  table.raw thead { background: var(--soft); }
+  table.raw th {
+    text-align: right; padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  table.raw th:first-child { text-align: left; }
+  table.raw th:hover { color: var(--fg); }
+  table.raw th .arrow { margin-left: 4px; opacity: 0.4; font-size: 9px; }
+  table.raw th.sort-asc .arrow,
+  table.raw th.sort-desc .arrow { opacity: 1; color: var(--fg); }
+  table.raw td {
+    padding: 12px 14px; border-bottom: 1px solid var(--line);
+    text-align: right; white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+  table.raw td:first-child { text-align: left; font-family: inherit; font-size: 13px; }
+  table.raw tbody tr:last-child td { border-bottom: none; }
+  table.raw tbody tr:hover { background: var(--soft); }
+
+  .empty {
+    padding: 40px 20px; text-align: center;
+    color: var(--muted); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .raw-section-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg); letter-spacing: 0.10em;
+    text-transform: uppercase; margin: 28px 0 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .raw-section-head:first-child { margin-top: 0; }
+  .raw-section-head .raw-sub-note {
+    text-transform: none; letter-spacing: 0.02em;
+    font-size: 11px; color: var(--muted); margin-left: 10px;
+    font-weight: 400;
+  }
+  table.raw-parts { min-width: 960px; }
+  table.raw-parts th.grp {
+    text-align: center; border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--fg); letter-spacing: 0.06em;
+    text-transform: uppercase; font-weight: 500;
+    padding: 10px 12px;
+  }
+  table.raw-parts th.sub {
+    text-align: right; padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 400; cursor: default;
+  }
+  table.raw-parts th.sub:hover { color: var(--muted); }
+  table.raw-parts td {
+    padding: 10px 12px; font-size: 12px;
+  }
+  table.raw-parts td.part-end {
+    border-right: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="./profile.html" class="nav-link">profile</a>
+    <a href="./health.html" class="nav-link">health</a>
+    <a href="./travel.html" class="nav-link">travel</a>
+    <a href="./book.html" class="nav-link">book</a>
+    <a href="./philosophy.html" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../research/geo-history.html" class="nav-link">geo-history</a>
+    <a href="../research/legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <div class="crumb">
+      <a href="../index.html">home</a><span class="sep">/</span>
+      <a href="../index.html#personal">personal</a><span class="sep">/</span>
+      <span>012 health</span>
+    </div>
+
+    <div class="hero">
+      <h1>Health</h1>
+      <div class="ja">身体・体組成の記録</div>
+      <div class="source" id="source-line">データソース: HealthPlanet API (タニタ BC-1K01-BL)</div>
+      <div class="memo">
+        <span class="memo-label">手動同期</span>
+        <code id="sync-cmd">python3 personal/scripts/healthplanet_sync.py</code>
+        <button class="copy-btn" id="copy-cmd">コピー</button>
+      </div>
+    </div>
+
+    <!-- top counters: 6 metrics -->
+    <div class="top-counters">
+      <div class="top-counter">
+        <div class="label">体重</div>
+        <div class="value-row">
+          <span class="value" id="hero-weight">—</span>
+          <span class="unit">kg</span>
+        </div>
+        <span class="delta-inline" id="hero-weight-delta"></span>
+        <div class="target-line" id="target-weight"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">筋肉量</div>
+        <div class="value-row">
+          <span class="value" id="hero-muscle">—</span>
+          <span class="unit">kg</span>
+        </div>
+        <span class="delta-inline" id="hero-muscle-delta"></span>
+        <div class="target-line" id="target-muscle"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">体脂肪率</div>
+        <div class="value-row">
+          <span class="value" id="hero-bf">—</span>
+          <span class="unit">%</span>
+        </div>
+        <span class="delta-inline" id="hero-bf-delta"></span>
+        <div class="target-line" id="target-bf"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">BMI</div>
+        <div class="value-row">
+          <span class="value" id="hero-bmi">—</span>
+        </div>
+        <span class="delta-inline" id="hero-bmi-delta"></span>
+        <div class="target-line" id="target-bmi"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">体水分率</div>
+        <div class="value-row">
+          <span class="value" id="hero-water">—</span>
+          <span class="unit">%</span>
+        </div>
+        <span class="delta-inline" id="hero-water-delta"></span>
+        <div class="target-line" id="target-water"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">基礎代謝量</div>
+        <div class="value-row">
+          <span class="value" id="hero-bmr">—</span>
+          <span class="unit">kcal</span>
+        </div>
+        <span class="delta-inline" id="hero-bmr-delta"></span>
+        <div class="target-line" id="target-bmr"></div>
+      </div>
+    </div>
+
+    <!-- 目標サマリー -->
+    <div class="goal-summary" id="goal-summary">
+      <span class="goal-label">目標</span>
+      <span class="goal-text">健康な細マッチョ</span>
+    </div>
+
+    <!-- main tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="chart">Chart</button>
+      <button class="tab-btn" data-tab="raw">Raw Data</button>
+    </div>
+
+    <!-- chart panel -->
+    <section class="panel active" id="panel-chart">
+      <div class="subtab-bar">
+        <button class="subtab-btn active" data-sub="body">全身</button>
+        <button class="subtab-btn" data-sub="parts">部位別</button>
+      </div>
+
+      <div class="range-bar">
+        <div class="range-btns" id="range-btns">
+          <button data-range="7" class="active">7日</button>
+          <button data-range="30">30日</button>
+          <button data-range="90">90日</button>
+          <button data-range="all">全期間</button>
+        </div>
+        <span class="meta" id="range-meta"></span>
+      </div>
+
+      <!-- 全身 charts -->
+      <div class="charts" id="charts-body">
+        <div class="chart-card">
+          <div class="title">体重</div>
+          <div class="sub"><span class="latest" id="latest-weight">—</span><span class="latest-unit">kg</span></div>
+          <canvas id="chart-weight"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">BMI</div>
+          <div class="sub"><span class="latest" id="latest-bmi">—</span><span class="latest-unit"></span></div>
+          <canvas id="chart-bmi"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">体脂肪率</div>
+          <div class="sub"><span class="latest" id="latest-bf">—</span><span class="latest-unit">%</span></div>
+          <canvas id="chart-bf"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">筋肉量</div>
+          <div class="sub"><span class="latest" id="latest-muscle">—</span><span class="latest-unit">kg</span></div>
+          <canvas id="chart-muscle"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">内臓脂肪レベル</div>
+          <div class="sub"><span class="latest" id="latest-visceral">—</span><span class="latest-unit"></span></div>
+          <canvas id="chart-visceral"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">基礎代謝量</div>
+          <div class="sub"><span class="latest" id="latest-bmr">—</span><span class="latest-unit">kcal</span></div>
+          <canvas id="chart-bmr"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">体内年齢</div>
+          <div class="sub"><span class="latest" id="latest-age">—</span><span class="latest-unit">歳</span></div>
+          <canvas id="chart-age"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">体水分率</div>
+          <div class="sub"><span class="latest" id="latest-water">—</span><span class="latest-unit">%</span></div>
+          <canvas id="chart-water"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">推定骨量</div>
+          <div class="sub"><span class="latest" id="latest-bone">—</span><span class="latest-unit">kg</span></div>
+          <canvas id="chart-bone"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="title">筋肉量スコア</div>
+          <div class="sub"><span class="latest" id="latest-mscore">—</span><span class="latest-unit"></span></div>
+          <canvas id="chart-mscore"></canvas>
+        </div>
+      </div>
+
+      <!-- 部位別 charts -->
+      <div class="charts charts-parts" id="charts-parts" style="display:none">
+        <div class="chart-card chart-wide">
+          <div class="title">部位別 筋肉量 <span class="title-unit">(kg)</span></div>
+          <div class="legend" id="legend-part-muscle"></div>
+          <canvas id="chart-part-muscle"></canvas>
+        </div>
+        <div class="chart-card chart-wide">
+          <div class="title">部位別 脂肪率 <span class="title-unit">(%)</span></div>
+          <div class="legend" id="legend-part-fat"></div>
+          <canvas id="chart-part-fat"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- raw data panel -->
+    <section class="panel" id="panel-raw">
+      <div class="raw-section-head">全身</div>
+      <div class="table-scroll">
+        <table class="raw" id="raw-table-body">
+          <thead>
+            <tr>
+              <th data-sort="date" class="sort-desc">日付<span class="arrow">▼</span></th>
+              <th data-sort="weight_kg">体重 (kg)<span class="arrow">▼</span></th>
+              <th data-sort="bmi">BMI<span class="arrow">▼</span></th>
+              <th data-sort="body_fat_pct">体脂肪率 (%)<span class="arrow">▼</span></th>
+              <th data-sort="muscle_mass_kg">筋肉量 (kg)<span class="arrow">▼</span></th>
+              <th data-sort="muscle_score">筋肉量スコア<span class="arrow">▼</span></th>
+              <th data-sort="visceral_fat_level">内臓脂肪<span class="arrow">▼</span></th>
+              <th data-sort="basal_metabolic_rate">基礎代謝 (kcal)<span class="arrow">▼</span></th>
+              <th data-sort="metabolic_age">体内年齢<span class="arrow">▼</span></th>
+              <th data-sort="estimated_bone_mass_kg">推定骨量 (kg)<span class="arrow">▼</span></th>
+              <th data-sort="body_water_pct">体水分率 (%)<span class="arrow">▼</span></th>
+            </tr>
+          </thead>
+          <tbody id="raw-tbody-body">
+            <tr><td colspan="11" class="empty">読み込み中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="raw-section-head">部位別 <span class="raw-sub-note">5部位の筋肉量・脂肪率</span></div>
+      <div class="table-scroll">
+        <table class="raw raw-parts" id="raw-table-parts">
+          <thead>
+            <tr>
+              <th rowspan="2" data-sort="date" class="sort-desc">日付<span class="arrow">▼</span></th>
+              <th colspan="2" class="grp">右腕</th>
+              <th colspan="2" class="grp">左腕</th>
+              <th colspan="2" class="grp">右脚</th>
+              <th colspan="2" class="grp">左脚</th>
+              <th colspan="2" class="grp">体幹部</th>
+            </tr>
+            <tr>
+              <th class="sub">筋肉量 (kg)</th><th class="sub">脂肪率 (%)</th>
+              <th class="sub">筋肉量 (kg)</th><th class="sub">脂肪率 (%)</th>
+              <th class="sub">筋肉量 (kg)</th><th class="sub">脂肪率 (%)</th>
+              <th class="sub">筋肉量 (kg)</th><th class="sub">脂肪率 (%)</th>
+              <th class="sub">筋肉量 (kg)</th><th class="sub">脂肪率 (%)</th>
+            </tr>
+          </thead>
+          <tbody id="raw-tbody-parts">
+            <tr><td colspan="11" class="empty">読み込み中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+  <script>
+  (function(){
+    const DATA_URL = './data/health.json';
+    const FG = '#0a0a0a';
+    const MUTED = '#888';
+    const LINE = '#e5e5e5';
+    const SOFT = '#f7f7f7';
+
+    const state = {
+      all: [],
+      range: 7,
+      sortKey: 'date',
+      sortDir: 'desc',
+      charts: {},
+      partCharts: {},
+      heightCm: 175,
+      chartSub: 'body',
+      targets: {},
+      goalText: '',
+    };
+
+    const PARTS = [
+      {key: 'right_arm', label: '右腕',   color: '#0a0a0a'},
+      {key: 'left_arm',  label: '左腕',   color: '#666666'},
+      {key: 'right_leg', label: '右脚',   color: '#2563eb'},
+      {key: 'left_leg',  label: '左脚',   color: '#06b6d4'},
+      {key: 'trunk',     label: '体幹部', color: '#ff3b30'},
+    ];
+
+    const fmt = (v, d=1) => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(d);
+    const fmtInt = (v) => (v == null || isNaN(v)) ? '—' : Math.round(v).toString();
+
+    function calcBmi(weightKg, heightCm) {
+      if (!weightKg || !heightCm) return null;
+      const m = heightCm / 100;
+      return Math.round((weightKg / (m * m)) * 10) / 10;
+    }
+
+    function load() {
+      fetch(DATA_URL, {cache: 'no-store'})
+        .then(r => r.json())
+        .then(json => {
+          state.heightCm = (json.user && json.user.height_cm) || 175;
+          state.targets  = json.targets || {};
+          state.goalText = (json.user && json.user._goal) || '';
+          state.all = (json.measurements || []).slice()
+            .sort((a,b) => a.date.localeCompare(b.date))
+            .map(m => ({...m, bmi: m.bmi ?? calcBmi(m.weight_kg, state.heightCm)}));
+          if (json.last_synced) {
+            document.getElementById('source-line').textContent =
+              'データソース: HealthPlanet API (タニタ BC-1K01-BL) · 最終同期 ' + json.last_synced;
+          }
+          if (state.goalText) {
+            document.querySelector('#goal-summary .goal-text').textContent = state.goalText;
+          }
+          renderAll();
+        })
+        .catch(err => {
+          console.error('failed to load health data', err);
+          const tbB = document.getElementById('raw-tbody-body');
+          const tbP = document.getElementById('raw-tbody-parts');
+          if (tbB) tbB.innerHTML = '<tr><td colspan="11" class="empty">読み込み失敗</td></tr>';
+          if (tbP) tbP.innerHTML = '<tr><td colspan="11" class="empty">読み込み失敗</td></tr>';
+        });
+    }
+
+    function rangeSlice() {
+      if (state.range === 'all') return state.all;
+      const n = Number(state.range);
+      return state.all.slice(-n);
+    }
+
+    function renderAll() {
+      renderHero();
+      renderCharts();
+      renderRaw();
+    }
+
+    function renderHero() {
+      const last = state.all[state.all.length - 1];
+      const prev = state.all[state.all.length - 2];
+
+      // counters always render targets, even with empty data
+      renderTargets(last);
+
+      if (!last) return;
+      document.getElementById('hero-weight').textContent = fmt(last.weight_kg, 1);
+      document.getElementById('hero-muscle').textContent = fmt(last.muscle_mass_kg, 1);
+      document.getElementById('hero-bf').textContent     = fmt(last.body_fat_pct, 1);
+      document.getElementById('hero-bmi').textContent    = fmt(last.bmi, 1);
+      document.getElementById('hero-water').textContent  = fmt(last.body_water_pct, 1);
+      document.getElementById('hero-bmr').textContent    = fmtInt(last.basal_metabolic_rate);
+      if (prev) {
+        const set = (id, cur, prv, dec, unit, lowerIsBetter) => {
+          if (cur == null || prv == null) return;
+          document.getElementById(id).innerHTML = deltaParen(cur - prv, dec, unit, lowerIsBetter) + ' 前回 ' + prev.date;
+        };
+        // 体重・体脂肪・BMI: 下がる方が良い / 筋肉量・体水分率・基礎代謝量: 上がる方が良い
+        set('hero-weight-delta', last.weight_kg,           prev.weight_kg,           1, 'kg',   true);
+        set('hero-muscle-delta', last.muscle_mass_kg,      prev.muscle_mass_kg,      1, 'kg',   false);
+        set('hero-bf-delta',     last.body_fat_pct,        prev.body_fat_pct,        1, '%',    true);
+        set('hero-bmi-delta',    last.bmi,                 prev.bmi,                 1, '',     true);
+        set('hero-water-delta',  last.body_water_pct,      prev.body_water_pct,      1, '%',    false);
+        set('hero-bmr-delta',    last.basal_metabolic_rate,prev.basal_metabolic_rate,0, 'kcal', false);
+      }
+    }
+
+    /* 目標表示 + 進捗バー */
+    const TARGET_DEFS = [
+      {id: 'target-weight', tgtKey: 'weight_kg',           field: 'weight_kg',           unit: 'kg',   dec: 1, lowerIsBetter: true,  baseline: 80},
+      {id: 'target-muscle', tgtKey: 'muscle_mass_kg',      field: 'muscle_mass_kg',      unit: 'kg',   dec: 1, lowerIsBetter: false, baseline: 50},
+      {id: 'target-bf',     tgtKey: 'body_fat_pct',        field: 'body_fat_pct',        unit: '%',    dec: 1, lowerIsBetter: true,  baseline: 25},
+      {id: 'target-bmi',    tgtKey: 'bmi',                 field: 'bmi',                 unit: '',     dec: 1, lowerIsBetter: true,  baseline: 26},
+      {id: 'target-water',  tgtKey: 'body_water_pct',      field: 'body_water_pct',      unit: '%',    dec: 1, lowerIsBetter: false, baseline: 50},
+      {id: 'target-bmr',    tgtKey: 'basal_metabolic_rate',field: 'basal_metabolic_rate',unit: 'kcal', dec: 0, lowerIsBetter: false, baseline: 1500},
+    ];
+
+    function renderTargets(last) {
+      TARGET_DEFS.forEach(def => {
+        const el = document.getElementById(def.id);
+        if (!el) return;
+        const tgt = state.targets[def.tgtKey];
+        if (tgt == null) { el.innerHTML = ''; return; }
+
+        const cur = last ? last[def.field] : null;
+        const tgtStr = (def.dec === 0 ? Math.round(tgt).toString() : tgt.toFixed(def.dec));
+        const unitStr = def.unit ? (' ' + def.unit) : '';
+
+        // progress 0-100 (current → target)
+        let pctStr = '';
+        let progressPct = 0;
+        let reached = false;
+        if (cur != null && !isNaN(cur)) {
+          if (def.lowerIsBetter) {
+            // baseline=worst → target=best, lower is better
+            const range = def.baseline - tgt;
+            progressPct = Math.max(0, Math.min(100, ((def.baseline - cur) / range) * 100));
+            reached = cur <= tgt;
+          } else {
+            const range = tgt - def.baseline;
+            progressPct = Math.max(0, Math.min(100, ((cur - def.baseline) / range) * 100));
+            reached = cur >= tgt;
+          }
+          pctStr = Math.round(progressPct) + '%';
+        }
+
+        el.innerHTML =
+          '<span class="target-label">目標</span>' +
+          '<span class="target-val">' + tgtStr + unitStr + '</span>' +
+          (pctStr ? ' <span style="float:right; color:var(--muted)">' + pctStr + '</span>' : '') +
+          (cur != null ? '<span class="progress"><span class="' + (reached ? 'reached' : '') + '" style="width:' + progressPct + '%"></span></span>' : '');
+      });
+    }
+
+    function deltaParen(d, decimals, unit, lowerIsBetter=true) {
+      if (d == null || isNaN(d)) return '';
+      let cls, sign, val;
+      if (d === 0) { cls = 'flat'; sign = '±'; val = (0).toFixed(decimals); }
+      else if (d < 0) { cls = lowerIsBetter ? 'down' : 'up'; sign = '−'; val = Math.abs(d).toFixed(decimals); }
+      else            { cls = lowerIsBetter ? 'up' : 'down'; sign = '+'; val = d.toFixed(decimals); }
+      const u = unit ? (' ' + unit) : '';
+      return '(<span class="' + cls + '">' + sign + val + u + '</span>)';
+    }
+
+    /* ---------- charts ---------- */
+    const CHART_DEFS = [
+      {key: 'weight_kg',             id: 'chart-weight',   latest: 'latest-weight',   d: 1, target: 'weight_kg'},
+      {key: 'bmi',                   id: 'chart-bmi',      latest: 'latest-bmi',      d: 1, target: 'bmi'},
+      {key: 'body_fat_pct',          id: 'chart-bf',       latest: 'latest-bf',       d: 1, target: 'body_fat_pct'},
+      {key: 'muscle_mass_kg',        id: 'chart-muscle',   latest: 'latest-muscle',   d: 1, target: 'muscle_mass_kg'},
+      {key: 'visceral_fat_level',    id: 'chart-visceral', latest: 'latest-visceral', d: 1, target: 'visceral_fat_level'},
+      {key: 'basal_metabolic_rate',  id: 'chart-bmr',      latest: 'latest-bmr',      d: 0, target: 'basal_metabolic_rate'},
+      {key: 'metabolic_age',         id: 'chart-age',      latest: 'latest-age',      d: 0, target: 'metabolic_age'},
+      {key: 'body_water_pct',        id: 'chart-water',    latest: 'latest-water',    d: 1, target: 'body_water_pct'},
+      {key: 'estimated_bone_mass_kg',id: 'chart-bone',     latest: 'latest-bone',     d: 1, target: 'estimated_bone_mass_kg'},
+      {key: 'muscle_score',          id: 'chart-mscore',   latest: 'latest-mscore',   d: 0, target: 'muscle_score'},
+    ];
+
+    function chartOptions(decimals) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: FG, titleColor: '#fff', bodyColor: '#fff',
+            titleFont: { family: 'JetBrains Mono', size: 11 },
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            padding: 8, displayColors: false,
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                if (v == null) return '—';
+                return (decimals === 0 ? Math.round(v).toString() : v.toFixed(decimals));
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { color: LINE },
+            ticks: {
+              color: MUTED, font: { family: 'JetBrains Mono', size: 10 },
+              maxRotation: 0, autoSkip: true, maxTicksLimit: 6,
+            }
+          },
+          y: {
+            grid: { color: SOFT },
+            border: { display: false },
+            ticks: {
+              color: MUTED, font: { family: 'JetBrains Mono', size: 10 },
+              maxTicksLimit: 5,
+            }
+          }
+        }
+      };
+    }
+
+    function renderRangeMeta() {
+      const data = rangeSlice();
+      const meta = document.getElementById('range-meta');
+      if (data.length === 0) meta.textContent = 'データなし';
+      else meta.textContent = data.length + '件 · ' + data[0].date + ' → ' + data[data.length-1].date;
+    }
+
+    function renderCharts() {
+      renderRangeMeta();
+      if (state.chartSub === 'body') renderBodyCharts();
+      else renderPartCharts();
+    }
+
+    function renderBodyCharts() {
+      const data = rangeSlice();
+      const labels = data.map(d => d.date.slice(5));
+
+      CHART_DEFS.forEach(def => {
+        const series = data.map(d => d[def.key] ?? null);
+        const last = state.all[state.all.length - 1];
+        const lastVal = last ? last[def.key] : null;
+        document.getElementById(def.latest).textContent =
+          def.d === 0 ? fmtInt(lastVal) : fmt(lastVal, def.d);
+
+        const canvas = document.getElementById(def.id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (state.charts[def.id]) state.charts[def.id].destroy();
+
+        const datasets = [{
+          label: '実測',
+          data: series,
+          borderColor: FG,
+          backgroundColor: 'rgba(10,10,10,0.06)',
+          borderWidth: 1.5,
+          pointRadius: data.length <= 30 ? 2.5 : 0,
+          pointHoverRadius: 4,
+          pointBackgroundColor: FG,
+          tension: 0.25,
+          fill: true,
+          spanGaps: true,
+        }];
+
+        // 目標ライン（点線）
+        const tgtVal = def.target ? state.targets[def.target] : null;
+        if (tgtVal != null && labels.length > 0) {
+          datasets.push({
+            label: '目標',
+            data: labels.map(() => tgtVal),
+            borderColor: '#2ea44f',
+            borderWidth: 1,
+            borderDash: [4, 4],
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            fill: false,
+            tension: 0,
+          });
+        }
+
+        state.charts[def.id] = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets },
+          options: chartOptions(def.d)
+        });
+      });
+    }
+
+    function renderPartCharts() {
+      const data = rangeSlice();
+      const labels = data.map(d => d.date.slice(5));
+
+      const buildDatasets = (field) => PARTS.map(p => ({
+        label: p.label,
+        data: data.map(d => (d.parts && d.parts[p.key]) ? (d.parts[p.key][field] ?? null) : null),
+        borderColor: p.color,
+        backgroundColor: p.color,
+        borderWidth: 1.5,
+        pointRadius: data.length <= 30 ? 2.5 : 0,
+        pointHoverRadius: 4,
+        tension: 0.25,
+        fill: false,
+        spanGaps: true,
+      }));
+
+      const buildLegend = (containerId) => {
+        const c = document.getElementById(containerId);
+        c.innerHTML = PARTS.map(p =>
+          `<span class="item"><span class="swatch" style="background:${p.color}"></span>${p.label}</span>`
+        ).join('');
+      };
+
+      [
+        {id: 'chart-part-muscle', field: 'muscle_mass_kg', legend: 'legend-part-muscle', d: 1},
+        {id: 'chart-part-fat',    field: 'body_fat_pct',   legend: 'legend-part-fat',    d: 1},
+      ].forEach(cfg => {
+        buildLegend(cfg.legend);
+        const canvas = document.getElementById(cfg.id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (state.partCharts[cfg.id]) state.partCharts[cfg.id].destroy();
+        state.partCharts[cfg.id] = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets: buildDatasets(cfg.field) },
+          options: chartOptions(cfg.d)
+        });
+      });
+    }
+
+    /* ---------- raw ---------- */
+    function sortedRows() {
+      return state.all.slice().sort((a,b) => {
+        const k = state.sortKey;
+        let av = a[k], bv = b[k];
+        if (k === 'date') { av = a.date; bv = b.date; }
+        if (av == null) av = -Infinity;
+        if (bv == null) bv = -Infinity;
+        if (av < bv) return state.sortDir === 'asc' ? -1 : 1;
+        if (av > bv) return state.sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    function partCell(r, part, key) {
+      const p = (r.parts || {})[part];
+      if (!p) return '—';
+      return fmt(p[key], 1);
+    }
+
+    function renderRaw() {
+      const tbB = document.getElementById('raw-tbody-body');
+      const tbP = document.getElementById('raw-tbody-parts');
+      if (!state.all.length) {
+        tbB.innerHTML = '<tr><td colspan="11" class="empty">データなし</td></tr>';
+        tbP.innerHTML = '<tr><td colspan="11" class="empty">データなし</td></tr>';
+        updateSortIndicators();
+        return;
+      }
+      const rows = sortedRows();
+
+      tbB.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.date}</td>
+          <td>${fmt(r.weight_kg,1)}</td>
+          <td>${fmt(r.bmi,1)}</td>
+          <td>${fmt(r.body_fat_pct,1)}</td>
+          <td>${fmt(r.muscle_mass_kg,1)}</td>
+          <td>${fmtInt(r.muscle_score)}</td>
+          <td>${fmt(r.visceral_fat_level,1)}</td>
+          <td>${fmtInt(r.basal_metabolic_rate)}</td>
+          <td>${fmtInt(r.metabolic_age)}</td>
+          <td>${fmt(r.estimated_bone_mass_kg,1)}</td>
+          <td>${fmt(r.body_water_pct,1)}</td>
+        </tr>
+      `).join('');
+
+      tbP.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.date}</td>
+          <td>${partCell(r,'right_arm','muscle_mass_kg')}</td><td class="part-end">${partCell(r,'right_arm','body_fat_pct')}</td>
+          <td>${partCell(r,'left_arm','muscle_mass_kg')}</td><td class="part-end">${partCell(r,'left_arm','body_fat_pct')}</td>
+          <td>${partCell(r,'right_leg','muscle_mass_kg')}</td><td class="part-end">${partCell(r,'right_leg','body_fat_pct')}</td>
+          <td>${partCell(r,'left_leg','muscle_mass_kg')}</td><td class="part-end">${partCell(r,'left_leg','body_fat_pct')}</td>
+          <td>${partCell(r,'trunk','muscle_mass_kg')}</td><td>${partCell(r,'trunk','body_fat_pct')}</td>
+        </tr>
+      `).join('');
+
+      updateSortIndicators();
+    }
+
+    function updateSortIndicators() {
+      document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+        th.classList.remove('sort-asc','sort-desc');
+        const arrow = th.querySelector('.arrow');
+        if (th.dataset.sort === state.sortKey) {
+          th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+          if (arrow) arrow.textContent = state.sortDir === 'asc' ? '▲' : '▼';
+        } else if (arrow) {
+          arrow.textContent = '▼';
+        }
+      });
+    }
+
+    /* ---------- events ---------- */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('#range-btns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#range-btns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const r = btn.dataset.range;
+        state.range = (r === 'all') ? 'all' : Number(r);
+        renderCharts();
+      });
+    });
+
+    /* sub-tabs (全身 / 部位別) */
+    document.querySelectorAll('.subtab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.chartSub = btn.dataset.sub;
+        const showBody = state.chartSub === 'body';
+        document.getElementById('charts-body').style.display = showBody ? '' : 'none';
+        document.getElementById('charts-parts').style.display = showBody ? 'none' : '';
+        renderCharts();
+      });
+    });
+
+    document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+      th.addEventListener('click', () => {
+        const k = th.dataset.sort;
+        if (state.sortKey === k) {
+          state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          state.sortKey = k;
+          state.sortDir = 'desc';
+        }
+        renderRaw();
+      });
+    });
+
+    /* copy command memo */
+    const copyBtn = document.getElementById('copy-cmd');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const cmd = document.getElementById('sync-cmd').textContent;
+        try {
+          await navigator.clipboard.writeText(cmd);
+          copyBtn.textContent = 'コピー済み';
+          copyBtn.classList.add('done');
+          setTimeout(() => {
+            copyBtn.textContent = 'コピー';
+            copyBtn.classList.remove('done');
+          }, 1500);
+        } catch (e) {
+          console.warn('clipboard write failed', e);
+        }
+      });
+    }
+
+    load();
+  })();
+  </script>
+</body>
+</html>
