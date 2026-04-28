@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — geo-history / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; }
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  /* HERO */
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--muted); margin-bottom: 16px; letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom-color: var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .hero .ja { font-size: 16px; color: var(--muted); margin-bottom: 18px; letter-spacing: 0.02em; }
+  .hero .lead { font-size: 15px; line-height: 1.85; color: #333; max-width: 820px; }
+  .hero .lead strong { font-weight: 600; color: var(--fg); }
+
+  /* SUBNAV */
+  .subnav {
+    display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .subnav a {
+    text-decoration: none; color: var(--muted);
+    font-size: 14px; font-weight: 500;
+    padding: 12px 18px; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: color 0.15s;
+  }
+  .subnav a:hover { color: var(--fg); }
+  .subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  /* OVERVIEW SECTION */
+  .overview {
+    margin-bottom: 40px;
+  }
+  .overview h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding-bottom: 10px; margin-bottom: 16px;
+    border-bottom: 2px solid var(--fg);
+  }
+  .overview h2 .ja-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.02em;
+    margin-left: 12px; text-transform: none;
+  }
+
+  table.overview-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--line);
+    font-size: 13px;
+  }
+  table.overview-tbl th {
+    text-align: left;
+    padding: 11px 14px;
+    background: var(--soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+  }
+  table.overview-tbl td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.overview-tbl tr:last-child td { border-bottom: none; }
+  table.overview-tbl tr:hover td { background: var(--soft); cursor: pointer; }
+  table.overview-tbl tr.active-row td { background: #fff8e1; }
+  table.overview-tbl td.r-name { font-weight: 700; }
+  table.overview-tbl td.r-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+  }
+  table.overview-tbl td.r-stars {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.04em;
+    color: #c08a00;
+    white-space: nowrap;
+  }
+  table.overview-tbl td.r-stars .star-empty { color: #d9d9d9; }
+  table.overview-tbl td.r-use {
+    color: #444;
+    font-size: 12.5px;
+  }
+
+  /* RESOURCE TABS */
+  .resource-tabs {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 1100px) {
+    .resource-tabs { grid-template-columns: repeat(5, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .resource-tabs { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .resource-tabs { grid-template-columns: repeat(3, 1fr); }
+  }
+  .resource-tabs button {
+    background: var(--bg); border: 1px solid var(--line); cursor: pointer;
+    font-family: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 12px 10px; color: var(--muted);
+    transition: all 0.15s;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+  .resource-tabs button:hover { background: var(--soft); color: var(--fg); }
+  .resource-tabs button.active {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .resource-tabs button .r-icon {
+    font-size: 18px; line-height: 1;
+  }
+  .resource-tabs button .r-tag {
+    font-size: 11.5px; line-height: 1.3;
+  }
+
+  /* SELECTED RESOURCE HEADER */
+  .res-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 12px; margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .res-head .res-title {
+    font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
+  }
+  .res-head .res-title .res-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--muted);
+    margin-left: 12px; font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .res-head .res-stars {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: flex; gap: 16px;
+    color: #444;
+  }
+  .res-head .res-stars .stars-val {
+    color: #c08a00;
+    margin-left: 6px;
+    letter-spacing: 0.05em;
+  }
+  .res-head .res-stars .star-empty { color: #d9d9d9; }
+
+  /* MAP */
+  .map-wrap { border: 1px solid var(--line); margin-bottom: 24px; background: var(--soft); }
+  #world-map { width: 100%; height: 540px; }
+
+  /* circle styling */
+  .leaflet-popup-content .name {
+    font-weight: 700; font-size: 14.5px; margin-bottom: 4px;
+  }
+  .leaflet-popup-content .stat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #333;
+  }
+  .leaflet-popup-content .stat .label {
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  /* RANKINGS */
+  .rank-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 760px) {
+    .rank-grid { grid-template-columns: 1fr; }
+  }
+  .rank-card { border: 1px solid var(--line); }
+  .rank-card .r-head {
+    padding: 14px 18px;
+    background: var(--soft);
+    border-bottom: 1px solid var(--line);
+  }
+  .rank-card .r-head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .rank-card .r-head .title {
+    font-size: 16px; font-weight: 700;
+  }
+  .rank-card .r-head .unit {
+    font-size: 11px; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+  .rank-card .r-body {
+    padding: 0;
+  }
+  table.rank-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.rank-tbl td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  table.rank-tbl tr:last-child td { border-bottom: none; }
+  table.rank-tbl td.rk {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted); width: 26px;
+    text-align: right;
+  }
+  table.rank-tbl td.cn { font-weight: 600; }
+  table.rank-tbl td.cn .flag { margin-right: 6px; font-size: 14px; }
+  table.rank-tbl td.vl {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  table.rank-tbl td.bar {
+    width: 30%;
+    padding: 9px 14px;
+  }
+  table.rank-tbl td.bar > .bg {
+    background: var(--soft);
+    height: 6px;
+    border-radius: 0;
+  }
+  table.rank-tbl td.bar > .bg > span {
+    display: block;
+    height: 100%;
+    background: var(--fg);
+  }
+  table.rank-tbl tr.jp td { background: #fff8e1; }
+  table.rank-tbl tr.jp td.cn::after {
+    content: '★'; color: var(--accent); font-size: 11px; margin-left: 5px;
+  }
+
+  /* IMPORTANCE */
+  .importance {
+    border: 1px solid var(--line);
+    background: var(--bg);
+    padding: 22px 24px;
+    margin-bottom: 28px;
+  }
+  .importance h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .importance p { font-size: 14px; line-height: 1.85; color: #222; }
+  .importance p strong { color: var(--fg); font-weight: 700; }
+  .importance .uses {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .importance .uses .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--soft); border: 1px solid var(--line);
+    padding: 4px 10px; letter-spacing: 0.04em;
+    color: var(--muted); text-transform: uppercase;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: #fff8e1;
+    border: 1px solid #f0e6b3;
+    padding: 12px 16px;
+    font-size: 12px; color: #5a4a00;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 28px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    #world-map { height: 420px; }
+    .res-head .res-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="./index.html" class="nav-link active">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <header class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; <a href="./index.html">geo-history</a> &nbsp;/&nbsp; resources</div>
+      <h1>Resources</h1>
+      <div class="ja">重要資源 — 14品目の生産・輸出・地政学</div>
+      <p class="lead">
+        現代経済を支える <strong>エネルギー資源</strong>・<strong>金属資源</strong>・<strong>クリティカルミネラル</strong> 14品目の
+        生産国・輸出国・産地を可視化。<strong>希少性</strong>と<strong>今後10年の戦略的重要度</strong>でランキング。
+        資源タブを押すと、地図上に取れる場所が大きい円で表示され、ランキングと用途が下に出る。
+      </p>
+    </header>
+
+    <nav class="subnav">
+      <a href="./koppen.html">Köppen</a>
+      <a href="./chart.html">Chart</a>
+      <a href="./geography.html">Geography</a>
+      <a href="./colonial.html">Colonial</a>
+      <a href="./resources.html" class="active">Resources</a>
+    </nav>
+
+    <!-- ============ OVERVIEW (cross-resource ratings) ============ -->
+    <section class="overview">
+      <h2>Strategic Ranking <span class="ja-title">— 希少性 × 今後10年の重要度</span></h2>
+      <table class="overview-tbl" id="overview-tbl">
+        <thead>
+          <tr>
+            <th>Resource</th>
+            <th>EN</th>
+            <th>希少性</th>
+            <th>今後10年重要度</th>
+            <th>用途のコア</th>
+          </tr>
+        </thead>
+        <tbody id="overview-body"></tbody>
+      </table>
+    </section>
+
+    <!-- ============ RESOURCE TABS ============ -->
+    <nav class="resource-tabs" id="resource-tabs"></nav>
+
+    <!-- ============ SELECTED RESOURCE ============ -->
+    <div class="res-head">
+      <div class="res-title" id="res-title">—<span class="res-en" id="res-en">—</span></div>
+      <div class="res-stars">
+        <div>希少性 <span class="stars-val" id="stars-rarity"></span></div>
+        <div>10年重要度 <span class="stars-val" id="stars-importance"></span></div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="map-wrap"><div id="world-map"></div></div>
+
+    <!-- RANKINGS -->
+    <div class="rank-grid">
+      <div class="rank-card">
+        <div class="r-head">
+          <div class="label">▦ Production Ranking</div>
+          <div class="title">生産国ランキング (Top 10)</div>
+          <div class="unit" id="prod-unit">—</div>
+        </div>
+        <div class="r-body">
+          <table class="rank-tbl"><tbody id="prod-body"></tbody></table>
+        </div>
+      </div>
+      <div class="rank-card">
+        <div class="r-head">
+          <div class="label">▤ Export Ranking</div>
+          <div class="title">輸出国ランキング (Top 10)</div>
+          <div class="unit" id="exp-unit">—</div>
+        </div>
+        <div class="r-body">
+          <table class="rank-tbl"><tbody id="exp-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORTANCE -->
+    <div class="importance">
+      <h3>Why It Matters — なぜ重要か</h3>
+      <p id="importance-text">—</p>
+      <div class="uses" id="importance-uses"></div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>注意</strong>: データは概ね2022〜2023年の <em>USGS / IEA / BP Statistical Review / World Nuclear / S&P Global</em> 等から集計した目安値。
+      地図上の円の大きさは生産量に比例（最大値を基準に対数スケール）。輸出ランキングは国が消費・備蓄する分を除いた純輸出ベース。年により変動するため厳密な順位はその時々の統計を参照のこと。
+    </div>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shota_122937/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+  </footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// ============ COUNTRY CENTROIDS ============
+const C = {
+  AUS: {ja:'オーストラリア', flag:'🇦🇺', lat:-25, lon:135},
+  BRA: {ja:'ブラジル',     flag:'🇧🇷', lat:-10, lon:-55},
+  CAN: {ja:'カナダ',       flag:'🇨🇦', lat:56, lon:-106},
+  CHL: {ja:'チリ',         flag:'🇨🇱', lat:-30, lon:-71},
+  CHN: {ja:'中国',         flag:'🇨🇳', lat:35, lon:103},
+  COD: {ja:'コンゴ民主共和国', flag:'🇨🇩', lat:-2, lon:23},
+  COL: {ja:'コロンビア',   flag:'🇨🇴', lat:4, lon:-72},
+  DEU: {ja:'ドイツ',       flag:'🇩🇪', lat:51, lon:10},
+  EGY: {ja:'エジプト',     flag:'🇪🇬', lat:27, lon:30},
+  GHA: {ja:'ガーナ',       flag:'🇬🇭', lat:8, lon:-1},
+  GIN: {ja:'ギニア',       flag:'🇬🇳', lat:11, lon:-10},
+  IDN: {ja:'インドネシア', flag:'🇮🇩', lat:-3, lon:120},
+  IND: {ja:'インド',       flag:'🇮🇳', lat:22, lon:79},
+  IRN: {ja:'イラン',       flag:'🇮🇷', lat:32, lon:53},
+  IRQ: {ja:'イラク',       flag:'🇮🇶', lat:33, lon:44},
+  ISL: {ja:'アイスランド', flag:'🇮🇸', lat:65, lon:-19},
+  JAM: {ja:'ジャマイカ',   flag:'🇯🇲', lat:18, lon:-77},
+  JPN: {ja:'日本',         flag:'🇯🇵', lat:36, lon:138},
+  KAZ: {ja:'カザフスタン', flag:'🇰🇿', lat:48, lon:68},
+  KOR: {ja:'韓国',         flag:'🇰🇷', lat:36, lon:128},
+  KWT: {ja:'クウェート',   flag:'🇰🇼', lat:29, lon:48},
+  MDG: {ja:'マダガスカル', flag:'🇲🇬', lat:-19, lon:47},
+  MEX: {ja:'メキシコ',     flag:'🇲🇽', lat:23, lon:-102},
+  MMR: {ja:'ミャンマー',   flag:'🇲🇲', lat:21, lon:96},
+  MYS: {ja:'マレーシア',   flag:'🇲🇾', lat:4, lon:102},
+  NAM: {ja:'ナミビア',     flag:'🇳🇦', lat:-22, lon:17},
+  NCL: {ja:'ニューカレドニア', flag:'🇳🇨', lat:-21, lon:165},
+  NER: {ja:'ニジェール',   flag:'🇳🇪', lat:17, lon:8},
+  NGA: {ja:'ナイジェリア', flag:'🇳🇬', lat:9, lon:8},
+  NOR: {ja:'ノルウェー',   flag:'🇳🇴', lat:64, lon:17},
+  PER: {ja:'ペルー',       flag:'🇵🇪', lat:-10, lon:-76},
+  PHL: {ja:'フィリピン',   flag:'🇵🇭', lat:13, lon:122},
+  PNG: {ja:'パプアニューギニア', flag:'🇵🇬', lat:-6, lon:147},
+  POL: {ja:'ポーランド',   flag:'🇵🇱', lat:52, lon:19},
+  PRT: {ja:'ポルトガル',   flag:'🇵🇹', lat:39, lon:-8},
+  QAT: {ja:'カタール',     flag:'🇶🇦', lat:25, lon:51},
+  RUS: {ja:'ロシア',       flag:'🇷🇺', lat:60, lon:90},
+  SAU: {ja:'サウジアラビア', flag:'🇸🇦', lat:25, lon:45},
+  ZAF: {ja:'南アフリカ',   flag:'🇿🇦', lat:-29, lon:24},
+  ZMB: {ja:'ザンビア',     flag:'🇿🇲', lat:-14, lon:28},
+  ZWE: {ja:'ジンバブエ',   flag:'🇿🇼', lat:-19, lon:30},
+  THA: {ja:'タイ',         flag:'🇹🇭', lat:15, lon:100},
+  TKM: {ja:'トルクメニスタン', flag:'🇹🇲', lat:39, lon:59},
+  TUR: {ja:'トルコ',       flag:'🇹🇷', lat:39, lon:35},
+  UAE: {ja:'UAE',          flag:'🇦🇪', lat:24, lon:54},
+  UKR: {ja:'ウクライナ',   flag:'🇺🇦', lat:49, lon:32},
+  USA: {ja:'米国',         flag:'🇺🇸', lat:39, lon:-98},
+  UZB: {ja:'ウズベキスタン', flag:'🇺🇿', lat:41, lon:64},
+  VNM: {ja:'ベトナム',     flag:'🇻🇳', lat:16, lon:106},
+  ARG: {ja:'アルゼンチン', flag:'🇦🇷', lat:-34, lon:-65},
+  BHR: {ja:'バーレーン',   flag:'🇧🇭', lat:26, lon:50},
+  BOL: {ja:'ボリビア',     flag:'🇧🇴', lat:-17, lon:-65},
+  CIV: {ja:'コートジボワール', flag:'🇨🇮', lat:7, lon:-5},
+  CUB: {ja:'キューバ',     flag:'🇨🇺', lat:22, lon:-80},
+  DZA: {ja:'アルジェリア', flag:'🇩🇿', lat:28, lon:1},
+  ESP: {ja:'スペイン',     flag:'🇪🇸', lat:40, lon:-4},
+  FRA: {ja:'フランス',     flag:'🇫🇷', lat:46, lon:2},
+  GBR: {ja:'英国',         flag:'🇬🇧', lat:54, lon:-2},
+  MAR: {ja:'モロッコ',     flag:'🇲🇦', lat:32, lon:-7},
+  MNG: {ja:'モンゴル',     flag:'🇲🇳', lat:46, lon:105},
+  MOZ: {ja:'モザンビーク', flag:'🇲🇿', lat:-19, lon:35},
+  BTN: {ja:'ブータン',     flag:'🇧🇹', lat:27, lon:90},
+};
+
+// ============ STRATEGIC RANKING (cross-resource) ============
+// 5★ scale: rarity, importance10y
+// Sorted desc-importance for default overview ordering
+const RESOURCES_OVERVIEW_ORDER = [
+  'lithium','rare_earth','copper','silicon','cobalt','nickel','silver',
+  'natural_gas','uranium','crude_oil','iron_ore','aluminum','gold','coal'
+];
+
+// ============ RESOURCE DATA ============
+// Each resource: {name, en, icon, prodUnit, expUnit, prod[], exp[], importance, uses[], rarity, importance10y}
+const RESOURCES = {
+
+  crude_oil: {
+    name: '原油',
+    en: 'Crude Oil',
+    icon: '🛢️',
+    rarity: 3, importance10y: 3,
+    coreUse: 'エネルギー / 化学製品',
+    prodUnit: '万 b/d (2023)',
+    expUnit: '万 b/d (2022)',
+    prod: [
+      ['USA', 1290], ['SAU', 970], ['RUS', 940], ['CAN', 460], ['IRQ', 440],
+      ['CHN', 430], ['UAE', 340], ['BRA', 340], ['IRN', 330], ['KWT', 290]
+    ],
+    exp: [
+      ['SAU', 740], ['RUS', 530], ['CAN', 410], ['IRQ', 340], ['UAE', 270],
+      ['USA', 270], ['NOR', 200], ['KWT', 170], ['NGA', 150], ['MEX', 130]
+    ],
+    importance: '世界一次エネルギーの<strong>約30%</strong>を占める基幹資源。輸送燃料(ガソリン・軽油・ジェット燃料)、プラスチック・繊維・医薬品の原料、発電燃料として現代産業文明の血液。OPEC+ (サウジ+ロシア中心)が価格決定権を握り、地政学上の最重要レバー。',
+    uses: ['ガソリン', 'ジェット燃料', 'プラスチック', '化学繊維', '医薬品', 'アスファルト']
+  },
+
+  natural_gas: {
+    name: '天然ガス',
+    en: 'Natural Gas',
+    icon: '🔥',
+    rarity: 3, importance10y: 4,
+    coreUse: '発電 / 化学原料',
+    prodUnit: 'bcm/年 (2022)',
+    expUnit: 'bcm/年 (2022)',
+    prod: [
+      ['USA', 1029], ['RUS', 618], ['IRN', 259], ['CHN', 222], ['CAN', 185],
+      ['QAT', 178], ['AUS', 153], ['NOR', 123], ['SAU', 121], ['DZA', 98]
+    ],
+    exp: [
+      ['RUS', 200], ['USA', 150], ['QAT', 125], ['AUS', 108], ['NOR', 100],
+      ['CAN', 80], ['DZA', 50], ['TKM', 40], ['MYS', 33], ['NGA', 22]
+    ],
+    importance: '石炭より排出量が少ない化石燃料として<strong>移行期エネルギー</strong>の主役。発電・暖房・化学肥料(アンモニア)・水素製造の原料。<strong>LNG</strong>(液化天然ガス)輸送網が拡大し、ロシア-欧州ガス危機後はアメリカ・カタール・オーストラリアが供給シェアを伸ばす。',
+    uses: ['発電', '暖房', 'アンモニア肥料', '水素製造', '化学原料']
+  },
+
+  coal: {
+    name: '石炭',
+    en: 'Coal',
+    icon: '⚫',
+    rarity: 1, importance10y: 2,
+    coreUse: '発電 / 製鉄',
+    prodUnit: 'Mt/年 (2022)',
+    expUnit: 'Mt/年 (2022)',
+    prod: [
+      ['CHN', 4500], ['IND', 911], ['IDN', 687], ['USA', 540], ['AUS', 443],
+      ['RUS', 411], ['ZAF', 230], ['DEU', 130], ['POL', 107], ['KAZ', 117]
+    ],
+    exp: [
+      ['IDN', 466], ['AUS', 350], ['RUS', 211], ['USA', 84], ['ZAF', 73],
+      ['COL', 58], ['MNG', 31], ['CAN', 30], ['KAZ', 31], ['CHN', 4]
+    ],
+    importance: '世界の発電の<strong>約36%</strong>(2022)を占めるが、CO₂排出が最大の化石燃料のため脱炭素圧力で先進国は段階的廃止。一方、製鉄に必要な<strong>原料炭(コークス)</strong>は代替が難しく当面残る。中国・インドの新興国需要は依然旺盛。',
+    uses: ['発電', '製鉄(コークス)', 'セメント', '化学原料']
+  },
+
+  iron_ore: {
+    name: '鉄鉱石',
+    en: 'Iron Ore',
+    icon: '⛏️',
+    rarity: 1, importance10y: 3,
+    coreUse: '鉄鋼 / インフラ',
+    prodUnit: 'Mt/年 (2023)',
+    expUnit: 'Mt/年 (2022)',
+    prod: [
+      ['AUS', 960], ['BRA', 440], ['CHN', 280], ['IND', 270], ['RUS', 88],
+      ['CAN', 67], ['ZAF', 65], ['IRN', 50], ['UKR', 35], ['KAZ', 28]
+    ],
+    exp: [
+      ['AUS', 880], ['BRA', 360], ['ZAF', 65], ['CAN', 55], ['UKR', 30],
+      ['RUS', 25], ['SWE', 25], ['IND', 18], ['MAR', 13], ['IRN', 10]
+    ],
+    importance: '<strong>鉄鋼</strong>はインフラ・建設・自動車・船舶の基盤素材。豪・伯の2強(計75%)が中国向けに輸出する構図で、中国の不動産需要に世界価格が左右される。低品位の代替も豊富で希少性は低いが、<strong>水素還元製鉄</strong>(脱炭素)の主役へ。',
+    uses: ['鉄鋼', '建設', '自動車', '船舶', '機械']
+  },
+
+  copper: {
+    name: '銅',
+    en: 'Copper',
+    icon: '🟠',
+    rarity: 3, importance10y: 5,
+    coreUse: '電気 / EV / 配線',
+    prodUnit: '千t/年 (2023)',
+    expUnit: '千t/年 精錬銅',
+    prod: [
+      ['CHL', 5000], ['PER', 2600], ['COD', 2500], ['CHN', 1700], ['USA', 1100],
+      ['RUS', 920], ['IDN', 840], ['AUS', 810], ['ZMB', 760], ['MEX', 750]
+    ],
+    exp: [
+      ['CHL', 2400], ['PER', 1600], ['COD', 1400], ['RUS', 900], ['ZMB', 700],
+      ['JPN', 500], ['KAZ', 500], ['POL', 500], ['AUS', 400], ['BHR', 400]
+    ],
+    importance: '<strong>電化革命</strong>の中核金属。EV1台に約<strong>80kg</strong>(従来車の約4倍)、洋上風力1基に約<strong>30t</strong>。送電線・モーター・発電機・電子機器のあらゆる場面で代替が困難。需要は2050年までに2倍以上、新規鉱山開発は10年単位の遅れ。',
+    uses: ['送電線', 'EVモーター', '電子機器', '建設配線', 'モーター']
+  },
+
+  gold: {
+    name: '金',
+    en: 'Gold',
+    icon: '🥇',
+    rarity: 2, importance10y: 3,
+    coreUse: '価値保存 / 金融',
+    prodUnit: 't/年 (2023)',
+    expUnit: 't/年 (推定)',
+    prod: [
+      ['CHN', 370], ['AUS', 310], ['RUS', 310], ['CAN', 200], ['USA', 170],
+      ['MEX', 130], ['KAZ', 130], ['GHA', 130], ['ZAF', 100], ['PER', 100]
+    ],
+    exp: [
+      ['CHE', 1500], ['HKG', 600], ['UAE', 600], ['USA', 500], ['CAN', 350],
+      ['AUS', 300], ['ZAF', 250], ['SGP', 200], ['GBR', 150], ['TUR', 100]
+    ],
+    importance: '<strong>価値保存資産</strong>として人類最古の金融商品。中央銀行が外貨準備の一部として保有(米FRB約8,100t、独・伊・仏・露・中で計2万t超)。電子部品・歯科・宝飾にも使われるが、ほぼ全量回収・再利用される非消費型資源。インフレ・地政学リスクヘッジ。',
+    uses: ['中央銀行準備', '宝飾品', '電子部品', '歯科', '投資']
+  },
+
+  silver: {
+    name: '銀',
+    en: 'Silver',
+    icon: '🥈',
+    rarity: 2, importance10y: 4,
+    coreUse: '電子 / 太陽光',
+    prodUnit: 't/年 (2023)',
+    expUnit: 't/年 (推定)',
+    prod: [
+      ['MEX', 6400], ['CHN', 3400], ['PER', 3100], ['POL', 1300], ['AUS', 1300],
+      ['CHL', 1300], ['BOL', 1200], ['RUS', 1200], ['USA', 1000], ['ARG', 800]
+    ],
+    exp: [
+      ['MEX', 5500], ['POL', 1200], ['CHL', 1100], ['PER', 900], ['CAN', 600],
+      ['AUS', 500], ['KOR', 400], ['BOL', 400], ['ARG', 300], ['USA', 300]
+    ],
+    importance: '電気伝導率が金属中<strong>最高</strong>。<strong>太陽光パネル</strong>(電極)の主要材料で、銀使用量は太陽光世界需要の10%超。電子接点・抗菌剤・装飾。リサイクル困難なため、太陽光発電拡大とともに需給逼迫が予測される。',
+    uses: ['太陽光パネル電極', '電子接点', '電気接続', '抗菌剤', '宝飾']
+  },
+
+  rare_earth: {
+    name: 'レアアース',
+    en: 'Rare Earth Elements (REE)',
+    icon: '💠',
+    rarity: 5, importance10y: 5,
+    coreUse: '磁石 / モーター',
+    prodUnit: 't/年 REO換算 (2023)',
+    expUnit: 't/年 REO換算',
+    prod: [
+      ['CHN', 240000], ['USA', 43000], ['MMR', 38000], ['AUS', 18000], ['THA', 7100],
+      ['IND', 2900], ['RUS', 2500], ['MDG', 960], ['VNM', 600], ['BRA', 80]
+    ],
+    exp: [
+      ['CHN', 180000], ['MYS', 25000], ['EST', 7000], ['JPN', 5000], ['AUS', 4000],
+      ['FRA', 2000], ['GBR', 1500], ['DEU', 1200], ['VNM', 800], ['IND', 500]
+    ],
+    importance: '17元素の総称(ネオジム、ジスプロシウム、テルビウム等)。<strong>EVモーター・風力発電・MRI・F-35戦闘機・半導体</strong>すべてに必須。中国が採掘の<strong>約65%</strong>、精錬では<strong>約95%</strong>を握る独占構造。米国・豪州が脱中国依存で開発加速中。',
+    uses: ['EVモーター磁石', '風力発電', '電子部品', '半導体研磨剤', '蛍光体', '触媒']
+  },
+
+  lithium: {
+    name: 'リチウム',
+    en: 'Lithium',
+    icon: '🔋',
+    rarity: 4, importance10y: 5,
+    coreUse: 'EV / バッテリー',
+    prodUnit: 't/年 Li含有 (2023)',
+    expUnit: 't/年 Li含有',
+    prod: [
+      ['AUS', 86000], ['CHL', 44000], ['CHN', 33000], ['ARG', 9600], ['BRA', 4900],
+      ['ZWE', 3400], ['USA', 1000], ['CAN', 520], ['PRT', 380], ['NAM', 140]
+    ],
+    exp: [
+      ['AUS', 80000], ['CHL', 38000], ['ARG', 8500], ['ZWE', 3200], ['BRA', 3000],
+      ['CHN', 2000], ['CAN', 400], ['PRT', 350], ['USA', 200], ['NAM', 130]
+    ],
+    importance: '<strong>EV・スマホ・蓄電池</strong>のバッテリー材料。リチウムイオン電池の電極材として代替が難しく、EV1台に約<strong>10kg</strong>。需要は2030年までに5倍。<strong>「リチウム三角形」</strong>(チリ・アルゼンチン・ボリビアの塩湖)と豪州のスポデュメン鉱山が二大供給源。',
+    uses: ['EVバッテリー', 'スマホ電池', '蓄電池', 'ガラス・陶器', '潤滑剤']
+  },
+
+  aluminum: {
+    name: 'アルミニウム',
+    en: 'Aluminum (Bauxite)',
+    icon: '🥫',
+    rarity: 2, importance10y: 3,
+    coreUse: '軽量素材 / 輸送',
+    prodUnit: 'Mt/年 ボーキサイト (2023)',
+    expUnit: 'Mt/年 アルミ精錬',
+    prod: [
+      ['AUS', 102], ['GIN', 97], ['CHN', 93], ['BRA', 31], ['IND', 23],
+      ['IDN', 21], ['JAM', 6], ['RUS', 6], ['SAU', 5], ['TUR', 1.4]
+    ],
+    exp: [
+      ['CHN', 40], ['IND', 4.1], ['RUS', 3.7], ['CAN', 3.0], ['UAE', 2.7],
+      ['BHR', 1.6], ['AUS', 1.5], ['NOR', 1.4], ['ISL', 0.9], ['USA', 0.9]
+    ],
+    importance: '地殻に8番目に多く存在するが、精錬には<strong>大量の電力</strong>が必要(コスト構造が「凍結された電気」と呼ばれる)。<strong>軽量化</strong>ニーズ(航空機・EV・建材)で需要増。中国が精錬の60%を支配。原料ボーキサイトはギニア・豪が二大産地。',
+    uses: ['航空機', '自動車', '建材', '飲料缶', '電線']
+  },
+
+  cobalt: {
+    name: 'コバルト',
+    en: 'Cobalt',
+    icon: '🔷',
+    rarity: 5, importance10y: 4,
+    coreUse: '電池材料',
+    prodUnit: 't/年 (2023)',
+    expUnit: 't/年',
+    prod: [
+      ['COD', 170000], ['IDN', 17000], ['RUS', 8800], ['AUS', 4600], ['CAN', 3800],
+      ['PHL', 3800], ['CUB', 3500], ['MDG', 3000], ['PNG', 3000], ['MAR', 2300]
+    ],
+    exp: [
+      ['COD', 160000], ['IDN', 15000], ['AUS', 4000], ['RUS', 3000], ['CAN', 2500],
+      ['PHL', 2000], ['MDG', 2500], ['ZMB', 1500], ['MAR', 1500], ['PNG', 1000]
+    ],
+    importance: 'リチウムイオン電池の正極材(NCM・NCA)に必須。<strong>コンゴ民主共和国(DRC)が世界の70%</strong>を産出する極端な集中構造で、児童労働・人権問題の温床に。各社はコバルトフリー電池(LFP)へ移行中だが、高エネルギー密度用途では当面必要。',
+    uses: ['EVバッテリー', 'スマホ電池', '超合金', '触媒', '磁石']
+  },
+
+  nickel: {
+    name: 'ニッケル',
+    en: 'Nickel',
+    icon: '🔹',
+    rarity: 3, importance10y: 4,
+    coreUse: '電池 / ステンレス',
+    prodUnit: '千t/年 (2023)',
+    expUnit: '千t/年',
+    prod: [
+      ['IDN', 1800], ['PHL', 400], ['NCL', 230], ['RUS', 200], ['CAN', 180],
+      ['AUS', 160], ['CHN', 110], ['BRA', 84], ['MDG', 41], ['USA', 17]
+    ],
+    exp: [
+      ['IDN', 1500], ['PHL', 380], ['RUS', 180], ['NCL', 220], ['CAN', 150],
+      ['AUS', 140], ['BRA', 60], ['MDG', 35], ['ZAF', 30], ['CUB', 30]
+    ],
+    importance: '伝統的にはステンレス鋼用(70%)だが、<strong>EV高エネルギー密度電池</strong>(NCM正極)需要で電池用が急成長。インドネシアが2023年に世界の50%を生産する独占傾向。中国系企業が主要鉱山を抑える構図。',
+    uses: ['ステンレス鋼', 'EVバッテリー', '合金', 'メッキ', '触媒']
+  },
+
+  silicon: {
+    name: 'シリコン',
+    en: 'Silicon (Polysilicon)',
+    icon: '💻',
+    rarity: 3, importance10y: 5,
+    coreUse: '半導体 / 太陽光',
+    prodUnit: 'Mt/年 金属Si (2023)',
+    expUnit: 'kt/年 ポリシリコン',
+    prod: [
+      ['CHN', 6.0], ['RUS', 0.6], ['BRA', 0.39], ['NOR', 0.34], ['USA', 0.32],
+      ['FRA', 0.13], ['MYS', 0.13], ['ISL', 0.09], ['ESP', 0.08], ['BTN', 0.08]
+    ],
+    exp: [
+      ['CHN', 800], ['DEU', 50], ['USA', 40], ['MYS', 35], ['NOR', 25],
+      ['JPN', 15], ['KOR', 12], ['FRA', 10], ['BRA', 8], ['ISL', 5]
+    ],
+    importance: '<strong>半導体</strong>(ICチップ)と<strong>太陽光パネル</strong>の中核素材。地殻に2番目に多い元素だが、9N(99.9999999%)まで精製した<strong>高純度多結晶シリコン</strong>(ポリシリコン)は中国が世界の80%超を生産。半導体ウェハーは日本(信越・SUMCO)、独(Wacker)が高シェア。',
+    uses: ['半導体IC', '太陽光パネル', 'シリコーン樹脂', '合金鋼', 'ガラス']
+  },
+
+  uranium: {
+    name: 'ウラン',
+    en: 'Uranium',
+    icon: '☢️',
+    rarity: 3, importance10y: 4,
+    coreUse: '原子力発電',
+    prodUnit: 't/年 U (2022)',
+    expUnit: 't/年 U',
+    prod: [
+      ['KAZ', 21200], ['CAN', 7400], ['NAM', 5600], ['AUS', 4600], ['UZB', 3300],
+      ['RUS', 2500], ['NER', 2000], ['CHN', 1700], ['IND', 600], ['ZAF', 200]
+    ],
+    exp: [
+      ['KAZ', 19000], ['CAN', 6500], ['NAM', 5500], ['AUS', 4500], ['UZB', 3000],
+      ['NER', 2000], ['RUS', 1500], ['ZAF', 200], ['BRA', 50], ['USA', 40]
+    ],
+    importance: '<strong>原子力発電</strong>の燃料。気候変動対策・エネルギー安全保障の両面から<strong>原子力ルネサンス</strong>が進行中(SMR・新型炉)。カザフスタンが世界の40%超を産出。濃縮工程はロシア(Rosatom)が世界の40%、米欧の脱ロシア依存が課題。',
+    uses: ['原子力発電', '核兵器', '医療用同位体', '海軍艦艇推進']
+  }
+
+};
+
+// ============ MAP ============
+const map = L.map('world-map', {
+  center: [25, 30],
+  zoom: 2,
+  minZoom: 2,
+  maxZoom: 5,
+  worldCopyJump: true,
+  scrollWheelZoom: false
+});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom: 18
+}).addTo(map);
+
+let currentLayer = null;
+
+function renderMap(rsc) {
+  if (currentLayer) {
+    map.removeLayer(currentLayer);
+    currentLayer = null;
+  }
+  const layer = L.layerGroup();
+  const maxVal = rsc.prod[0][1];
+
+  rsc.prod.forEach(([iso, val]) => {
+    const cn = C[iso];
+    if (!cn) return;
+    // Sqrt scaling for visual fairness
+    const r = 6 + Math.sqrt(val / maxVal) * 32;
+    const m = L.circleMarker([cn.lat, cn.lon], {
+      radius: r,
+      fillColor: '#1976d2',
+      color: '#0d47a1',
+      weight: 1,
+      fillOpacity: 0.5,
+      opacity: 0.9
+    });
+    m.bindTooltip(`${cn.flag} ${cn.ja}`, { direction:'top', offset:[0,-8] });
+    m.bindPopup(
+      `<div class="name">${cn.flag} ${cn.ja}</div>` +
+      `<div class="stat"><span class="label">生産量</span>${val.toLocaleString()} ${rsc.prodUnit.replace(/\s*\(\d{4}\)/,'')}</div>` +
+      `<div class="stat"><span class="label">世界シェア</span>${(val/rsc.prod.reduce((s,[_,v])=>s+v,0)*100).toFixed(1)}%</div>`
+    );
+    layer.addLayer(m);
+  });
+
+  layer.addTo(map);
+  currentLayer = layer;
+}
+
+// ============ STARS ============
+function stars(n) {
+  const filled = '★'.repeat(n);
+  const empty = '<span class="star-empty">' + '☆'.repeat(5 - n) + '</span>';
+  return filled + empty;
+}
+
+// ============ RENDER RANKINGS ============
+function renderRanking(tbodyId, list, max, isJP) {
+  const body = document.getElementById(tbodyId);
+  body.innerHTML = list.map(([iso, v], i) => {
+    const cn = C[iso] || {ja: iso, flag: ''};
+    const isJp = iso === 'JPN';
+    return `<tr${isJp ? ' class="jp"' : ''}>
+      <td class="rk">${i+1}</td>
+      <td class="cn"><span class="flag">${cn.flag}</span>${cn.ja}</td>
+      <td class="bar"><div class="bg"><span style="width:${v/max*100}%"></span></div></td>
+      <td class="vl">${v.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============ MAIN RENDER ============
+function renderResource(key) {
+  const rsc = RESOURCES[key];
+  if (!rsc) return;
+
+  // Update head
+  document.getElementById('res-title').innerHTML = `${rsc.icon} ${rsc.name}<span class="res-en" id="res-en">${rsc.en}</span>`;
+  document.getElementById('stars-rarity').innerHTML = stars(rsc.rarity);
+  document.getElementById('stars-importance').innerHTML = stars(rsc.importance10y);
+
+  // Tabs active
+  document.querySelectorAll('.resource-tabs button').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+
+  // Overview row highlight
+  document.querySelectorAll('#overview-body tr').forEach(tr => {
+    tr.classList.toggle('active-row', tr.dataset.key === key);
+  });
+
+  // Map
+  renderMap(rsc);
+  setTimeout(() => map.invalidateSize(), 30);
+
+  // Rankings
+  document.getElementById('prod-unit').textContent = '単位: ' + rsc.prodUnit;
+  document.getElementById('exp-unit').textContent  = '単位: ' + rsc.expUnit;
+  const maxProd = rsc.prod[0][1];
+  const maxExp  = rsc.exp[0][1];
+  renderRanking('prod-body', rsc.prod, maxProd);
+  renderRanking('exp-body',  rsc.exp,  maxExp);
+
+  // Importance
+  document.getElementById('importance-text').innerHTML = rsc.importance;
+  document.getElementById('importance-uses').innerHTML = rsc.uses.map(u =>
+    `<span class="tag">${u}</span>`
+  ).join('');
+}
+
+// ============ BUILD UI ============
+// resource tabs
+const tabsEl = document.getElementById('resource-tabs');
+tabsEl.innerHTML = Object.entries(RESOURCES).map(([key, r]) =>
+  `<button data-key="${key}">
+    <span class="r-icon">${r.icon}</span>
+    <span class="r-tag">${r.name}</span>
+  </button>`
+).join('');
+document.querySelectorAll('.resource-tabs button').forEach(b => {
+  b.addEventListener('click', () => renderResource(b.dataset.key));
+});
+
+// overview table — sorted by importance10y desc, then rarity desc
+const sortedKeys = RESOURCES_OVERVIEW_ORDER.slice().sort((a,b) => {
+  const ra = RESOURCES[a], rb = RESOURCES[b];
+  if (rb.importance10y !== ra.importance10y) return rb.importance10y - ra.importance10y;
+  return rb.rarity - ra.rarity;
+});
+document.getElementById('overview-body').innerHTML = sortedKeys.map(key => {
+  const r = RESOURCES[key];
+  return `<tr data-key="${key}">
+    <td class="r-name">${r.icon} ${r.name}</td>
+    <td class="r-en">${r.en}</td>
+    <td class="r-stars">${stars(r.rarity)}</td>
+    <td class="r-stars">${stars(r.importance10y)}</td>
+    <td class="r-use">${r.coreUse}</td>
+  </tr>`;
+}).join('');
+document.querySelectorAll('#overview-body tr').forEach(tr => {
+  tr.addEventListener('click', () => {
+    renderResource(tr.dataset.key);
+    document.querySelector('.res-head').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+// initial
+renderResource('lithium');
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
