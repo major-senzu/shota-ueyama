@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geography — geo-history / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --mountain: #8b5a2b;
+    --river: #2563eb;
+    --canal: #ea580c;
+    --sea: #0891b2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 32px 48px 48px;
+  }
+
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  /* ============ HERO ============ */
+  .hero {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .hero .crumb a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .hero .crumb a:hover { color: var(--fg); border-bottom-color: var(--muted); }
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .hero .ja {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .hero .lead {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #333;
+    max-width: 820px;
+  }
+  .hero .lead strong { font-weight: 600; color: var(--fg); }
+
+  /* ============ SUBNAV (Köppen / Chart / Geography) ============ */
+  .subnav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .subnav a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 18px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .subnav a:hover { color: var(--fg); }
+  .subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  /* ============ CATEGORY TABS ============ */
+  .cat-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .cat-tabs button {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 16px 18px;
+    color: var(--muted);
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    text-align: left;
+  }
+  .cat-tabs button:hover {
+    background: var(--soft);
+    color: var(--fg);
+  }
+  .cat-tabs button.active {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .cat-tabs button .cat-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .cat-tabs button .cat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cat-tabs button .cat-ja {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 760px) {
+    .cat-tabs { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ============ MAP ============ */
+  .map-wrap {
+    border: 1px solid var(--line);
+    margin-bottom: 24px;
+    background: var(--soft);
+  }
+  #world-map {
+    width: 100%;
+    height: 600px;
+  }
+
+  /* leaflet marker styles per category */
+  .geo-pin { background: transparent; border: none; }
+  .geo-pin .pin-dot {
+    display: block;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1.5px rgba(0,0,0,0.4);
+    cursor: pointer;
+  }
+  .geo-pin.mountain .pin-dot { background: var(--mountain); }
+  .geo-pin.river    .pin-dot { background: var(--river); }
+  .geo-pin.canal    .pin-dot { background: var(--canal); }
+  .geo-pin.sea      .pin-dot { background: var(--sea); }
+
+  /* permanent label tooltip */
+  .leaflet-tooltip.geo-label {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .leaflet-tooltip.geo-label.cat-mountain { color: var(--mountain); }
+  .leaflet-tooltip.geo-label.cat-river    { color: var(--river); }
+  .leaflet-tooltip.geo-label.cat-canal    { color: var(--canal); }
+  .leaflet-tooltip.geo-label.cat-sea      { color: var(--sea); }
+  .leaflet-tooltip.geo-label::before { display: none; }
+
+  .leaflet-popup-content {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .leaflet-popup-content .name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .leaflet-popup-content .desc {
+    color: #444;
+    font-size: 12.5px;
+  }
+  .leaflet-popup-content .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ LEGEND / LIST ============ */
+  .info-section {
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .info-head {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--soft);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .info-head .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .info-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  .info-item {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+  .info-item:nth-child(2n) { border-right: none; }
+  .info-item .item-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .info-item .item-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 6px;
+  }
+  .info-item .item-desc {
+    font-size: 12.5px;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .info-item { border-right: none; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 28px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    #world-map { height: 460px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="./index.html" class="nav-link active">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <header class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; <a href="./index.html">geo-history</a> &nbsp;/&nbsp; geography</div>
+      <h1>Geography</h1>
+      <div class="ja">世界地理 — Mountains / Rivers / Canals & Straits / Seas</div>
+      <p class="lead">
+        地球上の<strong>抑えるべき山・川・運河（海峡）・海</strong>を世界地図上にプロット。
+        タブを切り替えるとカテゴリごとに地図が更新される。地政学・物流・気候を理解するための土台となる<strong>固有名詞ファイル</strong>。
+      </p>
+    </header>
+
+    <nav class="subnav">
+      <a href="./koppen.html">Köppen</a>
+      <a href="./chart.html">Chart</a>
+      <a href="./geography.html" class="active">Geography</a>
+    </nav>
+
+    <!-- ============ CATEGORY TABS ============ -->
+    <nav class="cat-tabs" aria-label="category">
+      <button class="active" data-cat="mountain">
+        <span class="cat-icon">⛰</span>
+        <span class="cat-label">▣ Cat 01</span>
+        <span class="cat-ja">Mountains / 山</span>
+      </button>
+      <button data-cat="river">
+        <span class="cat-icon">≋</span>
+        <span class="cat-label">▣ Cat 02</span>
+        <span class="cat-ja">Rivers / 川</span>
+      </button>
+      <button data-cat="canal">
+        <span class="cat-icon">⚓</span>
+        <span class="cat-label">▣ Cat 03</span>
+        <span class="cat-ja">Canals & Straits / 運河・海峡</span>
+      </button>
+      <button data-cat="sea">
+        <span class="cat-icon">🌊</span>
+        <span class="cat-label">▣ Cat 04</span>
+        <span class="cat-ja">Seas / 海</span>
+      </button>
+    </nav>
+
+    <!-- ============ MAP ============ -->
+    <div class="map-wrap"><div id="world-map"></div></div>
+
+    <!-- ============ INFO LIST ============ -->
+    <section class="info-section">
+      <div class="info-head">
+        <div class="title" id="info-title">Mountains — 世界の主要山脈・山</div>
+        <div class="count" id="info-count">— items</div>
+      </div>
+      <div class="info-grid" id="info-grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shota_122937/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+  </footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// ============ DATA ============
+// 各カテゴリ: { name(JA), en, lat, lon, desc }
+const DATA = {
+  mountain: {
+    title: 'Mountains — 世界の主要山脈・山',
+    items: [
+      {name:'エベレスト',     en:'Mt. Everest (8,849 m)',     lat:27.9881, lon: 86.9250, desc:'世界最高峰。ヒマラヤ山脈、ネパール／中国チベット国境。'},
+      {name:'K2',           en:'K2 (8,611 m)',              lat:35.8825, lon: 76.5133, desc:'世界第2位、カラコルム山脈、パキスタン／中国国境。'},
+      {name:'ヒマラヤ山脈',   en:'Himalayas',                 lat:28.5983, lon: 83.5800, desc:'インド亜大陸とチベット高原を分ける造山帯。8000m峰14座中10座。'},
+      {name:'カラコルム山脈', en:'Karakoram Range',           lat:35.8800, lon: 76.5000, desc:'パキスタン北部・氷河の集積地。K2を含む。'},
+      {name:'モンブラン',     en:'Mont Blanc (4,809 m)',      lat:45.8326, lon:  6.8652, desc:'アルプス最高峰。フランス／イタリア国境。'},
+      {name:'アルプス山脈',   en:'Alps',                       lat:46.5500, lon:  9.5000, desc:'ヨーロッパ中央部、7カ国にまたがる。'},
+      {name:'エルブルス山',   en:'Mt. Elbrus (5,642 m)',      lat:43.3550, lon: 42.4392, desc:'ヨーロッパ最高峰（コーカサス山脈、ロシア）。'},
+      {name:'ロッキー山脈',   en:'Rocky Mountains',            lat:43.7700, lon:-110.7000, desc:'北米西部、カナダ→米国を縦断。'},
+      {name:'デナリ',        en:'Denali (6,190 m)',          lat:63.0692, lon:-151.0070, desc:'北米最高峰。アラスカ。旧称マッキンリー。'},
+      {name:'アパラチア山脈', en:'Appalachian Mts.',           lat:38.0000, lon:-80.0000, desc:'北米東部の古い山脈。'},
+      {name:'シエラネバダ山脈', en:'Sierra Nevada',            lat:37.8500, lon:-119.2300, desc:'カリフォルニア東部、ヨセミテ・タホ湖。'},
+      {name:'アンデス山脈',   en:'Andes',                      lat:-22.0000, lon:-69.0000, desc:'南米西岸を縦断、世界最長の山脈（約7,000km）。'},
+      {name:'アコンカグア',   en:'Aconcagua (6,961 m)',       lat:-32.6532, lon:-70.0109, desc:'南米最高峰、アルゼンチン。'},
+      {name:'キリマンジャロ', en:'Mt. Kilimanjaro (5,895 m)', lat:-3.0758, lon: 37.3533, desc:'アフリカ最高峰、タンザニア。独立峰。'},
+      {name:'アトラス山脈',   en:'Atlas Mts.',                 lat:31.0500, lon: -7.9100, desc:'北アフリカ（モロッコ・アルジェリア・チュニジア）。'},
+      {name:'富士山',         en:'Mt. Fuji (3,776 m)',        lat:35.3606, lon:138.7274, desc:'日本最高峰、活火山。世界文化遺産。'},
+      {name:'天山山脈',       en:'Tian Shan',                 lat:42.0000, lon: 80.0000, desc:'中央アジア（キルギス・カザフ・中国新疆）の大山脈。'},
+      {name:'パミール高原',   en:'Pamirs',                    lat:38.5000, lon: 73.0000, desc:'タジキスタン中心。「世界の屋根」。'},
+      {name:'ウラル山脈',     en:'Ural Mts.',                 lat:60.0000, lon: 60.0000, desc:'欧亜境界、ロシア中央部を南北に縦断。'},
+      {name:'コーカサス山脈', en:'Caucasus Mts.',             lat:42.5000, lon: 44.0000, desc:'黒海とカスピ海の間、欧亜境界の南半分。'},
+      {name:'ヴィンソン・マシフ', en:'Vinson Massif (4,892 m)', lat:-78.5254, lon:-85.6175, desc:'南極大陸最高峰。エルズワース山地。'},
+      {name:'マッターホルン', en:'Matterhorn (4,478 m)',      lat:45.9763, lon:  7.6586, desc:'アルプスの象徴的尖峰、スイス／イタリア国境。'},
+    ]
+  },
+
+  river: {
+    title: 'Rivers — 世界の主要河川',
+    items: [
+      {name:'ナイル川',       en:'Nile (6,650 km)',           lat:31.4500, lon: 31.0000, desc:'世界最長級。エチオピア・南スーダン・スーダン・エジプト経由で地中海へ。'},
+      {name:'アマゾン川',     en:'Amazon (6,400 km)',         lat: -1.4500, lon:-48.5000, desc:'流量世界一。アンデスから大西洋へ。流域は南米大陸の40%。'},
+      {name:'長江(揚子江)',   en:'Yangtze (6,300 km)',         lat:31.2300, lon:121.4700, desc:'アジア最長。チベット高原から東シナ海へ（上海河口）。'},
+      {name:'ミシシッピ川',   en:'Mississippi (6,275 km)',    lat:29.1538, lon:-89.2530, desc:'北米最大、ミネソタからメキシコ湾へ。ミズーリ川と合流。'},
+      {name:'エニセイ川',     en:'Yenisei (5,539 km)',         lat:71.8333, lon: 82.6667, desc:'ロシア・シベリア、北極海（カラ海）へ。'},
+      {name:'黄河',           en:'Yellow River (5,464 km)',   lat:37.7700, lon:118.9700, desc:'中国第2の大河、文明発祥地。黄土を運び黄海へ。'},
+      {name:'オビ川',         en:'Ob (5,410 km)',             lat:66.7500, lon: 69.0000, desc:'西シベリアを縦断、北極海（オビ湾）へ。'},
+      {name:'コンゴ川',       en:'Congo (4,700 km)',          lat:-6.0750, lon: 12.4500, desc:'アフリカ第2、流量はナイルの数倍。赤道を2回横切る。'},
+      {name:'アムール川',     en:'Amur (4,444 km)',           lat:53.0000, lon:140.7333, desc:'中露国境を東流、間宮海峡（タタール海峡）へ。'},
+      {name:'メコン川',       en:'Mekong (4,350 km)',         lat:10.0500, lon:106.8000, desc:'中国(瀾滄江)からラオス・タイ・カンボジア・ベトナム経由で南シナ海へ。'},
+      {name:'マッケンジー川', en:'Mackenzie (4,241 km)',      lat:69.2500, lon:-135.5000, desc:'カナダ最大、北極海（ボーフォート海）へ。'},
+      {name:'レナ川',         en:'Lena (4,294 km)',           lat:72.0000, lon:127.0000, desc:'東シベリア、バイカル山脈からラプテフ海へ。'},
+      {name:'ニジェール川',   en:'Niger (4,180 km)',          lat: 4.3300, lon:  6.1700, desc:'西アフリカ最大、ギニア→ナイジェリア（デルタ）→ギニア湾。'},
+      {name:'ラプラタ川／パラナ川', en:'La Plata / Paraná',   lat:-34.0000, lon:-58.5000, desc:'南米第2の流域。アルゼンチン・ウルグアイ国境、ブエノスアイレスへ。'},
+      {name:'ボルガ川',       en:'Volga (3,690 km)',          lat:45.6900, lon: 47.8700, desc:'ヨーロッパ最長、ロシア中央を南下しカスピ海へ。'},
+      {name:'ガンジス川',     en:'Ganges (2,525 km)',         lat:21.7800, lon: 88.0500, desc:'ヒマラヤから北インド・バングラデシュ経由でベンガル湾へ。'},
+      {name:'インダス川',     en:'Indus (3,180 km)',          lat:23.9700, lon: 67.4200, desc:'チベット→パキスタンを縦断、アラビア海へ。文明発祥地。'},
+      {name:'ドナウ川',       en:'Danube (2,860 km)',         lat:45.2200, lon: 29.6700, desc:'欧州第2、ドイツ→10カ国経由で黒海へ（最も多くの国を流れる川）。'},
+      {name:'ライン川',       en:'Rhine (1,233 km)',          lat:51.9700, lon:  4.1700, desc:'スイス→独・仏・蘭、ロッテルダム港から北海へ。欧州物流の幹線。'},
+      {name:'ティグリス川',   en:'Tigris (1,950 km)',         lat:30.4200, lon: 48.1700, desc:'トルコ→イラク、ユーフラテスと合流しペルシャ湾へ。メソポタミア文明。'},
+      {name:'ユーフラテス川', en:'Euphrates (2,800 km)',      lat:30.4200, lon: 48.1700, desc:'トルコ→シリア→イラク。ティグリスとともに「肥沃な三日月地帯」。'},
+      {name:'マレー川',       en:'Murray (2,508 km)',         lat:-35.5667, lon:138.8833, desc:'オーストラリア最長、南東部を流れ南極海（インド洋）へ。'},
+    ]
+  },
+
+  canal: {
+    title: 'Canals & Straits — 世界の主要運河・海峡',
+    items: [
+      {name:'スエズ運河',       en:'Suez Canal',              lat:30.5852, lon: 32.2654, desc:'地中海と紅海を結ぶ。1869年開通、エジプト。世界海運の約12%が通過。'},
+      {name:'パナマ運河',       en:'Panama Canal',            lat: 9.0820, lon:-79.6800, desc:'大西洋（カリブ海）と太平洋を結ぶ。1914年開通、パナマ。'},
+      {name:'キール運河',       en:'Kiel Canal',              lat:54.3670, lon:  9.6940, desc:'バルト海と北海を結ぶ、ドイツ。世界で最も交通量の多い運河の一つ。'},
+      {name:'京杭大運河',       en:'Grand Canal of China',    lat:34.7600, lon:118.5000, desc:'北京〜杭州、約1,800km、世界最長の人工運河（紀元前5世紀〜）。'},
+      {name:'コリント運河',     en:'Corinth Canal',           lat:37.9347, lon: 22.9857, desc:'ペロポネソス半島を切り離す、ギリシャ。1893年開通。'},
+      {name:'ジブラルタル海峡', en:'Strait of Gibraltar',     lat:35.9667, lon: -5.6000, desc:'地中海と大西洋を結ぶ最狭部。スペイン／モロッコ。'},
+      {name:'ボスポラス海峡',   en:'Bosphorus',               lat:41.0820, lon: 29.0500, desc:'黒海とマルマラ海（→地中海）を結ぶ。トルコ・イスタンブール。'},
+      {name:'ダーダネルス海峡', en:'Dardanelles',             lat:40.2167, lon: 26.4000, desc:'マルマラ海とエーゲ海を結ぶ。トルコ。WWIガリポリ戦の舞台。'},
+      {name:'ホルムズ海峡',     en:'Strait of Hormuz',        lat:26.5667, lon: 56.2500, desc:'ペルシャ湾とオマーン湾を結ぶ、世界石油海運の約20%が通過。'},
+      {name:'マラッカ海峡',     en:'Strait of Malacca',       lat: 2.5000, lon:101.2500, desc:'マレー半島とスマトラ島の間、東アジア物流の生命線。'},
+      {name:'バブ・エル・マンデブ海峡', en:'Bab-el-Mandeb',     lat:12.5800, lon: 43.3300, desc:'紅海とアデン湾を結ぶ。「悲しみの門」、海賊リスク。'},
+      {name:'マゼラン海峡',     en:'Strait of Magellan',      lat:-53.0500, lon:-70.8000, desc:'南米南端、太平洋と大西洋を結ぶ。1520年マゼラン発見。'},
+      {name:'ドレーク海峡',     en:'Drake Passage',           lat:-58.0000, lon:-65.0000, desc:'南米最南端と南極半島の間、最も荒れる海域。'},
+      {name:'ベーリング海峡',   en:'Bering Strait',           lat:65.6667, lon:-169.0000, desc:'ロシアとアラスカの間、太平洋と北極海を結ぶ。最狭82km。'},
+      {name:'スンダ海峡',       en:'Sunda Strait',            lat:-6.0000, lon:105.5000, desc:'ジャワ島とスマトラ島の間、インドネシア。クラカタウ火山。'},
+      {name:'対馬海峡',         en:'Tsushima Strait',         lat:34.5000, lon:129.5000, desc:'日本と朝鮮半島の間、対馬を挟む。日本海への入口。'},
+      {name:'宗谷海峡',         en:'Sōya / La Pérouse Strait',lat:45.7833, lon:142.0000, desc:'北海道とサハリンの間、日本海とオホーツク海を結ぶ。'},
+      {name:'間宮海峡(タタール海峡)', en:'Tartary Strait',    lat:51.0000, lon:141.5000, desc:'サハリンとユーラシア大陸の間。最狭7km。'},
+      {name:'英仏海峡',         en:'English Channel',         lat:50.5000, lon:  1.0000, desc:'イギリスとフランスの間。最狭ドーバー海峡。海底トンネル。'},
+      {name:'ドーバー海峡',     en:'Strait of Dover',         lat:51.0000, lon:  1.5000, desc:'英仏海峡の最狭部、約34km。'},
+    ]
+  },
+
+  sea: {
+    title: 'Seas — 世界の主要海・海洋',
+    items: [
+      {name:'地中海',         en:'Mediterranean Sea',         lat:35.0000, lon: 18.0000, desc:'欧州・北アフリカ・中東に囲まれる。ジブラルタル海峡で大西洋と接続。'},
+      {name:'カリブ海',       en:'Caribbean Sea',             lat:15.0000, lon:-75.0000, desc:'中米・南米北岸・西インド諸島に囲まれる。'},
+      {name:'メキシコ湾',     en:'Gulf of Mexico',            lat:25.0000, lon:-90.0000, desc:'米国南岸、メキシコ、キューバに囲まれる。石油・ハリケーン。'},
+      {name:'紅海',           en:'Red Sea',                   lat:20.0000, lon: 38.0000, desc:'アフリカとアラビア半島の間。スエズ運河で地中海と接続。'},
+      {name:'ペルシャ湾',     en:'Persian Gulf',              lat:26.5000, lon: 51.5000, desc:'アラビア半島とイランの間。世界石油の約30%を生産。'},
+      {name:'アラビア海',     en:'Arabian Sea',               lat:14.0000, lon: 65.0000, desc:'インド洋北西部、アラビア半島・イラン・パキスタン・インド。'},
+      {name:'ベンガル湾',     en:'Bay of Bengal',             lat:15.0000, lon: 88.0000, desc:'インド洋北東部、インド・バングラデシュ・ミャンマー・スリランカ。'},
+      {name:'南シナ海',       en:'South China Sea',           lat:14.0000, lon:114.0000, desc:'中国南部・東南アジアに囲まれる。領有権争いの焦点。'},
+      {name:'東シナ海',       en:'East China Sea',            lat:30.0000, lon:125.0000, desc:'中国東岸・台湾・琉球列島に囲まれる。尖閣諸島を含む。'},
+      {name:'黄海',           en:'Yellow Sea',                lat:36.0000, lon:124.0000, desc:'中国と朝鮮半島の間。黄河の堆積物で黄色く見える。'},
+      {name:'日本海',         en:'Sea of Japan',              lat:40.0000, lon:135.0000, desc:'日本列島と朝鮮半島・ロシア沿海地方に囲まれる縁海。'},
+      {name:'オホーツク海',   en:'Sea of Okhotsk',            lat:53.0000, lon:148.0000, desc:'カムチャツカ半島・千島列島・北海道・サハリンに囲まれる。流氷。'},
+      {name:'ベーリング海',   en:'Bering Sea',                lat:58.0000, lon:-178.0000, desc:'シベリア東端とアラスカに囲まれる。北太平洋最北部。'},
+      {name:'バルト海',       en:'Baltic Sea',                lat:58.5000, lon: 20.0000, desc:'北欧諸国に囲まれる、塩分の低い縁海。キール運河で北海と接続。'},
+      {name:'北海',           en:'North Sea',                 lat:56.0000, lon:  3.0000, desc:'英国・スカンジナビア・大陸欧州に囲まれる。北海油田。'},
+      {name:'ノルウェー海',   en:'Norwegian Sea',             lat:67.5000, lon:  3.0000, desc:'ノルウェー西方、北大西洋とバレンツ海の間。'},
+      {name:'バレンツ海',     en:'Barents Sea',               lat:75.0000, lon: 40.0000, desc:'ノルウェー・ロシア北方、北極海の縁海。'},
+      {name:'カラ海',         en:'Kara Sea',                  lat:75.0000, lon: 70.0000, desc:'シベリア北方、エニセイ・オビ川の河口。'},
+      {name:'黒海',           en:'Black Sea',                 lat:43.5000, lon: 34.0000, desc:'ウクライナ・ロシア・トルコ等に囲まれる。ボスポラス海峡で地中海へ。'},
+      {name:'カスピ海',       en:'Caspian Sea',               lat:42.0000, lon: 50.7000, desc:'世界最大の湖（内陸海）。ロシア・カザフ・トルクメ・イラン・アゼル。'},
+      {name:'アラル海',       en:'Aral Sea',                  lat:45.0000, lon: 60.0000, desc:'カザフとウズベクの間。20世紀後半に灌漑で1/10に縮小、環境破壊の象徴。'},
+      {name:'ハドソン湾',     en:'Hudson Bay',                lat:60.0000, lon: -85.0000, desc:'カナダ中央部の巨大な内海、北極海につながる。'},
+      {name:'ビスケー湾',     en:'Bay of Biscay',             lat:45.5000, lon: -4.0000, desc:'スペイン北岸とフランス西岸の間、北大西洋。荒天で有名。'},
+      {name:'アドリア海',     en:'Adriatic Sea',              lat:43.0000, lon: 16.0000, desc:'イタリア東岸とバルカン半島西岸の間、地中海の支海。'},
+      {name:'エーゲ海',       en:'Aegean Sea',                lat:38.5000, lon: 25.0000, desc:'ギリシャとトルコの間、地中海の北東部。多島海。'},
+      {name:'タスマン海',     en:'Tasman Sea',                lat:-40.0000, lon:160.0000, desc:'オーストラリアとニュージーランドの間。'},
+      {name:'珊瑚海',         en:'Coral Sea',                 lat:-15.0000, lon:155.0000, desc:'オーストラリア北東岸、グレートバリアリーフ。WWIIの転換点。'},
+    ]
+  }
+};
+
+// ============ MAP SETUP ============
+const map = L.map('world-map', {
+  center: [25, 30],
+  zoom: 2,
+  minZoom: 2,
+  maxZoom: 6,
+  worldCopyJump: true,
+  scrollWheelZoom: false
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 18
+}).addTo(map);
+
+let currentLayer = null;
+
+function makeIcon(cat) {
+  return L.divIcon({
+    className: `geo-pin ${cat}`,
+    html: '<span class="pin-dot"></span>',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7]
+  });
+}
+
+function renderCategory(cat) {
+  // Remove existing layer
+  if (currentLayer) {
+    map.removeLayer(currentLayer);
+    currentLayer = null;
+  }
+
+  const data = DATA[cat];
+  const layer = L.layerGroup();
+
+  data.items.forEach(item => {
+    const m = L.marker([item.lat, item.lon], { icon: makeIcon(cat) });
+    m.bindTooltip(item.name, {
+      permanent: true,
+      direction: 'right',
+      offset: [10, 0],
+      className: `geo-label cat-${cat}`
+    });
+    m.bindPopup(
+      `<div class="name">${item.name}</div>` +
+      `<div class="meta">${item.en}</div>` +
+      `<div class="desc">${item.desc}</div>`
+    );
+    layer.addLayer(m);
+  });
+
+  layer.addTo(map);
+  currentLayer = layer;
+
+  // Update info section
+  document.getElementById('info-title').textContent = data.title;
+  document.getElementById('info-count').textContent = `${data.items.length} items`;
+  document.getElementById('info-grid').innerHTML = data.items.map(i => `
+    <div class="info-item">
+      <div class="item-name">${i.name}</div>
+      <div class="item-en">${i.en}</div>
+      <div class="item-desc">${i.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ============ TAB HANDLERS ============
+document.querySelectorAll('.cat-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCategory(btn.dataset.cat);
+    setTimeout(() => map.invalidateSize(), 50);
+  });
+});
+
+// initial
+renderCategory('mountain');
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
