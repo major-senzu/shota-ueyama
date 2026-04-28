@@ -211,21 +211,15 @@
     .chart-canvas .chart-title { font-size: 16px; }
   }
 
-  /* ============ RANKING GRID ============ */
-  .ranking-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-  }
-
-  @media (max-width: 900px) {
-    .ranking-grid { grid-template-columns: 1fr; }
-  }
+  /* ============ RANKING (single visible) ============ */
+  .ranking-grid { margin-top: 32px; }
 
   .ranking {
     border: 1px solid var(--line);
     background: var(--bg);
+    display: none;
   }
+  .ranking.active { display: block; }
 
   .ranking-head {
     padding: 18px 22px;
@@ -431,7 +425,7 @@
     <div class="ranking-grid">
 
       <!-- ================== POPULATION ================== -->
-      <div class="ranking">
+      <div class="ranking active" data-key="population">
         <div class="ranking-head">
           <div class="label">▦ Ranking 01</div>
           <div class="title">Population</div>
@@ -459,16 +453,12 @@
             <tr><td class="rank-num">10</td><td class="country"><span class="flag">🇲🇽</span>Mexico</td><td class="val">131<span class="unit">M</span></td></tr>
             <tr class="divider"><td colspan="3">▸ JAPAN</td></tr>
             <tr class="jp"><td class="rank-num">12</td><td class="country"><span class="flag">🇯🇵</span>Japan</td><td class="val">123<span class="unit">M</span></td></tr>
-            <tr class="divider"><td colspan="3">▸ WORST 3 (smallest)</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇻🇦</span>Vatican City</td><td class="val">800</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇹🇻</span>Tuvalu</td><td class="val">11K</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇳🇷</span>Nauru</td><td class="val">12.5K</td></tr>
           </tbody>
         </table>
       </div>
 
       <!-- ================== NOMINAL GDP ================== -->
-      <div class="ranking">
+      <div class="ranking" data-key="gdp">
         <div class="ranking-head">
           <div class="label">▦ Ranking 02</div>
           <div class="title">GDP (Nominal)</div>
@@ -494,16 +484,12 @@
             <tr><td class="rank-num">8</td><td class="country"><span class="flag">🇮🇹</span>Italy</td><td class="val">2.4<span class="unit">T</span></td></tr>
             <tr><td class="rank-num">9</td><td class="country"><span class="flag">🇨🇦</span>Canada</td><td class="val">2.2<span class="unit">T</span></td></tr>
             <tr><td class="rank-num">10</td><td class="country"><span class="flag">🇧🇷</span>Brazil</td><td class="val">2.2<span class="unit">T</span></td></tr>
-            <tr class="divider"><td colspan="3">▸ WORST 3 (smallest)</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇹🇻</span>Tuvalu</td><td class="val">63<span class="unit">M</span></td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇳🇷</span>Nauru</td><td class="val">160<span class="unit">M</span></td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇰🇮</span>Kiribati</td><td class="val">280<span class="unit">M</span></td></tr>
           </tbody>
         </table>
       </div>
 
       <!-- ================== GDP PER CAPITA ================== -->
-      <div class="ranking">
+      <div class="ranking" data-key="gdpPerCapita">
         <div class="ranking-head">
           <div class="label">▦ Ranking 03</div>
           <div class="title">GDP per capita</div>
@@ -531,16 +517,12 @@
             <tr><td class="rank-num">10</td><td class="country"><span class="flag">🇩🇰</span>Denmark</td><td class="val">68K</td></tr>
             <tr class="divider"><td colspan="3">▸ JAPAN</td></tr>
             <tr class="jp"><td class="rank-num">~38</td><td class="country"><span class="flag">🇯🇵</span>Japan</td><td class="val">33K</td></tr>
-            <tr class="divider"><td colspan="3">▸ WORST 3 (lowest)</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇧🇮</span>Burundi</td><td class="val">200</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇦🇫</span>Afghanistan</td><td class="val">370</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇸🇸</span>South Sudan</td><td class="val">420</td></tr>
           </tbody>
         </table>
       </div>
 
       <!-- ================== AVERAGE WAGES ================== -->
-      <div class="ranking">
+      <div class="ranking" data-key="wage">
         <div class="ranking-head">
           <div class="label">▦ Ranking 04</div>
           <div class="title">Average Wage</div>
@@ -568,10 +550,6 @@
             <tr><td class="rank-num">10</td><td class="country"><span class="flag">🇦🇹</span>Austria</td><td class="val">60.0K</td></tr>
             <tr class="divider"><td colspan="3">▸ JAPAN</td></tr>
             <tr class="jp"><td class="rank-num">~25</td><td class="country"><span class="flag">🇯🇵</span>Japan</td><td class="val">41.5K</td></tr>
-            <tr class="divider"><td colspan="3">▸ WORST 3 (in OECD)</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇲🇽</span>Mexico</td><td class="val">17.0K</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇸🇰</span>Slovakia</td><td class="val">24.0K</td></tr>
-            <tr class="worst"><td class="rank-num">—</td><td class="country"><span class="flag">🇬🇷</span>Greece</td><td class="val">27.5K</td></tr>
           </tbody>
         </table>
       </div>
@@ -706,16 +684,24 @@
       });
     }
 
+    function showRanking(key) {
+      document.querySelectorAll('.ranking').forEach(r => r.classList.remove('active'));
+      const target = document.querySelector(`.ranking[data-key="${key}"]`);
+      if (target) target.classList.add('active');
+    }
+
     document.getElementById('chartButtons').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-key]');
       if (!btn) return;
       document.querySelectorAll('#chartButtons button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderChart(btn.dataset.key);
+      showRanking(btn.dataset.key);
     });
 
     // Initial render
     renderChart('population');
+    showRanking('population');
   </script>
 </body>
 </html>

@@ -148,41 +148,66 @@
 
   .group-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .group {
     border: 1px solid var(--line);
-    padding: 18px 20px;
     background: var(--bg);
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .group .image {
+    width: 320px;
+    flex-shrink: 0;
+    background: var(--soft);
+    position: relative;
+  }
+  .group .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 240px;
+  }
+
+  .group .content {
+    flex: 1;
+    padding: 22px 26px;
+    min-width: 0;
   }
 
   .group .head {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .group .name {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
   .group .name .code {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--muted);
     margin-left: 8px;
     letter-spacing: 0.04em;
+    border: 1px solid var(--line);
+    padding: 2px 8px;
   }
 
   .group .desc {
-    font-size: 13px;
-    color: #444;
-    line-height: 1.65;
+    font-size: 13.5px;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 14px;
   }
 
   .group ul.subtypes {
@@ -190,6 +215,7 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px dashed var(--line);
+    margin-bottom: 14px;
   }
   .group ul.subtypes li {
     font-family: 'JetBrains Mono', monospace;
@@ -204,6 +230,36 @@
     margin-right: 6px;
   }
 
+  /* extra info: products / features */
+  .group .extras {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 24px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+  }
+  .group .extras .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .group .extras .body {
+    font-size: 12.5px;
+    color: #333;
+    line-height: 1.7;
+  }
+  .group .extras .body strong { color: var(--fg); font-weight: 600; }
+
+  @media (max-width: 760px) {
+    .group { flex-direction: column; }
+    .group .image { width: 100%; }
+    .group .image img { height: 220px; min-height: 0; }
+    .group .extras { grid-template-columns: 1fr; gap: 12px; }
+  }
+
   .note {
     background: var(--soft);
     padding: 14px 18px;
@@ -212,10 +268,6 @@
     margin-bottom: 24px;
     border-left: 3px solid var(--muted);
     line-height: 1.7;
-  }
-
-  @media (max-width: 760px) {
-    .group-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 600px) {
@@ -289,64 +341,159 @@
 
       <div class="group-grid">
 
+        <!-- ============ A: Tropical ============ -->
         <div class="group">
-          <div class="head">
-            <span class="name">Tropical <span class="code">A</span></span>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Aerial_view_of_the_Amazon_Rainforest.jpg"
+                 alt="Amazon rainforest aerial view"
+                 loading="lazy"
+                 onerror="this.style.display='none'">
           </div>
-          <p class="desc">最寒月の月平均気温が <strong>18℃以上</strong>。一年中暑く、降水パターンで亜型が決まる。赤道周辺・東南アジア・中央アフリカ・アマゾン。</p>
-          <ul class="subtypes">
-            <li><strong>Af</strong> 熱帯雨林（年中多雨）— シンガポール・クアラルンプール</li>
-            <li><strong>Am</strong> 熱帯モンスーン — マイアミ・ジャカルタ</li>
-            <li><strong>Aw</strong> サバナ（乾季あり）— バンコク・ナイロビ</li>
-          </ul>
+          <div class="content">
+            <div class="head">
+              <span class="name">Tropical <span class="code">A</span></span>
+            </div>
+            <p class="desc">最寒月の月平均気温が <strong>18℃以上</strong>。一年中暑く、降水パターンで亜型が決まる。赤道周辺・東南アジア・中央アフリカ・アマゾン。 植生は熱帯雨林・熱帯モンスーン林・サバナ。</p>
+            <ul class="subtypes">
+              <li><strong>Af</strong> 熱帯雨林（年中多雨）— シンガポール・クアラルンプール</li>
+              <li><strong>Am</strong> 熱帯モンスーン — マイアミ・ジャカルタ</li>
+              <li><strong>Aw</strong> サバナ（乾季あり）— バンコク・ナイロビ</li>
+            </ul>
+            <div class="extras">
+              <div>
+                <div class="label">▸ 特産品</div>
+                <div class="body"><strong>天然ゴム</strong>（タイ・マレーシア）/ <strong>カカオ</strong>（コートジボワール・ガーナ）/ <strong>コーヒー</strong>（ブラジル・ベトナム）/ パーム油（インドネシア）/ 熱帯果実（バナナ・マンゴー・パイナップル）/ 香辛料（シナモン・クローブ）</div>
+              </div>
+              <div>
+                <div class="label">▸ 特筆すべき特徴</div>
+                <div class="body"><strong>世界の生物多様性の50–70%</strong>がこの帯に集中。 二期作・三期作が可能で食料生産性は高いが、土壌は意外と痩せている（栄養は植物体に蓄積）。 <strong>午後のスコール</strong>（局地的豪雨）が日課。 焼畑・プランテーション開発による森林破壊が深刻。</div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- ============ B: Arid ============ -->
         <div class="group">
-          <div class="head">
-            <span class="name">Arid <span class="code">B</span></span>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Algeria_Sahara_Desert_Photo_From_Drone_5.jpg"
+                 alt="Sahara desert dunes"
+                 loading="lazy"
+                 onerror="this.style.display='none'">
           </div>
-          <p class="desc">蒸発量が降水量を上回る乾燥帯。砂漠（BW）とステップ（BS）に分かれ、寒暖でさらに細分。中東・北アフリカ・中央アジア・米国南西部。</p>
-          <ul class="subtypes">
-            <li><strong>BWh</strong> 砂漠・暑い — リヤド・ドバイ・カイロ</li>
-            <li><strong>BWk</strong> 砂漠・寒い — ウランバートル・タクラマカン</li>
-            <li><strong>BSh / BSk</strong> ステップ — マドリード周辺・北京・ナイロビ</li>
-          </ul>
+          <div class="content">
+            <div class="head">
+              <span class="name">Arid <span class="code">B</span></span>
+            </div>
+            <p class="desc">蒸発量が降水量を上回る乾燥帯。 砂漠（BW）とステップ（BS）に分かれ、寒暖でさらに細分。 中東・北アフリカ・中央アジア・米国南西部・オーストラリア中央部。 植生はサボテン・耐乾性低木・ナツメヤシ等。</p>
+            <ul class="subtypes">
+              <li><strong>BWh</strong> 砂漠・暑い — リヤド・ドバイ・カイロ</li>
+              <li><strong>BWk</strong> 砂漠・寒い — ウランバートル・タクラマカン</li>
+              <li><strong>BSh / BSk</strong> ステップ — マドリード周辺・北京・ナイロビ</li>
+            </ul>
+            <div class="extras">
+              <div>
+                <div class="label">▸ 特産品</div>
+                <div class="body"><strong>石油・天然ガス</strong>（中東・北アフリカ）/ <strong>ナツメヤシ</strong>（湾岸諸国）/ オアシス農業の<strong>綿花</strong>（エジプト・ウズベキスタン）/ <strong>リチウム</strong>（チリ・アタカマ）/ 銅・レアメタル / 太陽光発電適地</div>
+              </div>
+              <div>
+                <div class="label">▸ 特筆すべき特徴</div>
+                <div class="body"><strong>昼夜の寒暖差が極大</strong>（昼45℃ → 夜5℃）。 4大文明のうち <strong>3つ（エジプト・メソポタミア・インダス）</strong> が乾燥帯のオアシス・大河沿いに発祥。 シルクロードの大動脈。 砂漠化の進行（サヘル）。 灌漑農業に依存。</div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- ============ C: Temperate ============ -->
         <div class="group">
-          <div class="head">
-            <span class="name">Temperate <span class="code">C</span></span>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Primeval_beech_forest%2C_Bad%C3%ADnsky_prales.jpg"
+                 alt="Temperate beech forest"
+                 loading="lazy"
+                 onerror="this.style.display='none'">
           </div>
-          <p class="desc">最寒月が <strong>−3℃〜18℃</strong>、最暖月10℃以上。最も人口が集中するゾーン。日本・中国沿岸・欧州西部・米東岸・南米南部。</p>
-          <ul class="subtypes">
-            <li><strong>Cfa</strong> 温暖湿潤 — 東京・上海・ニューヨーク</li>
-            <li><strong>Cfb</strong> 西岸海洋性 — ロンドン・パリ・ベルリン</li>
-            <li><strong>Cs</strong> 地中海性（夏乾燥）— ローマ・LA・アテネ</li>
-            <li><strong>Cw</strong> 温暖冬季少雨 — 香港・台北・昆明</li>
-          </ul>
+          <div class="content">
+            <div class="head">
+              <span class="name">Temperate <span class="code">C</span></span>
+            </div>
+            <p class="desc">最寒月が <strong>−3℃〜18℃</strong>、最暖月10℃以上。 最も人口が集中するゾーン。 日本・中国沿岸・欧州西部・米東岸・南米南部。 植生は落葉広葉樹・常緑広葉樹・地中海性硬葉樹・温帯草原。</p>
+            <ul class="subtypes">
+              <li><strong>Cfa</strong> 温暖湿潤 — 東京・上海・ニューヨーク</li>
+              <li><strong>Cfb</strong> 西岸海洋性 — ロンドン・パリ・ベルリン</li>
+              <li><strong>Cs</strong> 地中海性（夏乾燥）— ローマ・LA・アテネ</li>
+              <li><strong>Cw</strong> 温暖冬季少雨 — 香港・台北・昆明</li>
+            </ul>
+            <div class="extras">
+              <div>
+                <div class="label">▸ 特産品</div>
+                <div class="body"><strong>米・小麦・茶</strong>（東アジア）/ <strong>ぶどう・ワイン</strong>（仏・伊・スペイン・カリフォルニア）/ <strong>オリーブ</strong>（地中海）/ <strong>柑橘類</strong>（イタリア・スペイン・カリフォルニア）/ <strong>林業・木材</strong>（ヒノキ・スギ）/ 養蚕・絹</div>
+              </div>
+              <div>
+                <div class="label">▸ 特筆すべき特徴</div>
+                <div class="body"><strong>世界人口の70%</strong>がこのゾーンに集中。 <strong>四季が明確</strong>で農業の生産性が安定。 主要文明発祥地（中華文明・地中海文明・西欧文明）。 産業革命が起きたのも温帯西岸。 過密化と都市化のフロンティア。</div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- ============ D: Continental ============ -->
         <div class="group">
-          <div class="head">
-            <span class="name">Continental <span class="code">D</span></span>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Kuysumy_mountains_and_Torgashinsky_range._View_from_viewing_platform_on_Kashtakovskaya_path_%28Stolby_reserve%2C_Krasnoyarsk_city%29_4Y1A8757_%2828363120875%29.jpg"
+                 alt="Siberian taiga forest"
+                 loading="lazy"
+                 onerror="this.style.display='none'">
           </div>
-          <p class="desc">最寒月が <strong>−3℃以下</strong>、最暖月10℃以上。冬は厳寒、夏は短く比較的暑い。北米北部・東欧・ロシア・北海道・北朝鮮。</p>
-          <ul class="subtypes">
-            <li><strong>Dfa / Dfb</strong> 亜寒帯湿潤 — モスクワ・札幌・シカゴ</li>
-            <li><strong>Dfc</strong> 亜寒帯（針葉樹林帯）— ヤクーツク・アンカレッジ</li>
-            <li><strong>Dwa / Dwb</strong> 亜寒帯冬季少雨 — ハルビン・ウラジオストク</li>
-          </ul>
+          <div class="content">
+            <div class="head">
+              <span class="name">Continental <span class="code">D</span></span>
+            </div>
+            <p class="desc">最寒月が <strong>−3℃以下</strong>、最暖月10℃以上。 冬は厳寒、夏は短く比較的暑い。 北米北部・東欧・ロシア・北海道・北朝鮮。 植生は <strong>タイガ（針葉樹林）</strong>・混交林・温帯草原。</p>
+            <ul class="subtypes">
+              <li><strong>Dfa / Dfb</strong> 亜寒帯湿潤 — モスクワ・札幌・シカゴ</li>
+              <li><strong>Dfc</strong> 亜寒帯（針葉樹林帯）— ヤクーツク・アンカレッジ</li>
+              <li><strong>Dwa / Dwb</strong> 亜寒帯冬季少雨 — ハルビン・ウラジオストク</li>
+            </ul>
+            <div class="extras">
+              <div>
+                <div class="label">▸ 特産品</div>
+                <div class="body"><strong>タイガ材</strong>（針葉樹建材・パルプ）/ <strong>小麦・ライ麦・ジャガイモ</strong>（ロシア・ウクライナ・カナダ・北海道）/ <strong>毛皮獣</strong>（テン・キツネ・カワウソ）/ <strong>天然ガス・石油</strong>（シベリア・アラスカ）/ 落葉樹のメープルシロップ / トナカイ放牧</div>
+              </div>
+              <div>
+                <div class="label">▸ 特筆すべき特徴</div>
+                <div class="body"><strong>永久凍土（ペルマフロスト）</strong>が広く分布。 短い夏に集中して農業が行われる。 <strong>白夜・極夜</strong>の高緯度。 世界最大の <strong>タイガ生態系</strong>（地球の森林の29%）。 温暖化で永久凍土融解 → メタン放出の懸念。</div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- ============ E: Polar ============ -->
         <div class="group">
-          <div class="head">
-            <span class="name">Polar <span class="code">E</span></span>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Tundra_in_Siberia.jpg"
+                 alt="Tundra in Siberia"
+                 loading="lazy"
+                 onerror="this.style.display='none'">
           </div>
-          <p class="desc">最暖月でも <strong>10℃未満</strong>。樹木が育たない極地・高山。グリーンランド・南極・チベット高原・北極圏。</p>
-          <ul class="subtypes">
-            <li><strong>ET</strong> ツンドラ（最暖月0–10℃）— アイスランド内陸・北極圏沿岸</li>
-            <li><strong>EF</strong> 氷雪（最暖月0℃未満）— 南極・グリーンランド内陸</li>
-          </ul>
+          <div class="content">
+            <div class="head">
+              <span class="name">Polar <span class="code">E</span></span>
+            </div>
+            <p class="desc">最暖月でも <strong>10℃未満</strong>。 樹木が育たない極地・高山。 グリーンランド・南極・チベット高原・北極圏。 植生はコケ・地衣類・低木（柳）など。 ET（ツンドラ）は夏に薄く植生がつき、 EF（氷雪）は完全な氷河。</p>
+            <ul class="subtypes">
+              <li><strong>ET</strong> ツンドラ（最暖月0–10℃）— アイスランド内陸・北極圏沿岸</li>
+              <li><strong>EF</strong> 氷雪（最暖月0℃未満）— 南極・グリーンランド内陸</li>
+            </ul>
+            <div class="extras">
+              <div>
+                <div class="label">▸ 特産品</div>
+                <div class="body"><strong>トナカイ</strong>（サーミ・イヌイットの牧畜・毛皮・肉）/ <strong>海産物</strong>（アザラシ・クジラ・北極イワナ）/ <strong>氷河水</strong>（プレミアムボトル）/ レアアース埋蔵（グリーンランド）/ <strong>南極観光・北極観光</strong>（オーロラ）</div>
+              </div>
+              <div>
+                <div class="label">▸ 特筆すべき特徴</div>
+                <div class="body"><strong>樹木が育たない</strong>境界線（森林限界）の外側。 永久凍土と氷河の世界。 人口密度は地球で最も低い。 <strong>科学観測の最前線</strong>（南極基地・気候変動指標）。 温暖化の最も顕著な舞台 — 海氷縮小・氷河後退・北極航路の開通。</div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
