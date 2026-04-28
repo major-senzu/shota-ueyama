@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>015 · philosophy / Quotes — Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --card: #f5f5f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* hero */
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .ja { font-size: 14px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  /* page-switch (book.html style) */
+  .page-switch {
+    display: flex;
+    gap: 0;
+    margin-bottom: 48px;
+    border: 1px solid var(--line);
+    width: fit-content;
+  }
+  .page-switch a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+    text-decoration: none;
+    padding: 11px 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .page-switch a + a { border-left: 1px solid var(--line); }
+  .page-switch a:hover { background: #fafafa; color: var(--fg); }
+  .page-switch a.active { background: var(--fg); color: #fff; }
+
+  /* category section */
+  section.cat { margin-bottom: 64px; }
+  .cat-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--fg);
+    margin-bottom: 24px;
+  }
+  .cat-head .cat-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cat-head .cat-title .ja {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-left: 14px;
+    text-transform: none;
+  }
+  .cat-head .cat-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* card grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .card {
+    background: var(--card);
+    padding: 24px 26px 22px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .card:hover {
+    background: #ececec;
+    transform: translateY(-2px);
+  }
+
+  .card .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: inline-block;
+    align-self: flex-start;
+    background: var(--bg);
+    border: 1px solid #d0d0d0;
+    padding: 4px 9px;
+  }
+
+  .card .quote {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.85;
+    color: #1a1a1a;
+    white-space: pre-line;
+    margin-bottom: 18px;
+    flex-grow: 1;
+  }
+  .card .quote::before {
+    content: '"';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 0;
+    color: #bbb;
+    margin-right: 4px;
+    vertical-align: -8px;
+  }
+
+  .card .quote-ko {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #555;
+    white-space: pre-line;
+    margin: -8px 0 18px;
+    padding-top: 12px;
+    border-top: 1px dotted #d0d0d0;
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+  }
+
+  .card .src-block {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #d8d8d8;
+  }
+  .card .src-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+    margin-bottom: 3px;
+  }
+  .card .src-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    .cat-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .cat-head .cat-title .ja { margin-left: 0; display: block; margin-top: 4px; }
+    .page-switch a { padding: 10px 18px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="./profile.html" class="nav-link">profile</a>
+    <a href="./health.html" class="nav-link">health</a>
+    <a href="./travel.html" class="nav-link">travel</a>
+    <a href="./book.html" class="nav-link">book</a>
+    <a href="./philosophy.html" class="nav-link active">philosophy</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a href="../research/legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <div class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; 015 · philosophy</div>
+      <h1>Quotes</h1>
+      <div class="ja">心に残る名言 — Anime / Movies / Drama</div>
+    </div>
+
+    <nav class="page-switch">
+      <a href="./philosophy.html" class="active">Quotes</a>
+      <a href="./philosophy-shota.html">Shota Philosophy</a>
+    </nav>
+
+    <!-- ANIME -->
+    <section class="cat" id="anime">
+      <div class="cat-head">
+        <div class="cat-title">ANIME <span class="ja">アニメ</span></div>
+        <div class="cat-count">2 quotes</div>
+      </div>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="badge">DRAGON BALL</div>
+          <div class="quote">ボ…ボクは本当は戦いたくないんだ…殺したくないんだよ………たとえお前みたいなひどいヤツでも</div>
+          <div class="src-block">
+            <div class="src-name">孫悟飯</div>
+            <div class="src-meta">DRAGON BALL 第35巻 / セルゲーム編</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="badge">MAJOR / メジャー</div>
+          <div class="quote">海堂で学んだ僕らはプレッシャーに弱い？ だから海堂から怪物は生まれない？
+
+冗談じゃない！だったら僕らが超一流になれば良いだけだろ！ なにくだらない言い訳をしてるんだよ！！
+
+僕は、海堂を出たことを誇りに思ってる。 ここで逃げたらそれこそスキルなんか上がる訳がないじゃないか！！ 弱さを認めるのは構わないけど、それに立ち向かわないなんて海堂の所為じゃなくて自分の所為だろ。
+
+——もう一度言う、ボールは来てる。 恐れるものなんて何もない。 弱さを認め、怖さを知った選手に手強いものは無いからね。</div>
+          <div class="src-block">
+            <div class="src-name">佐藤寿也</div>
+            <div class="src-meta">MAJOR アニメ第5シリーズ / 高校編・聖秀 vs 海堂戦</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MOVIES -->
+    <section class="cat" id="movies">
+      <div class="cat-head">
+        <div class="cat-title">MOVIES <span class="ja">映画</span></div>
+        <div class="cat-count">2 quotes</div>
+      </div>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="badge">ひゃくえむ。</div>
+          <div class="quote">浅く考えろ 世の中舐めろ 保身に走るな 勝っても攻めろ</div>
+          <div class="src-block">
+            <div class="src-name">財津</div>
+            <div class="src-meta">ひゃくえむ。 第4巻 P52 / 西沢高校での講演冒頭</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="badge">OPPENHEIMER (2023)</div>
+          <div class="quote">I am become Death, the destroyer of worlds.</div>
+          <div class="src-block">
+            <div class="src-name">J. Robert Oppenheimer</div>
+            <div class="src-meta">クリストファー・ノーラン監督, 2023年公開</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DRAMA -->
+    <section class="cat" id="drama">
+      <div class="cat-head">
+        <div class="cat-title">DRAMA <span class="ja">ドラマ</span></div>
+        <div class="cat-count">2 quotes</div>
+      </div>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="badge">스타트업 / スタートアップ</div>
+          <div class="quote">晴ればかり続くと砂漠になる。雨が降ってこそ草木も生えてみかんも実る。</div>
+          <div class="quote-ko">할머니, 아빠가 그랬어. 마냥 맑은 날이면 세상이 온통 사막이라고. 비도 오고 눈도 오고 해야 땅에서 풀도 나고 이런 맛난 귤도 나지.</div>
+          <div class="src-block">
+            <div class="src-name">ソ・ダルミ</div>
+            <div class="src-meta">스타트업: 夢の扉 (tvN, 2020) / 第1話</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="badge">3年A組</div>
+          <div class="quote">迷って もがいて 途方に暮れて
+
+それでも 正解を求めて前を向く
+
+進んで 進んで
+
+ダメなら 傷つきながら引き返す
+
+そしてまた 歯を食いしばって 前を向く
+
+みんな みっともないんだよ
+
+でも それでいい
+
+それがいい
+
+恥を繰り返して 強くなるんだ
+
+恥もかかずに 強くなれると思うな</div>
+          <div class="src-block">
+            <div class="src-name">柊一颯</div>
+            <div class="src-meta">3年A組 —今から皆さんは、人質です— (日本テレビ, 2019) / 第5話</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

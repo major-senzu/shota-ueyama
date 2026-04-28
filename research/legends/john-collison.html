@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Collison — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* HERO */
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; letter-spacing: 0.01em; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; letter-spacing: -0.005em; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../personal/profile.html" class="nav-link">profile</a>
+    <a href="../../personal/health.html" class="nav-link">health</a>
+    <a href="../../personal/travel.html" class="nav-link">travel</a>
+    <a href="../../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a class="nav-link disabled">geo-history</a>
+    <a href="../legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>John Collison</h1>
+      <p class="summary">
+        アイルランド・Limerickの片田舎で電子工学者の父と微生物学者の母のもとに育った天才少年。17歳で
+        Auctomaticを$5Mで売却し、19歳でHarvardを中退して兄Patrickと Stripe を共創。Patrick=CEO・John=President
+        という"兄弟No.2"体制を15年継続中。Stripeを$70B超のフィンテックに育てつつ、自身は飛行機・読書・
+        Weston Airport運営と"距離を取る趣味"で精神を保つ、現代スタートアップ最強のNo.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Patrick Collison（兄 / Stripe 共同創業者・CEO・2010–現在 / 16年間）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1990年8月（35歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">Dromineer, County Tipperary（アイルランド）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $9.3B (2026, Bloomberg)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開（プライバシー徹底 / 公の配偶者・子情報なし）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">パイロット（自家用機・大西洋単独飛行経験）/ ピアノ / 非フィクション読書</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Denis Collison（電子工学者・元Dell・後に起業）/ 母 Lily Collison（微生物学者・著者・後に起業）/ 兄 Patrick Collison（Stripe CEO）/ 弟 Tommy Collison（ライター）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Stripe President・Co-founder (2010–現在) / Auctomatic Co-founder (2007–2008) / Weston Airport 共同オーナー (2021–現在)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR                                    -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>兄を"超えない"ことを設計として選び続ける、補完型 × 全う型 × 翻訳型の兄弟No.2</strong>」。
+        17歳で初の会社売却、19歳でHarvard中退、26歳で世界最年少自力ビリオネア——どの瞬間も "自分でCEOを
+        やる" 選択肢があった。それでも John は <strong>兄 Patrick の President のまま</strong> 16年続けている。
+        Patrick = 技術・戦略・思想 / John = 顧客・営業・国際展開・対外発信。 役割分担が完璧に噛み合い、
+        15年間 "最後に喧嘩したのを覚えていない" と言える稀有な兄弟経営。"あと14年やる" と本人は言う。
+        引き際を考えていない No.2 は、Tim Cook の対極にある。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1990年8月</strong>、アイルランド・<strong>Limerick</strong> 生まれ。父 <strong>Denis Collison</strong> は Dell に勤めた電子工学者、母 <strong>Lily Collison</strong> は微生物学者であり著者。 両親はその後それぞれ自分の会社を立ち上げ、湖畔のホテルも経営。 4人兄弟の次男（兄 Patrick・弟 Tommy）。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            County Tipperary の小さな村 <strong>Dromineer</strong>（人口数百人）で育つ。 当時のアイルランド田舎は <strong>インターネット接続が極めて限定的</strong>。 都市部のテックエコシステムから距離を置いた環境で、兄 Patrick とともに本・百科事典・機械いじりに没頭する少年時代を過ごす。 「不自由」が逆に集中と自学を育てた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">影響</div>
+          <div class="origins-body">
+            両親が "労働者" ではなく "学者・起業家" だったことが決定的。 Denis は工学、Lily は科学・著述。 食卓で交わされる会話は理工系の論理と、本を書く知的態度。 アイルランドの古典的価値観 (家族・信仰・節制) と、両親由来の起業家マインドが融合した。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>Castletroy College（Limerick）</strong>。2009年に Leaving Certificate（アイルランドの大学受験統一試験）を受験し、<strong>8科目 A1（最高評価）+ 2科目 A2</strong> という、年に数人しか出ない超優秀成績を残す。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">起業の前夜</div>
+          <div class="origins-body">
+            16歳の2007年、兄 Patrick と <strong>Shuppa</strong>（アイルランド語で "shop" の意）を Limerick で創業。 Enterprise Ireland（政府の起業支援機関）に資金調達を断られたが、同年に Y Combinator が興味を示しシリコンバレーへ移住。 Oxford 卒の Taggar 兄弟と合流して <strong>Auctomatic</strong>（eBay 出品ツール）に発展。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Harvard 大学</strong>（2009年入学・短期間で中退）。 Auctomatic を 2008年3月に <strong>$5M で売却した直後</strong>（17歳での bail-out 経験）に進学。 だが2010年に兄 Patrick と Stripe を始めるため <strong>1年程度で中退</strong>。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            "アイルランドの天才兄弟" としてシリコンバレーに既に名前があった。 17歳で売却、19歳で中退、20歳で Stripe 立ち上げ——人生の前半が異常に圧縮された。 だが本人は派手な生活を選ばず、<strong>"Faberge egg や yacht を集めるような富豪の趣味は自分には合わない"</strong> と公言する、地に足のついた知的青年として育つ。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"I am baffled by companies doing an about-face on social initiatives."</div>
+        <div class="src">— John Collison, Irish Times Interview (2025年5月)</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1990</td>
+            <td>アイルランド・Limerick生まれ。Dromineer の村で育つ。両親（電子工学者・微生物学者）から科学的思考と起業家精神を吸収。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">15</td>
+            <td class="col-year">2005</td>
+            <td>兄 Patrick が <strong>Young Scientist of the Year</strong> 受賞（Lispでの研究）。 兄が"先に道を切り開く"構図が原型として固まる。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">16</td>
+            <td class="col-year">2007</td>
+            <td>兄と <strong>Shuppa</strong> 創業。 Y Combinator に拾われシリコンバレーへ移住。 高校在学中の起業。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">17</td>
+            <td class="col-year">2008.03</td>
+            <td><strong>Auctomatic を $5M で売却</strong>。 17歳で初の bail-out。 兄弟が "シリコンバレーで通用する" ことを証明。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">2009</td>
+            <td>Castletroy College で Leaving Cert。 <strong>8 A1 + 2 A2 の伝説的成績</strong>。 Harvard 大学進学。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">19</td>
+            <td class="col-year">2010</td>
+            <td><strong>Patrick と Stripe を共創、Harvard 中退</strong>。 "Web 上の決済が異常に難しい" 問題を解くため。 Y Combinator の 280 North が初顧客。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">20</td>
+            <td class="col-year">2011</td>
+            <td>Sequoia・Elon Musk・Peter Thiel から $2M 調達。 <strong>President 就任</strong>（Patrick=CEO）。 兄弟No.2体制が制度化。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">2016.11</td>
+            <td><strong>世界最年少の自力ビリオネア</strong>に。 Patrick とともに、$1.1B over。 "Forbes" 的な称賛より "ノイズ" として処理する姿勢。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">2017</td>
+            <td>4人乗り双発機で<strong>欧州 → 米国 大西洋単独飛行</strong>。 仕事と完全に切り離した "自分の山" を獲得。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">2021</td>
+            <td>ダブリン郊外の <strong>Weston Airport を共同取得</strong>。 アイルランドへの「帰属」を物理的に維持する装置として。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2024</td>
+            <td>Stripe が年間 $1.4T 超の決済処理。 評価額 $70B 規模。 <strong>"これからまだ14年やる"</strong> 発言。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2025.05</td>
+            <td>Weston Airport に €18.9M の追加資本投入。 投資家としての "本業の隣の山" を拡張。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2026</td>
+            <td>純資産 $9.3B（Bloomberg）。 Stripe President 継続。 AIとstablecoinへの主導権で次のフェーズへ。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（Patrick Collison）との関係構造      -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Patrick Collison）との関係構造</h2>
+      <p>
+        Patrick と John の関係は、ビジネス史上極めて稀な <strong>"兄弟No.2"</strong> である。 Tim Cook は雇われ
+        No.2、Charlie Munger は出会いから No.2、諸葛亮孔明は招かれて No.2——だが John は <strong>生まれた時から
+        Patrick の弟</strong> という、選択を超えた関係性の上に No.2 を引き受けている。
+      </p>
+      <p>
+        2人の信頼は異常に高い。「最後に喧嘩したのを覚えていない」と Patrick は語り、John も同調する。 これは
+        15年以上トップ同士をやってきた共同創業者として例外的だ。 Patrick は別の場で、<strong>"15年経って残っている共同創業者は
+        ほとんどいない。 高い信頼の co-founder を持てたことは大きな運だった"</strong> と語っている。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "We're not in a hurry. We're not trying to juice the results for two years' time."<br>
+        — John Collison, Stripe Sessions AMA (2024)
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">家族として既に在る相棒</div>
+          <div class="stage-body">弟として生まれた瞬間から Patrick の隣にいた。 兄の Young Scientist of the Year 受賞、Lisp での研究——常に5歳上の "先を行く存在" として認識し、 16歳で初めて "対等な共創業者" として Shuppa を始める。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">17歳の bail-out 経験</div>
+          <div class="stage-body">Auctomatic を $5M で売却した時、 兄弟は単なる "家族" から "シリコンバレーで戦える共同創業者" に変わった。 Stripe を始める時、Harvard 中退に迷いがなかったのは、この経験が "兄と組めば勝てる" の証明だったから。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">Patrick = 思想 / John = 顧客</div>
+          <div class="stage-body">Patrick は技術哲学・採用基準・組織設計など"内向き"を担当。 John は顧客・営業・パートナー・国際展開など"外向き"を担当。 大規模 enterprise の経営者と直接話すのは John の役割になっている。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継続中</div>
+          <div class="stage-title">引き際を語らないNo.2</div>
+          <div class="stage-body">Stripe の IPO・継承・売却の話題が出ても、 兄弟は揃って <strong>"あと14年やる"</strong> と言う。 Tim Cook (CEOで引退) でも Munger (No.2 で全う) でもない、 <strong>"No.2 のまま定年を迎える"</strong> という第3の道を意図的に選んでいる。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        John の No.2 は <strong>"自然に選んだ"</strong> 型。 兄 Patrick が5歳上で、Young Scientist of the Year・
+        Lispの天才・Stripe のテクニカルアーキテクト——明確に "技術と思想のリーダー" として先に立っていた。
+        John が CEO を主張する場面は構造的にあり得なかった。
+      </p>
+      <p>
+        しかし重要なのは、<strong>そこに不満や葛藤がない</strong> ことだ。 John は単独でも CEO に十分なれた
+        人材だ（17歳で売却、19歳で世界最高峰大学を中退、26歳でビリオネア）。 にもかかわらず、彼は意識して
+        <strong>"兄を立てる"</strong> ことを選び続けている。 これは "なれなかった" ではなく
+        <strong>"ならなくていい"</strong> という積極的選択。
+      </p>
+      <p>
+        裏側にあるのは、<strong>"自分の山は別にある"</strong> という自己認識だ。 飛行機・読書・Weston Airport——
+        John は Patrick が踏み込まない領域に自分のアイデンティティを持っている。 仕事の上でNo.2を全う
+        しつつ、人生全体としては "兄に依存しない単独の人格" を維持する設計。 これが彼の精神衛生を支えている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">対顧客・対外コミュニケーション。 Patrick が技術哲学とプロダクト思想を語る一方、 John は世界中の Stripe 大手顧客（Amazon・Shopify・OpenAI・BMW 等）と直接対話し、 痛点を製品要件に翻訳する "顧客通訳者"。Podcast や conference の表舞台も多くは John 側。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 (Complement) × 翻訳 (Translation)。 Patrick の抽象度の高い思想を、 顧客・パートナー・メディアが分かる言葉に変換する。 Stripe Atlas（外国スタートアップの米国法人化サービス）、Stripe Climate（カーボン除去資金プール）など、外向き製品の顔を John が担う。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし John が居なければ、 Stripe は Patrick の "技術志向の哲学カンパニー" のまま $10B 規模で止まっていた可能性が高い。 大企業営業、グローバル展開、対外発信が機能せず、 "通好みの開発者ツール" の枠を出られなかっただろう。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">未継承（継続中）。 だが John 自身は、Stripe を退いた後も "兄弟の共同投資家" として Patrick と組み続ける示唆を出している。 Weston Airport は <strong>"No.2 の隣の山"</strong> を維持する装置で、 これが心理的依存をなくす。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 19歳での Harvard 中退（2010）。</strong> Auctomatic 売却で資産も手にしていた John が、 "世界の頂点の大学" をたった1年で捨てて兄と Stripe を始める判断。 親（学者）も周囲も止めた可能性が高い。 だが John は <strong>"兄と組む方が学びが多い"</strong> と判断した。 学歴を放棄して兄弟関係を選んだ最大の意思決定。
+      </p>
+      <p>
+        <strong>② 26歳ビリオネア達成後の "ノイズ処理" (2016以降)。</strong> 史上最年少の自力ビリオネアという "持ち上げ" メディアの嵐の中で、 John は <strong>"Faberge egg を集める富豪の趣味は自分には合わない"</strong> と語り、地味な暮らしを継続。 多くの若年成功者が浪費・離婚・離脱で崩れる中、 規律を保った。
+      </p>
+      <p>
+        <strong>③ AI・stablecoin 時代の戦略合意 (2024–2026)。</strong> Stripe が AI（OpenAI、Anthropic 等の決済処理）と stablecoin（Bridge 買収）に大きく舵を切る局面で、 兄弟が方針を完全一致させた。 多くの共同創業ペアが "技術の地殻変動" で割れる中、 John は Patrick と "同じ船に乗り続ける" を選んだ。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2026年4月時点、 John は <strong>引き際を全く語っていない</strong>。 これは Tim Cook（65歳でCEO退任）や
+        他の Stripe 期世代の CEO（OpenAI の Greg Brockman ですら一時離脱した）と対照的。 兄弟揃って <strong>"あと14年やる"</strong>
+        と公言しており、 IPO・売却の意思も少ない。 Stripe 史上最大の意思決定は、皮肉にも "意思決定をしないこと" だ。
+      </p>
+      <p>
+        この長期コミットは、 単なる執着ではなく <strong>"急がない"</strong> 価値観の表明だ。 John は インタビューで
+        "私たちは2年後の数字をいじろうとしていない" と語る。 Stripe が私企業のまま $70B+ で運営できているのは、
+        この長期視点があるから。 公開企業が四半期決算でブレるのを見て、 兄弟は "私企業のままで戦う" を選び続けている。
+      </p>
+      <p>
+        John の引き際の特徴は、<strong>"継承を考えない No.2"</strong>。 これは新しい型だ。 過去のNo.2は「いつかトップへ」
+        か「いつか退く」かの二択で語られてきたが、 John は <strong>"No.2 のままトップと並走し続ける"</strong> 第3の道を作ろうとしている。
+        引き際の美学が "退き方" だった旧世代に対して、 John の美学は "<strong>続け方</strong>" にある。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">John Collison の No.2 型</div>
+        <div class="type-name">補完型 × 全う型 × 翻訳型 — 兄弟No.2</div>
+        <div class="type-body">
+          兄弟という選べない関係性を、<strong>「選び続ける」関係</strong> に変換した稀有な型。 Patrick の思想と技術を、
+          顧客と外部世界に翻訳する <strong>"翻訳型"</strong>。 トップへの継承を最初から想定しない <strong>"全う型"</strong>。
+          そして Patrick が苦手なドメインを完全に引き受ける <strong>"補完型"</strong>。
+          <br><br>
+          ▸ <strong>"隣の山" 戦略</strong>: 飛行機・Weston Airport・読書という Patrick が踏み込まない領域で 単独の
+          アイデンティティを維持。 "兄に依存しないNo.2" の精神構造を物理的に作っている。 これが 16年続く秘訣。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"なれなかった" ではなく "ならなくていい" を選び続けろ</div>
+          <div class="lesson-body">
+            John は 17歳の時点で CEO になれる人材だった。 だが彼は <strong>意識的に Patrick の隣に居続ける</strong> ことを選んだ。
+            重要なのは "選択肢がない" のではなく "選択肢があるのに選び続ける" こと。 これが No.2 を10年以上やる秘訣。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">"隣の山" を物理的に持て——No.1に依存しない自分の領域を作れ</div>
+          <div class="lesson-body">
+            John は 飛行機・Weston Airport・読書という、 Patrick が踏み込まない領域を持っている。 これが <strong>"No.2 をやり続けても自分が消えない"</strong>
+            設計の核。 翔太が次期COO/CEOどちらを選ぶにしても、 仕事の外に "自分の山" を持て。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">急ぐな。"あと14年やる" と言える長期コミットを設計しろ</div>
+          <div class="lesson-body">
+            John の "We're not in a hurry" は、 翔太の人生哲学と完全に重なる。 短期の数字・評価・成功で揺れず、
+            <strong>長期で組める信頼の相棒</strong>（Patrickのような兄、翔己のような親友）を持つ。 これが100億円ユニコーン型でない、
+            稲盛/Buffett型のキャリアを成立させる土台になる。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>2017年に <strong>4人乗り双発機で欧州から米国へ大西洋を単独飛行</strong>。 ライセンス保持の本格パイロット。 Stripe 業務の合間の最大の趣味。</li>
+        <li>2021年、ダブリン郊外の <strong>Weston Airport を共同オーナーシップで取得</strong>。 2024年に評価額が €7.9M → €15.9M に倍増。 2025年5月に €18.9M の追加資本投入で拡張。</li>
+        <li>ピアノを弾く。 兄 Patrick もまた読書家で論文の知見を引用するタイプで、 兄弟揃って "知的な静けさ" を持つ。</li>
+        <li>非フィクション中心の読書家。 推薦書: Eric Berger『Liftoff』(SpaceX史)、 Richard Hamming『The Art of Doing Science and Engineering』、 Nick Bilton『American Kingpin』(Silk Road史)。</li>
+        <li>"Faberge egg や yacht を集めるのは自分には合わない" と公言。 シリコンバレー型のラグジュアリー消費を意図的に避ける。</li>
+        <li>X (旧Twitter) のハンドル名は <strong>@collision</strong>（"Collison" + "collision"）。 兄 Patrick は @patrickc。</li>
+        <li>Stripe Sessions の AMA は兄弟2人で出る。 Patrick が思想を語り、 John が顧客事例とジョークを担当する役割分担が固定。</li>
+        <li>個人生活はほぼ完全非公開。 配偶者・恋人・住居の情報を一切漏らさない。 ビリオネア界では極めて珍しい徹底ぶり。</li>
+        <li>慈善活動: 兄弟で <strong>Stripe Climate</strong>（決済売上の一部をカーボン除去に拠出）を主導。 個人の "派手な慈善" よりも仕組みで貢献するスタイル。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Patrick Collison <span class="ja">パトリック・コリソン</span></div>
+            <span class="rel-tag">No.1 / 兄</span>
+          </div>
+          <div class="rel-body">
+            5歳上の兄、Stripe CEO。 15歳で Young Scientist of the Year を受賞した Lisp の天才。 John が16年No.2をやり続けている相手。 兄弟という選べない関係を、 "意識的に選び続ける" ことで稀有なペアになった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tommy Collison <span class="ja">トミー・コリソン</span></div>
+            <span class="rel-tag muted">原点 / 弟</span>
+          </div>
+          <div class="rel-body">
+            John の弟、ジャーナリスト・ライター。 Stripe には参画せず別の道を選んだ。 兄2人がテック界で No.1 / No.2 を組む中、 弟は文筆業で別領域。 役割分担が綺麗に分かれた家族。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Greg Brockman <span class="ja">グレッグ・ブロックマン</span></div>
+            <span class="rel-tag">並列 No.2 / 同時代</span>
+          </div>
+          <div class="rel-body">
+            OpenAI の President（Sam Altman の右腕）。 John と同じく "President" 肩書のテック界 No.2。 違いは Brockman が一時離脱を経験した一方、 John は16年安定。 兄弟という血縁が安定剤になっているかが対比点。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag">並列 No.2 / 同時代</span>
+          </div>
+          <div class="rel-body">
+            Meta（旧Facebook）COO。 雇われNo.2の最高峰。 John は共同創業者No.2、 Sandberg は雇われ No.2 という違い。 結局2022年に退任した Sandberg と、16年続く John。 創業者血縁の安定性の証左。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Charlie Munger <span class="ja">チャーリー・マンガー</span></div>
+            <span class="rel-tag muted">比較対象 / 補完型</span>
+          </div>
+          <div class="rel-body">
+            Buffett の60年の相棒。 John と同じ "全う型 No.2" の典型。 Munger も99歳で死去するまで Berkshire を退かなかった。 John が将来 Munger 型として歴史に残る可能性が高い、最も近いロールモデル。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック</span></div>
+            <span class="rel-tag muted">対比 / 継承型</span>
+          </div>
+          <div class="rel-body">
+            13年No.2の後にCEO継承した Cook と、 16年No.2のまま継承を考えない John の対照。 Cook は "創業者の哲学を継承する" 型、 John は "創業者の隣に居続ける" 型。 No.2の選択肢の極を表す。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Denis Collison <span class="ja">父 / Denis Collison</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            Dell に勤めた電子工学者。 後に自身でも会社を設立。 John の "技術 + 起業" の素地はここから。 工学者として論理性を、 起業家として行動力を、 父から引き継いだ。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Lily Collison <span class="ja">母 / Lily Collison</span></div>
+            <span class="rel-tag muted">原点 / 母</span>
+          </div>
+          <div class="rel-body">
+            微生物学者であり著者。 4人の子供のうち脳性麻痺と共に生きる体験について本も書いている。 John の "知的な静けさ" と "プライバシー重視" は、 母から引き継いだ可能性が高い。 学者の家庭で育った気品。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/John_Collison" target="_blank">John Collison — Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Patrick_Collison" target="_blank">Patrick Collison — Wikipedia</a></li>
+        <li><a href="https://stripe.com/sessions/2024/ama-with-patrick-and-john-collison" target="_blank">AMA with Patrick and John Collison — Stripe Sessions 2024</a></li>
+        <li><a href="https://stripe.com/sessions/2025/ama-with-patrick-and-john-collison" target="_blank">AMA with Patrick and John Collison — Stripe Sessions 2025</a></li>
+        <li><a href="https://www.irishtimes.com/business/technology/how-the-collison-brothers-learned-to-let-go-at-stripe-1.3104512" target="_blank">How the Collison brothers learned to let go at Stripe — The Irish Times</a></li>
+        <li><a href="https://thecurrency.news/articles/163614/paranoia-complacency-and-stripe-inside-the-mind-of-john-collison/" target="_blank">Paranoia, complacency and Stripe: Inside the mind of John Collison — The Currency</a></li>
+        <li><a href="https://thecurrency.news/articles/185914/stripe-collison-weston-airport/" target="_blank">From fintech to flight path: Stripe's John Collison charts a new course at Weston — The Currency</a></li>
+        <li><a href="https://www.irishtimes.com/business/2025/05/14/john-collison-and-other-weston-airport-owners-invest-189-in-expansion/" target="_blank">John Collison and other Weston Airport owners invest €18.9m — The Irish Times (2025)</a></li>
+        <li><a href="https://www.irishtimes.com/business/2025/05/16/john-collison-of-stripe-i-am-baffled-by-companies-doing-an-about-face-on-social-initiatives/" target="_blank">"I am baffled by companies doing an about-face on social initiatives" — Irish Times (2025)</a></li>
+        <li><a href="https://moneyweek.com/economy/people/603024/john-and-patrick-collison-the-nerds-who-conquered-silicon-valley" target="_blank">John and Patrick Collison: the nerds who conquered Silicon Valley — MoneyWeek</a></li>
+        <li><a href="https://medium.com/startup-grind/the-collison-brothers-the-story-behind-the-founding-of-stripe-ae013434c080" target="_blank">The Collison Brothers: The Story Behind The Founding Of Stripe — Startup Grind</a></li>
+        <li><a href="https://growth.eladgil.com/book/chapter-5-organizational-structure-and-hypergrowth/you-cant-delegate-culture-an-interview-with-patrick-collison/" target="_blank">An interview with Patrick Collison — High Growth Handbook (Elad Gil)</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>
