@@ -274,6 +274,45 @@
     content: '★'; color: var(--accent); font-size: 11px; margin-left: 5px;
   }
 
+  /* ORIGIN */
+  .origin {
+    border: 1px solid var(--line);
+    background: var(--soft);
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 760px) {
+    .origin { grid-template-columns: 1fr; gap: 12px; }
+  }
+  .origin .ori-block .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .origin .ori-block .val {
+    font-size: 13px;
+    color: #222;
+    line-height: 1.7;
+  }
+  .origin .ori-block .val strong { font-weight: 700; color: var(--fg); }
+  .origin .ori-block .val .koppen {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    margin: 0 2px;
+    color: #555;
+  }
+
   /* IMPORTANCE */
   .importance {
     border: 1px solid var(--line);
@@ -420,6 +459,18 @@
       </div>
     </div>
 
+    <!-- ORIGIN (formation context) -->
+    <div class="origin">
+      <div class="ori-block">
+        <span class="lbl">Tectonic — 地質・テクトニクス</span>
+        <div class="val" id="origin-tectonic">—</div>
+      </div>
+      <div class="ori-block">
+        <span class="lbl">Climate — 主産地の気候帯（Köppen）</span>
+        <div class="val" id="origin-climate">—</div>
+      </div>
+    </div>
+
     <!-- IMPORTANCE -->
     <div class="importance">
       <h3>Why It Matters — なぜ重要か</h3>
@@ -543,7 +594,11 @@ const RESOURCES = {
       ['USA', 270], ['NOR', 200], ['KWT', 170], ['NGA', 150], ['MEX', 130]
     ],
     importance: '世界一次エネルギーの<strong>約30%</strong>を占める基幹資源。輸送燃料(ガソリン・軽油・ジェット燃料)、プラスチック・繊維・医薬品の原料、発電燃料として現代産業文明の血液。OPEC+ (サウジ+ロシア中心)が価格決定権を握り、地政学上の最重要レバー。',
-    uses: ['ガソリン', 'ジェット燃料', 'プラスチック', '化学繊維', '医薬品', 'アスファルト']
+    uses: ['ガソリン', 'ジェット燃料', 'プラスチック', '化学繊維', '医薬品', 'アスファルト'],
+    origin: {
+      tectonic: '<strong>大陸縁辺の堆積盆地</strong>に集中。プレート沈降で形成された深い盆地内で、有機物が地熱・圧力で炭化水素化。<strong>新期造山帯の前弧／背弧</strong>(ペルシャ湾はアラビア・ザグロス衝突帯)、<strong>古期堆積盆</strong>(西シベリア・北海)に大規模油田。',
+      climate: '産地は気候を選ばず。ペルシャ湾岸 <span class="koppen">BWh</span>(熱帯砂漠)、西シベリア <span class="koppen">Dfc</span>(亜寒帯)、テキサス <span class="koppen">BSk</span>(ステップ)、北海 <span class="koppen">Cfb</span>(西岸海洋性)など多様。'
+    }
   },
 
   natural_gas: {
@@ -563,7 +618,11 @@ const RESOURCES = {
       ['CAN', 80], ['DZA', 50], ['TKM', 40], ['MYS', 33], ['NGA', 22]
     ],
     importance: '石炭より排出量が少ない化石燃料として<strong>移行期エネルギー</strong>の主役。発電・暖房・化学肥料(アンモニア)・水素製造の原料。<strong>LNG</strong>(液化天然ガス)輸送網が拡大し、ロシア-欧州ガス危機後はアメリカ・カタール・オーストラリアが供給シェアを伸ばす。',
-    uses: ['発電', '暖房', 'アンモニア肥料', '水素製造', '化学原料']
+    uses: ['発電', '暖房', 'アンモニア肥料', '水素製造', '化学原料'],
+    origin: {
+      tectonic: '原油と同じく<strong>堆積盆地</strong>に集中（しばしば油田と同居）。<strong>シェール層</strong>(米国Permian/Marcellus)では水圧破砕革命でガス生産が爆増。カタール沖のNorth Field、ロシア西シベリア(Yamal)、豪北西大陸棚が三大ガス田。',
+      climate: 'ペルシャ湾岸 <span class="koppen">BWh</span>、西シベリア <span class="koppen">Dfc</span>、米国テキサス <span class="koppen">BSk</span>、豪北西部 <span class="koppen">BWh</span>。気候よりも<strong>大陸棚・前弧海盆の地質構造</strong>が産地条件。'
+    }
   },
 
   coal: {
@@ -583,7 +642,11 @@ const RESOURCES = {
       ['COL', 58], ['MNG', 31], ['CAN', 30], ['KAZ', 31], ['CHN', 4]
     ],
     importance: '世界の発電の<strong>約36%</strong>(2022)を占めるが、CO₂排出が最大の化石燃料のため脱炭素圧力で先進国は段階的廃止。一方、製鉄に必要な<strong>原料炭(コークス)</strong>は代替が難しく当面残る。中国・インドの新興国需要は依然旺盛。',
-    uses: ['発電', '製鉄(コークス)', 'セメント', '化学原料']
+    uses: ['発電', '製鉄(コークス)', 'セメント', '化学原料'],
+    origin: {
+      tectonic: '<strong>古期造山帯の堆積盆地</strong>がコア。石炭紀(約3.6億年前)〜二畳紀の温暖湿潤な森林帯が地中で炭化。アパラチア(米国)・欧州ヘルシニア帯・ウラル・大シンアン嶺・豪Great Dividing Range・南アKaroo盆地。古生代の生物起源資源。',
+      climate: '形成当時は熱帯雨林。現在の産地は <span class="koppen">Cfa</span>(米国東部)、<span class="koppen">Dfb</span>(独・ポーランド)、<span class="koppen">Aw</span>(豪Queensland)、<span class="koppen">Cwa</span>(中国華北)など多様で、現代気候とは無関係。'
+    }
   },
 
   iron_ore: {
@@ -603,7 +666,11 @@ const RESOURCES = {
       ['RUS', 25], ['SWE', 25], ['IND', 18], ['MAR', 13], ['IRN', 10]
     ],
     importance: '<strong>鉄鋼</strong>はインフラ・建設・自動車・船舶の基盤素材。豪・伯の2強(計75%)が中国向けに輸出する構図で、中国の不動産需要に世界価格が左右される。低品位の代替も豊富で希少性は低いが、<strong>水素還元製鉄</strong>(脱炭素)の主役へ。',
-    uses: ['鉄鋼', '建設', '自動車', '船舶', '機械']
+    uses: ['鉄鋼', '建設', '自動車', '船舶', '機械'],
+    origin: {
+      tectonic: '<strong>安定陸塊（楯状地・卓状地 / クラトン）</strong>に集中する縞状鉄鉱層(BIF)。約25-19億年前に海洋への酸素供給で沈殿した古代の鉱床。豪Pilbara・伯Carajás・南ア・ウクライナの楯状地が主要産地。新期造山帯にはほぼ無い。',
+      climate: '豪Pilbara <span class="koppen">BWh</span>(熱帯砂漠)、ブラジルCarajás <span class="koppen">Aw</span>(サバナ)、ウクライナKryvyi Rih <span class="koppen">Dfb</span>(亜寒帯湿潤)、印Odisha <span class="koppen">Aw</span>。気候の影響は採掘運営に限られる。'
+    }
   },
 
   copper: {
@@ -623,7 +690,11 @@ const RESOURCES = {
       ['JPN', 500], ['KAZ', 500], ['POL', 500], ['AUS', 400], ['BHR', 400]
     ],
     importance: '<strong>電化革命</strong>の中核金属。EV1台に約<strong>80kg</strong>(従来車の約4倍)、洋上風力1基に約<strong>30t</strong>。送電線・モーター・発電機・電子機器のあらゆる場面で代替が困難。需要は2050年までに2倍以上、新規鉱山開発は10年単位の遅れ。',
-    uses: ['送電線', 'EVモーター', '電子機器', '建設配線', 'モーター']
+    uses: ['送電線', 'EVモーター', '電子機器', '建設配線', 'モーター'],
+    origin: {
+      tectonic: '主に<strong>新期造山帯</strong>のporphyry(斑岩)銅鉱床。沈み込み帯のマグマ活動で形成。アンデス(チリ・ペルー)が世界の3割超、米西部・モンゴル・PNG。例外として<strong>古期のCentral African Copperbelt</strong>(DRC・ザンビア)は堆積性鉱床で第3位。',
+      climate: 'チリAtacama <span class="koppen">BWk</span>(寒冷砂漠 / 雨量ほぼ0で標高3,000m+)、ペルー <span class="koppen">BSk</span>、DRC <span class="koppen">Aw</span>(熱帯サバナ)、モンゴル <span class="koppen">BWk</span>。乾燥地はマグマ熱水鉱床と相性が良い(風化層が薄く露頭しやすい)。'
+    }
   },
 
   gold: {
@@ -643,7 +714,11 @@ const RESOURCES = {
       ['AUS', 300], ['ZAF', 250], ['SGP', 200], ['GBR', 150], ['TUR', 100]
     ],
     importance: '<strong>価値保存資産</strong>として人類最古の金融商品。中央銀行が外貨準備の一部として保有(米FRB約8,100t、独・伊・仏・露・中で計2万t超)。電子部品・歯科・宝飾にも使われるが、ほぼ全量回収・再利用される非消費型資源。インフレ・地政学リスクヘッジ。',
-    uses: ['中央銀行準備', '宝飾品', '電子部品', '歯科', '投資']
+    uses: ['中央銀行準備', '宝飾品', '電子部品', '歯科', '投資'],
+    origin: {
+      tectonic: '<strong>楯状地のWitwatersrand型</strong>(南ア・約27億年前の太古代礫岩、世界の累計産出量の約30%)、<strong>新期造山帯</strong>のorogenic gold(米西部・アンデス)、<strong>古期再活性化帯</strong>(豪西部・中国華北)。Greenstone belts (緑色岩帯)も重要。',
+      climate: '南アWitwatersrand <span class="koppen">Cwa</span>(温暖冬季少雨)、豪Kalgoorlie <span class="koppen">BSk</span>、米Nevada <span class="koppen">BWk</span>、ペルー高地 <span class="koppen">ET</span>(ツンドラ)、ガーナ <span class="koppen">Aw</span>。気候は産出と無関係。'
+    }
   },
 
   silver: {
@@ -663,7 +738,11 @@ const RESOURCES = {
       ['AUS', 500], ['KOR', 400], ['BOL', 400], ['ARG', 300], ['USA', 300]
     ],
     importance: '電気伝導率が金属中<strong>最高</strong>。<strong>太陽光パネル</strong>(電極)の主要材料で、銀使用量は太陽光世界需要の10%超。電子接点・抗菌剤・装飾。リサイクル困難なため、太陽光発電拡大とともに需給逼迫が予測される。',
-    uses: ['太陽光パネル電極', '電子接点', '電気接続', '抗菌剤', '宝飾']
+    uses: ['太陽光パネル電極', '電子接点', '電気接続', '抗菌剤', '宝飾'],
+    origin: {
+      tectonic: '銅・鉛・亜鉛・金の<strong>副産物</strong>として産出が多い(銀単独鉱山は少数)。<strong>新期造山帯</strong>のepithermal鉱床(メキシコ・ペルー・ボリビア・チリ・米)が中心。古期のポーランドKupferschiefer(銅鉱床の副産物)も大規模。',
+      climate: 'メキシコZacatecas <span class="koppen">BSk</span>(ステップ高原)、ペルー高地 <span class="koppen">BSk</span>〜<span class="koppen">ET</span>、ポーランド <span class="koppen">Dfb</span>、豪 <span class="koppen">BSh</span>。乾燥〜半乾燥のepithermal帯が好相性。'
+    }
   },
 
   rare_earth: {
@@ -683,7 +762,11 @@ const RESOURCES = {
       ['FRA', 2000], ['GBR', 1500], ['DEU', 1200], ['VNM', 800], ['IND', 500]
     ],
     importance: '17元素の総称(ネオジム、ジスプロシウム、テルビウム等)。<strong>EVモーター・風力発電・MRI・F-35戦闘機・半導体</strong>すべてに必須。中国が採掘の<strong>約65%</strong>、精錬では<strong>約95%</strong>を握る独占構造。米国・豪州が脱中国依存で開発加速中。',
-    uses: ['EVモーター磁石', '風力発電', '電子部品', '半導体研磨剤', '蛍光体', '触媒']
+    uses: ['EVモーター磁石', '風力発電', '電子部品', '半導体研磨剤', '蛍光体', '触媒'],
+    origin: {
+      tectonic: '<strong>カーボナタイト</strong>(中国Bayan Obo・米Mountain Pass・豪Mt Weld・伯Araxá)と、<strong>イオン吸着型粘土</strong>(中国南部Jiangxi・Guangdong, ミャンマー)の二系統。前者は<strong>古期クラトン縁辺の貫入岩体</strong>、後者は熱帯〜亜熱帯の<strong>花崗岩風化層</strong>。',
+      climate: 'Bayan Obo <span class="koppen">BWk</span>(内モンゴル砂漠)、中国南部風化型 <span class="koppen">Cwa</span>(温暖冬季少雨で<strong>湿潤＋風化が進む</strong>のが好条件)、ミャンマー <span class="koppen">Cwa</span>。<strong>湿潤亜熱帯</strong>はイオン吸着型REEの形成に必須。'
+    }
   },
 
   lithium: {
@@ -703,7 +786,11 @@ const RESOURCES = {
       ['CHN', 2000], ['CAN', 400], ['PRT', 350], ['USA', 200], ['NAM', 130]
     ],
     importance: '<strong>EV・スマホ・蓄電池</strong>のバッテリー材料。リチウムイオン電池の電極材として代替が難しく、EV1台に約<strong>10kg</strong>。需要は2030年までに5倍。<strong>「リチウム三角形」</strong>(チリ・アルゼンチン・ボリビアの塩湖)と豪州のスポデュメン鉱山が二大供給源。',
-    uses: ['EVバッテリー', 'スマホ電池', '蓄電池', 'ガラス・陶器', '潤滑剤']
+    uses: ['EVバッテリー', 'スマホ電池', '蓄電池', 'ガラス・陶器', '潤滑剤'],
+    origin: {
+      tectonic: '二系統。<strong>(A) 新期造山帯の高地塩湖(salar)</strong>: アンデス3,500m+の閉塞盆地で太陽蒸発によりリチウム濃縮(チリAtacama・アルゼンチン・ボリビアUyuni)。<strong>(B) 古期造山帯のスポデュメン花崗岩</strong>: 豪Greenbushes・カナダ・中国・ジンバブエ・ポルトガル。',
+      climate: '<strong>塩湖型は <span class="koppen">BWk</span>(寒冷砂漠) が必須条件</strong>: 年降水量100mm未満＋強い蒸発で濃縮が進む。チリAtacama・ボリビアUyuni・アルゼンチンPuna全て高地砂漠。スポデュメン型は気候非依存(豪Greenbushes <span class="koppen">Csb</span>)。'
+    }
   },
 
   aluminum: {
@@ -723,7 +810,11 @@ const RESOURCES = {
       ['BHR', 1.6], ['AUS', 1.5], ['NOR', 1.4], ['ISL', 0.9], ['USA', 0.9]
     ],
     importance: '地殻に8番目に多く存在するが、精錬には<strong>大量の電力</strong>が必要(コスト構造が「凍結された電気」と呼ばれる)。<strong>軽量化</strong>ニーズ(航空機・EV・建材)で需要増。中国が精錬の60%を支配。原料ボーキサイトはギニア・豪が二大産地。',
-    uses: ['航空機', '自動車', '建材', '飲料缶', '電線']
+    uses: ['航空機', '自動車', '建材', '飲料缶', '電線'],
+    origin: {
+      tectonic: '<strong>ボーキサイト = 熱帯ラテライト風化の産物</strong>。古期造山帯〜楯状地の上で<strong>長期にわたる強い化学風化</strong>を受けて形成。鉱床は地表近くの「赤土」層で露天掘り。ギニア・豪Pilbara・ジャマイカ・ブラジル・ベトナム・インド。',
+      climate: '<strong>熱帯雨林〜サバナ気候(<span class="koppen">Af</span>/<span class="koppen">Aw</span>)が必須</strong>: 高温多雨での激しい化学風化がシリカ・アルカリ金属を流し、アルミニウム水酸化物を残留濃縮。ギニア <span class="koppen">Aw</span>、ジャマイカ <span class="koppen">Aw</span>、豪北部 <span class="koppen">Aw</span>、ブラジル <span class="koppen">Aw</span>。'
+    }
   },
 
   cobalt: {
@@ -743,7 +834,11 @@ const RESOURCES = {
       ['PHL', 2000], ['MDG', 2500], ['ZMB', 1500], ['MAR', 1500], ['PNG', 1000]
     ],
     importance: 'リチウムイオン電池の正極材(NCM・NCA)に必須。<strong>コンゴ民主共和国(DRC)が世界の70%</strong>を産出する極端な集中構造で、児童労働・人権問題の温床に。各社はコバルトフリー電池(LFP)へ移行中だが、高エネルギー密度用途では当面必要。',
-    uses: ['EVバッテリー', 'スマホ電池', '超合金', '触媒', '磁石']
+    uses: ['EVバッテリー', 'スマホ電池', '超合金', '触媒', '磁石'],
+    origin: {
+      tectonic: '主に<strong>古期造山帯のCentral African Copperbelt</strong>(DRC・ザンビア)の堆積性銅鉱床で、銅の副産物として産出 — 地球の70%。第二系統は<strong>熱帯ラテライトのニッケル鉱床</strong>(インドネシア・フィリピン・ニューカレドニア)の副産物。',
+      climate: 'DRC銅帯Katanga <span class="koppen">Aw</span>(熱帯サバナ)、ザンビア <span class="koppen">Cwa</span>、インドネシアSulawesi <span class="koppen">Af</span>(熱帯雨林)、フィリピン <span class="koppen">Af</span>。<strong>熱帯気候</strong>はラテライト型コバルトの形成条件。'
+    }
   },
 
   nickel: {
@@ -763,7 +858,11 @@ const RESOURCES = {
       ['AUS', 140], ['BRA', 60], ['MDG', 35], ['ZAF', 30], ['CUB', 30]
     ],
     importance: '伝統的にはステンレス鋼用(70%)だが、<strong>EV高エネルギー密度電池</strong>(NCM正極)需要で電池用が急成長。インドネシアが2023年に世界の50%を生産する独占傾向。中国系企業が主要鉱山を抑える構図。',
-    uses: ['ステンレス鋼', 'EVバッテリー', '合金', 'メッキ', '触媒']
+    uses: ['ステンレス鋼', 'EVバッテリー', '合金', 'メッキ', '触媒'],
+    origin: {
+      tectonic: '二系統。<strong>(A) 熱帯ラテライト型</strong>(全産出量の60%): 超塩基性岩(蛇紋岩)の熱帯風化 — インドネシア・フィリピン・ニューカレドニア・キューバ・マダガスカル。<strong>(B) 古期クラトンのマグマ性硫化物</strong>: 加Sudbury・露Norilsk・西オーストラリア。',
+      climate: 'ラテライト型は<strong><span class="koppen">Af</span>(熱帯雨林)が必須</strong>: インドネシア・フィリピン・PNG。硫化物型は気候非依存(露Norilsk <span class="koppen">Dfd</span>(極寒) / 加Sudbury <span class="koppen">Dfb</span>)。気候で産地が二極化。'
+    }
   },
 
   silicon: {
@@ -783,7 +882,11 @@ const RESOURCES = {
       ['JPN', 15], ['KOR', 12], ['FRA', 10], ['BRA', 8], ['ISL', 5]
     ],
     importance: '<strong>半導体</strong>(ICチップ)と<strong>太陽光パネル</strong>の中核素材。地殻に2番目に多い元素だが、9N(99.9999999%)まで精製した<strong>高純度多結晶シリコン</strong>(ポリシリコン)は中国が世界の80%超を生産。半導体ウェハーは日本(信越・SUMCO)、独(Wacker)が高シェア。',
-    uses: ['半導体IC', '太陽光パネル', 'シリコーン樹脂', '合金鋼', 'ガラス']
+    uses: ['半導体IC', '太陽光パネル', 'シリコーン樹脂', '合金鋼', 'ガラス'],
+    origin: {
+      tectonic: '<strong>原料の石英(SiO₂)はどこにでもある</strong> — 地殻28%。重要なのは生産工程。金属シリコン精錬は<strong>大量の電力</strong>(1tあたり12-13MWh)を消費するため、<strong>水力・地熱・原子力</strong>が豊富な国に集中(ノルウェー・アイスランド・露・加・ブータン)。中国は石炭火力で60-70%を支配。',
+      climate: '気候よりも<strong>電力コスト・電源構成</strong>が立地条件。ノルウェー <span class="koppen">Dfb</span>(水力豊富)、アイスランド <span class="koppen">ET</span>(地熱)、ブータン <span class="koppen">Cwa</span>(水力)、中国新疆/雲南 <span class="koppen">BWk</span>/<span class="koppen">Cwa</span>(石炭・水力)。'
+    }
   },
 
   uranium: {
@@ -803,7 +906,11 @@ const RESOURCES = {
       ['NER', 2000], ['RUS', 1500], ['ZAF', 200], ['BRA', 50], ['USA', 40]
     ],
     importance: '<strong>原子力発電</strong>の燃料。気候変動対策・エネルギー安全保障の両面から<strong>原子力ルネサンス</strong>が進行中(SMR・新型炉)。カザフスタンが世界の40%超を産出。濃縮工程はロシア(Rosatom)が世界の40%、米欧の脱ロシア依存が課題。',
-    uses: ['原子力発電', '核兵器', '医療用同位体', '海軍艦艇推進']
+    uses: ['原子力発電', '核兵器', '医療用同位体', '海軍艦艇推進'],
+    origin: {
+      tectonic: '三系統。<strong>(A) 砂岩型(地下水浸透型)</strong>: 古期堆積盆地で地下水と反応し沈殿 — カザフ・ウズベク・ニジェール・米Wyoming(現代の主流、ISL採掘)。<strong>(B) 不整合型</strong>: 楯状地と古期層の境界 — 加Athabasca盆地が高品位。<strong>(C) カルクリート型</strong>: ナミビア砂漠の地下水蒸発鉱床。',
+      climate: 'カザフ <span class="koppen">BWk</span>(寒冷砂漠)、ウズベク <span class="koppen">BWk</span>、ナミビアRössing <span class="koppen">BWh</span>(熱帯砂漠)、ニジェールAïr <span class="koppen">BWh</span>、加Athabasca <span class="koppen">Dfc</span>(亜寒帯)。<strong>砂岩型・カルクリート型は乾燥気候</strong>(BW)が形成条件。'
+    }
   }
 
 };
@@ -911,6 +1018,15 @@ function renderResource(key) {
   const maxExp  = rsc.exp[0][1];
   renderRanking('prod-body', rsc.prod, maxProd);
   renderRanking('exp-body',  rsc.exp,  maxExp);
+
+  // Origin (formation context)
+  if (rsc.origin) {
+    document.getElementById('origin-tectonic').innerHTML = rsc.origin.tectonic;
+    document.getElementById('origin-climate').innerHTML = rsc.origin.climate;
+  } else {
+    document.getElementById('origin-tectonic').innerHTML = '—';
+    document.getElementById('origin-climate').innerHTML = '—';
+  }
 
   // Importance
   document.getElementById('importance-text').innerHTML = rsc.importance;

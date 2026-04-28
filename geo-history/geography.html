@@ -20,6 +20,8 @@
     --canal: #ea580c;
     --sea: #0891b2;
     --civilization: #b45309;
+    --cenozoic: #d32f2f;
+    --paleozoic: #5d4037;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -195,6 +197,8 @@
   .leaflet-tooltip.geo-label.cat-canal        { color: var(--canal); }
   .leaflet-tooltip.geo-label.cat-sea          { color: var(--sea); }
   .leaflet-tooltip.geo-label.cat-civilization { color: var(--civilization); font-weight: 700; }
+  .leaflet-tooltip.geo-label.sub-cenozoic     { color: var(--cenozoic);  font-weight: 700; }
+  .leaflet-tooltip.geo-label.sub-paleozoic    { color: var(--paleozoic); font-weight: 700; }
   .leaflet-tooltip.geo-label::before { display: none; }
 
   .leaflet-popup-content {
@@ -357,6 +361,11 @@
         <span class="cat-label">▣ Cat 05</span>
         <span class="cat-ja">Civilizations / 4大文明</span>
       </button>
+      <button data-cat="orogeny">
+        <span class="cat-icon">⛰⛰</span>
+        <span class="cat-label">▣ Cat 06</span>
+        <span class="cat-ja">Orogeny / 新期・古期造山帯</span>
+      </button>
     </nav>
 
     <!-- ============ MAP ============ -->
@@ -387,6 +396,11 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+// helper to read CSS custom properties
+function getCSSVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
 // ============ DATA ============
 // 各カテゴリ: { name(JA), en, lat, lon, desc }
 const DATA = {
@@ -513,6 +527,42 @@ const DATA = {
       {name:'インダス文明',     en:'Indus Valley (~2600 BCE〜)', lat:27.3294, lon:68.1356, desc:'インダス川流域（現パキスタン）。モヘンジョ・ダロ／ハラッパー。整然と区画された都市計画、上下水道、未解読のインダス文字。'},
       {name:'黄河文明',         en:'Yellow River / 黄河 (~5000 BCE〜)', lat:34.7472, lon:113.6249, desc:'黄河中下流域（現中国河南省・山東省）。仰韶文化・龍山文化を経て殷・周王朝へ。甲骨文字、青銅器、漢字の起源。'},
     ]
+  },
+
+  orogeny: {
+    title: 'Orogeny — 新期・古期造山帯',
+    items: [
+      // 新期造山帯 (Cenozoic, 新生代) — currently active or recent (red)
+      {name:'環太平洋造山帯（東）', en:'Circum-Pacific Belt — East (Cenozoic 新期)', subtype:'cenozoic',
+       path:[[60,-150],[55,-130],[45,-122],[40,-118],[35,-110],[25,-105],[15,-92],[8,-83],[0,-78],[-15,-72],[-30,-71],[-45,-73],[-55,-67]],
+       desc:'アラスカ・ロッキー・カスケード・シエラネバダ・メキシコ高原・中米・アンデス。新生代造山運動で形成。<strong>銅・銀・金・モリブデン</strong>等の金属鉱床(porphyry copper)が豊富。'},
+      {name:'環太平洋造山帯（西）', en:'Circum-Pacific Belt — West (Cenozoic 新期)', subtype:'cenozoic',
+       path:[[58,162],[50,156],[45,148],[42,142],[36,138],[33,131],[25,122],[18,121],[7,125],[-1,130],[-6,148],[-20,164],[-40,175],[-46,168]],
+       desc:'カムチャツカ・千島・日本・台湾・フィリピン・東インドネシア・PNG・NZ。プレート沈み込みによる活発な造山帯。<strong>火山帯</strong>と一致し、地震・火山噴火が多発。'},
+      {name:'アルプス・ヒマラヤ造山帯', en:'Alpine-Himalayan Belt (Cenozoic 新期)', subtype:'cenozoic',
+       path:[[31,-7],[36,-2],[40,-2],[42.5,0.5],[45,7],[46,11],[47,15],[47,23],[44,28],[42.5,42],[37,48],[35,54],[34,62],[35,70],[34,78],[28,85],[28,92],[20,95],[10,99],[2,104],[-3,112],[-8,118]],
+       desc:'アトラス→ピレネー→アルプス→カルパチア→コーカサス→ザグロス→ヒマラヤ→インドネシア弧。<strong>ユーラシア大陸とアフリカ・インド亜大陸の衝突</strong>で形成された地球最大の造山帯。'},
+
+      // 古期造山帯 (Paleozoic, 古生代) — old, eroded (brown)
+      {name:'アパラチア山脈', en:'Appalachian Mts. (Paleozoic 古期)', subtype:'paleozoic',
+       path:[[33,-85],[36,-83],[39,-80],[41,-77],[43,-74],[46,-71],[49,-66],[51,-58]],
+       desc:'北米東部、約3.8億年前のカレドニア／アパラチア造山運動。長期の侵食で平坦化。<strong>石炭</strong>(ペンシルベニア紀)の主要産地、現在も米国炭田の中心。'},
+      {name:'カレドニア山系', en:'Caledonides (Paleozoic 古期)', subtype:'paleozoic',
+       path:[[71,24],[68,16],[63,10],[58,8],[57,-5],[56,-3],[54,-3],[51,-4]],
+       desc:'スカンジナビア半島→英国スコットランド・ウェールズ。約4.5億年前。アパラチアと同根（パンゲア分裂前は連続）。'},
+      {name:'ヴァリスカン／ヘルシニア山系', en:'Variscan / Hercynian (Paleozoic 古期)', subtype:'paleozoic',
+       path:[[40,-5],[42,-1],[45,3],[48,8],[50,14],[51,17],[50,21]],
+       desc:'欧州中央部の古い山地（イベリア・メセタ→中央高地→ボヘミア盆地）。<strong>石炭・鉄鉱石</strong>でドイツ・フランス工業化の基盤に。アルプスより数億年古い。'},
+      {name:'ウラル山脈', en:'Ural Mts. (Paleozoic 古期)', subtype:'paleozoic',
+       path:[[68,65],[64,62],[60,60],[55,60],[52,58],[50,57]],
+       desc:'欧亜境界、約3億年前のヘルシニア造山運動。石炭・鉄・銅・白金・金・宝石の宝庫で、ロシア工業地帯（ウラル工業地域）の基盤。'},
+      {name:'天山山脈（古期再活性）', en:'Tien Shan (re-activated Paleozoic)', subtype:'paleozoic',
+       path:[[42,72],[43,78],[42,85],[41,92]],
+       desc:'中央アジア。古期造山帯だが、インド亜大陸の衝突で新生代に再隆起した「再活性化造山帯」。<strong>金・銅・ウラン</strong>を産出。'},
+      {name:'グレート・ディヴァイディング山脈', en:'Great Dividing Range (Paleozoic 古期)', subtype:'paleozoic',
+       path:[[-12,143],[-18,146],[-25,152],[-32,151],[-37,147],[-42,147]],
+       desc:'豪州東岸、約3億年前。石炭(クイーンズランド・NSW)・金・銅の主要産地。古期造山帯ながらブリスベンからメルボルンまで人口・経済集中ベルトの背骨。'},
+    ]
   }
 };
 
@@ -553,19 +603,47 @@ function renderCategory(cat) {
   const layer = L.layerGroup();
 
   data.items.forEach(item => {
-    const m = L.marker([item.lat, item.lon], { icon: makeIcon(cat) });
-    m.bindTooltip(item.name, {
-      permanent: true,
-      direction: 'right',
-      offset: [10, 0],
-      className: `geo-label cat-${cat}`
-    });
-    m.bindPopup(
-      `<div class="name">${item.name}</div>` +
-      `<div class="meta">${item.en}</div>` +
-      `<div class="desc">${item.desc}</div>`
-    );
-    layer.addLayer(m);
+    if (item.path) {
+      // === polyline rendering (e.g. orogeny) ===
+      const subColor = item.subtype === 'cenozoic'
+        ? getCSSVar('--cenozoic')
+        : getCSSVar('--paleozoic');
+      const poly = L.polyline(item.path, {
+        color: subColor,
+        weight: 6,
+        opacity: 0.7,
+        lineCap: 'round',
+        lineJoin: 'round'
+      });
+      // Tooltip on the middle point
+      const mid = item.path[Math.floor(item.path.length / 2)];
+      poly.bindTooltip(item.name, {
+        permanent: true,
+        direction: 'top',
+        className: `geo-label cat-${cat} sub-${item.subtype || ''}`
+      });
+      poly.bindPopup(
+        `<div class="name">${item.name}</div>` +
+        `<div class="meta">${item.en}</div>` +
+        `<div class="desc">${item.desc}</div>`
+      );
+      layer.addLayer(poly);
+    } else {
+      // === point marker rendering ===
+      const m = L.marker([item.lat, item.lon], { icon: makeIcon(cat) });
+      m.bindTooltip(item.name, {
+        permanent: true,
+        direction: 'right',
+        offset: [10, 0],
+        className: `geo-label cat-${cat}`
+      });
+      m.bindPopup(
+        `<div class="name">${item.name}</div>` +
+        `<div class="meta">${item.en}</div>` +
+        `<div class="desc">${item.desc}</div>`
+      );
+      layer.addLayer(m);
+    }
   });
 
   layer.addTo(map);
