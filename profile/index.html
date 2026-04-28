@@ -37,29 +37,32 @@
 
   /* hero */
   .hero {
+    display: flex;
+    align-items: center;
+    gap: 32px;
     margin-bottom: 56px;
-    padding-bottom: 36px;
+    padding-bottom: 40px;
     border-bottom: 1px solid var(--line);
   }
 
   .hero h1 {
-    font-size: 38px;
+    font-size: 34px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .hero h1 .kanji {
     font-size: 22px;
     font-weight: 400;
     color: var(--muted);
-    margin-left: 6px;
+    margin-left: 4px;
   }
 
   .hero .ja {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.04em;
   }
@@ -68,12 +71,10 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     color: var(--fg);
-    padding: 6px 14px;
-    background: var(--fg);
-    color: #fff;
+    padding: 6px 12px;
+    background: var(--soft);
     display: inline-block;
     letter-spacing: 0.02em;
-    font-weight: 500;
   }
 
   /* motto */
@@ -323,8 +324,10 @@
     </nav>
 
     <div class="hero">
-      <h1>Shota Ueyama</h1>
-      <div class="tagline">"最強のナンバー2" になる</div>
+      <div>
+        <h1>Shota Ueyama <span class="kanji">（植山翔太）</span></h1>
+        <div class="tagline">"最強のナンバー2"</div>
+      </div>
     </div>
 
     <!-- FACTS -->
@@ -404,7 +407,7 @@
     <div class="section-wrap">
       <div class="section-label">▸ motto</div>
       <div class="motto-box">
-        <div class="q">"最強のナンバー2" になる。</div>
+        <div class="q">"最強のナンバー2"。</div>
         <div class="sub">CEOを務められる実力を持った者が、<br>哲学を持ってCOOを担っている状態が最強。</div>
         <div class="src">— SHOTA's MANIFESTO, 2026.04</div>
       </div>
