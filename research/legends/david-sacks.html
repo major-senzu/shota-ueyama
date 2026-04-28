@@ -74,6 +74,54 @@
     line-height: 1.05;
     margin-bottom: 16px;
   }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
 
   .hero .summary {
     font-size: 14px;
@@ -605,8 +653,13 @@
   <!-- ======================================== -->
   <div class="hero">
     <div class="hero-inner">
-      <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <div class="hero-head">
+        <div class="hero-face" data-initials="DS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/David_O._Sacks.jpg?width=400" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
       <h1>David Sacks</h1>
+        </div>
+      </div>
       <p class="summary">
         南アフリカで生まれ5歳でメンフィスに渡った移民の少年、 スタンフォードで Peter Thiel と出会い
         共著本を世に出してから、 McKinseyを蹴ってConfinity（PayPal前身）の <strong>初代プロダクトマネージャー</strong> へ。

@@ -74,6 +74,54 @@
     line-height: 1.05;
     margin-bottom: 16px;
   }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
 
   .hero .summary {
     font-size: 14px;
@@ -605,8 +653,13 @@
   <!-- ======================================== -->
   <div class="hero">
     <div class="hero-inner">
-      <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <div class="hero-head">
+        <div class="hero-face" data-initials="高宮"><img src="https://images.microcms-assets.io/assets/f99791ccaae94f50b03bcecf5656b592/b756c5955e204e08aa9364290a1b3719/shinichi-takamiya_2.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
       <h1>高宮 慎一<span style="font-size:18px;font-weight:400;color:#999;margin-left:14px;letter-spacing:0;">Shinichi Takamiya</span></h1>
+        </div>
+      </div>
       <p class="summary">
         メーカー駐在員の父に連れられてイギリス・オランダで少年期を過ごした帰国子女。武蔵高校→東大経済→アーサー・D・リトル→ハーバードMBAという王道を歩み、2008年・29歳でグロービス・キャピタル・パートナーズ（GCP）に参画。創業者・堀義人さんがグロービスグループ全体（特に教育）を率いる傍ら、高宮さんはVC事業の現場に張りつき、メルカリ・カヤック・アイスタイル・ピクスタ等のIPOを支援。2019年に代表パートナー昇格。「<strong>起業家の背後にいる起業家</strong>」を信条とする、日本VC界の継承型No.2。
       </p>

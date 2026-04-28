@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>geo-history / 国別リサーチ — Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --muted-2: #b8b8b8;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ==================================== */
+  /* HERO (黒背景)                          */
+  /* ==================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 56px 0 64px;
+  }
+
+  .hero-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .hero .doc-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--hero-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.0;
+  }
+
+  /* ==================================== */
+  /* WRAP                                  */
+  /* ==================================== */
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 56px 48px 80px;
+  }
+
+  /* ==================================== */
+  /* COUNTRY LIST                          */
+  /* ==================================== */
+  .country-list {
+    list-style: none;
+  }
+
+  .country {
+    margin-bottom: 56px;
+  }
+
+  .country:last-child {
+    margin-bottom: 0;
+  }
+
+  .country .country-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--fg);
+    margin-bottom: 14px;
+    transition: opacity 0.15s;
+  }
+
+  .country .country-link:hover {
+    opacity: 0.6;
+  }
+
+  .country .flag {
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .country .country-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .city-list {
+    list-style: none;
+    border-top: 1px solid var(--line);
+    margin-left: 0;
+  }
+
+  .city-list li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .city-list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 4px 16px 18px;
+    text-decoration: none;
+    color: var(--muted-2);
+    font-size: 15px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .city-list a:hover {
+    color: var(--fg);
+    background: var(--soft);
+  }
+
+  .city-list a::before {
+    content: '•';
+    color: var(--muted-2);
+    margin-right: 4px;
+  }
+
+  /* ==================================== */
+  /* RESPONSIVE                            */
+  /* ==================================== */
+  @media (max-width: 600px) {
+    .hero-inner { padding: 0 22px; }
+    .wrap { padding: 36px 22px 56px; }
+    .hero { padding: 40px 0 48px; }
+    .hero h1 { font-size: 36px; }
+    .country .country-name { font-size: 18px; }
+    .country .flag { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../personal/profile.html" class="nav-link">profile</a>
+    <a href="../personal/health.html" class="nav-link">health</a>
+    <a href="../personal/travel.html" class="nav-link">travel</a>
+    <a href="../personal/book.html" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="./geo-history.html" class="nav-link active">geo-history</a>
+    <a href="./legend.html" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ===================== HERO ===================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="doc-id">24111</div>
+      <h1>geo-history</h1>
+    </div>
+  </div>
+
+  <!-- ===================== COUNTRY LIST ===================== -->
+  <main class="wrap">
+    <ul class="country-list">
+
+      <li class="country">
+        <a href="./geo-history/taiwan.html" class="country-link">
+          <span class="flag">🇹🇼</span>
+          <span class="country-name">Taiwan</span>
+        </a>
+        <ul class="city-list">
+          <li><a href="./geo-history/taipei.html">Taipei</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shota_122937/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

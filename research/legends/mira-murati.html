@@ -71,6 +71,54 @@
     line-height: 1.05;
     margin-bottom: 16px;
   }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
 
   .hero .summary {
     font-size: 14px;
@@ -556,8 +604,13 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-inner">
-      <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <div class="hero-head">
+        <div class="hero-face" data-initials="MM"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Mira_Murati_2023_(cropped).jpg?width=400" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
       <h1>Mira Murati</h1>
+        </div>
+      </div>
       <p class="summary">
         共産崩壊期のアルバニア南部に生まれ、16歳で奨学金を得て国を出た数学・機械工学の少女。Tesla の Model X、
         Leap Motion を経て 29歳で OpenAI 入社。 ChatGPT・GPT-4・DALL-E・Sora の "プロダクト化" を一手に

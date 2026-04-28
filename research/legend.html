@@ -145,12 +145,12 @@
   }
 
 
-  /* face photo at top of card */
+  /* face photo at top of card (larger) */
   .card .face {
-    width: 56px;
-    height: 56px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     overflow: hidden;
     position: relative;
     background: linear-gradient(135deg, #c8c8c8, #888);
@@ -165,7 +165,7 @@
     align-items: center;
     justify-content: center;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 17px;
+    font-size: 26px;
     font-weight: 700;
     color: #fff;
     letter-spacing: 0.04em;
@@ -183,6 +183,21 @@
   .card.todo .face,
   .card.pending .face {
     filter: grayscale(0.7) opacity(0.55);
+  }
+
+  /* === height alignment: each grid row's cards must match === */
+  .card-grid > a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card-grid > a > .card {
+    flex: 1;
+    width: 100%;
+  }
+  .card-grid > .card {
+    height: 100%;
   }
 
   /* card grid */
@@ -537,7 +552,7 @@
 
         <a href="./legends/fumiaki-koizumi.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
-          <div class="face" data-initials="小泉"></div>
+          <div class="face" data-initials="小泉"><img src="https://storage.googleapis.com/prd-about-asset/2013/12/-e1387159857800.jpg" alt="小泉文明" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">小泉文明</div>
           <div class="name-ja">こいずみ ふみあき / 山田進太郎</div>
           <div class="summary">山田さんから「お茶しよう」一通で5分で参画決定。COO→社長→会長と動きながら、2019年に自発的に社長を山田さんに返した日本スタートアップ史上稀な"逆継承型"No.2。</div>
@@ -557,7 +572,7 @@
 
         <a href="./legends/hiro-maeda.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
-          <div class="face" data-initials="前田"></div>
+          <div class="face" data-initials="前田"><img src="https://hiromaeda.com/wp-content/uploads/2019/08/cropped-54798080_10100797231069379_5722488758742286336_n-1.jpg" alt="前田ヒロ" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">前田ヒロ</div>
           <div class="name-ja">まえだ ひろ / 佐藤輝英</div>
           <div class="summary">22歳で佐藤さんと5分で意気投合、Open Network Lab→BEENEXTを共に作り、2019年にALL STAR SAAS FUNDで巣立った日本SaaS投資の旗手。喧嘩別れではなく専門特化のための分離。</div>
@@ -567,7 +582,7 @@
 
         <a href="./legends/togo-sumito.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
-          <div class="face" data-initials="東後"></div>
+          <div class="face" data-initials="東後"><img src="https://startup-db.com/company-service/officer/2505/__COO.jpg/medium.jpg?1527583860" alt="東後 澄人" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">東後 澄人</div>
           <div class="name-ja">とうご すみと / 佐々木大輔</div>
           <div class="summary">東大院でJAXAロケット研究 → McKinsey → Google → freee 3人目の経営陣。COO→CFO→CPOと役割を3度変えながら11年半を全うし、SaaS史上初のグローバルIPOを主導。退任後は原点の宇宙(AstroX)に20年越しで帰還。</div>
@@ -577,7 +592,7 @@
 
         <a href="./legends/takamiya-shinichi.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
-          <div class="face" data-initials="高宮"></div>
+          <div class="face" data-initials="高宮"><img src="https://images.microcms-assets.io/assets/f99791ccaae94f50b03bcecf5656b592/b756c5955e204e08aa9364290a1b3719/shinichi-takamiya_2.jpg" alt="高宮 慎一" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">高宮 慎一</div>
           <div class="name-ja">たかみや しんいち / 堀義人</div>
           <div class="summary">帰国子女・東大経済・HBSを経て29歳でGCP参画。創業者・堀さんがグループ全体を率いる中、VC事業のフィールドを引き受けメルカリ等を伴走。Forbes Midas List日本1位 (2018) → 2019年代表パートナー継承。</div>
@@ -587,7 +602,7 @@
 
         <a href="./legends/matsumoto-yuki.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
-          <div class="face" data-initials="松本"></div>
+          <div class="face" data-initials="松本"><img src="https://layerx.co.jp/wp-content/uploads/2025/09/matsumoto01-1.png" alt="松本 勇気" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">松本 勇気</div>
           <div class="name-ja">まつもと ゆうき / 福島良典</div>
           <div class="summary">鹿児島の片田舎・プログラミング歴ゼロから東大→学生起業。Gunosy・DMM・LayerXで3社CTO歴任。2021年に古巣Gunosy創業者・福島の隣に "代表取締役CTO" として戻り、共同代表という"準・No.1"を発明した翻訳型No.2。</div>
