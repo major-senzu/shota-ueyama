@@ -144,6 +144,47 @@
     letter-spacing: 0.04em;
   }
 
+
+  /* face photo at top of card */
+  .card .face {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin-bottom: 14px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #c8c8c8, #888);
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .card .face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .card .face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  /* fade for non-done cards */
+  .card.todo .face,
+  .card.pending .face {
+    filter: grayscale(0.7) opacity(0.55);
+  }
+
   /* card grid */
   .card-grid {
     display: grid;
@@ -375,6 +416,7 @@
 
         <a href="./legends/tim-cook.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="TC"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Tim_Cook_2009_cropped.jpg?width=200" alt="Tim Cook" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Tim Cook</div>
           <div class="name-ja">ティム・クック / Apple</div>
           <div class="summary">Steve Jobsの下でオペレーションを設計し、在庫日数を月単位から日単位へ縮めたCOO。Jobs没後はCEOへ。</div>
@@ -384,6 +426,7 @@
 
         <a href="./legends/charlie-munger.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="CM"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Charlie_Munger.png?width=200" alt="Charlie Munger" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Charlie Munger</div>
           <div class="name-ja">チャーリー・マンガー / Berkshire</div>
           <div class="summary">Buffettの64年の相棒。"2×4の角材で殴って" 投資哲学をシケモクからGreat Companiesへ転向させた "abominable no-man"。45年副会長を全う、99歳まで現役。</div>
@@ -393,6 +436,7 @@
 
         <a href="./legends/sundar-pichai.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="SP"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Sundar_Pichai_WEF_2020.png?width=200" alt="Sundar Pichai" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Sundar Pichai</div>
           <div class="name-ja">スンダー・ピチャイ / Google時代</div>
           <div class="summary">Larry Page・Sergey BrinのビジョンをChrome・Androidとして実装。11年No.2を続けGoogle CEO・Alphabet CEOへ。翻訳型No.2の現代的アーキタイプ。</div>
@@ -402,6 +446,7 @@
 
         <a href="./legends/steve-ballmer.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="SB"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Steve_Ballmer_2014.jpg?width=200" alt="Steve Ballmer" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Steve Ballmer</div>
           <div class="name-ja">スティーブ・バルマー / Microsoft</div>
           <div class="summary">Harvard寮の隣人だったGatesに4%の自社株で引き抜かれた "24時間パートナー"。営業と熱量で帝国を回し、CEO継承後は売上3倍。退任後は株を売らず資産でGatesを抜いた。</div>
@@ -411,6 +456,7 @@
 
         <a href="./legends/jony-ive.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="JI"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Jonathan_Ive_2017.jpg?width=200" alt="Jony Ive" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Jony Ive</div>
           <div class="name-ja">ジョナサン・アイブ / Apple → OpenAI</div>
           <div class="summary">Jobsの "spiritual partner"。iMacからiPhoneまで、ビジョンを "触れる形" に翻訳した美学のNo.2。Jobs→Cook→Altmanと3度の No.1 を繋ぐ移籍型。</div>
@@ -419,6 +465,7 @@
         </a>
 
         <div class="card pending">
+          <div class="face" data-initials="豊"></div>
           <div class="name">Akio Toyoda 期の参謀</div>
           <div class="name-ja">トヨタ — 内山田竹志 等</div>
           <div class="summary">トヨタの実質No.2を担った歴代会長・副社長（内山田竹志、早川茂など）。大企業の継承の型。</div>
@@ -440,6 +487,7 @@
 
         <a href="./legends/sheryl-sandberg.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="SS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Sheryl_Sandberg_2013.jpg?width=200" alt="Sheryl Sandberg" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Sheryl Sandberg</div>
           <div class="name-ja">シェリル・サンドバーグ / Meta</div>
           <div class="summary">Zuckerbergの下でFacebookを広告事業として完成させたCOO。創業者を CEO のまま残して退いた、翻訳型No.2の最高峰。</div>
@@ -449,6 +497,7 @@
 
         <a href="./legends/greg-brockman.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="GB"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Greg_Brockman_TechCrunch_Disrupt_2023_(cropped).jpg?width=200" alt="Greg Brockman" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Greg Brockman</div>
           <div class="name-ja">グレッグ・ブロックマン / OpenAI</div>
           <div class="summary">Altmanの隣でリビングルームから$1.4Tインフラまで建て続けるBuilder-in-Chief。CEOにならず、Presidentで全うするAI時代のNo.2。</div>
@@ -458,6 +507,7 @@
 
         <a href="./legends/eric-schmidt.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="ES"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Eric_Schmidt_at_the_37th_G8_Summit_in_Deauville_037.jpg?width=200" alt="Eric Schmidt" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Eric Schmidt</div>
           <div class="name-ja">エリック・シュミット / Google</div>
           <div class="summary">"adult supervision" として若いLarry/Sergeyを支えた10年間。Burning Man経験で選ばれ、IPOとAndroid買収を主導。</div>
@@ -467,6 +517,7 @@
 
         <a href="./legends/john-collison.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="JC"><img src="https://en.wikipedia.org/wiki/Special:FilePath/John_Collison_TechCrunch_Disrupt_2023.jpg?width=200" alt="John Collison" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">John Collison</div>
           <div class="name-ja">ジョン・コリソン / Stripe</div>
           <div class="summary">17歳でAuctomatic売却、19歳でHarvard中退、26歳で世界最年少自力ビリオネア。それでも兄Patrickの隣にPresidentとして16年居続ける、補完型×全う型×翻訳型の兄弟No.2。</div>
@@ -476,6 +527,7 @@
 
         <a href="./legends/mira-murati.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="MM"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Mira_Murati_2023_(cropped).jpg?width=200" alt="Mira Murati" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Mira Murati</div>
           <div class="name-ja">ミラ・ムラティ / Sam Altman</div>
           <div class="summary">ChatGPT・GPT-4・Soraを束ねた技術No.2。board crisisの48時間で暫定CEOを返上し、Thinking Machines Labへ巣立った"翻訳型×巣立ち型"。</div>
@@ -485,6 +537,7 @@
 
         <a href="./legends/fumiaki-koizumi.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="小泉"></div>
           <div class="name">小泉文明</div>
           <div class="name-ja">こいずみ ふみあき / 山田進太郎</div>
           <div class="summary">山田さんから「お茶しよう」一通で5分で参画決定。COO→社長→会長と動きながら、2019年に自発的に社長を山田さんに返した日本スタートアップ史上稀な"逆継承型"No.2。</div>
@@ -494,6 +547,7 @@
 
         <a href="./legends/david-sacks.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="DS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/David_O._Sacks.jpg?width=200" alt="David Sacks" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">David Sacks</div>
           <div class="name-ja">デイビッド・サックス / Peter Thiel</div>
           <div class="summary">Stanford Reviewでthielと9年共闘した後、Confinity (PayPal前身) の初代Head of Product → COO。Navalが"世界最高のプロダクト戦略家"と評したThielの戦略を製品に翻訳する翻訳型No.2。3年で卒業し、再びTrump政権AI/Crypto Czarへ。</div>
@@ -503,6 +557,7 @@
 
         <a href="./legends/hiro-maeda.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="前田"></div>
           <div class="name">前田ヒロ</div>
           <div class="name-ja">まえだ ひろ / 佐藤輝英</div>
           <div class="summary">22歳で佐藤さんと5分で意気投合、Open Network Lab→BEENEXTを共に作り、2019年にALL STAR SAAS FUNDで巣立った日本SaaS投資の旗手。喧嘩別れではなく専門特化のための分離。</div>
@@ -512,6 +567,7 @@
 
         <a href="./legends/togo-sumito.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="東後"></div>
           <div class="name">東後 澄人</div>
           <div class="name-ja">とうご すみと / 佐々木大輔</div>
           <div class="summary">東大院でJAXAロケット研究 → McKinsey → Google → freee 3人目の経営陣。COO→CFO→CPOと役割を3度変えながら11年半を全うし、SaaS史上初のグローバルIPOを主導。退任後は原点の宇宙(AstroX)に20年越しで帰還。</div>
@@ -521,6 +577,7 @@
 
         <a href="./legends/takamiya-shinichi.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="高宮"></div>
           <div class="name">高宮 慎一</div>
           <div class="name-ja">たかみや しんいち / 堀義人</div>
           <div class="summary">帰国子女・東大経済・HBSを経て29歳でGCP参画。創業者・堀さんがグループ全体を率いる中、VC事業のフィールドを引き受けメルカリ等を伴走。Forbes Midas List日本1位 (2018) → 2019年代表パートナー継承。</div>
@@ -530,6 +587,7 @@
 
         <a href="./legends/matsumoto-yuki.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="松本"></div>
           <div class="name">松本 勇気</div>
           <div class="name-ja">まつもと ゆうき / 福島良典</div>
           <div class="summary">鹿児島の片田舎・プログラミング歴ゼロから東大→学生起業。Gunosy・DMM・LayerXで3社CTO歴任。2021年に古巣Gunosy創業者・福島の隣に "代表取締役CTO" として戻り、共同代表という"準・No.1"を発明した翻訳型No.2。</div>
@@ -552,6 +610,7 @@
 
         <a href="./legends/kuroda-kanbei.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="黒田"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Kuroda_Yoshitaka.jpg?width=200" alt="黒田官兵衛" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">黒田官兵衛</div>
           <div class="name-ja">Kuroda Kanbei / 豊臣秀吉</div>
           <div class="summary">秀吉の天下統一を支えた稀代の軍師。「百万石なら天下を取る」と恐れられ即座に剃髪、家督を譲って退いた。才と謙を同居させた引き際の名人。</div>
@@ -561,6 +620,7 @@
 
         <a href="./legends/zhuge-liang.html" style="text-decoration: none; color: inherit;">
         <div class="card done">
+          <div class="face" data-initials="諸葛"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Zhuge_Liang_Tang.jpg?width=200" alt="諸葛亮 孔明" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">諸葛亮 孔明</div>
           <div class="name-ja">Zhuge Liang / 劉備・劉禅</div>
           <div class="summary">三顧の礼で迎えられた蜀漢の丞相。 帝位譲渡を許可されながら固辞し、 五丈原で陣没。「鞠躬尽瘁」を体現した託孤型No.2の最高峰。</div>
@@ -569,6 +629,7 @@
         </a>
 
         <div class="card todo">
+          <div class="face" data-initials="大久保"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Toshimichi_Okubo_4.jpg?width=200" alt="大久保利通" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">大久保利通</div>
           <div class="name-ja">Okubo Toshimichi / 明治維新</div>
           <div class="summary">西郷隆盛と並ぶ薩摩の柱だが、新政府の実務を握ったのは大久保。"冷徹な実行者" として近代日本を設計。</div>
@@ -576,6 +637,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="竹中"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Takenaka_Shigeharu.jpg?width=200" alt="竹中半兵衛" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">竹中半兵衛</div>
           <div class="name-ja">Takenaka Hanbei / 豊臣秀吉</div>
           <div class="summary">秀吉の二大軍師の片翼。官兵衛と並び「両兵衛」と称された天才参謀。早世により伝説化。</div>
@@ -583,6 +645,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="范蠡"></div>
           <div class="name">范蠡</div>
           <div class="name-ja">Fan Li / 越王勾践</div>
           <div class="summary">勾践に仕えて呉を滅ぼした後、地位と財産を捨てて去った賢人。"功成りて身退く" を体現したNo.2。</div>
@@ -590,6 +653,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="張良"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Zhang_Liang.jpg?width=200" alt="張良" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">張良</div>
           <div class="name-ja">Zhang Liang / 漢・劉邦</div>
           <div class="summary">劉邦に「帷幄の中で勝敗を決する」と評された軍師。漢建国後は退いて道家に傾倒した、引き際の名人。</div>
@@ -597,6 +661,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="直江"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Naoe_Kanetsugu.jpg?width=200" alt="直江兼続" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">直江兼続</div>
           <div class="name-ja">Naoe Kanetsugu / 上杉景勝</div>
           <div class="summary">上杉景勝を補佐し、"愛"の前立ての兜で知られる執政。家臣でありながら米沢の経営を実質的に担った。</div>
@@ -604,6 +669,7 @@
         </div>
 
         <div class="card pending">
+          <div class="face" data-initials="西"></div>
           <div class="name">西洋の歴史的No.2</div>
           <div class="name-ja">Talleyrand / Robert Cecil等</div>
           <div class="summary">ナポレオンを支えた外交官タレーラン、エリザベス1世のセシル親子など、欧州のNo.2を後で深堀り。</div>
@@ -624,6 +690,7 @@
       <div class="card-grid">
 
         <div class="card todo">
+          <div class="face" data-initials="SP"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Scottie_Pippen_(53049140788)_(cropped).jpg?width=200" alt="Scottie Pippen" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Scottie Pippen</div>
           <div class="name-ja">スコッティ・ピッペン / Bulls</div>
           <div class="summary">Michael Jordanの相棒として6度の優勝を支えたAll-NBAウィング。"史上最高のNo.2" の代名詞。</div>
@@ -631,6 +698,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="KA"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Kareem_Abdul-Jabbar_lipreads_President_Obama_in_2012.jpg?width=200" alt="Kareem Abdul-Jabbar" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Kareem Abdul-Jabbar</div>
           <div class="name-ja">カリーム・アブドゥル＝ジャバー / Lakers</div>
           <div class="summary">Magic Johnson時代のLakersでセンターとして君臨。世代をまたぐベテランNo.2の典型。</div>
@@ -638,6 +706,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="KT"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Klay_Thompson_(cropped).jpg?width=200" alt="Klay Thompson" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Klay Thompson</div>
           <div class="name-ja">クレイ・トンプソン / Warriors</div>
           <div class="summary">Stephen Curryの相棒として "Splash Brothers" を形成。シューターNo.2の現代的アーキタイプ。</div>
@@ -645,6 +714,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="XH"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Xavi_2009.jpg?width=200" alt="Xavi Hernández" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="name">Xavi Hernández</div>
           <div class="name-ja">シャビ・エルナンデス / Barcelona</div>
           <div class="summary">Messi時代のBarçaの中盤の心臓。攻撃の起点を作る "プレーメーカー型No.2"。</div>
@@ -652,6 +722,7 @@
         </div>
 
         <div class="card todo">
+          <div class="face" data-initials="古田"></div>
           <div class="name">古田 敦也</div>
           <div class="name-ja">Furuta Atsuya / ヤクルト</div>
           <div class="summary">野村克也監督下のヤクルトを支えた頭脳派キャッチャー。"監督の分身" としてのフィールド上のNo.2。</div>
@@ -659,6 +730,7 @@
         </div>
 
         <div class="card pending">
+          <div class="face" data-initials="⚽"></div>
           <div class="name">サッカー名サポート役</div>
           <div class="name-ja">Iniesta / Modrić / Kroos等</div>
           <div class="summary">スター選手の隣で輝くサポート型ミッドフィルダーたち。チーム勝利のNo.2像をサッカー史から抽出。</div>
