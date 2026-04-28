@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>014 · book / all list</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  /* page-switcher */
+  .page-switch {
+    display: flex; gap: 0;
+    margin-bottom: 32px;
+    border: 1px solid var(--line);
+    width: fit-content;
+  }
+  .page-switch a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+    text-decoration: none;
+    padding: 11px 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .page-switch a + a { border-left: 1px solid var(--line); }
+  .page-switch a:hover { background: #fafafa; color: var(--fg); }
+  .page-switch a.active { background: var(--fg); color: #fff; }
+
+  /* toolbar */
+  .toolbar {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .toolbar input, .toolbar select {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--fg);
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.15s;
+  }
+  .toolbar input:focus, .toolbar select:focus { border-color: var(--fg); }
+  .toolbar input { width: 240px; }
+  .toolbar .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: 0.04em;
+  }
+
+  /* table */
+  .table-wrap {
+    border: 1px solid var(--line);
+    overflow-x: auto;
+    background: #fff;
+  }
+  table.books {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.books thead th {
+    background: var(--soft);
+    color: var(--fg);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+  table.books thead th:hover { background: #efefef; }
+  table.books thead th .arrow {
+    display: inline-block;
+    margin-left: 4px;
+    color: var(--muted);
+    font-size: 9px;
+  }
+  table.books thead th.sorted .arrow { color: var(--fg); }
+
+  table.books tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.books tbody tr:last-child td { border-bottom: none; }
+  table.books tbody tr:hover { background: #fafafa; }
+
+  td.col-num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 11px;
+    width: 36px;
+  }
+  td.col-title .title { font-weight: 600; line-height: 1.4; }
+  td.col-title .title-en {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+  td.col-author { color: #444; }
+  td.col-cat .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    background: #f0f0f0;
+    color: #444;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  td.col-status .status-pill {
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid var(--line);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+  }
+  td.col-status .status-pill.read    { background: #f5f5f5; }
+  td.col-status .status-pill.reading { background: #fffbe6; border-color: #f1d97a; }
+  td.col-status .status-pill.want    { background: #fff; color: var(--muted); }
+  td.col-date {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  td.col-rating { color: #d4a017; font-size: 12px; letter-spacing: 0.04em; white-space: nowrap; }
+  td.col-amazon a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  td.col-amazon a:hover { color: var(--fg); }
+  td.col-amazon .arrow { display: inline-block; margin-left: 3px; transition: transform 0.15s; }
+  td.col-amazon a:hover .arrow { transform: translateX(2px); }
+
+  .empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  @media (max-width: 760px) {
+    body { padding: 24px 16px 32px; }
+    .hero h1 { font-size: 26px; }
+    .toolbar input { width: 100%; }
+    table.books { font-size: 12px; }
+    table.books thead th, table.books tbody td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <div class="crumb">
+      <a href="../index.html">home</a>
+      <span class="sep">/</span>
+      <a href="../book/">014 · book</a>
+      <span class="sep">/</span>
+      <span>all list</span>
+    </div>
+
+    <section class="hero">
+      <h1>Book · All list</h1>
+      <div class="ja">読了書籍一覧（raw data）</div>
+    </section>
+
+    <nav class="page-switch">
+      <a href="../book/">Top page</a>
+      <a href="./book-all.html" class="active">All list</a>
+    </nav>
+
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="検索 (title / author / category)">
+      <select id="cat-filter">
+        <option value="">全カテゴリ</option>
+      </select>
+      <select id="status-filter">
+        <option value="">全ステータス</option>
+        <option value="read">読了</option>
+        <option value="reading">読書中</option>
+        <option value="want">積読</option>
+      </select>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="books" id="books-table">
+        <thead>
+          <tr>
+            <th data-key="_idx">#</th>
+            <th data-key="title">タイトル</th>
+            <th data-key="author">著者</th>
+            <th data-key="categoryName">カテゴリ</th>
+            <th data-key="status">ステータス</th>
+            <th data-key="readDate">読了日</th>
+            <th data-key="rating">評価</th>
+            <th data-key="_amazon">Amazon</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+  <script src="./data/books.js"></script>
+  <script>
+    (function () {
+      const STATUS_LABEL = { read: '読了', reading: '読書中', want: '積読' };
+      const STATUS_ORDER = { read: 1, reading: 2, want: 3 };
+
+      const catMap = Object.fromEntries((window.BOOK_CATEGORIES || []).map(c => [c.id, c.name]));
+
+      // augment data
+      const data = (window.BOOKS || []).map((b, i) => ({
+        ...b,
+        _idx: i + 1,
+        categoryName: catMap[b.category] || b.category || '—',
+      }));
+
+      // populate category filter
+      const catFilter = document.getElementById('cat-filter');
+      (window.BOOK_CATEGORIES || []).forEach(c => {
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = c.name;
+        catFilter.appendChild(o);
+      });
+
+      // state
+      let sortKey = '_idx';
+      let sortDir = 1; // 1 asc, -1 desc
+      let q = '';
+      let catSel = '';
+      let statusSel = '';
+
+      const tbody = document.getElementById('tbody');
+      const countEl = document.getElementById('count');
+      const ths = document.querySelectorAll('thead th');
+
+      const renderRating = (r) => {
+        if (r == null) return '<span style="color:#ccc">—</span>';
+        return '★'.repeat(r) + '<span style="color:#e5e5e5">' + '★'.repeat(5 - r) + '</span>';
+      };
+
+      const renderRow = (b) => `
+        <tr>
+          <td class="col-num">${b._idx}</td>
+          <td class="col-title">
+            <div class="title">${b.title || ''}</div>
+            ${b.titleEn ? `<div class="title-en">${b.titleEn}</div>` : ''}
+          </td>
+          <td class="col-author">${b.author || ''}</td>
+          <td class="col-cat"><span class="badge">${b.categoryName}</span></td>
+          <td class="col-status"><span class="status-pill ${b.status || ''}">${STATUS_LABEL[b.status] || '—'}</span></td>
+          <td class="col-date">${b.readDate || '—'}</td>
+          <td class="col-rating">${renderRating(b.rating)}</td>
+          <td class="col-amazon">${b.amazon ? `<a href="${b.amazon}" target="_blank" rel="noopener">Amazon <span class="arrow">→</span></a>` : '—'}</td>
+        </tr>
+      `;
+
+      const compare = (a, b) => {
+        let av = a[sortKey];
+        let bv = b[sortKey];
+        if (sortKey === 'status') {
+          av = STATUS_ORDER[av] || 99;
+          bv = STATUS_ORDER[bv] || 99;
+        }
+        // null/undefined sort to bottom regardless of direction
+        const an = av == null || av === '';
+        const bn = bv == null || bv === '';
+        if (an && bn) return 0;
+        if (an) return 1;
+        if (bn) return -1;
+        if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * sortDir;
+        return String(av).localeCompare(String(bv), 'ja') * sortDir;
+      };
+
+      const matchFilter = (b) => {
+        if (catSel && b.category !== catSel) return false;
+        if (statusSel && b.status !== statusSel) return false;
+        if (q) {
+          const hay = [b.title, b.titleEn, b.author, b.categoryName].join(' ').toLowerCase();
+          if (!hay.includes(q.toLowerCase())) return false;
+        }
+        return true;
+      };
+
+      const render = () => {
+        const rows = data.filter(matchFilter).slice().sort(compare);
+        tbody.innerHTML = rows.length
+          ? rows.map(renderRow).join('')
+          : `<tr><td colspan="8" class="empty">該当なし</td></tr>`;
+        countEl.textContent = `${rows.length} / ${data.length} 冊`;
+
+        ths.forEach(th => {
+          th.classList.toggle('sorted', th.dataset.key === sortKey);
+          let arrow = th.querySelector('.arrow');
+          if (!arrow) {
+            arrow = document.createElement('span');
+            arrow.className = 'arrow';
+            th.appendChild(arrow);
+          }
+          if (th.dataset.key === sortKey) {
+            arrow.textContent = sortDir === 1 ? '▲' : '▼';
+          } else {
+            arrow.textContent = '↕';
+          }
+        });
+      };
+
+      ths.forEach(th => {
+        const key = th.dataset.key;
+        if (!key || key === '_amazon') return;
+        th.addEventListener('click', () => {
+          if (sortKey === key) sortDir *= -1;
+          else { sortKey = key; sortDir = 1; }
+          render();
+        });
+      });
+
+      document.getElementById('q').addEventListener('input', e => { q = e.target.value; render(); });
+      catFilter.addEventListener('change', e => { catSel = e.target.value; render(); });
+      document.getElementById('status-filter').addEventListener('change', e => { statusSel = e.target.value; render(); });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
