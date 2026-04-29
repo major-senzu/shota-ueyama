@@ -361,11 +361,10 @@
     <div class="hero">
       <h1>Health</h1>
       <div class="ja">身体・体組成の記録</div>
-      <div class="source" id="source-line">データソース: HealthPlanet API (タニタ BC-1K01-BL)</div>
+      <div class="source" id="source-line">データソース: healthplanet.jp 画面OCR (タニタ BC-1K01-BL)</div>
       <div class="memo">
-        <span class="memo-label">手動同期</span>
-        <code id="sync-cmd">python3 health/scripts/healthplanet_sync.py</code>
-        <button class="copy-btn" id="copy-cmd">コピー</button>
+        <span class="memo-label">更新方法</span>
+        <code id="sync-cmd">healthplanet.jp のスクショを Claude に渡す → OCR で health.json 更新 → deploy</code>
       </div>
     </div>
 
@@ -644,7 +643,7 @@
             .map(m => ({...m, bmi: m.bmi ?? calcBmi(m.weight_kg, state.heightCm)}));
           if (json.last_synced) {
             document.getElementById('source-line').textContent =
-              'データソース: HealthPlanet API (タニタ BC-1K01-BL) · 最終同期 ' + json.last_synced;
+              'データソース: healthplanet.jp 画面OCR (タニタ BC-1K01-BL) · 最終更新 ' + json.last_synced;
           }
           if (state.goalText) {
             document.querySelector('#goal-summary .goal-text').textContent = state.goalText;
