@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Tsai — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* HERO */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  /* SECTION COMMON */
+  section.block { margin-bottom: 64px; }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* ORIGINS */
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .origins-row:first-child { border-top: none; }
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+  .tldr-body strong { font-weight: 700; }
+
+  /* TIMELINE */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* DUO STAGES */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* VALUE GRID */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* TYPE */
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* LESSONS */
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* TRIVIA */
+  ul.trivia { list-style: none; }
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* SOURCES */
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* RELATIONS */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="JT"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Joseph_Tsai_at_the_2024_New_York_Liberty_Ticker_Tape_Parade_%28cropped%29.jpg/400px-Joseph_Tsai_at_the_2024_New_York_Liberty_Ticker_Tape_Parade_%28cropped%29.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+          <h1>Joseph Tsai</h1>
+          <div style="font-size: 14px; color: var(--hero-muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;">蔡崇信 / Tsai Chung-shing</div>
+        </div>
+      </div>
+      <p class="summary">
+        台北の名門法律家・蔡中曾の長男として生まれ、13歳で単身渡米。Yale で経済と法を修め、Sullivan & Cromwell で
+        税務弁護士となった "完璧な国際エリート"。1999年、香港で年収約 $700K を捨て、 杭州のアパートで Jack Ma が語る
+        "AlibabaのVision" を信じ、 月給 <strong>$50</strong> で参画した。 法務・財務・コーポレート構造を一人で設計し、
+        18人の創業株主構造・ VIE スキーム・ 2014年史上最大級の <strong>NYSE IPO ($25B)</strong> を主導。 Jack Ma 退任後の
+        2023年に Alibaba 会長へ昇格。 副業で Brooklyn Nets と Barclays Center を $3.3B で買い切り、
+        New York Liberty を WNBA優勝に導いた "Sandberg型のアジア版"。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Jack Ma 馬雲（Alibaba 創業者・1999–2019 / 20年間 → Chairman 退任後も精神的No.1）／ 2023年から自身が Chairman に昇格</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1964年1月（62歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">台北市（台湾）</div>
+        </div>
+        <div>
+          <div class="fact-label">国籍</div>
+          <div class="fact-value">カナダ（90年代に取得）</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $11.8B（2025・Forbes香港 8位）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 Clara Wu Tsai（呉育文 / 1996年結婚）／ 子3人（Jacob, Alex, Dash）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">ラクロス（Yale代表 → 多球団オーナー）／ 慈善（Joseph C. Tsai Foundation）／ 美術収集</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Paul C. Tsai 蔡中曾（Yale Law出身、Tsar & Tsai Law Firm 創設者・台湾屈指の法律家、2013年没）／ 母 Ruby Tsai／ 弟妹 Eva・Vivian・Benjamin（3人）／ 妻方の祖父 呉三連（戦後初代 民選台北市長）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Alibaba Group Chairman (2023–) / Executive Vice Chairman (2013–2023) / Co-founder (1999–) / Brooklyn Nets Owner (2017 49% → 2019 100%) / Barclays Center Owner / New York Liberty Owner / San Diego Seals Owner / Las Vegas Desert Dogs Co-owner / Miami Dolphins 3% (2024–) / Joseph C. Tsai Foundation Chair / Yale University Trustee</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- TL;DR -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者の Vision を、法と資本のインフラに翻訳しつづけた "Sandberg型のアジア版" No.2</strong>」。
+        Jack Ma がカリスマと顧客接点でフロントを張り、 Tsai は <strong>法務・財務・組織・上場・国際展開</strong> を全引き受け。
+        1999年に香港の高給を捨てて月給 $50 で Jack Ma の隣に立ち、 <strong>18人の創業株主構造・VIE スキーム・$25B NYSE IPO・
+        24兆円グループの資本政策</strong> を設計した。 自分が CEO になることは生涯一度もせず、 Jack Ma が CEO のうちは
+        Vice Chairman、 Jack Ma が退いた後は Chairman として "創業者の精神を守る役" に回った。 副業の Brooklyn Nets では
+        逆に <strong>自分が No.1（オーナー）</strong> として現代スポーツ経営を実装。 No.2 として完成させた capability を
+        小さな No.1 で再演する <strong>"二領域型キャリア"</strong> の最高峰。
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1964年1月、台北市</strong>。 父 <strong>Paul C. Tsai 蔡中曾</strong> は<strong>台湾屈指の弁護士</strong>——Yale Law School 修了の留学組第一世代で、 1965年に <strong>Tsar & Tsai Law Firm</strong>（常在国際法律事務所）を創設。 Yale との縁が深く、 国民党政府・大企業の顧問を務めた。 母 <strong>Ruby Tsai</strong>。 4人兄弟の長男（弟妹 Eva・Vivian・Benjamin）。 「<strong>法と国際性</strong>」が空気のように家にあった環境。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            台北で生まれ、 父の海外生活の影響で <strong>幼少期から英語と中国語のバイリンガル</strong> で育つ。 父 Paul は息子に「アメリカで学べ」と早くから方向づけた——70年代の台湾で <strong>13歳の長男を単身ボーディングスクールに送り出す</strong> のは異例だが、 Tsar & Tsai が国際業務中心であったため、 Joseph に「世界で戦える法務人材」の像を父が描いていた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">渡米・高校</div>
+          <div class="origins-body">
+            <strong>13歳（1977年）</strong>、 単身で米国 <strong>The Lawrenceville School</strong>（ニュージャージー州、 米国最古級のボーディングスクール）に編入。 当初は英語に苦戦したが、 <strong>レスリング部</strong> で実力を上げ、 規律と勝負の身体感覚を学ぶ。 1982年卒業。 同窓に多くの政治家・経営者を輩出する名門。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">学部</div>
+          <div class="origins-body">
+            <strong>Yale University, BA in Economics &amp; East Asian Studies (1982–1986)</strong>。 父も Yale Law 出身。 学部時代は <strong>男子ラクロス代表</strong> として4年間プレー——後に NLL/MLL のオーナーになる原点。 学業では経済と東アジア研究の二本立てで、 「<strong>米国でキャリアを作りつつアジアに帰る</strong>」設計を学部の段階で完成。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">ロースクール</div>
+          <div class="origins-body">
+            <strong>Yale Law School, JD (1987–1990)</strong>。 父と同じ道。 在学中に <strong>税法</strong> を集中的に学び、 国境をまたぐ資本構造への興味を育てる——これが後に Alibaba の VIE/Cayman 二段構えの設計に直結する。 Yale Law は世界でも最難関のロースクールで、 <strong>法と資本の高度設計を扱える数少ない法務人材</strong> として完成して卒業。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">初職</div>
+          <div class="origins-body">
+            <strong>Sullivan &amp; Cromwell（NY、 1990–1992）</strong> で <strong>税務弁護士</strong>。 Wall Street 最高峰の law firm。 ここで M&A・国際税務・資本構造を設計する技能を身につけたが、 「<strong>他人の取引を文書化する側</strong>」では満足できず、 自分でビジネスを動かす側に行きたいと考え始める。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">PE経由でアジア帰還</div>
+          <div class="origins-body">
+            1993–1994年 <strong>Rosecliff Inc.</strong>（NYのPEファーム）で投資業務に転身。 1995年からスウェーデン Wallenberg 家の投資会社 <strong>Investor AB / Investor Asia Limited</strong> の Vice President として <strong>香港駐在</strong>——アジアでの直接投資を担当し、 <strong>年収は約 $700K</strong> に達していた。 Yale Law から PE という、 当時のアジア人としては最強級のキャリアパス。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>言語・法・資本・国境を全て自由に行き来できる稀有なハブ人材</strong>」というアイデンティティが完成。 ただし父の路線（弁護士 → 自己事務所）でも、 当時のキャリア（PE → 投資銀行）でも、 自分が <strong>"人を動かす No.1"</strong> ではなく <strong>"組織を支える設計者"</strong> 側であることを Tsai は理解していた。 不足していたのは「<strong>自分の能力をフルに使える No.1</strong>」——それが1999年に杭州で見つかる。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"I was paid 600 RMB a month — about 50 US dollars. I had to convince my wife. She was pregnant. I told her: 'I think this guy is going to do something big.'"</div>
+        <div class="src">— Joseph Tsai（1999年に Jack Ma の Alibaba に参画した時の月給と家庭の説得について。複数の伝記・インタビューで一貫して語る）</div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1964</td>
+            <td>台北市生まれ。父 Paul Tsai は Yale Law 出身の台湾屈指の弁護士。 「<strong>法と国際性が当たり前にある家</strong>」が初期設定。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">13</td>
+            <td class="col-year">1977</td>
+            <td><strong>単身渡米、Lawrenceville School（NJ）に編入</strong>。 英語に苦戦しレスリングで身を立てる。 13歳で家族から離れる経験が "孤独で立つ" 強さを作る。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18–22</td>
+            <td class="col-year">1982–86</td>
+            <td><strong>Yale 学部（経済・東アジア研究）。 男子ラクロス代表4年</strong>。 後に NLL/MLL のオーナーになる原体験。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23–26</td>
+            <td class="col-year">1987–90</td>
+            <td><strong>Yale Law School JD</strong>。 税法集中。 父と同じ道。 国境をまたぐ資本構造への関心が芽生える。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">1990</td>
+            <td><strong>Sullivan &amp; Cromwell（NY）入所</strong>。 Wall Street 最高峰の税務弁護士として2年。 「他人の取引を書く側」への違和感。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">1993</td>
+            <td><strong>Rosecliff Inc.（NY PE）に転身</strong>。 法務から投資側へ。 自分でビジネスを動かす側に立ちたいという欲求が形を取る。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">1995</td>
+            <td><strong>Wallenberg 家の Investor AB（香港駐在）VP に就任</strong>。 アジアの直接投資を担当、 年収 ~$700K へ。 「最強の国際エリート」の完成。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">1996</td>
+            <td><strong>Clara Wu と結婚</strong>（呉三連の孫娘）。 妻は後に Goldman Sachs／Taobao／Open Society 役員を務める実業家・慈善家。 Joseph の <strong>"私的領域を10代から固定する"</strong> 戦略。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">1999.05</td>
+            <td><strong>杭州で Jack Ma に出会う</strong>。 Investor AB の投資先候補として訪問。 Jack Ma の "アリババ" 構想を聞いて圧倒される。 同年5月に <strong>家族を連れて杭州に移住・参画決定</strong>——年収 $700K → 月 $50。 妻 Clara はこの時妊娠中。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">1999</td>
+            <td>Jack Ma のアパートに集まった "<strong>18羅漢（18人の創業株主）</strong>" の構造を <strong>Joseph が法務面で設計</strong>。 Cayman/BVI を使った持株構造の原型。 Alibaba.com Holdings の登記。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35–36</td>
+            <td class="col-year">1999–2000</td>
+            <td><strong>Goldman Sachs $5M、 SoftBank $20M を調達</strong>。 Jack Ma が Vision、 Joseph が条件交渉と契約書。 SoftBank との出会いは Joseph の交渉が橋渡し。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2003</td>
+            <td><strong>Taobao 立ち上げ・eBay China との戦争</strong>。 Joseph はバックオフィスで資本政策を回し、 Taobao の無料化戦略を支える。 中国EC市場制覇の起点。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2007.11</td>
+            <td><strong>Alibaba.com B2B事業を香港証券取引所に上場（$1.7B 調達）</strong>。 Joseph が初めて主導した IPO。 ここで "<strong>上場屋</strong>" としての評価を確立。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2013</td>
+            <td><strong>Alipay 分離問題を経て、 Executive Vice Chairman に就任</strong>。 CFO 役を Maggie Wu に譲り、 自身は "<strong>戦略・資本・国際</strong>" の総括役に。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2014.09</td>
+            <td><strong>NYSE で Alibaba Group IPO、$25B 調達——史上最大級</strong>。 Joseph が4年間かけて HK 上場 → NYSE 切替を交渉。 香港 SE が "<strong>パートナーシップ統治構造</strong>" を拒否したため NY へ。 Joseph の生涯最大の業績。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">2017</td>
+            <td><strong>Brooklyn Nets の49% を $1.13B で取得</strong>。 副業のスポーツ事業に本格参入。 Forbes は "中国系オーナー新時代" と表現。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割拡張</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">2019.09</td>
+            <td><strong>Jack Ma が Alibaba 会長を退任</strong>、 Daniel Zhang に承継。 Joseph はそのまま Vice Chairman 継続——"<strong>名前は出さず権限を残す</strong>" 副官の継承形態。 同年 <strong>Brooklyn Nets 残り51% と Barclays Center を $2.35B で買収・100%所有</strong>。 当時のスポーツチーム取引最高額。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">56</td>
+            <td class="col-year">2020.10</td>
+            <td><strong>Ant Group IPO 直前停止、 Jack Ma が当局批判で表舞台から消える</strong>。 Alibaba 株価暴落、 規制強化の嵐。 Joseph は表に出ず、 <strong>沈黙の中で Jack Ma 不在の組織を支える</strong>。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">59</td>
+            <td class="col-year">2023.09</td>
+            <td><strong>Joseph Tsai が Alibaba Group Chairman に就任</strong>。 Daniel Zhang が「6つの事業会社へ分割」のなかで CEO 専念を選んだ後の昇格。 創業から24年、 ついに <strong>"創業者の右腕" から "創業精神の番人 (Chairman)"</strong> へ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">60</td>
+            <td class="col-year">2024</td>
+            <td><strong>New York Liberty が WNBA 初優勝</strong>。 Joseph &amp; Clara のオーナーシップの象徴的勝利。 NYC のティッカーテープ・パレード。 Miami Dolphins 3% も取得。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- No.1（Jack Ma）との関係構造 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Jack Ma）との関係構造</h2>
+      <p>
+        1999年5月、 杭州。 Investor AB の Joseph Tsai は、 Jack Ma という英語教師が始めた小さな B2B サイトの
+        投資検討で杭州を訪れた。 訪問先は Jack Ma の妻と一緒に住む <strong>湖畔花園のアパート</strong>——そこに <strong>17人の若者
+        が雑魚寝</strong> していた。 Jack Ma は Joseph に "中国を世界の工場ではなく <strong>世界のマーケット</strong> にする"
+        構想を語った。 Joseph は1週間後、 妻 Clara を連れてもう一度杭州に戻り、 <strong>正式に参画を決断</strong>する。
+      </p>
+      <p>
+        年収 $700K だった香港駐在員が、 月給 600元（約 $50）の杭州ベンチャーへ。 妊娠中の妻には
+        <strong>"This guy is going to do something big"</strong> と説得。 Joseph は <strong>Jack Ma の Vision を信じる</strong>
+        と決めただけでなく、 Jack Ma が <strong>「自分にできないこと（法・資本・英語・国際）を全て持っている男」</strong>
+        を必要としていることを瞬時に見抜いた。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Jack is the visionary. I'm the guy who builds the highway he's going to drive on."<br>
+        — Joseph Tsai（複数のインタビューで繰り返す自己定義）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">湖畔花園のアパート</div>
+          <div class="stage-body">1999年5月、 投資先候補として杭州を訪問。 Jack Ma の構想に圧倒され、 1週間後に妻と再訪、 月 $50 で参画決定。 妻 Clara は妊娠中。 「この男は何かを成す」直感だけで $700K を捨てた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 設計者として確立</div>
+          <div class="stage-title">18羅漢の構造化</div>
+          <div class="stage-body">Jack Ma が描いたカルチャー（"<strong>顧客第一、社員第二、株主第三</strong>"）を、 Joseph が <strong>Cayman/BVI 持株 + 18人の創業株主構造</strong> として法的に固定。 Alibaba の DNA は2人の合作。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">$25B IPO の橋</div>
+          <div class="stage-body">Jack Ma が顧客とメディアの前で語り、 Joseph が SoftBank・Yahoo・米中規制を裏で繋ぐ。 4年がかりで <strong>HK上場 → NYSE切替</strong> を実現し、 2014年 史上最大級の IPO に到達。 Jack Ma が "World Stage" に立つ橋を Joseph が架けた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 番人へ</div>
+          <div class="stage-title">創業精神の継承</div>
+          <div class="stage-body">2019年 Jack Ma 退任、 2020年 Ant Group 停止、 2023年 Joseph が Chairman 昇格。 表舞台に Jack Ma がいなくなった後も、 <strong>"Jack Ma の精神を組織に保ち続ける役"</strong> として動く。 No.2 から "No.1.5" への移行。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- No.2を選んだ動機 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Joseph は <strong>"自分が CEO 向きでない"</strong> ことを、 Yale を出る前から自覚していた。 父も Sullivan &amp; Cromwell も
+        Investor AB も、 すべて <strong>"優秀な裏方" として最高峰</strong> の組織。 ステージで聴衆を魅了するタイプではないが、
+        部屋の中で資本構造とインセンティブを設計させたら世界トップクラス——この自己理解がブレなかった。
+      </p>
+      <p>
+        Jack Ma は逆。 <strong>英語教師出身、 数学が苦手、 コードが書けない、 資本構造が読めない</strong>。 だが Vision とカルチャー
+        を作る天才。 Joseph は、 「自分が一生欲しかったのは <strong>"こちら側にいない No.1"</strong> だ」と理解した。 Jack Ma の
+        弱点は Joseph の強みのカタログそのもので、 ふたりは <strong>パズルのピースのように相補的</strong> だった。
+      </p>
+      <p>
+        重要なのは、 Joseph が <strong>"Jack Ma を超える野心"</strong> を一度も持たなかったこと。 IPO 後に「Joseph が Alibaba CEO に
+        なるべきだ」と外部から言われた時期も、 Joseph は <strong>沈黙で拒絶</strong> した。 自分の役は Vision を Vision のまま
+        守る側であり、 Vision を語る側ではない——20年それを貫いた。 副業の Brooklyn Nets ではあえて自分が No.1（オーナー）に
+        立った。 これは「<strong>No.2 として磨いた capability を、 自分のキャンバスでも一度は実装してみたい</strong>」
+        という、 Sandberg 系には珍しい実験だった。
+      </p>
+    </section>
+
+    <!-- 提供した独自価値 -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">Yale Law (税法) × Wall Street (M&amp;A) × PE (資本配分) × バイリンガル (英中)。 <strong>中国スタートアップが米国資本市場にアクセスする橋を架けられる稀有な人材</strong>。 当時の中国にこの組み合わせを持つ人は片手で数えるほど。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 (Translator) × 補完 (Complement) × 設計 (Architect)。 Jack Ma の Vision を <strong>持株構造・契約・上場ルール・SoftBank/Yahoo関係</strong> に翻訳。 18人の創業株主を平等に守る "パートナーシップ統治" を設計したのも Joseph。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Joseph がいなければ、 1999年に SoftBank の $20M は来ず、 Yahoo との $1B 取引もできず、 2014年 NYSE 上場は香港のまま終わり、 創業株主は早期希薄化、 規制対応で組織は崩壊していた可能性が高い。 <strong>Alibaba の "倒産しない構造" は Joseph が設計</strong>した。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">2023年 Chairman 昇格後は、 Jack Ma 不在下で <strong>米中対立・規制・分割再編</strong> を一身で引き受け。 一方で Brooklyn Nets/Liberty/Lacrosse という第二領域で "<strong>自分が No.1 のキャンバス</strong>" を確立。 No.2 業績を継承しつつ、 自前の領域も持つ "二領域型" の典型。</div>
+      </div>
+    </section>
+
+    <!-- 試練と決断 -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 1999年、 月給 $50 への決断。</strong> Investor AB の年収 $700K、 香港の駐在員生活、 妻の妊娠中——
+        全てを捨てて、 杭州のアパートで雑魚寝する若者たちのチームに加わった。 父 Paul は Yale Law から S&amp;C
+        の伝統的キャリアを設計したが、 Joseph はこの一回だけ <strong>父の路線から完全に外れた</strong>。
+        以後の人生はこの一日に賭けた延長線上にある。
+      </p>
+      <p>
+        <strong>② 2011年、 Alipay 分離問題。</strong> Jack Ma が Yahoo・SoftBank に通知せず Alipay を VIE から切り離した
+        と報じられ、 Alibaba は国際的な信頼危機に陥る。 Joseph は <strong>表に出て Yahoo・SoftBank との交渉を主導</strong>し、
+        補償スキームで決着。 No.2 が "<strong>創業者の判断を後付けで合法化する</strong>" 仕事を引き受けた。
+      </p>
+      <p>
+        <strong>③ 2014年、 香港か NY か。</strong> 香港証券取引所が Alibaba の "パートナーシップ統治構造"
+        （取締役の過半数指名権を創業パートナー28人に与える）を拒否。 Joseph は <strong>「上場場所より統治構造が大事」</strong>
+        と判断し、 香港を捨てて NYSE へ。 結果的に $25B 史上最大IPOを実現したが、 香港金融界からは長年恨まれた。
+      </p>
+      <p>
+        <strong>④ 2020年以降、 Jack Ma 不在下の経営。</strong> Ant Group IPO 停止、 Jack Ma の長期沈黙、 規制
+        強化の嵐。 Joseph は <strong>表舞台で発言せず、 ひたすら裏で組織と資本を維持</strong>。 2023年に Chairman に昇格
+        してからは、 <strong>"創業者がいない創業者の精神を守る"</strong> という前例なき仕事に取り組んでいる。
+      </p>
+    </section>
+
+    <!-- 引き際・継承 -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        Joseph はまだ <strong>引いていない</strong>——2023年 Chairman 就任は "登り方を変えた" だけで、
+        2026年現在も Alibaba の経営に深く関与している。 ただし継承構造の <strong>設計者</strong> としては
+        既に大きな仕事を残している。 Jack Ma 引退時の "段階的ステップダウン"、 Daniel Zhang への CEO 移譲、
+        2023年の <strong>"6事業分割"</strong> による組織化——いずれも Joseph が法務と資本面で支えた。
+      </p>
+      <p>
+        引き際の特徴は <strong>"Founder Spirit を制度に固定する"</strong>。 創業者の人格に依存しない仕組みを残す
+        のが Joseph の流儀。 18人の創業パートナー会議（"Alibaba Partnership"）を上場前に制度化したのも、
+        個人崇拝に陥らせないため。 これは Sandberg が Facebook で取らなかったアプローチで、 むしろ
+        "<strong>Tim Cook + Charlie Munger</strong>" の中間に近い哲学。
+      </p>
+      <p>
+        副業の Brooklyn Nets / Liberty / Lacrosse 群は、 Alibaba 引退後の Joseph の <strong>"Second Half"</strong>
+        として既に布石が打たれている。 No.2 で築いた capability を、 自分が No.1 のキャンバスで再演する——
+        引退時に "Alibaba がなくても Joseph Tsai がある" 状態を、 60代前半で既に作り終えている。
+      </p>
+    </section>
+
+    <!-- No.2の型 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Joseph Tsai の No.2 型</div>
+        <div class="type-name">翻訳型 × 設計型 × 二領域型</div>
+        <div class="type-body">
+          創業者の Vision を <strong>"法と資本のインフラ"</strong> に翻訳する役割を、 自身がトップに立つ意思を一切持たずに
+          全うする型。 Sandberg や Sundar Pichai に近いが、 違いは <strong>"自分のキャンバス（Brooklyn Nets）も持つ"</strong>
+          という二領域構造。
+          <br><br>
+          ▸ <strong>設計者型</strong>: Yale Law の素養を活かして、 No.1 の哲学を <strong>制度・契約・統治</strong> に翻訳する。
+          18羅漢構造、 VIE スキーム、 Alibaba Partnership——どれも創業者個人に依存しない仕組みづくり。
+          Munger 的な "<strong>哲学を制度化する</strong>" 系譜。
+          <br><br>
+          ▸ <strong>二領域型</strong>: No.2 として磨いた capability を、 副業の小さな No.1 キャンバスで実装する。
+          NBA/WNBA/NLL という別世界で経営者として独立した実績を作ることで、 No.2 と No.1 の両方の自己同一性を持つ。
+          これは Sandberg にも Munger にもない、 Joseph 独自の "<strong>キャリアの並列実行</strong>"。
+          <br><br>
+          ▸ <strong>移行型</strong>: 創業者が退いた後に Chairman として "<strong>創業精神の番人</strong>" になる。
+          後継 CEO（Daniel Zhang → Eddie Wu）を支えながら、 Founder Spirit を制度に保つ役割。 創業者と継承者の
+          <strong>"間"</strong> に立ち続ける、 No.2 の最終形態。
+        </div>
+      </div>
+    </section>
+
+    <!-- 翔太への設計図 -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"自分には来ない武器" を持つ No.1 を選べ。 補完こそ最強の参入障壁</div>
+          <div class="lesson-body">
+            Joseph は Jack Ma を選んだ瞬間に、 自分の Yale Law/PE/英語/法務/国際 という武器が <strong>Jack Ma が一生獲得できない領域</strong>
+            だと理解した。 だから対立せず、 代替されず、 20年のタッグになった。 翔太も No.1 を選ぶ時は <strong>"その人が一生かけても
+            手に入らない武器を、 自分が持っているか"</strong> を最優先せよ。 似た強みより、 真逆の強みの組み合わせが No.2 を不滅にする。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者の Vision は、 制度と契約に翻訳して初めて永続する</div>
+          <div class="lesson-body">
+            Jack Ma の "顧客第一" は、 Joseph が設計した <strong>パートナーシップ統治構造</strong> がなければ上場後に薄まっていた。
+            創業者の人格に依存する組織は、 創業者が消えれば消える。 翔太が No.2 として WL に残る・離れるのいずれを選んでも、
+            <strong>"Vision を制度に翻訳する仕事"</strong> を一度はやれ。 これが No.2 が組織に残せる最大の遺産。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">No.2 と No.1 は両立できる。第二領域で自分のキャンバスを早めに持て</div>
+          <div class="lesson-body">
+            Joseph は Alibaba の No.2 をやりながら、 53歳で Brooklyn Nets を $1.13B で買い、 自分が No.1 の
+            <strong>並列キャリア</strong> を作った。 No.2 として完成させた capability を、 別領域で No.1 として再演する——
+            これは Sandberg・Munger にもない、 21世紀型のキャリア設計。 翔太も <strong>WL の隣に "自分のキャンバス" を早めに用意</strong>
+            せよ。 そこは小さくていい。 No.2 をやめなくても、 No.1 経験は積める。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 雑学・人柄 -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>父 <strong>Paul C. Tsai 蔡中曾</strong> は Yale Law 修了の台湾屈指の弁護士。 1965年に <strong>Tsar &amp; Tsai Law Firm</strong> を創業し、 国民党政府・大企業の顧問として活躍。 2013年没。 Joseph の Yale Law 進学は完全に父の道を辿った。</li>
+        <li>妻 <strong>Clara Wu Tsai 呉育文</strong> は <strong>呉三連</strong>（戦後初代 民選台北市長）の孫娘。 Stanford MBA、 Goldman Sachs / American Express / Taobao を経て、 現在は <strong>Joseph C. Tsai Foundation</strong> の中心人物。 NBA Brooklyn Nets / WNBA New York Liberty の共同オーナーでもある。 1996年結婚、 子3人。</li>
+        <li>13歳で <strong>Lawrenceville School</strong> に編入した際、 同校史上初の "<strong>東アジアからの単身留学生</strong>" の世代。 レスリング部で全米予選レベルの成績を残し、 ボーディングスクール文化に <strong>身体で適応</strong> した。</li>
+        <li>Yale 学部時代は <strong>男子ラクロス代表4年</strong>。 後に NLL（プロ屋内ラクロス）の San Diego Seals オーナー、 Las Vegas Desert Dogs 共同オーナーになるのは、 学生時代のラクロス愛が原点。</li>
+        <li>1999年 Alibaba 参画時の月給は <strong>600元（約 $50 / 当時のレート）</strong>。 香港駐在員時代の年収 ~$700K と比較して <strong>収入は0.7%</strong> に。 妻 Clara は妊娠7ヶ月だった。</li>
+        <li><strong>カナダ国籍</strong>。 1990年代に取得。 当時のアジア系国際エリートの一般的な選択（米国は税が重い・台湾はパスポートが弱い）。 Alibaba の創業株主リストでも国籍欄は "Canadian"。</li>
+        <li><strong>2014年 NYSE 上場の鐘を鳴らした</strong>のは Jack Ma ではなく、 <strong>Alibaba の8人の顧客（米国の小売業者・農家・主婦）</strong>。 これは Joseph と Jack Ma が共同で決めた演出——「上場は創業者ではなく顧客のもの」。</li>
+        <li>2017年 Brooklyn Nets 49% 取得時、 米プロスポーツ界で初の <strong>アジア系・台湾系オーナー</strong>。 NBA は当時 "中国市場開拓" の象徴と捉えた。</li>
+        <li>2019年 Brooklyn Nets 100% 取得（合計 $3.3B、 Barclays Center 含む）は、 当時 <strong>米プロスポーツ史上最高額の単一取引</strong>。 後に Phoenix Suns・Washington Commanders に抜かれるまで記録保持。</li>
+        <li><strong>Joseph C. Tsai Foundation</strong> を通じ、 Yale に <strong>Tsai Center for Innovative Thinking (TCITY)</strong> を設立、 Lawrenceville にも巨額寄付。 母校還元への熱意は強い。</li>
+        <li>NBA オーナーとしては <strong>"<strong>マイクロマネジメントしないオーナー</strong>"</strong> として知られる。 GM Sean Marks に大幅な権限を委譲。 これは Jack Ma に学んだ "プロに任せる" 哲学。</li>
+        <li>2024年 New York Liberty が <strong>WNBA 初優勝</strong>。 Clara が Liberty の経営前面に立ち、 Joseph はバックアップ。 ふたりの役割分担はここでも一貫している。</li>
+      </ul>
+    </section>
+
+    <!-- 関連の深い人物 -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jack Ma <span class="ja">馬雲 / 創業者</span></div>
+            <span class="rel-tag">No.1 / 20年の相棒</span>
+          </div>
+          <div class="rel-body">
+            1999年5月、 杭州の湖畔花園アパートで初対面。 Joseph は1週間で参画決定、 月 $50 で右腕に。 Jack Ma の <strong>Vision・カリスマ・顧客接点</strong> と、 Joseph の <strong>法・資本・国際</strong> がパズルのピース。 2019年 Jack Ma が退任しても精神的 No.1 は継続、 Joseph は "<strong>創業精神の番人</strong>" として Chairman に昇格。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Clara Wu Tsai <span class="ja">呉育文 / 妻</span></div>
+            <span class="rel-tag">人生の伴走者 / 共同オーナー</span>
+          </div>
+          <div class="rel-body">
+            Stanford MBA、 Goldman Sachs / Taobao 役員を経て、 慈善家・スポーツ経営者へ。 1996年結婚。 1999年に Joseph が Alibaba 参画を決めた時、 妊娠7ヶ月のなか移住を承諾した <strong>"判断パートナー"</strong>。 Brooklyn Nets / Liberty では Clara が経営前面、 Joseph が資本の役割分担。 Joseph C. Tsai Foundation の中心人物でもある。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Paul C. Tsai <span class="ja">蔡中曾 / 父</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            Yale Law 修了の台湾屈指の弁護士。 1965年 Tsar &amp; Tsai Law Firm 創業、 国民党政府の顧問。 13歳の Joseph を米国に送り出し、 Yale Law への道を敷いた。 「<strong>法と国際性は当たり前のもの</strong>」という Joseph の世界観は完全に父譲り。 2013年没——Joseph が Vice Chairman に就任した直後だった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Masayoshi Son <span class="ja">孫正義 / SoftBank</span></div>
+            <span class="rel-tag">最大の外部株主</span>
+          </div>
+          <div class="rel-body">
+            1999–2000年、 Joseph と Jack Ma が東京で出会い、 6分の面談で <strong>$20M 投資を即決</strong>。 後に SoftBank は Alibaba 株で $100B 以上の含み益を作り、 Son の人生最大のホームランに。 Joseph は20年以上 SoftBank との窓口を担当——Son と Jack Ma の <strong>"カリスマ同士の橋"</strong> でもあった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Daniel Zhang <span class="ja">張勇 / 後継 CEO</span></div>
+            <span class="rel-tag">継承の相手</span>
+          </div>
+          <div class="rel-body">
+            2007年 Alibaba 参画 (CFO of Taobao)、 2015年 CEO、 2019年 Jack Ma から Chairman 継承。 Joseph と組んで <strong>Single's Day（双11）の発明</strong>、 国際展開、 6事業分割を主導。 2023年に CEO 専念のため Chairman を Joseph に譲った。 創業期メンバーではないが、 Joseph に最も信頼された継承者。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Eddie Wu <span class="ja">呉泳銘 / 現 CEO</span></div>
+            <span class="rel-tag muted">次世代 No.1</span>
+          </div>
+          <div class="rel-body">
+            18羅漢の1人 (1999年からの創業株主・エンジニア)。 2023年9月、 Daniel Zhang から CEO を継承。 Joseph 会長 / Eddie CEO の体制は、 <strong>「Yale Law の Joseph + 技術出身の創業メンバー」</strong> という Jack Ma + Joseph の構造の継承形態。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Wallenberg Family <span class="ja">スウェーデン財閥</span></div>
+            <span class="rel-tag muted">前職オーナー</span>
+          </div>
+          <div class="rel-body">
+            Investor AB の創業家、 200年以上続く欧州最大級の財閥。 1995–1999年 Joseph が VP として仕えた家。 Joseph はここで <strong>"プライベート資本の長期目線"</strong> を学び、 Jack Ma に出会った時に "短期上場屋" 思想ではなく "100年企業" 視点を持ち込めた。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sean Marks <span class="ja">Brooklyn Nets GM</span></div>
+            <span class="rel-tag muted">スポーツ事業の右腕</span>
+          </div>
+          <div class="rel-body">
+            元 NBA 選手 → Spurs アシスタントGM → 2016 Nets GM。 Joseph がオーナーになって以降も継続起用、 大幅な権限委譲を受けている。 Joseph 自身が NBA 経営でも <strong>"プロに任せて自分は資本と長期視点を持つ" Jack Ma 流</strong>を実装している証左。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 参考資料 -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Joseph_Tsai" target="_blank">Joseph Tsai — Wikipedia (英語版)</a></li>
+        <li><a href="https://zh.wikipedia.org/wiki/%E8%94%A1%E5%B4%87%E4%BF%A1" target="_blank">蔡崇信 — 維基百科 (中国語版)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Alibaba_Group" target="_blank">Alibaba Group — Wikipedia</a></li>
+        <li><a href="https://www.forbes.com/profile/joseph-tsai/" target="_blank">Joseph Tsai — Forbes Profile</a></li>
+        <li><a href="https://www.bloomberg.com/billionaires/profiles/joseph-c-tsai/" target="_blank">Joseph C. Tsai — Bloomberg Billionaires Index</a></li>
+        <li><a href="https://www.nytimes.com/2019/08/16/sports/basketball/joe-tsai-nets.html" target="_blank">Joe Tsai Buys Brooklyn Nets in Record Sports Deal — The New York Times (2019)</a></li>
+        <li><a href="https://www.cnbc.com/2023/06/20/alibaba-joseph-tsai-eddie-wu-replace-daniel-zhang.html" target="_blank">Alibaba names Joseph Tsai chairman, Eddie Wu CEO — CNBC (2023)</a></li>
+        <li><a href="https://www.lawrenceville.org/about/notable-alumni" target="_blank">The Lawrenceville School — Notable Alumni</a></li>
+        <li><a href="https://yaledailynews.com/" target="_blank">Yale Daily News — Joseph Tsai 関連記事アーカイブ</a></li>
+        <li><a href="https://www.tsaifoundation.org/" target="_blank">Joseph C. Tsai Foundation</a></li>
+        <li>Duncan Clark『Alibaba: The House That Jack Ma Built』(2016) — 1999年 Joseph 参画の最詳細一次資料</li>
+        <li>Porter Erisman『Alibaba's World』(2015) — Alibaba 創業期の内側からの記録</li>
+        <li>Brian Wong『The Tao of Alibaba』(2022) — Alibaba パートナーシップ統治構造の解説</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

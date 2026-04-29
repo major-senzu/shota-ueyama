@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reid Hoffman — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { min-height: 100vh; padding: 0; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong { color: var(--hero-fg); font-weight: 700; }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .origins-row:first-child { border-top: none; }
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="RH"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/2022_Reid_Hoffman_%28cropped%29.jpg" alt="Reid Hoffman" loading="lazy" onerror="this.onerror=null;this.src='https://en.wikipedia.org/wiki/Special:FilePath/2022_Reid_Hoffman.jpg'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Reid Hoffman</h1>
+        </div>
+      </div>
+      <p class="summary">
+        Stanford でPeter Thielと出会い、 Oxford でMarshall Scholarとして哲学修士を取った後、 Apple → Fujitsu → 自身の起業 SocialNet (1997)で
+        最初の創業を経験。 1998年Confinityのファウンディング・ボードメンバーとして参画、 2000年に <strong>EVPとしてPayPalに合流し
+        Thielの "外交官"</strong> として銀行・規制・パートナーシップを引き受けた。 2003年LinkedIn共同創業—— No.2 → 独立創業 → 投資家 (Greylock) →
+        哲学者・著述家・OpenAI/Inflection/Manas等のAI共同創業者へと <strong>"巣立ち" を25年かけて螺旋状に展開</strong> した、
+        シリコンバレーで最も "考え続けるNo.2" の代表。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Peter Thiel（Confinity 1998〜 board / PayPal EVP 2000–2002 / 約2年間 + 通算8年の盟友関係）— その後 LinkedIn・Greylock・OpenAI 等で自らがNo.1 / 並列パートナーへ</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1967年8月5日（57歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">米カリフォルニア州 Stanford / Palo Alto 育ち</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / ストレート</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $2.5B–$2.8B (2025 / Forbes・LinkedIn売却 + Microsoft株 + Greylock + AI投資)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 Michelle Yee（2004年・37歳で結婚、社会起業家・Hoffman財団の運営を共同で主導）/ 子供なし</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">ボードゲーム (特に Settlers of Catan・Magic: The Gathering) / 哲学読書 / Masters of Scale Podcast / SF小説</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 William Parker Hoffman Jr.（弁護士）/ 母 Deanna Ruth Rutter（ミシガン出身）/ 両親は若くして離婚、 12歳でThe Putney School（ヴァーモントの進歩的全寮制学校）へ自ら進学を決断した独立心の原点</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Manas AI 共同創業者・Co-CEO (2024–) / Inflection AI 共同創業者 (2022–) / Microsoft 取締役 (2017–) / Greylock Partners GP (2009–) / LinkedIn 共同創業者・元CEO・元 Executive Chairman (2003–2016, Microsoftが$26.2Bで買収) / PayPal 元EVP (2000–2002) / Confinity / PayPal 創業期取締役 (1998–2002) / Masters of Scale Podcast ホスト (2017–) / OpenAI 元取締役 (2018–2023, MSFT利益相反のため辞任)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- TL;DR -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>Thielの "創業哲学" を実装するNo.2をやり、そのまま独立してNo.1になり、最後は "哲学者・接続者" として25年かけて螺旋を描いた、シリコンバレーで最もメタ認知の高いNo.2</strong>」。
+        Sacks が "プロダクト翻訳型" なら Hoffman は <strong>"対外翻訳型 + 哲学翻訳型" のNo.2</strong>。 PayPal時代は <strong>銀行・規制・提携・上場準備</strong> を引き受け、
+        <strong>Thielを内側 (戦略) に集中させる外殻</strong> を担った。 そして PayPal 売却の3ヶ月後に LinkedIn を創業—— No.2 をやりながら "次のNo.1" を仕込んでいた数少ない例。
+        以降は LinkedIn を $26.2B でMicrosoftに売却し、 Greylock の GP として <strong>シリコンバレーで最もネットワークの広い投資家</strong> になり、
+        OpenAI・Inflection・Manas と AI 時代の創業に三度関わる。 No.2 → 創業者 → 投資家 → 哲学者の <strong>"四階建てキャリア"</strong> の設計者。
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1967年8月5日</strong>、 米カリフォルニア州 Stanford 生まれ、 Palo Alto・Berkeleyで育つ。 父 William Parker Hoffman Jr. は弁護士、 母 Deanna Ruth Rutter はミシガン出身。 「Stanford のキャンパスで生まれた」 という出生地そのものが、 後の Stanford → PayPal → LinkedIn という人生軌道の暗喩になっている。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">家庭</div>
+          <div class="origins-body">
+            両親は早くに離婚、 一人っ子。 父・母どちらの家でも自由に動き、 <strong>幼少期から "自分のことは自分で決める" 環境</strong>。 父からは法律家としての論理思考を、 母からは中西部的な人懐っこさを受け継ぐ——後にHoffmanが "シリコンバレーで最も人当たりの柔らかい交渉者" と呼ばれる土壌。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">少年期</div>
+          <div class="origins-body">
+            ボードゲーム (Dungeons & Dragons、 後にSettlers of Catan)、 SF小説、 哲学への傾倒。 <strong>"ゲームのルールを設計する側に立ちたい" という関心</strong> を10代から持ち続け、 これがLinkedInの "プロフェッショナルネットワーク" 設計や Blitzscaling 理論の原型になる。 Larry Niven・Isaac Asimov の SF が、 後の AI 思想にも通底。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">中高</div>
+          <div class="origins-body">
+            <strong>12歳のとき自ら The Putney School（ヴァーモント州の進歩的全寮制学校）への進学を決断</strong>。 両親に進学資料を見せて説得した逸話は有名。 自由・芸術・労働・自治を重視するクエーカー系教育で、 Hoffman の "対話で物事を進める" スタイルがここで形成された。 高校最後はカリフォルニアの公立 Gunn High School を卒業。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>スタンフォード大学・Symbolic Systems 専攻 (1990年卒, B.S.)</strong>。 哲学・認知科学・コンピュータサイエンスを横断するこの学際専攻で、 「<strong>知性とは何か / どう設計できるか</strong>」を体系的に学ぶ。 Marshall Scholarに選出され、 オックスフォードへ進学。 在学中の1989-90年に <strong>Peter ThielがStanford Reviewを創刊した時期と重なり</strong>、 学内の保守自由主義サークルで初対面。 政治観は逆だが (Hoffmanは民主党リベラル、 Thielは保守自由主義)、 「議論は楽しめる」 関係を最初から築く。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>オックスフォード大学・Wolfson College（哲学修士 M.St., 1993年取得, Marshall Scholar）</strong>。 当初は <strong>"パブリックインテレクチュアルになりたい"</strong> として学者の道を目指していたが、 修士論文を書きながら 「<strong>学術論文より、自分が作るプロダクトでコミュニケーションを変える方が影響力がある</strong>」 と気づき、 アカデミアを去る決断。 これがHoffmanの 「<strong>哲学を捨てたのではなく、 製品で哲学する道を選んだ</strong>」 という自己定義の起点。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">最初の就職</div>
+          <div class="origins-body">
+            <strong>Apple Computer（1994–96, eWorld・Claris部門）</strong>。 当時Appleの "eWorld" (オンラインサービス)の Product Manager。 続いて <strong>Fujitsu（1996–97）</strong>。 大企業で "プロダクトを企画して動かす" 基本動作を覚えた2年半。 Apple時代に <strong>"ソフトウェアで人と人をつなぐ"</strong> アイデアを内側で温めていた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">最初の創業</div>
+          <div class="origins-body">
+            <strong>1997年、29歳でSocialNet.com 共同創業</strong>(CEO)。 「オンラインで人がつながる場」 を作ろうとした、 LinkedIn・Friendster・Facebookの祖父。 1999年に資金調達には成功したが、 <strong>"早すぎたソーシャルネット" として2000年代初頭にクローズ</strong>。 この失敗が、 後の LinkedIn を <strong>"プロフェッショナル限定" として絞る</strong> 設計判断につながる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">PayPal前の自己ID</div>
+          <div class="origins-body">
+            「<strong>哲学修士 + Apple/Fujitsuの製品経験 + SocialNetの創業失敗 + Thielとの10年の議論履歴</strong>」 という、 シリコンバレーでも稀有な複合バックグラウンド。 Thiel が Confinity を立ち上げた1998年、 Hoffmanは <strong>SocialNet経営中</strong> だったため <strong>"取締役 + アドバイザー" として参画</strong>——これがHoffmanの「No.2を兼業する」型を作った最初のフォーメーション。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「学術哲学を捨てたわけではない。 私は <strong>"哲学する場所"</strong> を変えただけだ。 論文は数百人しか読まないが、 製品は数億人の生活を変える。 哲学者として最も誠実な選択は、 哲学を製品の中に埋め込むことだった。」</div>
+        <div class="src">— Reid Hoffman（Stanford Magazine 2014年インタビュー要旨）</div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1967</td>
+            <td>米カリフォルニア州 Stanford 生まれ。 父は弁護士、 母はミシガン出身。 "Stanford のキャンパスで生まれた" という出生地が後の人生軌道の暗喩に。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">幼少</td>
+            <td class="col-year">1970s</td>
+            <td>両親が離婚、 ボードゲーム (D&D)・SF・哲学に傾倒。 「<strong>ルールを設計する側に立ちたい</strong>」という志向が10代で確立。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">12</td>
+            <td class="col-year">1979</td>
+            <td><strong>The Putney School（ヴァーモント州の進歩的全寮制）に自ら進学を決断</strong>。 両親を説得した独立心の原点。 自由・対話・自治の教育文化が "話し合いで進める" Hoffman の交渉スタイルを形成。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">19</td>
+            <td class="col-year">1986</td>
+            <td><strong>Stanford大学・Symbolic Systems 入学</strong>。 哲学・認知科学・CSの学際専攻。 「<strong>知性とは何か / どう設計できるか</strong>」を体系的に学び始める。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">21</td>
+            <td class="col-year">1989</td>
+            <td><strong>Peter Thielと初対面 (Stanford在学中)</strong>。 ThielがStanford Reviewを創刊した直後、学内の知的サークルで遭遇。 政治観は対極だが <strong>"議論を楽しめる関係"</strong> を最初から築く。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23</td>
+            <td class="col-year">1990</td>
+            <td>Stanford卒業 (B.S. Symbolic Systems, with distinction)。 Marshall Scholarに選出されオックスフォードへ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">1993</td>
+            <td><strong>オックスフォード大学Wolfson College・哲学修士 (M.St.) 取得</strong>。 学者の道を目指していたが「<strong>論文より製品で哲学する</strong>」と決断、 アカデミア離脱。 これがHoffmanの自己定義の核。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">1994</td>
+            <td><strong>Apple Computer 入社</strong>(eWorld Product Manager)。 大企業のプロダクト企画の基本動作を学ぶ2年。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">1996</td>
+            <td>Fujitsu Software 移籍 (1年)。 後に「Apple/Fujitsu時代に <strong>"プロダクトを通じて人をつなぐ"</strong> アイデアを内側で温めていた」と振り返る。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">1997</td>
+            <td><strong>SocialNet.com 共同創業 (CEO)</strong>——LinkedIn・Friendster・Facebookの祖父にあたる "オンラインソーシャルネット" の最初の挑戦。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">1998</td>
+            <td><strong>Thielから誘われConfinityのファウンディング取締役・アドバイザーに就任</strong>(SocialNet経営と兼務)。 「<strong>取締役兼業のNo.2</strong>」 という独特なフォーメーションが、後の人生で繰り返されるパターンの原型。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2000.01</td>
+            <td>SocialNet が事実上失速。 並行してConfinityがX.com (Musk) と合併、 PayPal 誕生。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">33</td>
+            <td class="col-year">2000.09</td>
+            <td><strong>"Muskクーデター" 後、 Hoffman も Thiel側 (新CEO) に立つ</strong>。 SocialNet を畳み、 PayPal の <strong>EVP として正式合流</strong>。 Sacks=社内オペ、 Hoffman=社外 (BD・規制・提携・銀行) の分業が確立。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2001</td>
+            <td>PayPal の <strong>銀行パートナーシップ・規制対応・国際展開</strong> を引き受け、 IPOに必要な "外部の信頼" を構築。 Hoffman は社内では "Mr. PayPal Outside"——社外の全ての交渉窓口に。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2002.02</td>
+            <td>PayPal NASDAQ 上場 (IPO)。 Hoffman の "外殻" が完成、 銀行・州政府との関係も安定。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2002.10</td>
+            <td><strong>eBay が PayPal を$1.5Bで買収</strong>。 Thiel・Sacks・Levchin が当日離脱する中、 Hoffman は eBay下で短期残留 (約3ヶ月)。 「<strong>引き継ぎを完成させてから去る</strong>」 のが Hoffman の流儀。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2002.12</td>
+            <td>PayPal 完全離脱。 即座に <strong>LinkedIn 共同創業の準備に着手</strong>(Allen Blue・Konstantin Guericke・Eric Ly・Jean-Luc Vaillantと)。 「PayPal を最後まで仕上げながら、 次の創業を仕込む」 並走型No.2 の代表例。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2003.05</td>
+            <td><strong>LinkedIn 正式ローンチ</strong>。 SocialNetの失敗から <strong>"プロフェッショナル限定" に絞る</strong> 戦略を採用。 創業初日のサインアップは13人、 1ヶ月で4500人——典型的な "ネットワーク効果のJ字" を、 5年計画で耐え抜く。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2004</td>
+            <td><strong>Michelle Yee と結婚</strong>(37歳)。 妻はテック業界出身ではない社会起業家、 後にHoffman財団の運営を共同主導。 "Yes" と言ってくれる人ではなく "違う視点を持つ" パートナーを選んだ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2004</td>
+            <td><strong>Mark Zuckerberg のFacebook 初期エンジェル投資</strong>($37,500、Peter Thielと共に)。 のちにこの投資が数十億円のリターンに。 Hoffman の "投資家としての No.1" の出発点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2007.02</td>
+            <td>LinkedIn CEO を Dan Nye に譲り <strong>Executive Chairman に降格</strong>。 自ら経営から距離を取る "創業者×No.1のセルフ降格" を選択。 後の "PayPal Mafia → 投資家" 流れの先駆。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">42</td>
+            <td class="col-year">2009.11</td>
+            <td><strong>Greylock Partners の General Partner に就任</strong>。 投資家としての本格スタート。 LinkedIn・Airbnb・Facebook・Zynga・Aurora など、 "ネットワーク効果のある会社" に集中投資する哲学を確立。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2011.05</td>
+            <td><strong>LinkedIn NYSE 上場</strong>。 公開時時価総額 $4.3B。 Hoffmanの個人資産は $2B超に。 No.2を経た創業者として "再びExitを成功させた"。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">2012</td>
+            <td><strong>『The Start-up of You』(Ben Casnochaと共著)</strong> 出版。 「<strong>キャリアを永遠のベータ版として運営する</strong>」哲学を提示。 Hoffmanが "哲学者の顔" を取り戻したマイルストーン。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">2014</td>
+            <td><strong>『The Alliance』(Ben Casnocha・Chris Yehと共著)</strong> 出版。 「<strong>雇用は片務契約ではなく同盟である</strong>」というHR哲学。 LinkedInの組織哲学の言語化。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2016.06</td>
+            <td><strong>Microsoft が LinkedIn を $26.2B で買収</strong>。 LinkedInの全社員・ユーザー・データを守るため、 上場会社のCEO売却としては破格の好条件で売却。 Hoffman は <strong>Microsoft 取締役</strong> に就任、 Greylock を継続。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2017</td>
+            <td><strong>『Masters of Scale』 Podcast 開始</strong>。 Bezos・Zuckerberg・Schultz・Spiegelらをゲストに迎え、 "scale" の哲学を対話で抽出する場を作る。 No.1たちのインタビュアーとしての立ち位置を確立。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2018</td>
+            <td><strong>『Blitzscaling』(Chris Yehと共著)</strong> 出版。 「<strong>不確実な勝者総取り市場では効率より速度が優先される</strong>」 という、 Hoffmanの代表作。 同年 <strong>OpenAI の取締役に就任</strong>、 大型寄付者として AGI の方向性に関わり始める。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">55</td>
+            <td class="col-year">2022.03</td>
+            <td><strong>Inflection AI 共同創業</strong>(Mustafa Suleyman・Karén Simonyanと)。 ChatGPT 公開前から AGI / Personal AI に大型ベット。 「<strong>AI時代に "もう一度創業者になる"</strong>」 第二の創業期へ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">56</td>
+            <td class="col-year">2023.03</td>
+            <td><strong>『Impromptu: Amplifying Our Humanity Through AI』</strong> 出版——<strong>GPT-4と共著した最初の主流書</strong>。 同月 <strong>OpenAI 取締役を辞任</strong> (MicrosoftがOpenAIに大型投資、 Hoffmanは MSFT board member のため利益相反)。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">56</td>
+            <td class="col-year">2024.03</td>
+            <td><strong>Inflection AI のチーム・技術が Microsoft に移籍</strong>(Suleymanは Microsoft AI CEOへ)。 Hoffman は Inflection を "残したまま" Microsoftの取締役を継続。 "ハイブリッドな引き際" の代表例。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">57</td>
+            <td class="col-year">2024.10</td>
+            <td><strong>Manas AI 共同創業 (Co-CEO)</strong>。 ノーベル化学賞受賞者の David Baker と組み、 AI による創薬を狙う。 60歳前にして3度目の創業——Hoffmanの "永遠のベータ版" 哲学の体現。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">57</td>
+            <td class="col-year">2025</td>
+            <td><strong>『Superagency: What Could Possibly Go Right with Our AI Future』</strong>(Greg Beatoと共著) 出版。 AI懐疑論への "建設的楽観主義" の提示。 哲学者・著述家としての立ち位置をAI時代に再定義。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- No.1 Thielとの関係 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Peter Thiel）との関係構造</h2>
+      <p>
+        Hoffman と Thiel の出会いは <strong>1989年のスタンフォード</strong>。 Thielが学生新聞 Stanford Review を創刊した直後、 学内の知的サークルで遭遇した。
+        二人の政治観は <strong>正反対</strong>—— Hoffman は民主党リベラル、 Thiel は保守自由主義。 だが <strong>「議論できる相手」</strong> としての絆は、
+        この時期から30年以上続く。 後に Hoffman は 「<strong>Peter は私が一度も同意したことがない、 だが最も信頼している人物</strong>」と語る。
+      </p>
+      <p>
+        1998年、 Thiel が Confinity を立ち上げた時、 Hoffman は <strong>SocialNet を経営中</strong> だった。 そのため <strong>"取締役兼アドバイザー" として参画</strong>——
+        本業を持ったまま、 創業期から内部の意思決定に関わるという稀有なフォーメーション。 これが Hoffman の <strong>"二足のNo.2"</strong> 型の原型。
+      </p>
+      <p>
+        2000年、 SocialNet の失速とPayPal の Musk クーデターが同時に起きると、 Hoffman は <strong>明確に Thiel側に立ち、 EVPとしてフルタイム合流</strong>。
+        Sacks がプロダクト・社内オペを引き受けたのに対し、 Hoffman は <strong>銀行パートナー・規制対応・州政府交渉・国際展開</strong> という外殻全てを担当——
+        Thielを内側 (戦略・資本) に集中させるための "外交官" としての役割を確立。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「Peterと私は政治的には正反対だが、 <strong>"考えることを止めない"</strong> という1点で完全に一致している。 PayPal時代、 私たちは毎週議論で意見が割れたが、
+        その議論こそが PayPal を強くした。 私は彼の "外部の翻訳機" であり、 彼は私の "内部の問い" だった。」<br>
+        — Reid Hoffman（Masters of Scale Podcast 内発言を要旨）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">Stanford → Oxford の10年の予習</div>
+          <div class="stage-body">1989年スタンフォード入学時、 ThielがStanford Reviewを創刊した直後に出会う。 政治観は正反対だが議論を楽しむ関係を構築。 Hoffmanがオックスフォードで哲学修士を取り、 Apple・Fujitsuで実務を覚える間、 二人は議論し続けた。 1998年Confinity創業まで <strong>10年の "知的予習"</strong>。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 兼業ボード</div>
+          <div class="stage-title">"取締役×No.2" の二足のフォーメーション</div>
+          <div class="stage-body">1998–2000年、 HoffmanはSocialNet経営中だったため、 Confinityには <strong>取締役 + アドバイザー</strong> として参画。 本業を持ちながら創業期の意思決定に関わるという独特な型。 これがHoffmanの "兼業No.2" の原型で、 後にOpenAI×Greylock×Inflectionでも再演される。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">2000-2002: 内側のSacks、外側のHoffman</div>
+          <div class="stage-body">2000年9月のMuskクーデター後、 SocialNetを畳んでPayPalにフルタイム合流。 Sacks=プロダクト・社内オペ、 Hoffman=銀行・規制・州政府・国際 という分業が完成。 Hoffmanは <strong>"Mr. PayPal Outside"</strong> として、 上場前のPayPalの "外殻" を全て構築した。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 卒業と再共闘</div>
+          <div class="stage-title">2002→2018: 卒業して投資家、 再びAIで並走</div>
+          <div class="stage-body">2002年eBay買収後、 ThielはClariumへ、 HoffmanはLinkedInへ。 だが二人はFacebook初期投資($37,500)を共同で実行、 以降25年間 "並列のNo.1同士" として共闘。 政治的には決定的に分岐(2024年Trump選挙でThielは支持、 HoffmanはHarris支持)するが、 投資・ボード・思想では今も対話する関係。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- No.2を選んだ動機 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Hoffman が PayPal で No.2 を選んだ動機は、 <strong>"自分の起業 (SocialNet) が失敗した直後だった"</strong> という極めて実利的な理由から始まった。
+        だがそれだけではない。 Hoffman は <strong>"自分よりはるかに頭が切れる Peter Thiel の隣で、 自分にしかできない仕事をする"</strong> ことの戦略的価値を理解していた。
+      </p>
+      <p>
+        Hoffman 自身の言葉: 「Peterの戦略は鋭すぎて、 多くの人を遠ざける。 私は <strong>"Peterの戦略を、 銀行・規制当局・州政府が理解できる言葉に翻訳する"</strong>
+        ことで価値を出した。 内側の翻訳機が Sacks なら、 私は外側の翻訳機だった。」 これがHoffmanのNo.2観の核心。
+      </p>
+      <p>
+        さらに重要なのは、 Hoffman が <strong>"No.2をやりながら次のNo.1を仕込んでいた"</strong> こと。 PayPal EVP在任中の2001年から、 既に LinkedIn の構想を温めていた。
+        SocialNet の失敗 (タイミング・ターゲット絞り不足) を、 PayPal で見ていた "プロフェッショナル決済の信頼ネットワーク" の知見と組み合わせて、
+        "プロフェッショナル限定のソーシャルネット" という後の正解を導き出した。 No.2期間は、 <strong>"次のNo.1の研究期間"</strong> でもあった。
+      </p>
+    </section>
+
+    <!-- 提供した独自価値 -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">対外交渉 + ネットワーク設計 + 哲学的フレーミング。 Stanfordで学んだ Symbolic Systems と Oxford の哲学修士が、 「<strong>関係を構造として理解する</strong>」 能力に直結。 銀行・規制当局・州政府との会話で、 Thielの戦略を <strong>"古い世界が理解できる言語"</strong> に翻訳できた稀少な人材。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">外殻 + 接続 + 翻訳。 Sacks=社内、 Levchin=技術 という分業の中で、 Hoffmanは <strong>"PayPalの全ての対外接点"</strong> を担当。 銀行パートナー・規制・税務・州政府・国際展開・上場準備の外側全て。 「Peterの会話相手を選ぶ門番」 でもあった。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">HoffmanがいなければPayPalは <strong>"州政府の規制対応で死んでいた"</strong> 可能性が高い。 当時、 PayPalは "金融でないが金融に近い" 灰色領域で多くの州から訴えられていた。 Hoffmanはこの全交渉を引き受け、 IPOまで状態を維持した。 加えて<strong>SocialNetの失敗から学んだ "ネットワーク設計の負け方"</strong> がなければ、 PayPalの紹介ループ設計も生まれなかった。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">LinkedIn ($26.2BでMSFTに売却)、 Greylock GP (Airbnb・Coinbase・Discord等の初期投資)、 OpenAI 早期取締役、 Inflection AI 共同創業、 Manas AI 共同創業——シリコンバレーで <strong>"PayPal Mafiaの哲学者"</strong> として、 思想・ネットワーク・資本の三軸を25年提供し続けている。 著書5冊・Podcast 2本で言論影響力も最大級。</div>
+      </div>
+    </section>
+
+    <!-- 試練と決断 -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2000年、 SocialNetの失速とPayPalフルタイム合流。</strong> 自分の創業会社を畳んで、 友人の会社のNo.2になるという決断。 多くの起業家が "失敗を認めない" 中で、
+        Hoffman は <strong>"認知バイアスを最小化した撤退"</strong> を即実行。 後に「<strong>失敗を高速に処理することが、 次の機会を得る前提条件</strong>」と語る。
+      </p>
+      <p>
+        <strong>② 2007年、 LinkedIn CEOからExecutive Chairmanへの自主降格。</strong> 創業者がCEOを離れる際、 多くは社内クーデターか業績悪化が原因だが、
+        Hoffmanは <strong>"自分はCEOより会長や投資家のほうが向いている" と認知し、 自ら降格</strong> を選んだ。 これが LinkedIn を真に scale させた決断
+        ——後任のJeff Weiner (2009年就任) が10年で時価総額を$26Bまで引き上げた。
+      </p>
+      <p>
+        <strong>③ 2016年、 LinkedIn を Microsoft に売却。</strong> 上場会社CEOが買収を主導するのは異例。 Hoffmanは <strong>"独立を選ぶか、 大企業の翼下で更に大きく動くか"</strong> を冷静に判断、
+        後者を選んだ。 「<strong>独立性は手段であって目的ではない</strong>」 という Hoffman 哲学の代表的決断。
+      </p>
+      <p>
+        <strong>④ 2023年、 OpenAI 取締役辞任。</strong> Microsoft の取締役と OpenAI の取締役の両方を続けることは利益相反——だが両方とも <strong>"AGIの方向性"</strong> という Hoffman が25年考え続けてきた問題の中心。
+        最終的に <strong>OpenAI を降りて Inflection AI 創業に集中</strong> した。 「外側で複数の AI ファクトリーを支援する」 という型を選択。
+      </p>
+    </section>
+
+    <!-- 引き際・継承 -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        Hoffman の引き際の特徴は <strong>"完全に去らない"</strong> こと。 PayPal を eBay 売却後に去ったが、 PayPal Mafia の中心メンバーとして以降25年動き続けた。
+        LinkedInのCEOを2007年に降りたが、 Executive Chairman として Microsoft 売却 (2016) まで9年残った。 売却後も Microsoft 取締役として継続中。
+        OpenAI を辞任したが Inflection AI を共同創業した。 Hoffmanの引き際は <strong>"卒業 → 並走 → 再接続" の螺旋</strong>。
+      </p>
+      <p>
+        引き継ぎの巧さも特徴。 LinkedIn は Dan Nye (2007–2008) → <strong>Jeff Weiner (2009–2020)</strong> → Ryan Roslansky (2020–) と3代の継承を順に進めた。
+        Hoffmanは "後任を採用 → 独立性を持たせる → 必要時にだけ介入" という現代的な継承フォーマットの先駆け。
+      </p>
+      <p>
+        Hoffman 自身の言葉: 「<strong>創業者はいつかCEOを降りる。 早く降りるほど会社のスケーラビリティが上がる</strong>。 私は LinkedIn を世界最大のプロフェッショナルネットワークにするために、 一番早く 'Founder兼CEO' をやめた。 これは敗北ではなく、 設計上の選択。」 — この発言は、 2010年代以降の "創業者が早期にCEOを降りる" ムーブメントを正当化する原典になった。
+      </p>
+    </section>
+
+    <!-- No.2の型 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Reid Hoffman の No.2 型</div>
+        <div class="type-name">対外翻訳型 × 兼業ボード型 × 創業転身型</div>
+        <div class="type-body">
+          Thielの "戦略・資本" を、 銀行・規制・州政府・国際パートナーが理解できる言語に翻訳した <strong>対外翻訳型 No.2</strong>。
+          内側のSacksと対をなす "外殻"。 Naval が Sacks を "プロダクト戦略家" と評したのと対称に、 Hoffman は <strong>"シリコンバレーで最もネットワークの広い哲学者"</strong> と評される。
+          <br><br>
+          ▸ <strong>兼業ボード型</strong>: 1998–2000年、 SocialNet経営中にConfinityの取締役兼アドバイザーとして参画。 後にOpenAI・Inflection・Manas・Greylock を兼業しながら動き続ける、 <strong>"複数のNo.2/No.1を同時にやる"</strong> 型を25年以上実装。
+          <br><br>
+          ▸ <strong>創業転身型</strong> (Sacksとの対比): Sacksが "3年No.2 → 自分が創業者" だったのに対し、 Hoffmanは "<strong>4年No.2 (取締役期間含む) → LinkedIn創業 → 投資家 → 哲学者 → AI共同創業</strong>" という多段階展開。
+          一つの役割で全うするのではなく、 <strong>"役割を進化させ続ける" 永遠のベータ版No.2</strong>。 自著『The Start-up of You』のテーマそのもの。
+        </div>
+      </div>
+    </section>
+
+    <!-- 翔太への設計図 -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">No.2をやりながら "次のNo.1" を仕込め — 並走型の設計</div>
+          <div class="lesson-body">
+            HoffmanはPayPal EVP在任中の2001年から、 既にLinkedInの構想を温めていた。 SocialNetの失敗とPayPalで見た知見を組み合わせて、 <strong>"次の正解" を準備した</strong>。
+            翔太もWLのCOO役を務める間に、 自分の独立構想 (CEOとしての事業仮説) を <strong>並列で温めておけ</strong>。 No.2 は "次のNo.1への助走" であってもよい。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">No.1の "外殻" になれ — 内側の戦略家を内側に集中させる役割を選べ</div>
+          <div class="lesson-body">
+            HoffmanはThielを <strong>戦略・資本に集中させるため</strong>、 銀行・規制・州政府・国際の "外殻全て" を引き受けた。
+            これは <strong>"自分にしかできない、 そしてNo.1がやりたくない仕事を選ぶ"</strong> 設計。 翔太もWLで、 西川さん・西原さんが内側の戦略・哲学に集中できるよう、 <strong>外側の翻訳機</strong> を引き受けるならその範囲を明確にせよ。 「全部やる」 ではなく、 「内側を任せる代わりに外側を完全に引き受ける」 と分業を契約せよ。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">引き際は "卒業" ではなく "螺旋" — 関係を完全には切るな</div>
+          <div class="lesson-body">
+            Hoffmanは PayPal を去った後も Thielと25年共闘し続けた (Facebook共同投資、 政治的議論、 思想交換)。
+            LinkedIn CEO を辞めても Executive Chairman で9年残った。 OpenAI を辞任しても Inflection で AI と関わり続けている。
+            <strong>「No.2は去って終わりではなく、 関係を進化させながら螺旋状に続ける」</strong> のが Hoffman の流儀。 翔太も WL を離れる時 (もし離れるなら) 、 <strong>"完全な独立" ではなく "形を変えた接続"</strong> を設計せよ。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 雑学・人柄 -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>"Stanford のキャンパスで生まれた" 唯一の PayPal Mafia メンバー。 父が Stanford 大学院生だった時期に出生。</li>
+        <li>12歳で <strong>The Putney School (ヴァーモントの進歩的全寮制)</strong> への進学を自ら決断。 両親に進学資料を見せて説得した逸話は、 シリコンバレーで何度も語り継がれている。</li>
+        <li><strong>Marshall Scholar</strong> (英米の最も権威ある奨学金の一つ) としてオックスフォードに留学。 哲学修士。 学者を目指していたが「論文より製品」と決断。</li>
+        <li>ボードゲーム愛好家——特に <strong>Settlers of Catan</strong> と <strong>Magic: The Gathering</strong>。 「<strong>ゲームのメカニクスから現実のネットワーク設計を学んだ</strong>」 と公言。</li>
+        <li>2004年の Facebook 初期投資 ($37,500) は、 Peter Thiel と共に <strong>"PayPal Mafia としての最初の共同エンジェル"</strong>。 後に数十億円のリターン。</li>
+        <li>妻 Michelle Yee は社会起業家・慈善家。 二人は <strong>子供を持たない選択</strong> をし、 Hoffman 財団・Endeavor 等の慈善活動に資金と時間を注いでいる。</li>
+        <li>2023年、 GPT-4 と共著で『<strong>Impromptu</strong>』を出版。 「<strong>AIと人間が共著した最初の主流書</strong>」 として歴史に残った。</li>
+        <li>米民主党の最大級の個人ドナーの一人。 2024年大統領選では Kamala Harris 陣営に大規模寄付。 旧友 Peter Thiel (Trump 支持) との政治的分岐を公にしている。</li>
+        <li>2023年、 <strong>E. Jean Carroll の対 Trump 訴訟資金を支援</strong> したことが報じられ、 Trumpから直接批判を受けた。 Hoffman は「<strong>沈黙することは加担すること</strong>」と応答。</li>
+        <li><strong>"Permanent Beta"</strong> ("永遠のベータ版")というキャリア哲学を著書で提唱、 シリコンバレーの自己啓発の主流概念に。</li>
+        <li>Anthropic への投資はしていないが、 OpenAI・Inflection (Microsoft へ統合) ・Manas AI と <strong>"AI主流の3社全てに何らかの形で関与"</strong>。</li>
+        <li>Stanford大学・Oxford 大学・Templeton 財団・MIT Media Labなど、 <strong>"哲学と科学の接続点" にある研究機関に</strong> 大規模寄付を続けている。</li>
+      </ul>
+    </section>
+
+    <!-- 関連の深い人物 -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Peter Thiel <span class="ja">ピーター・ティール</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            1989年スタンフォードで出会って以来35年以上の盟友。 政治観は正反対 (Hoffman=リベラル / Thiel=保守) だが <strong>"議論できる相手"</strong> として知的契約を続ける。 Confinity/PayPal の No.1 として、 Hoffman を取締役→EVP→生涯の対話相手 に進化させた相棒。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">David Sacks <span class="ja">デイビッド・サックス</span></div>
+            <span class="rel-tag">並列 No.2 / 内殻</span>
+          </div>
+          <div class="rel-body">
+            PayPal 元COO。 Hoffmanが "外殻" (銀行・規制・国際) を引き受け、 Sacks が "内殻" (プロダクト・社内オペ) を引き受ける完璧な分業。 同じMafiaから真逆の政治スタンス——Sacks=共和党/Trump政権、 Hoffman=民主党/Harris支持——へ分かれた "鏡像のNo.2"。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Max Levchin <span class="ja">マックス・レヴチン</span></div>
+            <span class="rel-tag muted">並列 / 技術</span>
+          </div>
+          <div class="rel-body">
+            Confinity 共同創業者・PayPal 元 CTO。 Hoffman = 外殻、 Levchin = 技術 という分業で PayPal を完成させた同志。 PayPal 後は Affirm (Levchin) と LinkedIn (Hoffman) と独立創業へ進み、 投資家としても並列に活動。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Elon Musk <span class="ja">イーロン・マスク</span></div>
+            <span class="rel-tag muted">対立軸 / 元CEO</span>
+          </div>
+          <div class="rel-body">
+            合併前X.com のCEO。 2000年Muskクーデター時、 Hoffman は明確に Thiel側に立った。 25年後、 Hoffman は Tesla・SpaceX への投資を避け、 政治的にも Trump=Musk 同盟と対峙する立場を選んでいる。 "PayPal Mafia 内の対立軸" の代表。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Mark Zuckerberg <span class="ja">マーク・ザッカーバーグ</span></div>
+            <span class="rel-tag muted">投資先 / 後輩</span>
+          </div>
+          <div class="rel-body">
+            Hoffman が 2004年に Facebook の初期エンジェル投資 ($37,500) を Thiel と共に行った相手。 後輩CEOとして長期的に助言、 LinkedIn と Facebook の補完関係を築いた。 Hoffman の <strong>"投資家としての No.1"</strong> の出発点。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jeff Weiner <span class="ja">ジェフ・ワイナー</span></div>
+            <span class="rel-tag">後任 CEO / 継承</span>
+          </div>
+          <div class="rel-body">
+            2009–2020年 LinkedIn CEO。 Hoffmanが Executive Chairman に降格して、 経営を任せた人物。 Weiner は11年で LinkedIn の時価総額を $4Bから$26Bへ引き上げた。 Hoffman の <strong>"早期降格 → 継承"</strong> 哲学の最高実装例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Mustafa Suleyman <span class="ja">ムスタファ・スレイマン</span></div>
+            <span class="rel-tag">共同創業 / Inflection</span>
+          </div>
+          <div class="rel-body">
+            DeepMind 共同創業者。 2022年に Hoffman と Inflection AI を共同創業、 Karén Simonyan と3人で AGI/Personal AI に挑戦。 2024年3月Microsoft AI の CEO に転じる際、 Hoffman は "Inflectionを残しMicrosoft Boardに残る" 道を選び、 二人の関係を構造的に保った。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sam Altman <span class="ja">サム・アルトマン</span></div>
+            <span class="rel-tag muted">並列 / OpenAI</span>
+          </div>
+          <div class="rel-body">
+            OpenAI CEO。 Hoffman が2018年からOpenAI 取締役として支援、 Microsoft が大型投資した際の利益相反で 2023年辞任。 だが Greylock 経由で Sam の Worldcoin 等にも投資、 政治的にも盟友 (反Trump) として並走。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">David Baker <span class="ja">デイビッド・ベイカー</span></div>
+            <span class="rel-tag">共同創業 / Manas AI</span>
+          </div>
+          <div class="rel-body">
+            2024年ノーベル化学賞受賞 (タンパク質設計のAI応用)。 Hoffmanと2024年に Manas AI を共同創業。 Hoffman の "AI×科学" 戦略の最新章。 哲学者 (Hoffman) × 化学者 (Baker) の <strong>"異領域の創業ペア"</strong>。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Michelle Yee <span class="ja">妻 / Hoffman 財団</span></div>
+            <span class="rel-tag muted">原点 / 並走</span>
+          </div>
+          <div class="rel-body">
+            社会起業家・慈善家。 2004年 (Hoffman 37歳) の結婚以降、 Hoffman 財団 (Aspire Public Schools・Endeavor 等への支援) を共同で運営。 子供を持たない選択をした夫婦で、 慈善活動に時間と資金を集中投入する設計。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 参考資料 -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Reid_Hoffman" target="_blank">Reid Hoffman — Wikipedia (英語版)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/PayPal_Mafia" target="_blank">PayPal Mafia — Wikipedia</a></li>
+        <li><a href="https://www.linkedin.com/in/reidhoffman/" target="_blank">Reid Hoffman — LinkedIn 本人プロフィール</a></li>
+        <li><a href="https://www.greylock.com/team/reid-hoffman/" target="_blank">Reid Hoffman — Greylock Partners 公式プロフィール</a></li>
+        <li><a href="https://mastersofscale.com/" target="_blank">Masters of Scale — Reid Hoffman ホスト Podcast</a></li>
+        <li><a href="https://www.acquired.fm/episodes/episode-11-paypal" target="_blank">PayPal — Acquired Podcast (一次資料・PayPal の経緯)</a></li>
+        <li><a href="https://www.acquired.fm/episodes/linkedin" target="_blank">LinkedIn — Acquired Podcast (LinkedIn 創業から Microsoft 売却まで)</a></li>
+        <li><a href="https://fortune.com/article/paypal-mafia/" target="_blank">The PayPal Mafia — Fortune (2007年の決定的記事)</a></li>
+        <li><a href="https://hbr.org/2014/06/your-company-is-not-a-family" target="_blank">Your Company Is Not a Family — HBR (Hoffman の "The Alliance" 哲学)</a></li>
+        <li><a href="https://www.bloomberg.com/news/features/2016-06-13/microsoft-s-26-billion-bet-on-linkedin" target="_blank">Microsoft's $26 Billion Bet on LinkedIn — Bloomberg (2016)</a></li>
+        <li><a href="https://www.nytimes.com/2024/03/19/technology/microsoft-inflection-ai.html" target="_blank">Microsoft to Pay Inflection $650 Million — NYT (2024 Inflection 移籍)</a></li>
+        <li>Reid Hoffman & Ben Casnocha『The Start-up of You』(2012) — "Permanent Beta" 哲学の原典</li>
+        <li>Reid Hoffman, Ben Casnocha & Chris Yeh『The Alliance』(2014) — 雇用=同盟論</li>
+        <li>Reid Hoffman & Chris Yeh『Blitzscaling』(2018) — Hoffmanの代表作・スケーリング理論</li>
+        <li>Reid Hoffman & GPT-4『Impromptu: Amplifying Our Humanity Through AI』(2023) — AI共著本の先駆</li>
+        <li>Reid Hoffman & Greg Beato『Superagency』(2025) — AI懐疑論への "建設的楽観主義"</li>
+        <li>Jimmy Soni『The Founders: The Story of PayPal and the Entrepreneurs Who Shaped Silicon Valley』(2022) — PayPal Mafia の決定版評伝</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

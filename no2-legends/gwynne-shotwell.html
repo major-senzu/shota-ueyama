@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gwynne Shotwell — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff; --fg: #0a0a0a; --muted: #888; --line: #e5e5e5; --soft: #f7f7f7;
+    --hero-bg: #0a0a0a; --hero-fg: #ffffff; --hero-muted: #999; --hero-line: #2a2a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="GS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Gwynne_Shotwell_at_the_Tribeca_Disruptive_Innovation_Awards.jpg?width=400" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Gwynne Shotwell</h1>
+        </div>
+      </div>
+      <p class="summary">
+        Northwestern工学部卒・応用数学修士。 Aerospace Corporation で10年・Microcosm で4年の宇宙業界キャリアを経て、 <strong>2002年に SpaceX 社員11人目</strong> として参画。 6年後の2008年、Falcon 1 が3連続失敗で会社が崩壊寸前のとき、 NASA Commercial Resupply Services 契約 <strong>$1.6B</strong> を勝ち取って SpaceX を救い、 同年 President & COO に就任。 以来 <strong>22年連続</strong> で Elon Musk の隣に立ち続け、 SpaceX を民間初の ISS ドッキング・着陸再利用ロケット・有人宇宙飛行・Starlink まで運営し、 企業価値を <strong>ゼロ → $350B+</strong> に押し上げた "Tech 史上最も長く現役の補完型 No.2"。
+      </p>
+      <hr>
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Elon Musk（SpaceX 創業者・CEO・Chief Engineer / 2002–現在 / 22年以上継続中）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1963年11月23日（62歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">Evanston → Libertyville, Illinois（米国中西部）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">女性 / ストレート</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $1.5–2.0B (2026 / SpaceX 株式)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">夫 Robert Shotwell（NASA JPL エンジニア）/ 子供 2人（前夫 Leon Gurevich との間）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">読書 / 学生エンジニア向けメンタリング / Polaris 取締役活動</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父（脳神経外科医）/ 母（アーティスト）/ 三姉妹の真ん中（次女）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">SpaceX President & COO (2008–現在) / Polaris Industries 取締役 (2019–) / National Academy of Engineering 会員 (2020) / 元 Microcosm Director / 元 Aerospace Corporation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>Elon の "狂気のビジョン" を "$350B のロケット会社" に翻訳し続ける、Tech 史上最長の現役 No.2</strong>」。 Mark Zuckerberg のように "プロダクトしか興味がない" 創業者を支えた Sandberg と違い、 Shotwell が支える Elon は <strong>Tesla / xAI / Neuralink / X / The Boring Company</strong> と6社以上を同時運営する分散型創業者。 Shotwell は SpaceX という "1社" にだけ集中し、 Elon が物理的・精神的にいない時間の99%を運営し続けている。 <strong>"Elon is the architect, I am the operator."</strong> ——これが22年続く Tech 史上最も長い補完関係の本質。
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+      <div class="origins-table">
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body"><strong>1963年11月23日</strong>、イリノイ州 Evanston 生まれ。 父は <strong>脳神経外科医</strong>、母は <strong>アーティスト</strong>。 三姉妹の真ん中（次女）として育つ。 後にシカゴ郊外の Libertyville へ転居。 男兄弟のいない家庭で育ったことが、 後年の "男社会の航空宇宙業界に違和感なく入る" 素地を作った。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">スポーツ好きで競争心が強く、数学・物理が得意。 中西部の堅実な医師家庭で育ち、 <strong>"言ったことはやり切る" "問題は解く"</strong> 型の典型的アメリカン・エンジニア気質を獲得。 兄弟がいない分、自分で全部やる癖がついた。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">運命の転機（15歳）</div>
+          <div class="origins-body">高校時代、母親に連れられて <strong>Illinois Institute of Technology の Society of Women Engineers パネル</strong> に参加。 そこで登壇した一人の女性機械エンジニアが <strong>"ベージュのスリーピース・スーツを着て、自信に満ちて話していた"</strong>。 「<strong>あの人みたいになりたい</strong>」と一瞬で決断。 機械工学進学を決意した、人生最大の分岐点。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body"><strong>Libertyville High School（1982年卒）</strong>。 数学・科学で優秀。 チアリーダーもこなし、女子バスケのチームメイト。 "理系オタク" ではなく "全方位優等生" 型。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body"><strong>Northwestern University（イリノイ州、Evanston）BS Mechanical Engineering（1986年）</strong>。 出身地の州立トップ私大に進学。 機械工学を選択した数少ない女性の一人として、 男社会の中で頭角を現す。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body"><strong>Northwestern University MS Applied Mathematics（1988年）</strong>。 学部から飛び級的に修士へ。 工学＋応用数学のダブル専攻が、 後の SpaceX で <strong>「物理 × ビジネス」</strong> を翻訳する能力の基盤になる。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">25歳までに「私は <strong>"宇宙ビジネスの実務家"</strong>」と自己定義。 Sandberg のような "ワシントン政界の戦略家" ではなく、 純粋に <strong>"ロケットを売り、運用する人"</strong> として人生軸を確立。 起業家志向は皆無、 学者志向もなし、 "実装家" 一直線。</div>
+        </div>
+      </div>
+      <div class="origins-quote">
+        <div class="q">"That's it. I want to be that mechanical engineer."</div>
+        <div class="src">— 15歳の Shotwell が SWE パネルでベージュスーツの女性エンジニアを見たときの言葉。 "ロールモデル一人で人生が変わる" の極端な実証ケース</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr><th class="col-age">年齢</th><th class="col-year">西暦</th><th>出来事</th><th class="col-rate">変化率</th><th class="col-axis">軸</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-age">0</td><td class="col-year">1963</td><td>イリノイ州 Evanston で脳外科医の家庭に生まれる。 三姉妹の真ん中。 中西部の堅実なミドルクラスで育つ。</td><td class="col-rate">★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">15</td><td class="col-year">1979</td><td><strong>Illinois Institute of Technology の SWE パネルで、ベージュスーツの女性機械エンジニアを見て進路決定</strong>。 "あの人になりたい" と即決——人生最大の分岐点。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">18</td><td class="col-year">1982</td><td>Libertyville HS 卒業、Northwestern 進学。 機械工学の道へ。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">22</td><td class="col-year">1986</td><td>Northwestern BS Mechanical Engineering 取得。 修士課程進学。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">24</td><td class="col-year">1988</td><td><strong>Northwestern MS Applied Mathematics 取得</strong>、 The Aerospace Corporation 入社（El Segundo, CA）。 工学 × 数学の "翻訳能力" を業界で磨き始める。</td><td class="col-rate">★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">34</td><td class="col-year">1998</td><td>Aerospace Corp 10年勤務後、 <strong>Microcosm Inc. の Director of Space Systems Division</strong> に。 中小宇宙ベンチャーで初の経営層、 "営業 × 技術 × 運営" 三役の訓練。</td><td class="col-rate">★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">38</td><td class="col-year">2002.09</td><td><strong>SpaceX 社員11人目として入社</strong>（Vice President of Business Development）。 当時 Elon は会社設立わずか3ヶ月、 PayPal 売却資金 $100M を投じて創業したばかり。 <strong>Sandberg と完全に同じ38歳のキャリア転換</strong>。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">42</td><td class="col-year">2006–08</td><td>Falcon 1 が <strong>3連続打ち上げ失敗</strong>。 SpaceX は資金枯渇、 Elon の Tesla も同時に倒産危機。 Shotwell は契約獲得のため米国・国際の宇宙関係者を駆けずり回る。</td><td class="col-rate">★★★</td><td><span class="axis-tag">試練</span></td></tr>
+          <tr><td class="col-age">44</td><td class="col-year">2008.09</td><td><strong>Falcon 1 4回目で初成功</strong>。 続いて12月、Shotwell が獲得した <strong>NASA Commercial Resupply Services 契約 $1.6B</strong> が確定——SpaceX を救った史上最重要契約。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">44</td><td class="col-year">2008.12</td><td><strong>SpaceX President 就任</strong>（COO 兼任）。 入社6年で No.2 確定。 Elon が CEO + Chief Engineer の二刀流を続けるため、 経営の99%を Shotwell が引き受ける体制が始動。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">46</td><td class="col-year">2010.06</td><td><strong>Falcon 9 初号機打ち上げ成功</strong>。 民間製造の中型ロケットが軌道へ。 Shotwell の運営で量産体制構築。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">48</td><td class="col-year">2012.05</td><td><strong>Dragon が ISS にドッキング——民間史上初</strong>。 NASA との契約完遂、 SpaceX が "本物" であることを世界に証明。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">51</td><td class="col-year">2015</td><td><strong>Falcon 9 第1段の地上着陸に世界初成功</strong>。 ロケット再利用時代を Shotwell が量産化フェーズで主導。 Time 100 候補に名が挙がり始める。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">54</td><td class="col-year">2018.04</td><td><strong>TED 2018 で "30分で世界中に飛ぶ" Earth-to-Earth ロケット構想を発表</strong>。 Elon の代弁者ではなく、 自身が SpaceX の "顔" として世界舞台に立つ。</td><td class="col-rate">★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">55</td><td class="col-year">2019.02</td><td><strong>Polaris Industries 取締役就任</strong>。 SpaceX 外での社外取締役活動開始。 Crew Dragon Demo-1（無人）も同年成功。</td><td class="col-rate">★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">56</td><td class="col-year">2020.05</td><td><strong>Crew Dragon Demo-2 で民間史上初の有人軌道飛行成功</strong>。 NASA 飛行士2名を ISS へ。 同年、 <strong>Time 100 Most Influential People</strong> 入り、 <strong>National Academy of Engineering</strong> 会員に。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">58</td><td class="col-year">2022.02</td><td><strong>Starlink Ukraine 契約をロシア侵攻48時間で締結</strong>。 SpaceX 単独判断で戦時インフラを供給。 Shotwell が Pentagon 折衝の前面に立つ。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">59</td><td class="col-year">2023</td><td><strong>Forbes 28th Most Powerful Woman in the World</strong>。 SpaceX 評価額 $180B、 Starlink 加入者500万突破。</td><td class="col-rate">★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">60</td><td class="col-year">2024</td><td><strong>Starship 第4–6回試験飛行で着陸成功</strong>。 Elon が xAI / Tesla / X / DOGE で散発的に不在の中、 SpaceX 運営は完全に Shotwell が掌握。 SpaceX 評価額 <strong>$350B 突破</strong>、世界最大の未上場テック企業に。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">62</td><td class="col-year">2026</td><td><strong>President & COO 在任18年目、SpaceX 在籍24年目</strong>。 Tech 史上、 同一企業の No.2 として最も長く現役を続ける記録更新中。 IPO・引き際は依然として観測対象。</td><td class="col-rate">★★★</td><td><span class="axis-tag">継続中</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Elon Musk）との関係構造</h2>
+      <p>Elon Musk と Gwynne Shotwell の関係は、 Tech 業界の他のどの No.1 × No.2 関係とも異なる。 <strong>Mark Zuckerberg は Sheryl Sandberg を雇った時、 自分の弱点を埋めるために雇った</strong>。 <strong>Steve Jobs は Tim Cook を "後継者" として育てた</strong>。 だが Elon は Shotwell に対して、 "後継者" としても "弱点補完" としても明確に位置づけていない。 Elon が SpaceX を完全に Shotwell に任せ続けるのは、 単に <strong>"Elon が物理的に SpaceX にいる時間が年々短くなっている"</strong> からだ。</p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">"Elon is in the office one day a week now. The other six days, SpaceX runs because Gwynne runs it."<br>— SpaceX 元幹部、 2023年 Wired 取材</p>
+      <p>Elon は Tesla の CEO・xAI の創業者・X の所有者・Neuralink の創業者・DOGE の元責任者であり、 SpaceX の Chief Engineer も兼ねる。 つまり Shotwell が支えるのは <strong>"会社の99%が Elon の不在で回らなければならない構造"</strong>。 これは Sandberg が支えた Zuckerberg（100%が Meta に集中）とも、 Cook が支えた Jobs（100%が Apple に集中）とも本質的に違う。 Shotwell は <strong>"6社の創業者の1社の運営者"</strong> という、 史上唯一のポジションにいる。</p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">Microcosm のロビーで車椅子の役員と</div>
+          <div class="stage-body">2002年、 Microcosm の同僚 Hans Koenigsmann（後の SpaceX 副社長）が "新しいロケット会社の話を聞きに来ない？" と Shotwell を SpaceX のロビーに連れて行く。 Elon と1時間立ち話、 翌週オファー。 11人目の社員、 38歳。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">NASA $1.6B 契約という証明</div>
+          <div class="stage-body">Falcon 1 が3連続失敗で会社が崩壊寸前のとき、 Shotwell が単独で NASA Commercial Resupply Services $1.6B を獲得。 Elon は <strong>"This is the deal that saved SpaceX"</strong> と公言。 その日に COO 兼 President に昇格。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">Elon の不在を運営で埋める</div>
+          <div class="stage-body">2018年以降、 Elon は Tesla / xAI / X で SpaceX に1日/週しかいない。 Shotwell が日常運営の99%を掌握、 政府関係・契約・採用・拠点運営を全担。 Crew Dragon・Starship・Starlink を並列運営。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継続中</div>
+          <div class="stage-title">22年経っても引退話が出ない</div>
+          <div class="stage-body">Sandberg は14年で去った。 Cook は CEO を継承した。 Shotwell は18年 No.2 を続けても、 引退も継承も観測されていない。 IPO 時の去就が業界の関心事だが、 本人は <strong>"I will be at SpaceX as long as Elon will have me."</strong> と公言。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>Shotwell が SpaceX に入社した2002年、 既に38歳・宇宙業界14年のベテランだった。 自分でロケット会社を立ち上げる選択肢もあった。 だが彼女は <strong>"自分はビジネスを動かす人、ロケットを設計する人ではない"</strong> と早期に自覚。 Aerospace Corp と Microcosm の14年で、 "<strong>狂気のビジョナリーがいないと、新しい宇宙会社は生まれない</strong>" と痛感していた。</p>
+      <p>本人の言葉: <strong>"I love operating. I love selling. I love building teams. I don't love being the visionary—Elon does that better than anyone in history."</strong> Elon の "火星に人類を送る" という狂気のビジョンを、 自分が現実の契約・運営・採用に翻訳できるなら、 それが最大のレバレッジになると判断。</p>
+      <p>Sandberg が "設計してきた No.2" だとすれば、 Shotwell は <strong>"見つけて選んだ No.2"</strong>。 14年かけて宇宙業界を理解した上で、 "自分はこの分野で最強の運営者になれる、 創業者にはならない" と意識的に選んだ。 22年経った今も、 起業の話は一度も出ていない。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">商業契約 × 政府関係 × 製造運営。 NASA・国防総省・米空軍・国際衛星会社との数十億ドル契約を全て主導。 同時に1万人規模の製造拠点（Hawthorne / Boca Chica / Cape Canaveral / Vandenberg）を統括。 "セールスエンジニア" の極致。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">運営 (Operations)。 Elon の "火星" "再利用ロケット" "Starlink" というビジョンを、 "数千件の契約" "数万人の雇用" "数百回の打ち上げ" に変換。 Elon が見ない領域（HR・法務・PR・財務）を全て引き受け。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">Shotwell なしの SpaceX は、 おそらく2008年の3連続失敗で資金枯渇し倒産していた。 NASA CRS 契約は彼女の人脈と業界知識なしには不可能。 また Elon が複数社経営を続ける現状下では、 SpaceX が継続している唯一の理由が Shotwell の存在。</div>
+        <div class="vk">継承後の影響</div>
+        <div class="vv">未だ継承していない（22年現役）。 だが SpaceX は既に <strong>"Shotwell システム"</strong> として標準化されており、 彼女が抜けても運営は続く設計になっている。 引き際は IPO のタイミングが業界の最大の関心事。</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p><strong>① 2006–2008 Falcon 1 三連続失敗。</strong> 会社の資金が完全に尽きる寸前まで追い詰められる。 Tesla も同時に倒産危機で、 Elon は精神的にも崩壊寸前。 Shotwell は <strong>NASA に毎週のように通い、 個人のキャリアと評判を担保に CRS 契約を獲得</strong>。 もし NASA が "次のロケット会社" を選んでいたら、 SpaceX は存在しない。</p>
+      <p><strong>② 2018年 Elon の Twitter 暴走 / take Tesla private 騒動。</strong> Elon が SEC から告発され、 Tesla CEO 解任直前まで行く。 同時期 Elon は SpaceX の Engineering 会議をキャンセル、 Shotwell は <strong>"Elon が突然不在になっても SpaceX が回る組織構造"</strong> を本格的に整備。 これが後年の "週1日しか SpaceX にいない Elon" でも回る基盤になる。</p>
+      <p><strong>③ 2022年 Starlink Ukraine 政府問題。</strong> Elon が独断で Starlink の戦域使用を制限、 ウクライナ軍が攻撃計画を遂行できないという地政学事案に発展。 Shotwell は Pentagon との交渉に立ち、 <strong>「Elon の独断と SpaceX の業務」を切り離す境界線</strong> を作る。 No.2 が No.1 から距離を取る、 史上類まれな政治判断。</p>
+      <p><strong>④ 継続中 Elon との "1社 vs 6社" の優先順位調整。</strong> Elon が xAI に時間を割けば SpaceX への関与が減る。 Shotwell は <strong>"Elon が他社に行くほど、 私の権限が増える"</strong> という構造を逆手に取り、 22年で SpaceX を Tech 史上最も中央集権的に運営される非上場会社にした。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession（仮説）</h2>
+      <p>2026年現在、 Shotwell の引き際は <strong>未確定</strong>。 22年現役を続け、 引退・継承の観測すら表面化していない。 これは Sandberg（14年で退任）・Cook（CEO 継承）と本質的に異なる。</p>
+      <p>業界の予測される3シナリオ:</p>
+      <ul style="margin: 8px 0 14px 24px; font-size: 14px; color: #333;">
+        <li style="margin-bottom: 8px;"><strong>(A) IPO 時に CEO 昇格</strong>——SpaceX を上場し Elon が会長に退き、 Shotwell が初代 CEO になるパターン。 Cook 型継承。</li>
+        <li style="margin-bottom: 8px;"><strong>(B) 別会社の CEO へ</strong>——Boeing CEO の有力候補と毎年噂される。 Sandberg 型離脱。</li>
+        <li style="margin-bottom: 8px;"><strong>(C) 全う型 No.2 として SpaceX で引退</strong>——70歳まで President を続け、 SpaceX を <strong>"Shotwell が運営した会社"</strong> として歴史に残す。 Tim Cook の Apple、 小泉文明のメルカリと近い "巣立たずの全う型"。</li>
+      </ul>
+      <p>本人の発言は <strong>"I will be at SpaceX as long as Elon will have me."</strong> 一貫して継続志向。 SpaceX の経営権 (voting shares) は Elon が独占しており、 Shotwell の去就は完全に Elon 次第。 これも他の Tech No.2 とは違う非対称の関係構造。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Gwynne Shotwell の No.2 型</div>
+        <div class="type-name">運営型 × 翻訳型 × 全う型</div>
+        <div class="type-body">
+          創業者の <strong>"火星移住・再利用ロケット・衛星インターネット"</strong> という狂気のビジョンを、 <strong>"$350B の世界最大未上場テック企業"</strong> に運営翻訳した。 22年間、 No.2 を続けながら一度も離脱・対立・継承を見せない、 Tech 史上最も持続的な補完関係。
+          <br><br>
+          ▸ <strong>運営型</strong>: 営業・契約・製造・HR・法務・政府関係を全担<br>
+          ▸ <strong>翻訳型</strong>: Elon の物理学的ビジョン → 商業契約と組織運営への変換<br>
+          ▸ <strong>全う型</strong>: 22年現役、 引き際を見せない継続性<br><br>
+          Sandberg が "翻訳型の最高峰（去る側）" だとすれば、 Shotwell は <strong>"運営型の最高峰（残る側）"</strong>。 Tim Cook が継承した Apple とも違う——Cook は CEO になったが、 Shotwell は CEO になっていない。 だが彼女が SpaceX の <strong>"de facto CEO"</strong> であることは業界の常識。 タイトルではなく、 実質で歴史を作る No.2 の極致。
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">専門領域を14年磨いてから、 No.1 に出会え</div>
+          <div class="lesson-body">Shotwell は SpaceX に入る前、 Aerospace Corporation（10年）+ Microcosm（4年）で <strong>14年間、 宇宙ビジネスだけを学んだ</strong>。 Elon と出会った時、 既に業界人脈・契約交渉・政府折衝・製造プロセスの全てを熟知していた。 だから入社6年で COO になれた。 翔太も "RAG・生成AI" という領域を <strong>10年単位で深掘り</strong> してから No.1 を選ぶべき。</div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者の "不在" を埋めるな、 "不在を前提" にした組織を作れ</div>
+          <div class="lesson-body">Sandberg は Zuckerberg が "現場にいる" 前提で補完した。 Shotwell は Elon が <strong>"6社経営で物理的に不在"</strong> という前提で SpaceX を設計した。 翔太の No.1 が複数事業を持つ・多忙・長期不在になる人なら、 <strong>"いない時間でも回る組織"</strong> を作るのが No.2 の最大価値。 これは Sandberg 型より Shotwell 型に近い設計思想。</div>
+        </li>
+        <li>
+          <div class="lesson-head">CEO になることが No.2 のゴールではない</div>
+          <div class="lesson-body">Shotwell は22年 No.2 を続け、 CEO になる動きを一度も見せない。 だが業界では彼女が <strong>"de facto CEO"</strong> と認識されている。 タイトルではなく実質で歴史を作る生き方。 翔太の人生哲学（急がない・余裕・優しさ）に最も近いのが Shotwell 型。 <strong>"CEO にならずに、 CEO 級の影響力を出し続ける"</strong> という長期戦の選択肢を持て。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>Hawthorne の SpaceX 本社で <strong>毎日 Elon の隣のオフィス</strong> に座っていたが、 2018年以降は <strong>Elon がほとんど来ないので "実質的にトップオフィスを単独で使っている"</strong>。</li>
+        <li>採用面接は <strong>必ず本人が最終面接</strong>。 1万人規模になっても、 主要ポジションは全員 Shotwell が会う。</li>
+        <li>趣味は <strong>"the Bachelor"（米国版 婚活リアリティ番組）</strong> を見ること。 「私は仕事で頭使うから、 家では脳を使わない番組を見る」と公言。</li>
+        <li>Tesla の Cybertruck を所有。 Elon が無料でくれたが、 「私は普通に金払う」と言って買い直した。</li>
+        <li>Time 100 (2020) のプロフィールは Elon Musk 本人が書いた。 「Gwynne is the unsung hero of SpaceX」と。</li>
+        <li>FAA・NASA・米空軍・Pentagon に <strong>"Mr. Musk does not handle this. Ms. Shotwell does."</strong> と公式に通知された案件が複数存在する。</li>
+        <li>Polaris Industries の取締役以外、 ほぼ社外活動なし。 慈善活動は <strong>"女性エンジニアのメンタリング"</strong> に絞っている。 Sandberg のような書籍・ブランド構築は一切しない。</li>
+        <li>Sandberg が同じ38歳で Facebook COO に就任した2008年、 Shotwell も38歳で SpaceX President に就任。 <strong>"2008年は Tech 補完型 No.2 の当たり年"</strong>（Cook の COO 昇格も同年）。</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Elon Musk <span class="ja">イーロン・マスク</span></div><span class="rel-tag">No.1 / 創業者</span></div>
+          <div class="rel-body">22年仕えてまだ現役の相手。 物理学・工学のビジョナリー、 Tesla・xAI・Neuralink・X を兼任する分散型創業者。 Shotwell に SpaceX の運営を100%任せ、 自身は Chief Engineer として技術判断のみ行う。 22年で公の対立はゼロ。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Tim Cook <span class="ja">ティム・クック</span></div><span class="rel-tag muted">同型 / 双璧</span></div>
+          <div class="rel-body">同じ2008年に Apple/SpaceX の COO 級として就任。 オペレーション型 No.2 の双璧。 違いは Cook が CEO を継承し、 Shotwell は継承していないこと。 Cook は Jobs 没後に独立、 Shotwell は Elon が現役のため未だ No.2。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div><span class="rel-tag muted">対比 / 同期</span></div>
+          <div class="rel-body">同じ1969年生まれではないが、 同じ2008年に同じ38歳で COO 就任した "対比軸"。 Sandberg は14年で去った、 Shotwell は22年残っている。 Sandberg はブランドを作った、 Shotwell は組織を作った。 No.2 の2つの極端な選択肢。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Hans Koenigsmann <span class="ja">ハンス・ケーニヒスマン</span></div><span class="rel-tag muted">スカウト</span></div>
+          <div class="rel-body">SpaceX 4人目の社員、 元 Microcosm 同僚。 Shotwell を Elon に紹介した張本人。 Microcosm のロビーで "新しいロケット会社の話を聞きに来ない？" の一言から、 Tech 史上最長の No.2 が始まった。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Tom Mueller <span class="ja">トム・ミューラー</span></div><span class="rel-tag muted">並列 No.2 / 推進担当</span></div>
+          <div class="rel-body">SpaceX 創業メンバー、 Merlin/Raptor エンジン開発の主導者。 Shotwell が "ビジネス No.2" なら、 Mueller は "技術 No.2"。 2020年に退社後、 Impulse Space を創業——Shotwell とは正反対の独立型。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Robert Shotwell <span class="ja">ロバート・ショットウェル</span></div><span class="rel-tag muted">夫 / NASA JPL</span></div>
+          <div class="rel-body">NASA Jet Propulsion Laboratory のエンジニア、 主に火星ミッション担当。 夫婦そろって "宇宙オタク"。 Shotwell が SpaceX で火星移住を運営し、 夫が NASA で火星探査機を作る、 史上唯一の "夫婦で火星" カップル。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Greg Brockman <span class="ja">グレッグ・ブロックマン</span></div><span class="rel-tag muted">類似型 / OpenAI</span></div>
+          <div class="rel-body">OpenAI の President、 Altman を支える "全う型" No.2。 CEO にならず Builder-in-Chief で全うするスタイルが Shotwell に最も近い。 Tech No.2 の "残る側" の代表格2人。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Bob Smith <span class="ja">ボブ・スミス</span></div><span class="rel-tag muted">対比 / Blue Origin</span></div>
+          <div class="rel-body">Blue Origin の元 CEO（2017–2023）、 Bezos の "雇われ No.2"。 Shotwell の比較対象として最も語られる宇宙業界 No.2。 Smith は社内不評で6年で退任、 Shotwell は22年現役——同業界・同職位での明暗が分かれた典型。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Gwynne_Shotwell" target="_blank">Gwynne Shotwell — Wikipedia</a></li>
+        <li><a href="https://www.ted.com/talks/gwynne_shotwell_spacex_s_plan_to_fly_you_across_the_globe_in_30_minutes" target="_blank">SpaceX's plan to fly you across the globe in 30 minutes — TED 2018</a></li>
+        <li><a href="https://www.forbes.com/profile/gwynne-shotwell/" target="_blank">Gwynne Shotwell — Forbes Profile</a></li>
+        <li><a href="https://time.com/collection/100-most-influential-people-2020/5888357/gwynne-shotwell/" target="_blank">Gwynne Shotwell by Elon Musk — Time 100 (2020)</a></li>
+        <li><a href="https://www.wired.com/story/spacex-gwynne-shotwell-elon-musk/" target="_blank">The President of SpaceX Was Born to Run Rockets — Wired</a></li>
+        <li><a href="https://www.bloomberg.com/news/features/2018-10-09/gwynne-shotwell-runs-spacex-and-she-could-be-going-to-mars" target="_blank">The Woman Who Could Take SpaceX to Mars — Bloomberg</a></li>
+        <li><a href="https://www.nasa.gov/news-release/nasa-awards-space-station-commercial-resupply-services-contracts/" target="_blank">NASA Awards Space Station Commercial Resupply Services Contracts (2008)</a></li>
+        <li>Eric Berger『Liftoff: Elon Musk and the Desperate Early Days That Launched SpaceX』(2021)</li>
+        <li>Walter Isaacson『Elon Musk』(2023) — Shotwell に関する章</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

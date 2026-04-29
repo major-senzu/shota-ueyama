@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raw data / No.2 Legends — Shota Ueyama</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff; --fg: #0a0a0a; --muted: #888;
+    --line: #e5e5e5; --soft: #f7f7f7; --card: #f5f5f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 16px; letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  .hero { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .hero .lead {
+    margin-top: 12px; font-size: 13px; color: #444;
+    line-height: 1.7; max-width: 780px;
+  }
+
+  /* filter bar (shared style with index) */
+  .filter-bar {
+    margin: 18px 0 24px;
+    padding: 16px 18px;
+    background: #fafafa;
+    border: 1px solid var(--line);
+  }
+  .filter-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .filter-row:last-child { border-bottom: none; }
+  .filter-row .flabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.10em; text-transform: uppercase;
+    width: 76px; flex-shrink: 0;
+  }
+  .chip {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .chip:hover { color: var(--fg); border-color: var(--fg); }
+  .chip.active { background: var(--fg); color: #fff; border-color: var(--fg); }
+
+  .filter-search {
+    flex: 1; min-width: 180px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .filter-search input {
+    flex: 1;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--fg);
+    outline: none;
+  }
+  .filter-search input:focus { border-color: var(--fg); }
+
+  .filter-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .filter-meta .count strong { color: var(--fg); font-weight: 600; }
+  .filter-meta .reset {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-family: inherit; font-size: 11px;
+    text-decoration: underline;
+  }
+  .filter-meta .reset:hover { color: var(--fg); }
+  .filter-meta .back-link {
+    color: var(--fg); text-decoration: none;
+    border-bottom: 1px solid var(--fg); font-weight: 500;
+  }
+
+  /* table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--bg); }
+  table.raw {
+    width: 100%; border-collapse: collapse;
+    font-size: 12.5px; min-width: 1500px;
+  }
+  table.raw thead {
+    background: var(--soft);
+    position: sticky; top: 0; z-index: 1;
+  }
+  table.raw th {
+    text-align: left;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  table.raw th:hover { color: var(--fg); }
+  table.raw th .arrow { margin-left: 4px; opacity: 0.4; font-size: 9px; }
+  table.raw th.sort-asc .arrow,
+  table.raw th.sort-desc .arrow { opacity: 1; color: var(--fg); }
+  table.raw td {
+    padding: 10px 12px; border-bottom: 1px solid var(--line);
+    text-align: left; vertical-align: top;
+    line-height: 1.5;
+  }
+  table.raw td.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  table.raw tbody tr:last-child td { border-bottom: none; }
+  table.raw tbody tr:hover { background: #fafafa; }
+  table.raw td .name-en {
+    font-weight: 600; font-size: 13px; letter-spacing: -0.01em;
+  }
+  table.raw td .name-ja-sub {
+    font-size: 10px; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace; margin-top: 2px;
+  }
+  table.raw td .face {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg,#c8c8c8,#888);
+    overflow: hidden; position: relative;
+    display: inline-block; vertical-align: middle;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  table.raw td .face::before {
+    content: attr(data-initials);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+  table.raw td .face img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: relative; z-index: 1; display: block;
+  }
+  table.raw td .name-cell {
+    display: flex; align-items: center; gap: 0;
+  }
+  table.raw td .name-text { display: inline-block; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.06em;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .badge.cat-corp    { color: #1a1a1a; border-color: #999; }
+  .badge.cat-startup { color: #1a4a8a; border-color: #5b8ec5; background: #f0f6ff; }
+  .badge.cat-history { color: #6b3a14; border-color: #c4905a; background: #fdf6ec; }
+  .badge.cat-sports  { color: #1f5e3a; border-color: #6dab85; background: #ecf8f1; }
+
+  .badge.status-done    { color: #1a1a1a; background: #e4e4e4; }
+  .badge.status-todo    { color: #888; }
+  .badge.status-pending { color: #b0b0b0; border-style: dashed; }
+
+  .yes { color: #2ea44f; font-weight: 600; }
+  .no  { color: var(--muted); }
+  .none-cell { color: #c0c0c0; }
+
+  .tags-cell {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    max-width: 200px;
+  }
+  .tags-cell .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .url-cell a {
+    color: var(--fg); text-decoration: none;
+    border-bottom: 1px solid var(--fg);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+  .url-cell .none-url { color: #c8c8c8; font-size: 11px; }
+
+  @media (max-width: 700px) {
+    body { padding: 22px 16px 28px; }
+    .filter-row { flex-direction: column; align-items: flex-start; }
+    .filter-row .flabel { width: auto; margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../profile/" class="nav-link">profile</a>
+    <a href="../../health/" class="nav-link">health</a>
+    <a href="../../travel/" class="nav-link">travel</a>
+    <a href="../../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../../geo-history/" class="nav-link">geo-history</a>
+    <a href="../index.html" class="nav-link active">legend</a>
+    <a href="../../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <div class="crumb">
+      <a href="../../index.html">home</a><span class="sep">/</span>
+      <span>research</span><span class="sep">/</span>
+      <a href="../index.html">legend</a><span class="sep">/</span>
+      <span>raw data</span>
+    </div>
+
+    <div class="hero">
+      <h1>Raw Data</h1>
+      <div class="ja">No.2 Legends データベース</div>
+      <p class="lead">
+        全候補者のメタデータをテーブルで一覧。各列のヘッダーをクリックでソート、上のフィルタで絞り込み。
+        純資産は概算（Forbes 2024-2025推定値や公開情報ベース）。歴史人物・現代日本企業役員はnull。
+      </p>
+    </div>
+
+    <!-- ============= FILTER BAR (same as index) ============= -->
+    <div class="filter-bar" id="filter-bar">
+      <div class="filter-row">
+        <span class="flabel">カテゴリ</span>
+        <button class="chip active" data-filter="cat" data-val="">全て</button>
+        <button class="chip" data-filter="cat" data-val="corp">大企業</button>
+        <button class="chip" data-filter="cat" data-val="startup">スタートアップ</button>
+        <button class="chip" data-filter="cat" data-val="history">歴史</button>
+        <button class="chip" data-filter="cat" data-val="sports">スポーツ</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">国</span>
+        <button class="chip active" data-filter="country" data-val="">全て</button>
+        <button class="chip" data-filter="country" data-val="jp">日本</button>
+        <button class="chip" data-filter="country" data-val="overseas">海外</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">学歴</span>
+        <button class="chip active" data-filter="edu" data-val="">全て</button>
+        <button class="chip" data-filter="edu" data-val="graduate">大卒</button>
+        <button class="chip" data-filter="edu" data-val="dropout">大学退学</button>
+        <button class="chip" data-filter="edu" data-val="none">該当なし</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">起業経験</span>
+        <button class="chip active" data-filter="founder" data-val="">全て</button>
+        <button class="chip" data-filter="founder" data-val="true">あり</button>
+        <button class="chip" data-filter="founder" data-val="false">なし</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">技術者</span>
+        <button class="chip active" data-filter="tech" data-val="">全て</button>
+        <button class="chip" data-filter="tech" data-val="true">はい</button>
+        <button class="chip" data-filter="tech" data-val="false">いいえ</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">ステータス</span>
+        <button class="chip active" data-filter="status" data-val="">全て</button>
+        <button class="chip" data-filter="status" data-val="done">DONE</button>
+        <button class="chip" data-filter="status" data-val="todo">TODO</button>
+        <button class="chip" data-filter="status" data-val="pending">PENDING</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">型</span>
+        <div id="type-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">検索</span>
+        <div class="filter-search">
+          <input type="text" id="search-input" placeholder="名前で検索（カナ・支えたNo.1・所属でも可）…" autocomplete="off">
+        </div>
+      </div>
+      <div class="filter-meta">
+        <span class="count">表示中: <strong id="visible-count">—</strong> / <span id="total-count">—</span> 名</span>
+        <span style="display:flex; gap:18px; align-items:center;">
+          <a href="../index.html" class="back-link">▸ Card View に戻る</a>
+          <button class="reset" id="reset-filters">フィルタをリセット</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="raw" id="raw-table">
+        <thead>
+          <tr>
+            <th data-sort="name">名前<span class="arrow">▼</span></th>
+            <th data-sort="cat">カテゴリ<span class="arrow">▼</span></th>
+            <th data-sort="country">国<span class="arrow">▼</span></th>
+            <th data-sort="supported">支えた No.1<span class="arrow">▼</span></th>
+            <th data-sort="org">所属<span class="arrow">▼</span></th>
+            <th data-sort="birth">生年<span class="arrow">▼</span></th>
+            <th data-sort="death">没年<span class="arrow">▼</span></th>
+            <th data-sort="edu">学歴<span class="arrow">▼</span></th>
+            <th data-sort="school">学校<span class="arrow">▼</span></th>
+            <th data-sort="founder">起業<span class="arrow">▼</span></th>
+            <th data-sort="tech">技術者<span class="arrow">▼</span></th>
+            <th data-sort="tags">型タグ<span class="arrow">▼</span></th>
+            <th data-sort="nw">純資産 (B$)<span class="arrow">▼</span></th>
+            <th data-sort="status">ステータス<span class="arrow">▼</span></th>
+            <th>詳細</th>
+          </tr>
+        </thead>
+        <tbody id="raw-tbody">
+          <tr><td colspan="15" style="padding:40px; text-align:center; color:var(--muted)">読み込み中…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+  <script>
+  (function(){
+    const DATA_URL = '../data/legends.json';
+    const state = {
+      people: [],
+      filters: { cat: '', country: '', edu: '', founder: '', tech: '', status: '', types: new Set() },
+      query: '',
+      sortKey: 'cat',
+      sortDir: 'asc',
+    };
+
+    const CAT_LABEL    = { corp:'大企業', startup:'スタートアップ', history:'歴史', sports:'スポーツ' };
+    const COUNTRY_LBL  = { jp:'日本', overseas:'海外' };
+    const EDU_LABEL    = { graduate:'大卒', dropout:'退学', none:'該当なし' };
+    const STATUS_LABEL = { done:'● DONE', todo:'○ TODO', pending:'◌ PENDING' };
+
+    const fmtY = y => y == null ? '' : (y < 0 ? `BC ${-y}` : String(y));
+    const fmtNW = nw => nw == null ? '<span class="none-cell">—</span>' :
+                       (nw >= 1 ? nw.toFixed(1) : nw.toFixed(2));
+    const yn = v => v == null ? '<span class="none-cell">—</span>' :
+                    v ? '<span class="yes">●</span>' : '<span class="no">○</span>';
+    const lbl = (map, k) => map[k] || (k == null ? '' : k);
+
+    function collectTypes(people) {
+      const set = new Set();
+      people.forEach(p => (p.tags || []).forEach(t => {
+        if (/型$/.test(t)) set.add(t);
+      }));
+      return Array.from(set).sort((a,b) => a.localeCompare(b, 'ja'));
+    }
+
+    function buildTypeChips(types) {
+      document.getElementById('type-chips').innerHTML = types.map(t =>
+        `<button class="chip" data-filter="type" data-val="${t}">${t}</button>`
+      ).join('');
+    }
+
+    function matches(p) {
+      const f = state.filters;
+      if (f.cat      && p.cat       !== f.cat)            return false;
+      if (f.country  && p.country   !== f.country)        return false;
+      if (f.edu      && p.edu       !== f.edu)            return false;
+      if (f.status   && p.status    !== f.status)         return false;
+      if (f.founder  !== '' && String(p.founder) !== f.founder) return false;
+      if (f.tech     !== '' && String(p.tech)    !== f.tech)    return false;
+      if (f.types.size > 0) {
+        const tagSet = new Set(p.tags || []);
+        for (const t of f.types) if (!tagSet.has(t)) return false;
+      }
+      if (state.query) {
+        const q = state.query.toLowerCase();
+        // 名前検索: name / kana / org / supported のみ。型は専用フィルタを使う
+        const haystack = [p.name, p.kana, p.org, p.supported].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    }
+
+    function sortKeyFn(p, k) {
+      if (k === 'name')     return (p.name || '').toLowerCase();
+      if (k === 'tags')     return (p.tags || []).join(',');
+      if (k === 'birth')    return p.birth == null ? Infinity : p.birth;
+      if (k === 'death')    return p.death == null ? Infinity : p.death;
+      if (k === 'nw')       return p.nw    == null ? -Infinity : p.nw;
+      if (k === 'founder')  return p.founder ? 1 : 0;
+      if (k === 'tech')     return p.tech ? 1 : 0;
+      const v = p[k];
+      return v == null ? '' : v;
+    }
+
+    function renderRows(people) {
+      const tbody = document.getElementById('raw-tbody');
+      if (!people.length) {
+        tbody.innerHTML = '<tr><td colspan="15" style="padding:40px;text-align:center;color:var(--muted)">該当なし</td></tr>';
+        return;
+      }
+      tbody.innerHTML = people.map(p => {
+        const faceImg = p.face
+          ? `<img src="${p.face}" alt="" loading="lazy" onerror="this.style.display='none'">`
+          : '';
+        const facePart = `<span class="face" data-initials="${p.initials || ''}">${faceImg}</span>`;
+        const nameCell = `<div class="name-cell">${facePart}<span class="name-text"><div class="name-en">${p.name}</div><div class="name-ja-sub">${p.kana || ''}</div></span></div>`;
+        const tagsCell = `<div class="tags-cell">${(p.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}</div>`;
+        const urlCell = p.url
+          ? `<a href="../${p.url.replace(/^\.\//,'')}">▸ 詳細</a>`
+          : '<span class="none-url">—</span>';
+        return `
+          <tr>
+            <td>${nameCell}</td>
+            <td><span class="badge cat-${p.cat}">${lbl(CAT_LABEL, p.cat)}</span></td>
+            <td>${lbl(COUNTRY_LBL, p.country)}</td>
+            <td>${p.supported || ''}</td>
+            <td>${p.org || ''}</td>
+            <td class="num">${fmtY(p.birth)}</td>
+            <td class="num">${fmtY(p.death)}</td>
+            <td>${lbl(EDU_LABEL, p.edu)}</td>
+            <td>${p.school || '<span class="none-cell">—</span>'}</td>
+            <td>${yn(p.founder)}</td>
+            <td>${yn(p.tech)}</td>
+            <td>${tagsCell}</td>
+            <td class="num">${fmtNW(p.nw)}</td>
+            <td><span class="badge status-${p.status}">${lbl(STATUS_LABEL, p.status)}</span></td>
+            <td class="url-cell">${urlCell}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    function applyAll() {
+      const filtered = state.people.filter(matches);
+      filtered.sort((a, b) => {
+        let av = sortKeyFn(a, state.sortKey);
+        let bv = sortKeyFn(b, state.sortKey);
+        if (av < bv) return state.sortDir === 'asc' ? -1 : 1;
+        if (av > bv) return state.sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+      renderRows(filtered);
+      document.getElementById('visible-count').textContent = filtered.length;
+      updateSortIndicators();
+    }
+
+    function updateSortIndicators() {
+      document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+        th.classList.remove('sort-asc','sort-desc');
+        const arrow = th.querySelector('.arrow');
+        if (th.dataset.sort === state.sortKey) {
+          th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+          if (arrow) arrow.textContent = state.sortDir === 'asc' ? '▲' : '▼';
+        } else if (arrow) {
+          arrow.textContent = '▼';
+        }
+      });
+    }
+
+    function setActiveChip(filter, val) {
+      document.querySelectorAll('.chip[data-filter="' + filter + '"]').forEach(b => {
+        b.classList.toggle('active', b.dataset.val === val);
+      });
+    }
+
+    function bind() {
+      document.querySelectorAll('.chip[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const f = btn.dataset.filter, v = btn.dataset.val;
+          if (f === 'type') {
+            if (state.filters.types.has(v)) {
+              state.filters.types.delete(v); btn.classList.remove('active');
+            } else {
+              state.filters.types.add(v); btn.classList.add('active');
+            }
+          } else {
+            state.filters[f] = v;
+            setActiveChip(f, v);
+          }
+          applyAll();
+        });
+      });
+      document.getElementById('search-input').addEventListener('input', e => {
+        state.query = e.target.value.trim();
+        applyAll();
+      });
+      document.getElementById('reset-filters').addEventListener('click', () => {
+        state.filters = { cat: '', country: '', edu: '', founder: '', tech: '', status: '', types: new Set() };
+        state.query = '';
+        document.getElementById('search-input').value = '';
+        ['cat','country','edu','founder','tech','status'].forEach(f => setActiveChip(f, ''));
+        document.querySelectorAll('.chip[data-filter="type"]').forEach(b => b.classList.remove('active'));
+        applyAll();
+      });
+      document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const k = th.dataset.sort;
+          if (state.sortKey === k) {
+            state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+          } else {
+            state.sortKey = k; state.sortDir = 'asc';
+          }
+          applyAll();
+        });
+      });
+    }
+
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(r => r.json())
+      .then(json => {
+        state.people = json.people || [];
+        document.getElementById('total-count').textContent = state.people.length;
+        buildTypeChips(collectTypes(state.people));
+        bind();
+        applyAll();
+      })
+      .catch(err => {
+        console.error('legends.json load failed', err);
+        document.getElementById('raw-tbody').innerHTML =
+          '<tr><td colspan="15" style="padding:40px;text-align:center;color:#c00">データ読み込み失敗: ' + err.message + '</td></tr>';
+      });
+  })();
+  </script>
+</body>
+</html>

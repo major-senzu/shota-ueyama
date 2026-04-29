@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>藤沢武夫 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- [A] HERO                                  -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="藤沢"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Takeo_Fujisawa.jpg" alt="藤沢武夫" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+      <h1>藤沢 武夫</h1>
+        </div>
+      </div>
+      <p class="summary">
+        東京小石川の鋼材問屋の長男に生まれ、戦後の混乱期に切削工具の販売で身を立てた商売人。
+        38歳で本田宗一郎と出会い、<strong>「金は俺に任せろ、お前は技術だけやれ」</strong> という分業契約を結んで
+        本田技研工業に常務として参画。 以後25年間、宗一郎を一切の経営判断から解放し、財務・販売・人事・組織を
+        全て引き受けた。 <strong>スーパーカブ・F1参戦・四輪進出・米欧展開・鈴鹿製作所</strong>—Hondaを世界企業に
+        押し上げた決定はほぼ全て彼の経営設計から生まれた。 1973年、宗一郎と <strong>同じ日に</strong> 同時退任。
+        日本の No.2 哲学の原点と称される、補完型 × 引き際型の最高傑作。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value"><strong>本田 宗一郎（1949〜1973、約25年）</strong> / 本田技研工業 創業者・初代社長</div>
+        </div>
+        <div>
+          <div class="fact-label">生没年</div>
+          <div class="fact-value">1910–1988（享年78）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">東京府 小石川区 久堅町（現・東京都文京区）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / ストレート</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">1949年 資本金100万円 → 1973年 売上7,326億円・世界企業へ</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 ふみ（藤野房）/ 子 1人 / <strong>晩年まで生涯一夫一婦</strong></div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">クラシック音楽（NHK交響楽団後援）/ 能・歌舞伎 / 俳句・将棋</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 藤沢喜久治（鋼材問屋経営）/ 母 ハツ / 弟・妹あり / 妻 ふみ（戦前に結婚、子をなす）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">日本機工研究所 営業（〜1939）/ 三ツ星商会 経営者（1939–1945、切削工具）/ <strong>本田技研工業 常務取締役（1949）→ 専務（1952）→ 副社長（1964）→ 取締役相談役（1973退任）</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- [B] TL;DR                                 -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者の天才性に、経営という器を与え続けた補完型 × 引き際型 No.2</strong>」。
+        本田宗一郎を <strong>"工場の機械油の中"</strong> に住まわせ続けるため、藤沢は社長室に座らせず、
+        財務・販売・人事・組織・国際展開のすべてを引き受けた。 「あなたは社長か技術者か」と一言で
+        水冷エンジン採用を引き出し、F1参戦を断行し、四輪を MITI の壁を越えて事業化した。 そして
+        <strong>1973年10月、二人で同時に退任</strong>—社長を世襲しない、相談役として君臨もしない、
+        若手の河島喜好に席を渡してそのまま消えた。 No.2 が "創業者を解放する装置" であると同時に
+        <strong>"創業者と一緒に潔く去る装置"</strong> であることを示した、日本経営史の手本。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- [C] ORIGINS                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>明治43年（1910年）11月10日</strong>、東京府 小石川区 久堅町（現・文京区）の生まれ。 父 <strong>藤沢喜久治</strong> は鋼材問屋を営む商売人で、家業の中で「金の流れ」を肌で覚えながら育った。 兄弟の中で長男。 商家の子として「勘定」「人付き合い」「掛け合い」が日常の風景だった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            東京の下町で、商売人の家として育つ。 <strong>「ものを売る」「人と話す」「金を回す」</strong> という商いの三要素は学校の授業より日常の中で身についた。 後年、宗一郎が「藤沢さんは現場を見てなくても、現場のことが見える」と評したのは、この幼少期の感覚に由来する。 文学・音楽・将棋に幼い頃から親しんでいたのも特徴的。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">家庭環境</div>
+          <div class="origins-body">
+            鋼材問屋の家業は当時の東京では中堅クラスの商家。 富裕でも貧困でもない、<strong>"自分の腕で食う" 商人の家</strong>。 父 喜久治は職人や鉄工所相手に売り回る現場の人で、藤沢が後年に Honda の販売店主とトコトン酒を酌み交わすスタイルは、父の商い作法の延長線上にあった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校 (青年期)</div>
+          <div class="origins-body">
+            <strong>京華商業学校</strong> （現・京華商業高校）を卒業。 商業学校という選択は <strong>「跡を継ぐ商売人になる」</strong> という前提の進路。 帝大や旧制高校といった "エリート街道" ではなく、徹頭徹尾 "商いの実務派" として育ったことが、後年の藤沢の経営観—理屈ではなく現場の空気を読む—の地盤となる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>大学進学はなし</strong>。 京華商業卒業後、すぐに社会に出る。 後年の藤沢を象徴するのは <strong>"学歴コンプレックスの完全な不在"</strong> で、東大・早慶を出た部下が大量に集まる Honda の経営陣の中でも、終始 "中卒・商業学校卒" のスタンスを変えなかった。 学歴ではなく「人を見て、商を読む」眼力で勝負することを選んだ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職 (戦前)</div>
+          <div class="origins-body">
+            <strong>日本機工研究所</strong> に営業として入社。 切削工具・刃物類を町工場へ売り回るのが仕事。 戦時下の軍需景気で町工場が雨後の筍のように出現する中、<strong>"中小企業の現場"</strong> を文字通り足で覚える。 後の Honda 販売網設計の原点はこの時期の経験にある。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">独立 (戦中)</div>
+          <div class="origins-body">
+            <strong>1939年（29歳）、独立して三ツ星商会を設立</strong>。 切削工具・治具などを軍需工場に納める商売で、戦時下に着実に儲ける。 だが <strong>1945年の東京大空襲で社屋は全焼</strong>、戦後は仙台周辺で材木商を営みながら糊口をしのぐ。 ゼロからのやり直しを経験した数年間が、藤沢の中に「<strong>金と組織は紙のように燃える</strong>」という根源的なリスク感覚を植え付けた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            <strong>「学歴も人脈もない、町の商売人」</strong> という自己認識。 戦後の混乱期、38歳まで自分一人で商売してきた、ある意味で "ローンウルフ" の起業家タイプ。 だが心の底では <strong>「組織を作って大きな仕事をしたい」</strong> という渇きを抱えていた。 そこに 1949年、知人 竹島弘 が「浜松にすごい技術者がいる、会ってみないか」と声をかけてくる—それが本田宗一郎との出会いだった。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"私は本田を儲けさせるためにやっているのではない。 一緒に夢を見るためにやっている。"</div>
+        <div class="src">— 藤沢武夫『松明は自分の手で』(1974)</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [D] 微分ポイント                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1910</td>
+            <td>東京小石川に鋼材問屋・藤沢喜久治の長男として誕生。商家の "金と人" を日常で吸収。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">17</td>
+            <td class="col-year">1927</td>
+            <td>京華商業学校卒業。 大学進学を選ばず、商売人として社会に出ることを決める。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">1939</td>
+            <td><strong>独立し三ツ星商会を創業</strong>。 切削工具を軍需工場に納める商売で身を立てる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">1945</td>
+            <td><strong>東京大空襲で社屋全焼</strong>。 仙台で材木商に転じ、ゼロから再出発。 "燃える組織" の感覚を骨で学ぶ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">1949.8</td>
+            <td><strong>竹島弘の紹介で浜松の本田宗一郎と出会う</strong>。 半日話して即決、10月に本田技研工業に常務として参画。 No.2 人生の出発点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">41</td>
+            <td class="col-year">1952</td>
+            <td><strong>カブ F型を販売店網で爆発的に売る</strong>。 全国2万軒の自転車店をDM5万通で開拓した伝説の販売革命。 専務に昇格。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">1954</td>
+            <td><strong>マン島TT出場宣言</strong>。 経営危機下にもかかわらず宗一郎の挑戦欲を後押し、技術と資金を一致団結させた。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">1958</td>
+            <td><strong>スーパーカブ C100 発売</strong>。 藤沢が宗一郎に「片手で乗れる、女性も乗れるバイク」を発注、世界のベストセラー誕生（累計1億台超）。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">1959</td>
+            <td><strong>米国ホンダ・American Honda Motor 設立</strong>。 "You meet the nicest people on a Honda" キャンペーンで米国二輪市場を席巻。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">1962</td>
+            <td><strong>四輪進出を決断</strong>。 MITI の "新規参入禁止" 行政指導の壁を、軽トラ・S500 の発表で突破。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">1964</td>
+            <td><strong>F1 参戦</strong>。 副社長就任。 "Honda は技術の会社だ" という宣言を世界へ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">59</td>
+            <td class="col-year">1969</td>
+            <td><strong>ホンダ1300事件</strong>。 宗一郎が固執した空冷エンジンに対し、藤沢が「あなたは社長か技術者か」と問い、水冷化を引き出す。 No.2 が No.1 を矯正した歴史的場面。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">関係軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">62</td>
+            <td class="col-year">1972</td>
+            <td><strong>CVCC エンジン発表</strong>。 米マスキー法を世界初でクリア。 水冷化の延長線上で生まれた成果で、藤沢の経営判断が技術勝利に結実。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">63</td>
+            <td class="col-year">1973.10</td>
+            <td><strong>本田宗一郎と同時退任</strong>。 後継は社長 河島喜好（41歳）、副社長 西田通弘。 二人とも取締役相談役へ。 日本企業史上稀有な "創業者ペアの同時引退"。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">64</td>
+            <td class="col-year">1974</td>
+            <td><strong>『松明は自分の手で』出版</strong>。 経営に対する自身の哲学を明文化。 後進への遺言。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">76</td>
+            <td class="col-year">1986</td>
+            <td><strong>『経営に終わりはない』出版</strong>。 退任後13年、なお経営思想を書き続けた最終遺著。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">78</td>
+            <td class="col-year">1988.12</td>
+            <td><strong>東京で死去</strong>、享年78。 宗一郎は3年後の1991年に没。 二人並んで日本産業史に刻まれる関係を完成させた。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [E] No.1との関係構造                       -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（本田宗一郎）との関係構造</h2>
+      <p>
+        1949年8月、東京。 38歳の藤沢は知人 <strong>竹島弘</strong> （宗一郎の旧友）の紹介で、43歳の本田宗一郎と出会う。 当時の本田技研は浜松の小さな町工場で、自転車補助エンジン「ドリーム号」を細々と作っていた。 半日も話したか話さないかで、二人は <strong>「金は俺が、技術はお前が」</strong> という分業を口頭で決めた。 契約書も役員会もない、商人と職人の握手だけの取り決め。 だがこれが以後25年、一度も破られなかった。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「本田には金のことを一切言わなかった。 本田も私に技術のことは一切言わなかった。 それが我々の最大の発明だった。」<br>
+        — 藤沢武夫『松明は自分の手で』
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">半日で握手した分業契約</div>
+          <div class="stage-body">38歳の商売人と43歳の職人。 <strong>「金は俺、技術はお前」</strong> という役割分担を半日で決め、契約書も交わさず "口頭の握手" のみ。 以後25年、一度も役割を侵犯せず守り抜く。 経営史上ほぼ類例のない、純度100%の補完型 No.2 の原点。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">"宗一郎を社長室に座らせない"</div>
+          <div class="stage-body">藤沢は本社・社長室に宗一郎の机を置かなかった。 宗一郎は終生 <strong>研究所か工場の現場</strong>に住んだ。 役員会・銀行折衝・株主対応・販売店会議—全て藤沢が一手に。 「彼は技術以外のことを考えなくていい」を組織で実装した。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">スーパーカブ → F1 → 四輪</div>
+          <div class="stage-body">藤沢が "発注し"、宗一郎が "技術で応える" の繰り返し。 スーパーカブも、F1参戦も、四輪進出も、米国市場開拓も—商業判断は全て藤沢、技術実装は全て宗一郎。 <strong>「Honda の躍進は二人三脚というより、二輪駆動」</strong>と評された全盛期。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 引き際</div>
+          <div class="stage-title">同じ日に二人で退く</div>
+          <div class="stage-body">1973年10月、宗一郎66歳・藤沢62歳で <strong>同日同時に退任</strong>。 「経営者は若いうちに渡せ」という哲学を、自ら証明した。 河島喜好（41歳）が社長へ。 退任後は二人とも経営に口を挟まず、相談役として静かに身を引いた。 <strong>"創業者の老害" を一度も発生させなかった日本産業史の例外</strong>。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [F] No.2を選んだ動機                       -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        藤沢武夫は <strong>"なれなかった No.1"</strong> ではない。 38歳まで自分の会社を持ち、自分で経営判断を下してきた "立派な No.1" 候補だった。 だが本田宗一郎と出会った瞬間、彼は自分の中の野心を <strong>「この男の天才に賭ける」</strong> という形に切り替えた。 戦後日本の中小企業経営者には珍しくない、自営業 → 大企業の参謀への転身。 ただし藤沢の特殊性は、その判断を <strong>"半日"</strong> で下したこと。
+      </p>
+      <p>
+        理由の第一は、<strong>「本田宗一郎の技術への純粋さは、自分には絶対にない」</strong> という冷徹な自己認識。 「私は金儲けはできるが、夢は持てない。 本田は夢しか持たない男だった」と藤沢は後年語っている。 <strong>"自分にないものを持つ人間"</strong> に賭けるのが、商売人として最も合理的な投資だと判断した。
+      </p>
+      <p>
+        理由の第二は、<strong>「組織を作る歓び」</strong>。 三ツ星商会時代の藤沢はあくまで個人商店主で、規模の経営を経験していなかった。 宗一郎の技術という "原資" があれば、自分は組織と販売網と財務という "器" を作れる。 No.2 という肩書きの中身は、実は <strong>"創業者の天才を組織化する設計者"</strong> という非常にクリエイティブな仕事だった。 これが彼を生涯飽きさせなかった。
+      </p>
+      <p>
+        理由の第三は、<strong>"独占欲の不在"</strong>。 藤沢は資本構成・株式・社長の肩書きに執着しなかった。 「Honda は本田宗一郎の名前の会社だ」を最後まで尊重し続けた。 副社長で十分、相談役で十分、退任後は無冠でいい—この淡白さが、25年間の補完関係を破綻させなかった最大の構造的理由。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [G] 提供した独自価値                       -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">財務設計・販売網構築・人事制度・組織設計・国際展開。 <strong>"商人の感覚で大企業の骨格を作る"</strong> 稀有な能力。 1952年カブF型では、全国2万軒の自転車店に5万通のDMを打って販売網を一夜で作り上げた。 当時の日本企業で最先端のダイレクトマーケティング。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv"><strong>補完 (Complementary)</strong>。 宗一郎の "技術" 以外のすべてを引き受けた。 役員会・銀行折衝・販売店会議・労務交渉・国際展開—宗一郎が触れなかったすべての領域を藤沢が一人で担った。 No.1 を "得意領域に特化させる装置" としての No.2。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">藤沢がいなければ Honda はバイクメーカーで止まっていた可能性が高い。 1953-54年の経営危機を乗り切ったのは藤沢の銀行折衝、1962年の四輪進出は藤沢の MITI 突破、1973年の同時退任は藤沢の発案。 <strong>「組織として大きくなる Honda」</strong> は藤沢の手で設計された。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">退任後は <strong>一切の経営口出しを封印</strong>。 河島喜好・久米是志・川本信彦と続く社長たちに自由を与えた。 自身は『松明は自分の手で』『経営に終わりはない』を書いて経営思想を記録に残し、<strong>"老害ではなく文献として後世に残る"</strong> 退き方を選んだ。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [H] 試練と決断                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 1954年、経営危機。</strong> ドリーム号 4E型のクラッチ不具合と販売減で資金繰り悪化。 取引銀行 三菱銀行から <strong>「本田技研は危ない」</strong> と切られかけた局面で、藤沢は単身銀行を回り、新規取引銀行の三井銀行（現・三井住友）と関係を構築。 同時にマン島TT出場宣言を逆手に取り、技術ブランドの再構築に成功。 <strong>「危機の最中に世界レースに出る」という意思決定の異常さ</strong>を、藤沢は財務側でロジカルに支えた。
+      </p>
+      <p>
+        <strong>② 1969年、ホンダ1300事件。</strong> 宗一郎は技術者として <strong>空冷エンジンに固執</strong>。 排ガス規制と冷却限界の中で水冷化を求める若手技術陣（久米是志・川本信彦ら）と社内対立。 経営会議が空転する中、藤沢は宗一郎を呼び出して一言:
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「<strong>あなたは社長ですか、それとも技術者ですか？</strong>」
+      </p>
+      <p>
+        宗一郎は「<strong>社長である</strong>」と答え、若手の水冷案を採用。 これが翌年のCVCCエンジン (1972) として結実し、世界初の米マスキー法クリアという技術的勝利を生んだ。 <strong>No.1 を "肩書き" で縛ることで方針転換させた、No.2 史に残る一言</strong>。 並みの No.2 なら "社長への忠誠" でこの場面は逃げる。 藤沢は「忠誠は組織の未来へ、上司への媚びではない」を実装した。
+      </p>
+      <p>
+        <strong>③ 1973年、同時退任の決断。</strong> 当時の日本企業の常識では、創業者は <strong>"院政か終身名誉会長"</strong> で残る。 だが藤沢は退任の数年前から宗一郎に対し、「我々が居続ける限り、若手は本気の経営判断を下せない」と説得。 同年10月、二人で同日に取締役相談役へ。 <strong>「お前と一緒に始めたんだから、お前と一緒に辞める」</strong>—創業ペアの同時退任は当時誰も真似できなかった、引き際の最高峰。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [I] 引き際・継承                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        藤沢の引き際は <strong>3段構成</strong> である。
+        <strong>第一段（1973年・63歳）</strong>: 宗一郎との同時退任。 自身は副社長 → 取締役相談役へ。 <strong>「相談されない相談役」</strong>を自認し、本社にも顔を出さず、経営判断には一切コメントしなかった。 後継社長 河島喜好（41歳）に対しては「我々の名前を出すな、君の Honda を作れ」と告げたとされる。
+      </p>
+      <p>
+        <strong>第二段（1974年・64歳〜）</strong>: 著作活動による思想の文書化。
+        <strong>『松明は自分の手で』</strong> (1974)、<strong>『経営に終わりはない』</strong> (1986) という二冊の経営書を刊行。 これは "後輩経営者への指導" ではなく、<strong>"組織と仕事の本質を後世に残す"</strong> ための文献化作業。 老害として現役に介入する代わりに、本にして時間を超えて残す道を選んだ。
+      </p>
+      <p>
+        <strong>第三段（1988年・78歳）</strong>: 12月30日、東京で死去。 葬儀は質素で、戒名や派手な追悼イベントは避けられた。 3年後の1991年8月、宗一郎が後を追うように没。 二人並んで戦後日本産業史に刻まれる関係が完結した。 Honda の <strong>"創業者を継承させる仕組み"</strong>—社長交代の自然なリズム、本社が浜松ではなく東京で動く構造、技術と経営の役割分業—は今日まで生きている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [J] No.2の型                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">藤沢武夫 の No.2 型</div>
+        <div class="type-name">補完型 × 引き際型 × 役割完全分業型</div>
+        <div class="type-body">
+          創業者の天才性に対し、<strong>一切重ならない領域</strong>（金・販売・人事・組織・国際展開）を全て引き受ける
+          補完型の最高峰。 25年間 "技術と経営" の役割を一度も侵犯せず、創業者を <strong>"工場と研究所"</strong> に
+          住まわせ続けた。
+          <br><br>
+          ▸ サンドバーグ (Meta) の "翻訳型" とは違う—藤沢は宗一郎の野心を翻訳したのではなく、<strong>宗一郎が
+          考えなくていい領域を全て引き受けた</strong>。 翻訳ではなく分業、それも完全分業。
+          <br><br>
+          ▸ 黒田官兵衛の "緊張型" とも違う—主君に恐れられて退いたのではなく、<strong>創業者と一緒に同じ日に潔く退いた</strong>。
+          引き際型でも "ペア型引き際" という稀有な型。
+          <br><br>
+          ▸ <strong>「No.2 とは創業者を解放する装置であり、創業者と一緒に消える装置である」</strong>—この二つの機能を
+          一つの人生で実装した、日本経営史の手本。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [K] 翔太への設計図                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">No.1 の "得意領域" を護るために、それ以外を全部引き受けろ</div>
+          <div class="lesson-body">
+            藤沢は宗一郎を <strong>"工場と研究所"</strong> に住まわせ、社長室に座らせなかった。 役員会も銀行折衝も
+            販売店会議も国際交渉も全て一人で引き受けた。 No.2 の本質は <strong>"No.1 が何を考えなくて済むかを設計する"</strong>
+            こと。 自分が目立つ領域を増やすのではなく、相方が <strong>本当に得意な一点に集中できる環境</strong> を作り続ける。
+            これが補完型の最高難度。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">必要なら No.1 の判断を矯正しろ、ただし「肩書き」で縛れ</div>
+          <div class="lesson-body">
+            ホンダ1300事件で藤沢は宗一郎に「<strong>あなたは社長か技術者か</strong>」と問うた。 これは批判でも反逆でもない、
+            <strong>"あなたが選んだ役割の範囲で考えてください"</strong> という肩書きの再確認。 No.2 が No.1 に
+            苦言を呈する時、最強の武器は <strong>"あなた自身が引き受けた役割"</strong>。 個人攻撃ではなく
+            役割への呼び戻し。 これで衝突なく方向転換が起きる。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者と "同じ日に" 辞めるための仕組みを最初から作れ</div>
+          <div class="lesson-body">
+            日本企業の最大の病は <strong>"創業者の老害"</strong>。 藤沢は退任の数年前から宗一郎を説得し、二人同時退任を
+            実装した。 No.2 の最終仕事は <strong>"創業者を生かしたまま舞台から降ろす"</strong> こと。
+            自分が居続けることで創業者を居続けさせるのではなく、<strong>"自分が辞めることで創業者にも辞めてもらう"</strong>。
+            ペア退任は片方が居残れば成立しない、二人三脚の最終形。 25年の補完関係の最後の補完仕事。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [L] 雑学・人柄                              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li><strong>クラシック音楽の熱狂的愛好家</strong>。 NHK交響楽団を長年経済的に支援し、自宅にはレコード数千枚のコレクション。 ベートーヴェンとブラームスを特に好み、決断に行き詰まると音楽室に篭った。 「経営は楽譜のようなもの、譜面通り弾くだけでは音楽にならない」が口癖。</li>
+        <li><strong>能と歌舞伎の通</strong>。 観世流の能を好み、歌舞伎は十八番の演目を暗唱できるほど通っていた。 日本の伝統芸能から「<strong>"間"の経営</strong>」という概念を引き出していた。</li>
+        <li><strong>俳句と将棋</strong>もたしなんだ。 商業学校卒の藤沢が知識人サロンに参加できる教養を持っていたのは、若い頃からの読書と芸事の蓄積。 部下からは「<strong>商売人なのに侍のような所作</strong>」と評された。</li>
+        <li>本田宗一郎との <strong>役員室の机は隣同士、しかし会話はほぼ電話</strong>。 「顔を合わせると喧嘩になるからね」と藤沢は冗談めかして語っていた。 物理的近接よりも役割分担の純度を選んだ。</li>
+        <li>1973年の同時退任前、宗一郎が「お前と一緒なら辞めてもいい」と渋々受諾したエピソードが残る。 No.1 を退かせるのに必要だったのは、<strong>"自分も一緒に辞める"</strong> という共犯関係だった。</li>
+        <li>退任後、<strong>本社にほとんど顔を出さなかった</strong>。 「相談役だが相談しない」というスタンスを貫いた。 河島・久米・川本ら歴代社長は、藤沢の不在こそが最大の遺産だったと証言。</li>
+        <li>晩年、若手起業家からの面会依頼にはほぼ応じなかった。 「私の話を聞きたいなら本を読んでくれ」と返した。 <strong>「本に書いた以上のことはない」</strong>という潔さ。</li>
+        <li>1988年12月30日、東京で死去。 享年78。 死後、宗一郎は「相棒が先に行ってしまった、寂しいな」とコメント。 3年後の1991年、宗一郎も後を追うように没。</li>
+        <li>『松明は自分の手で』というタイトルは、<strong>「他人の松明では自分の道は照らせない、自分で松明を持って歩け」</strong> という意味。 藤沢の経営観の核を一言で示す。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [M] 関連の深い人物                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">本田 宗一郎 <span class="ja">Honda Soichiro</span></div>
+            <span class="rel-tag">No.1 / 相棒</span>
+          </div>
+          <div class="rel-body">
+            藤沢が25年仕えた創業者。 浜松の自転車店の息子から世界企業 Honda を作った技術の天才。 怒鳴り、殴り、現場でスパナを振る男だったが、<strong>金と組織のことは藤沢に全権委任</strong>。 二人は出会いから退任まで一度も役割を侵犯しなかった。 1991年没、享年84。 戒名は「本田院二輪是舟天朝之大居士」。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">竹島 弘 <span class="ja">Takeshima Hiroshi</span></div>
+            <span class="rel-tag">出会いの仲介</span>
+          </div>
+          <div class="rel-body">
+            本田宗一郎の旧友で、藤沢の知人でもあった人物。 1949年8月に「東京と浜松の二人を会わせれば面白い」と二人を引き合わせた。 半日で握手契約が成立した瞬間に立ち会った、Honda 創業期の影の立役者。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">河島 喜好 <span class="ja">Kawashima Kiyoshi</span></div>
+            <span class="rel-tag">後継 / 二代目社長</span>
+          </div>
+          <div class="rel-body">
+            1973年、41歳で藤沢・宗一郎ペアから Honda を引き継いだ二代目社長。 マン島TT・F1のエンジン設計者出身。 藤沢は「我々の名前を出すな、君の Honda を作れ」と退任時に告げた。 河島は CVCC・シビック路線を完成させ、Honda を世界企業へ押し上げた。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">久米 是志 <span class="ja">Kume Tadashi</span></div>
+            <span class="rel-tag">水冷派 / 三代目社長</span>
+          </div>
+          <div class="rel-body">
+            ホンダ1300事件で水冷案を主張した若手技術陣の中心人物の一人。 藤沢が宗一郎に「あなたは社長か技術者か」と問わせた背景には久米らの正論があった。 1983年に三代目社長就任。 藤沢の "次世代を信じて口出しを控える" 姿勢の最大の受益者。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">西田 通弘 <span class="ja">Nishida Michihiro</span></div>
+            <span class="rel-tag">同時退任した副社長</span>
+          </div>
+          <div class="rel-body">
+            1973年10月、宗一郎・藤沢と同日に退任した取締役副社長。 経理畑から藤沢の右腕として活躍。 藤沢の "ペア退任" 哲学は実は3人同時退任で、上層部が一気に若返るインパクトを最大化した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">藤沢 ふみ <span class="ja">Fujisawa Fumi</span></div>
+            <span class="rel-tag">伴侶</span>
+          </div>
+          <div class="rel-body">
+            戦前からの妻。 三ツ星商会時代から戦災・戦後の混乱期を共に乗り切った戦友。 藤沢は終生一夫一婦を貫き、家庭の話を社内で一切しなかった。 「家のことを職場に持ち込まない、職場のことを家に持ち込まない」という古典的・徹底的な切り分け。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag muted">比較対象 / 補完型</span>
+          </div>
+          <div class="rel-body">
+            Meta (Facebook) を完成させた COO。 藤沢との共通点は <strong>"創業者の弱い領域を全て引き受ける補完型"</strong>。 違いは退任時、藤沢が <strong>創業者と同時に</strong> 退いたのに対し、サンドバーグは Zuckerberg を CEO に残して一人で去った。 同じ補完型でも引き際の構造が異なる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Charlie Munger <span class="ja">チャーリー・マンガー</span></div>
+            <span class="rel-tag muted">比較対象 / 全う型</span>
+          </div>
+          <div class="rel-body">
+            Buffett の64年の相棒。 藤沢との共通点は <strong>「No.1 を緊張させる重さを持つ No.2」</strong>。 違いはマンガーが99歳まで現役を貫いた "全う型" であるのに対し、藤沢は63歳で潔く退いた "引き際型"。 No.2 の長期化と短期化、二つの極の代表例。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- [N] 参考資料                                -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://ja.wikipedia.org/wiki/%E8%97%A4%E6%B2%A2%E6%AD%A6%E5%A4%AB" target="_blank">藤沢武夫 — Wikipedia 日本語版</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Takeo_Fujisawa" target="_blank">Takeo Fujisawa — Wikipedia (English)</a></li>
+        <li>藤沢武夫『松明は自分の手で』(1974, 産業能率大学出版部) — 経営哲学の自己解説</li>
+        <li>藤沢武夫『経営に終わりはない』(1986, 文藝春秋) — 退任後の遺著、現在は文春文庫</li>
+        <li><a href="https://global.honda/jp/founders/fujisawa.html" target="_blank">Honda Global — 創業者 藤沢武夫プロフィール</a></li>
+        <li><a href="https://global.honda/jp/heritage/" target="_blank">Honda Global — Heritage / 創業期の歩み</a></li>
+        <li><a href="https://www.honda.co.jp/50years-history/" target="_blank">本田技研工業50年史 — 公式社史</a></li>
+        <li><a href="https://toyokeizai.net/articles/-/229795" target="_blank">本田宗一郎と藤沢武夫、二人の天才の出会い — 東洋経済オンライン</a></li>
+        <li><a href="https://business.nikkei.com/atcl/seminar/19/00059/021800006/" target="_blank">藤沢武夫が本田宗一郎に放った決定的な一言 — 日経ビジネス</a></li>
+        <li><a href="https://president.jp/articles/-/27068" target="_blank">藤沢武夫「経営者の引き際」哲学 — プレジデントオンライン</a></li>
+        <li>佐藤正明『ホンダ神話 — 教祖のなき後で』(1995, 文藝春秋) — 創業者退任後のホンダを描いたノンフィクション</li>
+        <li>梶原一明『藤沢武夫 — 経営の真髄』(2002, 日本実業出版社) — 経営者としての藤沢の評伝</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

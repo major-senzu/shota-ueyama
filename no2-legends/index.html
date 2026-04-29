@@ -368,6 +368,91 @@
     .cat-head .cat-title .ja { margin-left: 0; display: block; margin-top: 4px; }
     section.cat { scroll-margin-top: 76px; }
   }
+
+  /* ===== filter / search bar ===== */
+  .filter-bar {
+    margin: -32px 0 48px;
+    padding: 18px 20px;
+    background: #fafafa;
+    border: 1px solid var(--line);
+  }
+  .filter-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .filter-row:last-child { border-bottom: none; }
+  .filter-row .flabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.10em; text-transform: uppercase;
+    width: 76px; flex-shrink: 0;
+  }
+  .chip {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 5px 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .chip:hover { color: var(--fg); border-color: var(--fg); }
+  .chip.active {
+    background: var(--fg); color: #fff; border-color: var(--fg);
+  }
+  .filter-search {
+    flex: 1; min-width: 180px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .filter-search input {
+    flex: 1;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--fg);
+    outline: none;
+  }
+  .filter-search input:focus { border-color: var(--fg); }
+  .filter-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .filter-meta .count strong { color: var(--fg); font-weight: 600; }
+  .filter-meta .reset {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-family: inherit; font-size: 11px;
+    text-decoration: underline; letter-spacing: 0.04em;
+  }
+  .filter-meta .reset:hover { color: var(--fg); }
+  .filter-meta .raw-link {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--fg);
+    font-weight: 500;
+  }
+  .section-empty-note {
+    padding: 18px 0; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media (max-width: 700px) {
+    .filter-row { flex-direction: column; align-items: flex-start; }
+    .filter-row .flabel { width: auto; margin-bottom: 4px; }
+  }
 </style>
 </head>
 <body>
@@ -420,13 +505,67 @@
       </div>
     </div>
 
+    <!-- ============= FILTER / SEARCH BAR ============= -->
+    <div class="filter-bar" id="filter-bar">
+      <div class="filter-row">
+        <span class="flabel">カテゴリ</span>
+        <button class="chip active" data-filter="cat" data-val="">全て</button>
+        <button class="chip" data-filter="cat" data-val="corp">大企業</button>
+        <button class="chip" data-filter="cat" data-val="startup">スタートアップ</button>
+        <button class="chip" data-filter="cat" data-val="history">歴史</button>
+        <button class="chip" data-filter="cat" data-val="sports">スポーツ</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">国</span>
+        <button class="chip active" data-filter="country" data-val="">全て</button>
+        <button class="chip" data-filter="country" data-val="jp">日本</button>
+        <button class="chip" data-filter="country" data-val="overseas">海外</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">学歴</span>
+        <button class="chip active" data-filter="edu" data-val="">全て</button>
+        <button class="chip" data-filter="edu" data-val="graduate">大卒</button>
+        <button class="chip" data-filter="edu" data-val="dropout">大学退学</button>
+        <button class="chip" data-filter="edu" data-val="none">該当なし</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">起業経験</span>
+        <button class="chip active" data-filter="founder" data-val="">全て</button>
+        <button class="chip" data-filter="founder" data-val="true">あり</button>
+        <button class="chip" data-filter="founder" data-val="false">なし</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">技術者</span>
+        <button class="chip active" data-filter="tech" data-val="">全て</button>
+        <button class="chip" data-filter="tech" data-val="true">はい</button>
+        <button class="chip" data-filter="tech" data-val="false">いいえ</button>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">型</span>
+        <div id="type-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+      <div class="filter-row">
+        <span class="flabel">検索</span>
+        <div class="filter-search">
+          <input type="text" id="search-input" placeholder="名前で検索（カナ・支えたNo.1・所属でも可）…" autocomplete="off">
+        </div>
+      </div>
+      <div class="filter-meta">
+        <span class="count">表示中: <strong id="visible-count">—</strong> / <span id="total-count">—</span> 名</span>
+        <span style="display:flex; gap:18px; align-items:center;">
+          <a href="./raw-data/" class="raw-link">▸ Raw Data Table</a>
+          <button class="reset" id="reset-filters">フィルタをリセット</button>
+        </span>
+      </div>
+    </div>
+
     <!-- =============================================== -->
     <!-- 大企業 No.2 / CORPORATE No.2                     -->
     <!-- =============================================== -->
     <section class="cat" id="corp">
       <div class="cat-head">
         <div class="cat-title">CORPORATE No.2 <span class="ja">大企業のナンバー2</span></div>
-        <div class="cat-count">● 5 &nbsp;·&nbsp; ○ 0 &nbsp;·&nbsp; ◌ 1 &nbsp;/&nbsp; 6 total</div>
+        <div class="cat-count">● 7 &nbsp;·&nbsp; ○ 14 &nbsp;·&nbsp; ◌ 1 &nbsp;/&nbsp; 22 total</div>
       </div>
       <div class="card-grid">
 
@@ -480,6 +619,138 @@
         </div>
         </a>
 
+        <a href="./joseph-tsai.html" style="text-decoration: none; color: inherit;">
+        <div class="card done">
+          <div class="face" data-initials="JT"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Joseph_Tsai_at_the_2024_New_York_Liberty_Ticker_Tape_Parade_%28cropped%29.jpg/250px-Joseph_Tsai_at_the_2024_New_York_Liberty_Ticker_Tape_Parade_%28cropped%29.jpg" alt="Joseph Tsai" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Joseph Tsai</div>
+          <div class="name-ja">蔡崇信 / Jack Ma</div>
+          <div class="summary">Yale Law → Sullivan&Cromwell → Investor AB香港駐在で年収$700K。1999年に月$50で杭州のJack Maへ参画。18羅漢構造・VIE・$25B NYSE IPOを設計。2023年Chairman昇格、副業でBrooklyn Nets所有。</div>
+          <div class="tags"><span class="tag">ALIBABA</span><span class="tag">翻訳型</span><span class="tag">設計型</span></div>
+        </div>
+        </a>
+
+        <div class="card todo">
+          <div class="face" data-initials="RP"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Ruth_Porat_at_the_2014_World_Economic_Forum.jpg?width=200" alt="Ruth Porat" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Ruth Porat</div>
+          <div class="name-ja">ルース・ポラット / Sundar Pichai</div>
+          <div class="summary">Morgan StanleyのCFOから2015年Googleへ転身。Pichaiと組み、Alphabet全体を多事業会社として再構築。"Other Bets" の規律を作った女性CFOの代表格。</div>
+          <div class="tags"><span class="tag">ALPHABET</span><span class="tag">CFO型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="AH"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Amy_Hood_at_GovTech_Summit_2018.jpg?width=200" alt="Amy Hood" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Amy Hood</div>
+          <div class="name-ja">エイミー・フッド / Satya Nadella</div>
+          <div class="summary">2013年Microsoft CFO就任。Nadellaの戦略転換 (Cloud / AI) を全てファイナンスで裏付けた。Goldman Sachs出身、現代の女性CFOの代表。</div>
+          <div class="tags"><span class="tag">MICROSOFT</span><span class="tag">CFO型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="ML"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Martin_Lau_2018.jpg?width=200" alt="Martin Lau" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Martin Lau</div>
+          <div class="name-ja">劉熾平 / Pony Ma</div>
+          <div class="summary">McKinsey→Goldman Sachs→2005年Tencent参画。Pony Maの右腕としてWeChatの収益化と海外展開を主導。サンドバーグ型のアジア版。</div>
+          <div class="tags"><span class="tag">TENCENT</span><span class="tag">翻訳型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="SW"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Susan_Wojcicki_-_2014_(cropped).jpg?width=200" alt="Susan Wojcicki" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Susan Wojcicki</div>
+          <div class="name-ja">スーザン・ウォシッキー / Larry Page</div>
+          <div class="summary">GoogleのGarage House大家から創業期参画 (社員16人目)。AdSenseの収益エンジンを構築し、YouTubeをCEOとして10年率いた "翻訳者" の原型。2024年没。</div>
+          <div class="tags"><span class="tag">YOUTUBE</span><span class="tag">翻訳型</span><span class="tag">全う型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="JW"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Jeff_Wilke.jpg?width=200" alt="Jeff Wilke" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Jeff Wilke</div>
+          <div class="name-ja">ジェフ・ウィルク / Jeff Bezos</div>
+          <div class="summary">Bezosの右腕として20年以上、Amazon小売事業を率いたクラシックな黒子型No.2。FCオペレーション・"Six-Page Memo" 文化の伝道者。2021年退任。</div>
+          <div class="tags"><span class="tag">AMAZON</span><span class="tag">運営型</span><span class="tag">全う型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="MaL"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Marne_Levine_2019.jpg?width=200" alt="Marne Levine" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Marne Levine</div>
+          <div class="name-ja">マーン・レヴィーン / Sandberg系</div>
+          <div class="summary">Treasury → Facebook → Instagram COO → Meta CBO。サンドバーグ直系の弟子で、政治と事業を繋ぐキャリアの代表例。</div>
+          <div class="tags"><span class="tag">META</span><span class="tag">翻訳型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="SC"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Safra_Catz.jpg?width=200" alt="Safra Catz" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Safra Catz</div>
+          <div class="name-ja">サフラ・キャッツ / Larry Ellison</div>
+          <div class="summary">Larry Ellisonの右腕として25年超。DLJ→1999年Oracle、M&A・ファイナンス・運営を全て引き受けた女性CFO型No.2の典型。</div>
+          <div class="tags"><span class="tag">ORACLE</span><span class="tag">CFO型</span><span class="tag">継承型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="TS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Ted_Sarandos_2018.jpg?width=200" alt="Ted Sarandos" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Ted Sarandos</div>
+          <div class="name-ja">テッド・サランドス / Reed Hastings</div>
+          <div class="summary">2000年Netflix入社、Hastingsの長年のコンテンツ責任者。"Stranger Things" 等のオリジナル戦略を主導。2020年Co-CEO昇格、Hastings退任後の継承候補。</div>
+          <div class="tags"><span class="tag">NETFLIX</span><span class="tag">継承型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="吉田"></div>
+          <div class="name">吉田 憲一郎</div>
+          <div class="name-ja">よしだ けんいちろう / 平井 一夫</div>
+          <div class="summary">ソネット社長 → 2013年ソニーCFO → 2018年CEO就任。平井一夫を支えたCFOからCEOへ。"再建の翻訳者" として平井路線を完成させた。</div>
+          <div class="tags"><span class="tag">SONY</span><span class="tag">CFO型</span><span class="tag">継承型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="後藤"></div>
+          <div class="name">後藤 芳光</div>
+          <div class="name-ja">ごとう よしみつ / 孫 正義</div>
+          <div class="summary">孫正義の右腕として20年以上。ファイナンス・上場・資本政策・ARM買収と全方位で支える典型的 "守備固め型" No.2。</div>
+          <div class="tags"><span class="tag">SOFTBANK</span><span class="tag">CFO型</span><span class="tag">全う型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="玉塚"></div>
+          <div class="name">玉塚 元一</div>
+          <div class="name-ja">たまつか げんいち / 柳井 正</div>
+          <div class="summary">旭硝子 → IBM → 2002年ファーストリテイリングCOO。柳井正のNo.2として "次期社長候補" となり、後にローソン・KFC等のCEOへ転身。No.2/No.1ハイブリッドの代表。</div>
+          <div class="tags"><span class="tag">FAST RETAILING</span><span class="tag">巣立ち型</span><span class="tag">継承型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="澤田"></div>
+          <div class="name">澤田 貴司</div>
+          <div class="name-ja">さわだ たかし / 柳井 正</div>
+          <div class="summary">伊藤忠 → 1997年ファーストリテイリング副社長。柳井正のもう一人の右腕として玉塚と並ぶ。後にファミマ社長へ独立転身した "卒業型No.2" の双璧。</div>
+          <div class="tags"><span class="tag">FAMIMA</span><span class="tag">巣立ち型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <a href="./fujisawa-takeo.html" style="text-decoration: none; color: inherit;">
+        <div class="card done">
+          <div class="face" data-initials="藤沢"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Takeo_Fujisawa.jpg" alt="藤沢武夫" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">藤沢 武夫</div>
+          <div class="name-ja">ふじさわ たけお / 本田 宗一郎</div>
+          <div class="summary">本田宗一郎を "技術" に専念させるため、経営・財務・販売・人事を全引き受け。"技術の本田、経営の藤沢" は日本のNo.2哲学の原点。1973年に宗一郎と同時退任した美しい引き際。</div>
+          <div class="tags"><span class="tag">HONDA</span><span class="tag">補完型</span><span class="tag">引き際型</span></div>
+        </div>
+        </a>
+
+        <div class="card todo">
+          <div class="face" data-initials="岩田"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Iwata_Satoru.jpg?width=200" alt="岩田聡" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">岩田 聡</div>
+          <div class="name-ja">いわた さとる / 山内 溥</div>
+          <div class="summary">HAL研究所 → 任天堂入社、山内溥のNo.2として6年で社長継承。「直接話を聞きに行く」スタイルでDS・Wiiの黄金期を築いた。エンジニア出身CEOの先駆。2015年没。</div>
+          <div class="tags"><span class="tag">NINTENDO</span><span class="tag">継承型</span><span class="tag">翻訳型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="伊藤"></div>
+          <div class="name">伊藤 謙介</div>
+          <div class="name-ja">いとう けんすけ / 稲盛 和夫</div>
+          <div class="summary">稲盛和夫の右腕として京セラ創業期から30年以上。社長を6年務めた "稲盛哲学の継承者"。 哲学を経営に翻訳する後継者像。</div>
+          <div class="tags"><span class="tag">KYOCERA</span><span class="tag">継承型</span><span class="tag">補完型</span></div>
+        </div>
+
         <div class="card pending">
           <div class="face" data-initials="豊"></div>
           <div class="name">Akio Toyoda 期の参謀</div>
@@ -497,7 +768,7 @@
     <section class="cat" id="startup">
       <div class="cat-head">
         <div class="cat-title">STARTUP No.2 <span class="ja">スタートアップのナンバー2</span></div>
-        <div class="cat-count">● 11 &nbsp;·&nbsp; ○ 0 &nbsp;·&nbsp; ◌ 0 &nbsp;/&nbsp; 11 total</div>
+        <div class="cat-count">● 14 &nbsp;·&nbsp; ○ 6 &nbsp;·&nbsp; ◌ 0 &nbsp;/&nbsp; 20 total</div>
       </div>
       <div class="card-grid">
 
@@ -608,6 +879,84 @@
           <div class="name-ja">まつもと ゆうき / 福島良典</div>
           <div class="summary">鹿児島の片田舎・プログラミング歴ゼロから東大→学生起業。Gunosy・DMM・LayerXで3社CTO歴任。2021年に古巣Gunosy創業者・福島の隣に "代表取締役CTO" として戻り、共同代表という"準・No.1"を発明した翻訳型No.2。</div>
           <div class="tags"><span class="tag">LAYERX</span><span class="tag">翻訳型</span><span class="tag">共同代表型</span></div>
+        </div>
+        </a>
+
+        <a href="./gwynne-shotwell.html" style="text-decoration: none; color: inherit;">
+        <div class="card done">
+          <div class="face" data-initials="GS"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Gwynne_Shotwell_at_the_Tribeca_Disruptive_Innovation_Awards.jpg?width=200" alt="Gwynne Shotwell" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Gwynne Shotwell</div>
+          <div class="name-ja">グウィン・ショットウェル / Elon Musk</div>
+          <div class="summary">2002年SpaceX社員11人目で参画、2008年COO就任。Elonがビジョンと工学に集中する間、商業契約・組織・運営を全て引き受けた "サンドバーグ型の極致"。22年間Elonの右腕。</div>
+          <div class="tags"><span class="tag">SPACEX</span><span class="tag">運営型</span><span class="tag">全う型</span></div>
+        </div>
+        </a>
+
+        <div class="card todo">
+          <div class="face" data-initials="BJ"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Belinda_Johnson.jpg?width=200" alt="Belinda Johnson" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Belinda Johnson</div>
+          <div class="name-ja">ベリンダ・ジョンソン / Brian Chesky</div>
+          <div class="summary">弁護士出身、2011年Airbnb参画。Cheskyを "プロダクトとデザイン" に集中させるため、規制・行政・上場準備を全引き受け。サンドバーグの正統後継。2020年退任。</div>
+          <div class="tags"><span class="tag">AIRBNB</span><span class="tag">翻訳型</span><span class="tag">引き際型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="DA"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Daniela_Amodei.jpg?width=200" alt="Daniela Amodei" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Daniela Amodei</div>
+          <div class="name-ja">ダニエラ・アモデイ / Dario Amodei</div>
+          <div class="summary">Stripe→OpenAI→2021年Anthropic共同創業。兄DarioがリサーチとビジョンならDanielaが組織・採用・運営。共同創業だが役割完全分業のNo.2型。</div>
+          <div class="tags"><span class="tag">ANTHROPIC</span><span class="tag">兄妹NO.2</span><span class="tag">補完型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="BL"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Brad_Lightcap.jpg?width=200" alt="Brad Lightcap" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Brad Lightcap</div>
+          <div class="name-ja">ブラッド・ライトキャップ / Sam Altman</div>
+          <div class="summary">Y Combinator時代からSam Altmanの右腕。20代後半でCFO/COOを兼任、ChatGPT商業化と資本政策を主導。"AI時代の若手No.2" の代表格。</div>
+          <div class="tags"><span class="tag">OPENAI</span><span class="tag">CFO型</span><span class="tag">若手</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="SF"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Sarah_Friar.jpg?width=200" alt="Sarah Friar" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Sarah Friar</div>
+          <div class="name-ja">サラ・フライア / Jack Dorsey</div>
+          <div class="summary">北アイルランド出身、Goldman→Salesforce→Square CFO。DorseyのNo.2としてSquareのIPOを主導後、2018年Nextdoor CEO転身。CFO→CEOキャリアの代表。</div>
+          <div class="tags"><span class="tag">SQUARE</span><span class="tag">CFO型</span><span class="tag">巣立ち型</span></div>
+        </div>
+
+        <div class="card todo">
+          <div class="face" data-initials="WG"><img src="https://en.wikipedia.org/wiki/Special:FilePath/Will_Gaybrick.jpg?width=200" alt="Will Gaybrick" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Will Gaybrick</div>
+          <div class="name-ja">ウィル・ゲイブリック / Collison兄弟</div>
+          <div class="summary">Thrive Capital出身、2015年Stripe参画。Collison兄弟の右腕としてCFO→CPO→Presidentと役割を変えながらStripeの財務とプロダクト両軸を担う役割可変型。</div>
+          <div class="tags"><span class="tag">STRIPE</span><span class="tag">役割可変型</span><span class="tag">CFO型</span></div>
+        </div>
+
+        <a href="./reid-hoffman.html" style="text-decoration: none; color: inherit;">
+        <div class="card done">
+          <div class="face" data-initials="RH"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/2022_Reid_Hoffman_%28cropped%29.jpg" alt="Reid Hoffman" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">Reid Hoffman</div>
+          <div class="name-ja">リード・ホフマン / Peter Thiel</div>
+          <div class="summary">Stanford+Oxford哲学修士のMarshall Scholar。 1998年Confinity取締役、 2000年PayPal EVPとして "Thielの外殻" (銀行・規制・国際) を担当。 PayPal売却3ヶ月後にLinkedIn共同創業——No.2 → 独立創業 → 投資家・哲学者へと螺旋を描いた "永遠のベータ版No.2"。</div>
+          <div class="tags"><span class="tag">PAYPAL</span><span class="tag">巣立ち型</span><span class="tag">創業転身</span></div>
+        </div>
+        </a>
+
+        <div class="card todo">
+          <div class="face" data-initials="守安"></div>
+          <div class="name">守安 功</div>
+          <div class="name-ja">もりやす いさお / 南場 智子</div>
+          <div class="summary">ボストンコンサルティング → 2003年DeNA入社。南場智子CEOを支え、2011年に経営を引き継ぎ社長就任。モバゲー・キュレーション事業を率いた。2019年退任。</div>
+          <div class="tags"><span class="tag">DENA</span><span class="tag">継承型</span><span class="tag">補完型</span></div>
+        </div>
+
+        <a href="./honjo-shinnosuke.html" style="text-decoration: none; color: inherit;">
+        <div class="card done">
+          <div class="face" data-initials="本城"><img src="https://kazakoshi.ed.jp/cmskazakoshi/wp-content/uploads/2019/01/honjo_01-e1548297690787.jpg" alt="本城慎之介" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="name">本城 慎之介</div>
+          <div class="name-ja">ほんじょう しんのすけ / 三木谷 浩史</div>
+          <div class="summary">慶應SFC大学院在学中の24歳で三木谷と出会い5分で人生を賭ける。 楽天 社員番号2番として SQL本一冊で実装、 副社長まで上り詰めた末、 三木谷の興銀退職と同じ <strong>30歳で予告通り卒業</strong>。 18年かけて軽井沢風越学園を私財で開校した "卒業型 × 哲学転身型" No.2。</div>
+          <div class="tags"><span class="tag">RAKUTEN</span><span class="tag">卒業型</span><span class="tag">哲学転身型</span></div>
         </div>
         </a>
 
@@ -774,5 +1123,147 @@
   </footer>
 
   <script src="../assets/site.js"></script>
+  <script>
+  /* ===== legend filter / search ===== */
+  (function(){
+    const DATA_URL = './data/legends.json';
+    const state = {
+      people: [],
+      byCard: new Map(),
+      filters: { cat: '', country: '', edu: '', founder: '', tech: '', types: new Set() },
+      query: '',
+    };
+
+    const stripWS = s => (s || '').replace(/\s+/g, '').replace(/　/g, '');
+
+    function collectTypes(people) {
+      const set = new Set();
+      people.forEach(p => (p.tags || []).forEach(t => {
+        if (/型$/.test(t)) set.add(t);
+      }));
+      return Array.from(set).sort((a,b) => a.localeCompare(b, 'ja'));
+    }
+
+    function buildTypeChips(types) {
+      const c = document.getElementById('type-chips');
+      c.innerHTML = types.map(t =>
+        `<button class="chip" data-filter="type" data-val="${t}">${t}</button>`
+      ).join('');
+    }
+
+    function indexCardsByName(people) {
+      const map = new Map();
+      people.forEach(p => map.set(stripWS(p.name), p));
+      const cards = [];
+      document.querySelectorAll('section.cat .card').forEach(cardEl => {
+        const nameEl = cardEl.querySelector('.name');
+        if (!nameEl) return;
+        const key = stripWS(nameEl.textContent);
+        const person = map.get(key);
+        const link = cardEl.parentElement && cardEl.parentElement.tagName === 'A' ? cardEl.parentElement : null;
+        cards.push({ cardEl, link, person });
+        if (person) state.byCard.set(cardEl, person);
+      });
+      return cards;
+    }
+
+    function matches(person) {
+      const f = state.filters;
+      if (!person) return true;
+      if (f.cat      && person.cat       !== f.cat)            return false;
+      if (f.country  && person.country   !== f.country)        return false;
+      if (f.edu      && person.edu       !== f.edu)            return false;
+      if (f.founder  !== '' && String(person.founder) !== f.founder) return false;
+      if (f.tech     !== '' && String(person.tech)    !== f.tech)    return false;
+      if (f.types.size > 0) {
+        const tagSet = new Set(person.tags || []);
+        for (const t of f.types) if (!tagSet.has(t)) return false;
+      }
+      if (state.query) {
+        const q = state.query.toLowerCase();
+        // 名前検索: name / kana / org / supported のみ。型は専用フィルタを使う
+        const haystack = [person.name, person.kana, person.org, person.supported].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    }
+
+    function applyFilters(cards) {
+      let visible = 0;
+      const sectionVisible = { corp: 0, startup: 0, history: 0, sports: 0 };
+      cards.forEach(({ cardEl, link, person }) => {
+        const ok = matches(person);
+        const targetEl = link || cardEl;
+        targetEl.style.display = ok ? '' : 'none';
+        if (ok) {
+          visible++;
+          if (person && sectionVisible[person.cat] != null) sectionVisible[person.cat]++;
+        }
+      });
+      ['corp','startup','history','sports'].forEach(id => {
+        const sec = document.getElementById(id);
+        if (!sec) return;
+        sec.style.display = sectionVisible[id] === 0 && cards.length > 0 ? 'none' : '';
+      });
+      document.getElementById('visible-count').textContent = visible;
+    }
+
+    function setActiveChip(filter, val) {
+      document.querySelectorAll('.chip[data-filter="' + filter + '"]').forEach(b => {
+        b.classList.toggle('active', b.dataset.val === val);
+      });
+    }
+
+    function bindEvents(cards) {
+      document.querySelectorAll('.chip[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const f = btn.dataset.filter, v = btn.dataset.val;
+          if (f === 'type') {
+            if (state.filters.types.has(v)) {
+              state.filters.types.delete(v);
+              btn.classList.remove('active');
+            } else {
+              state.filters.types.add(v);
+              btn.classList.add('active');
+            }
+          } else {
+            state.filters[f] = v;
+            setActiveChip(f, v);
+          }
+          applyFilters(cards);
+        });
+      });
+      document.getElementById('search-input').addEventListener('input', e => {
+        state.query = e.target.value.trim();
+        applyFilters(cards);
+      });
+      document.getElementById('reset-filters').addEventListener('click', () => {
+        state.filters = { cat: '', country: '', edu: '', founder: '', tech: '', types: new Set() };
+        state.query = '';
+        document.getElementById('search-input').value = '';
+        ['cat','country','edu','founder','tech'].forEach(f => setActiveChip(f, ''));
+        document.querySelectorAll('.chip[data-filter="type"]').forEach(b => b.classList.remove('active'));
+        applyFilters(cards);
+      });
+    }
+
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(r => r.json())
+      .then(json => {
+        state.people = json.people || [];
+        buildTypeChips(collectTypes(state.people));
+        const cards = indexCardsByName(state.people);
+        document.getElementById('total-count').textContent = cards.length;
+        bindEvents(cards);
+        applyFilters(cards);
+        const unmatched = cards.filter(c => !c.person).map(c => (c.cardEl.querySelector('.name') || {}).textContent);
+        if (unmatched.length) console.warn('cards not matched to JSON:', unmatched);
+      })
+      .catch(err => {
+        console.error('legends.json load failed', err);
+        document.getElementById('visible-count').textContent = '!';
+      });
+  })();
+  </script>
 </body>
 </html>

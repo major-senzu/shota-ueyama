@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本城慎之介 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* =================================== */
+  /* HERO (黒背景)                         */
+  /* =================================== */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  /* hero face photo (next to h1) */
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  /* =================================== */
+  /* SECTION COMMON                       */
+  /* =================================== */
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* =================================== */
+  /* ORIGINS (生い立ち・学歴)              */
+  /* =================================== */
+  .origins-head {
+    margin-bottom: 18px;
+  }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child {
+    border-top: none;
+  }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* =================================== */
+  /* TL;DR CALLOUT                        */
+  /* =================================== */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  /* =================================== */
+  /* TIMELINE (微分ポイント)               */
+  /* =================================== */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* DUO TIMELINE / RELATIONSHIP STAGES   */
+  /* =================================== */
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* VALUE GRID                           */
+  /* =================================== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* =================================== */
+  /* TYPE NAMING (No.2の型)               */
+  /* =================================== */
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  /* =================================== */
+  /* LESSONS (翔太への設計図)              */
+  /* =================================== */
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* =================================== */
+  /* TRIVIA                               */
+  /* =================================== */
+  ul.trivia {
+    list-style: none;
+  }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* =================================== */
+  /* SOURCES                              */
+  /* =================================== */
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* =================================== */
+  /* RELATED PEOPLE                       */
+  /* =================================== */
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  /* =================================== */
+  /* RESPONSIVE                           */
+  /* =================================== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="本城"><img src="https://kazakoshi.ed.jp/cmskazakoshi/wp-content/uploads/2019/01/honjo_01-e1548297690787.jpg" alt="本城慎之介" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>本城 慎之介</h1>
+        </div>
+      </div>
+      <p class="summary">
+        北海道音別町（現・釧路市）の市議会議員の家に生まれ、慶應SFC・大学院在学中の24歳で
+        三木谷浩史と出会い、楽天の前身・株式会社エム・ディー・エムを6人で創業。 SQLの本を渡されて
+        独学でシステムを構築し、楽天市場の最初の13店舗を立ち上げた "<strong>社員番号2番</strong>"。
+        三木谷が興銀を30で辞めたのに合わせ、<strong>「自分も30で卒業する」</strong>と自分に約束し、 2002年・
+        30歳で副社長を退任。 楽天の株を握ったまま教育の道へ移り、32歳で全国最年少の公立中学校長、
+        18年かけて 2020年に <strong>軽井沢風越学園</strong>（幼小中混在校）を私財で開校。 2032年に
+        理事長を退くことを既に公言している。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">三木谷 浩史（楽天 創業者・1996–2002 / 約6年間）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1972年（53〜54歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">北海道 白糠郡 音別町（現・釧路市）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">楽天大株主（IPO時の株式・推定資産150億円超）/ 風越学園を私財で創設</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻（一般人）/ 子供5人（1女4男）/ 4人全員の出産に立ち会う</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">イシス編集学校（松岡正剛）/ 焚き火・自然教育の実践 / 読書</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 本城洋（元釧路市議会議員）/ 母（釧路）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">学校法人軽井沢風越学園 理事長（2020–2032予定）/ 横浜市立東山田中学校 校長（2005–2007）/ 楽天 取締役副社長（1999–2002）/ 楽天 共同創業者（1996/1997）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>5年で実装し、30で卒業し、富を哲学に変える "卒業型 × 哲学転身型" No.2</strong>」。
+        24歳で三木谷と出会い5分で人生を賭ける構造は Tim Cook と同じだが、本城が異質なのは
+        <strong>"早く卒業する" 約束を最初から自分にしていた</strong>こと。 三木谷が興銀を30で辞めた
+        ように、 自分も <strong>30で楽天を辞めた</strong>。 残ったのは IPO で得た楽天の大株（推定150億円超）
+        だが、 それを再投資せずに <strong>軽井沢の山に学校を作る</strong> ために 18年溶かした。 哲学は
+        「<strong>遠くよりも深く</strong>」。 楽天で "遠く" を実装した男が、 教育で "深さ" を実装する。
+        日本スタートアップ史で最も極端な"卒業の美学"。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1972年</strong>、北海道白糠郡音別町（現・釧路市）生まれ。父 <strong>本城洋</strong> は元釧路市議会議員。 太平洋に面した人口5千人弱の漁業・林業の町で生まれ育つ。 「<strong>地元の政治家の家</strong>」 という、 公共性と自治の感覚が日常にある家庭環境。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            北海道の自然のなかで育つ。 後年「<strong>子どもには小さな成功体験より無数の失敗体験が必要</strong>」と語る教育観の原点は、 釧路の海と森で焦がしたり燃やしたり壊したりした幼少期の感覚にある。 父が市議会議員という家庭の中で、 公的な仕事への目線も身近にあった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>函館ラ・サール高等学校</strong>。 北海道屈指のキリスト教系男子寮制進学校。 道東の小さな町から函館の寮に出て、 修道士・神父・全国から来る同世代と共に生活。 「<strong>大人と子どもが境界なく暮らす空間</strong>」 という後の風越学園の原型は、 この寮生活で身体に入った可能性が高い。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>慶應義塾大学 総合政策学部（SFC・1991入学）</strong>。 SFC は1990年開設の新設学部で、 本城は <strong>SFC秋祭の創設メンバー</strong> の一人。 「ゼロから組織を立ち上げる」体験を学部時代に既にしている。 SFC は当時から「学部生でも研究室・起業・行政と等しく対話する」場で、 本城のキャリアの土台になった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>慶應義塾大学大学院 政策・メディア研究科</strong>。 修士課程在学中の<strong>1996年</strong>、 就職活動で日本興業銀行を志望し OB 訪問。 そこで「興銀を辞めた人にも会っておけ」と勧められ、 <strong>退職直後の三木谷浩史</strong> と面談。 これが人生を変える5分間になる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>銀行に入って大企業を動かす</strong>」 を志望していた青年が、 三木谷の「<strong>大企業が日本を変える時代は終わった、 これからは個人と中小企業</strong>」 という説得で180度転回。 大学院生のまま <strong>株式会社エム・ディー・エム</strong> の <strong>社員番号2番</strong> として参画する選択をする。 24歳。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「お金があっても、 深いところには手が届かないんです。 むしろ、 遠くのものに手が届くよりも、 深いところに手が届くことの方が、 人間にとって、 より大事なことなんじゃないか」</div>
+        <div class="src">— 本城慎之介（"こどものカタチ" インタビュー / 楽天で "遠く" を経験した後に行き着いた人生哲学）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント (人生の変化率マップ)         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1972</td>
+            <td>北海道白糠郡音別町（現・釧路市）生まれ。 父・本城洋は元釧路市議会議員。 太平洋に面した小さな漁業・林業の町。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">15</td>
+            <td class="col-year">1988</td>
+            <td>函館ラ・サール高校に進学、 寮生活開始。 北海道の片田舎から全国の同世代が集まる男子寮へ。 修道士・神父・他県の友人と暮らす経験が "幼小中混在" 学園の原型に。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">19</td>
+            <td class="col-year">1991</td>
+            <td>慶應義塾大学 総合政策学部（SFC）入学。 開設2年目の新設学部の初期世代。 <strong>SFC秋祭の創設メンバー</strong>として "ゼロから組織を作る" 経験を学部時代に。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">24</td>
+            <td class="col-year">1996</td>
+            <td><strong>OB訪問で退職直後の三木谷浩史と出会う。 5分の対話で人生が変わる</strong>。 「日本には400万社の企業があり9割は中小、 7割が赤字。 大企業が日本を変える時代は終わった」という言葉に動かされる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">1997.02</td>
+            <td><strong>株式会社エム・ディー・エム（楽天の前身）創業</strong>。 6人のメンバーの1人で<strong>社員番号2番</strong>。 三木谷からSQLの本を渡され、 「自分で作れ」と言われて独学でシステム構築。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">1997.05</td>
+            <td>楽天市場ローンチ。 当初目標100店舗のところ <strong>13店舗</strong> でスタート。 函館まで自分で出向いて出店者を集める "営業もする CTO"。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">1999</td>
+            <td><strong>取締役副社長就任</strong>。 楽天大学・R-Mail・R-Auction を立ち上げ、 出店者教育という独自の運営インフラを構築。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">2000.04</td>
+            <td>楽天が JASDAQ に上場。 ストック・オプション含めた持株が時価総額急騰し、 数十億〜100億円超の含み資産を持つ。 30歳までの "卒業" を密かに準備し始める。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2002.11</td>
+            <td><strong>楽天副社長を退任</strong>。 三木谷が興銀を30で辞めたのに合わせ「自分も30で独立する」 という<strong>自分との約束</strong>を実行。 同月、 教育準備会社「<strong>音別</strong>」(故郷の地名)を設立。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2005.04</td>
+            <td><strong>横浜市立東山田中学校 校長就任</strong>。 全国公立学校長で最年少。 楽天の元副社長が公教育現場に飛び込むという当時稀有な転身。 2年務める。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2006</td>
+            <td>文部科学省 教育課程実施状況検討委員会委員に就任。 民間出身校長として国の教育制度議論にも入る。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2009</td>
+            <td><strong>長野県軽井沢町に家族で移住</strong>。 5人の子どもと自然の中で暮らしながら、 "森のようちえん" の現場で焚き火を見守る大人の姿に出会う。 "失敗を見守る" 教育観が固まる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2011.12</td>
+            <td>東日本大震災を受け、 <strong>南三陸町に保有していた106ヘクタール（旧ゴルフ場）を高台移転用地として寄贈</strong>。 楽天で得た資産を社会に還元する初期の例。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">44</td>
+            <td class="col-year">2016.12</td>
+            <td><strong>軽井沢風越学園設立準備財団</strong> を設立。 楽天退任から14年、 ようやく具体的な学校創設プロジェクトとして始動。 数十億円の予算のほとんどを本城が私財で準備。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">2020.04</td>
+            <td><strong>軽井沢風越学園 開校（理事長就任）</strong>。 幼稚園・小学校・中学校が一つの校舎で混ざる "幼小中混在校"。 楽天卒業から18年での開花。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">59</td>
+            <td class="col-year">2032.03</td>
+            <td><strong>理事長退任予定（公言済み）</strong>。 開校時の年少児が9年生として卒業するタイミング。 12年前から "卒業の日付" を公にして組織を作る引き際の設計。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（三木谷浩史）との出会いと関係構造    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（三木谷浩史）との関係構造</h2>
+      <p>
+        1996年、 慶應SFC大学院在学中の本城は、 第一志望だった日本興業銀行の OB 訪問に動いていた。
+        ある先輩から「<strong>興銀を辞めた人にも会っておけ</strong>」と勧められ、 退職したばかりの三木谷浩史
+        と面談する。 Tim Cook が Steve Jobs と "5分で人生を賭けた" のと驚くほど似た構造で、 本城も
+        この一回の対話で銀行内定の道を捨てる。
+      </p>
+      <p>
+        三木谷の言葉は、 銀行志望の若者には残酷なほど明快だった:
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「日本には400万社の企業がある。 大企業は1割にも満たない。 9割以上は中小零細で、 そのうち
+        7割は赤字だ。 銀行や商社といった大企業が日本を変える時代はもう終わった。 これからは個人や
+        中小企業が既成事実を積み重ねて新しい社会を作る」<br>
+        — 三木谷浩史（1996年、 本城との初対面で）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">興銀志望の青年が180度転回する5分</div>
+          <div class="stage-body">24歳の本城は銀行内定の道を捨て、 大学院生のまま <strong>社員番号2番</strong> としてエム・ディー・エムへ参画。 同時に「30になったら自分も独立する」 という<strong>"卒業日"を共有する約束</strong>を心に刻む。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">SQLの本一冊で実装する男</div>
+          <div class="stage-body">外注エンジニアが頼りにならなかった創業期、 三木谷から <strong>「これを読んで自分で作れ」</strong> と SQL の本を渡される。 独学でシステムを組み、 楽天市場の最初の13店舗を立ち上げた "<strong>営業もする CTO</strong>"。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">三木谷=戦略 / 本城=実装と運営</div>
+          <div class="stage-body">三木谷がビジョン・営業・資本政策を握り、 本城は <strong>システム・運営インフラ・出店者教育</strong>（楽天大学）を担当。 楽天大学は「テクノロジーだけでは EC は売れない、 出店者の経営力が必要」 という本城の洞察から生まれた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 卒業</div>
+          <div class="stage-title">30歳の "自分との約束"</div>
+          <div class="stage-body">2002年、 三木谷が興銀を30で辞めたのに合わせ、 本城も30で副社長を退任。 三木谷は引き留めず、 本城は楽天株を握ったまま教育の道へ。 <strong>"対立や衝突ではなく、 約束として用意された卒業"</strong>。 後年も三木谷との関係は良好で、 互いに別領域でNo.1を担う。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        本城のNo.2選択は <strong>"なれなかった" でも "ならなかった" でもなく、 "通過点として選んだ"</strong>。
+        三木谷との出会いの時点で「30で独立する」 という6年限定の契約を自分に課しており、 楽天は
+        最初から <strong>"自分の人生の主作品" ではなく、 修行の場</strong>として位置づけられていた。
+      </p>
+      <p>
+        本城が興味を持っていたのは <strong>"組織の中で人がどう育つか"</strong> という教育的問い。 楽天大学を
+        立ち上げたのも、 出店者という "大人の学習者" の場を作りたかったから。 三木谷が EC で日本を
+        変える間、 本城は <strong>"運営できる組織を作る" という形でその下支えをした</strong>が、 真の関心は
+        最初から人の成長の方にあった。
+      </p>
+      <p>
+        本城自身の言葉: 「<strong>遠くよりも深く</strong>」。 楽天は "遠く" に届く事業だった。 だが本城は、
+        遠くではなく <strong>"深い場所"</strong>—— 一人の子どもが世界をどう感じ、 どう失敗し、 どう育つか
+        —— に手を届かせたかった。 No.2 はそのための予算と発言権を獲得する 6年間の "助走" だった。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">システム実装 / 運営インフラ。 SQL の本を渡されて独学でモール基盤を構築。 楽天市場のシステム・物流・出店者管理を一人称で組み立てた、 "コードも書ける副社長"。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 + 翻訳。 三木谷の戦略・営業・資本政策を、 動くシステムと運用される組織に翻訳する翻訳者。 楽天大学（出店者教育）という独自インフラは、 本城の "教育的視点" がなければ生まれなかった。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし本城がいなければ、 楽天は1997年5月のローンチに間に合わなかった可能性が高い。 外注エンジニアが頼りにならない中、 大学院生が自分で SQL を学んで実装した事実が、 楽天の創業の物語そのもの。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">楽天卒業後は、 横浜市立中学校長 → 軽井沢風越学園と、 <strong>楽天で得た資金と運営知</strong>を全く違う領域（公教育 / オルタナティブ教育）に再投資。 楽天が育てた "EC で食う人"は何百万、 風越が育てる "自分で学ぶ子" はまだ少数だが、 後者の方が時間軸が長い。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 興銀内定の道を捨てた1996年。</strong> 銀行を志して慶應大学院まで来た青年が、 三木谷との
+        5分の対話で進路を破棄。 "<strong>大企業に入って大企業を動かす</strong>" という当時の優等生コースを
+        放棄した最初の決断。 本城の人生で最も大きな"分岐"。
+      </p>
+      <p>
+        <strong>② 30歳での副社長退任（2002年）。</strong> 楽天はまだ成長途上、 副社長報酬と株の含み益を
+        最大化するなら居続ける方が合理的。 だが「自分との約束」 を守って退任。 三木谷が興銀を30で
+        辞めたのに対称な行動。 周囲には<strong>「学校創設の夢に間に合わない」</strong>と説明した。
+      </p>
+      <p>
+        <strong>③ 16年間の試行錯誤（2002–2018）。</strong> 「エリート校をつくる」 と楽天を辞めて始めた
+        構想は、 公立中学校長 → イシス編集学校 → 森のようちえん → 軽井沢移住 と長い迂回を経た。
+        "焚き火で手袋を焦がす3歳児を見守る大人" との出会いで、 当初の "エリート校" 構想を完全に
+        捨て、 真逆の<strong>"無数の失敗体験を許す学校"</strong>へ転換。 自分の構想を壊す決断。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        本城の引き際は <strong>二段構造</strong>になっている。 1段目は <strong>2002年の楽天退任</strong>。 三木谷との
+        衝突や事業上の挫折ではなく、 "自分との約束" を守るための、 完全に予告された卒業。 2段目は
+        <strong>2032年予定の風越学園 理事長退任</strong>。 開校時 (2020) の年少児が9年生で卒業する瞬間に
+        合わせて、 <strong>12年前から退任日を公言</strong>している。
+      </p>
+      <p>
+        この "引き際の予告" が本城の特徴。 No.2 を辞める時も、 No.1 (理事長) を辞める時も、 周囲が
+        "<strong>あの人がいなくなる前提で組織を作る</strong>" 時間を十分に確保する。 創業者・初代の影を
+        意図的に薄める設計で、 Disney 後のウォルトの影や、 楽天三木谷依存と対照的な引き際。
+      </p>
+      <p>
+        本城の人生は <strong>"創業 → 卒業 → 創業 → 卒業" の二回繰り返し</strong>になる予定。 楽天 (1996–2002)、
+        風越学園 (2002–2032)。 後者は前者の3倍の時間。 6年の楽天で得た資源を 30年の教育に変換する
+        錬金術。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型 (タイプ命名)                    -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">本城慎之介 の No.2 型</div>
+        <div class="type-name">卒業型 × 哲学転身型</div>
+        <div class="type-body">
+          No.2 を <strong>"通過点"</strong> として最初から捉え、 出会った瞬間に "卒業日" を自分に約束する型。
+          Tim Cook が13年No.2を全うして継承したのとは対照的に、 本城は<strong>6年で実装し、 30で予告通りに
+          卒業</strong>した。 卒業後は楽天に戻らず、 全く違う領域 (公教育 → オルタナティブ教育) に身を移し、
+          楽天で得た資金と運営知を再投資する。
+          <br><br>
+          ▸ <strong>引き際型</strong> でもある: 楽天卒業も風越学園も、 退任日を予告して組織を作る。 「あの人が
+          いなくなる前提で動く時間」を意図的に確保することで、 創業者依存を抑制する設計。
+          <br><br>
+          ▸ <strong>創業共闘型</strong> の側面: 1996年の出発点から株を持つ共同創業者であり、 銀行勤めから抜擢
+          されたサラリーマンNo.2ではない。 リスクを共有していたから "卒業" もまた共有された行為になる。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">No.2 になるなら、 出会った瞬間に "卒業日" を自分に約束しろ</div>
+          <div class="lesson-body">
+            本城は1996年の三木谷との初対面で、 既に「30で独立する」という卒業日を自分の中に置いていた。
+            <strong>"いつ辞めるかが先に決まっている No.2"</strong> は、 残された時間で何を学び何を残すかが
+            鋭くなる。 翔太の WL 次期 COO ↔ 独立 CEO の悩みは、 まさに「自分の卒業日を先に決める」
+            という同じ構造の問い。 出口を先に置く者だけが、 No.2 期間を最大化できる。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">"遠くより深く"——スケールではなく深さに賭ける視点を持て</div>
+          <div class="lesson-body">
+            楽天で <strong>"遠く"</strong> (規模・時価総額・ユーザー数) を体験したからこそ、 本城は「お金は
+            深いところには手が届かない」 と確信できた。 翔太の人生哲学（稲盛 / Buffett 型・"100億ユニコーン"
+            ではない）と完全に重なる。 <strong>事業の規模と人生の深さは別の軸</strong>。 No.2 期間に学ぶべきは
+            "遠くに届く方法" だが、 卒業後に賭けるべきは "深くに届く問い"。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">引き際は12年前から公言しろ。 自分がいない前提の組織を作れ</div>
+          <div class="lesson-body">
+            風越学園で本城が 2032年の退任を <strong>12年前から公にしている</strong> のは、 周囲が "本城がいなく
+            なる前提で動く時間" を確保するため。 創業者・初代理事長の影を最小化する設計。 翔太が
+            将来何を立ち上げるにしても、 <strong>"いつ手を引くか"</strong> を最初に設計図に書き込めば、 組織は
+            本人を超える方向に育つ。 引き際は最後の決断ではなく、 最初の設計事項。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li><strong>5人の子の父（1女4男）</strong>。 4人全員の出産に立ち会った。 「父親になることが、 自分にとっての最大の編集だった」と語る。</li>
+        <li>軽井沢に移住した直後、 森のようちえん「ぴっぴ」に通う3歳児が <strong>焚き火で手袋を焦がす</strong> 姿を見た。 スタッフが咎めず "先週も燃やしちゃったんですよ" と笑った瞬間、「子どもの失敗を見守る関わりの豊かさにガツンと頭を叩かれた」 と教育観が完全に転換。</li>
+        <li>故郷の地名 "<strong>音別</strong>" を、 楽天退任後に立ち上げた教育準備会社の社名にした。 出発点を社名に刻む人。</li>
+        <li><strong>松岡正剛のイシス編集学校</strong> の受講生。 「楽天で身につけたシステム的思考とは別の、 関係を編む知の体系」 に衝撃を受けたと公言。</li>
+        <li>2011年の東日本大震災後、 <strong>南三陸町に保有していた106ヘクタールの旧ゴルフ場用地を高台移転用地として寄贈</strong>。 楽天株を売って得た資産を、 自分のためだけに使わない一例。</li>
+        <li>「<strong>やりたくないことは意図的にやらない</strong>」 が信条。 教育界の重鎮的役職や講演依頼の多くを断り、 軽井沢の現場に居続けることを選ぶ。</li>
+        <li>2032年の風越学園 理事長退任を <strong>開校時点（2020）から公言</strong>。 「12年で次に渡す」 と最初に約束することで、 組織が本城依存にならないように設計。</li>
+        <li><strong>三木谷との関係は退任後も良好</strong>。 楽天25周年の公式企画「私の楽天履歴」 のトップを本城が飾った。 卒業した No.2 が初代の物語に呼び戻される稀有な関係。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">三木谷 浩史 <span class="ja">みきたに ひろし</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            本城が約6年間共闘した相手。 1996年の OB 訪問での5分の対話で本城の進路を180度変えた人物。 自身も興銀を30で辞めた経験から、 本城の "30での卒業" を引き留めなかった。 卒業後も関係は良好で、 楽天25周年の公式企画で本城を最初に呼び戻した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小林 正忠 <span class="ja">こばやし せいちゅう</span></div>
+            <span class="rel-tag">並列 No.2 / 創業6人衆</span>
+          </div>
+          <div class="rel-body">
+            楽天 社員番号4番。 本城の紹介で三木谷と出会い創業に参画。 本城が 2002年に去った後も楽天に残り、 現在は Chief Well-being Officer。 同じ創業期メンバーで "残った No.2" と "去った No.2" の対照例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">杉原 章郎 <span class="ja">すぎはら あきお</span></div>
+            <span class="rel-tag">並列 No.2 / 技術系創業</span>
+          </div>
+          <div class="rel-body">
+            楽天創業6人衆の一人で、 技術系の中心メンバー。 本城のシステム実装と並走しながら楽天市場のインフラを支えた。 本城が卒業後も楽天に残り、 グループ会社の経営に関わる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">岩瀬 直樹 <span class="ja">いわせ なおき</span></div>
+            <span class="rel-tag">後継 / 風越学園校長</span>
+          </div>
+          <div class="rel-body">
+            軽井沢風越学園の校長。 元・小学校教諭で、 本城の教育構想を現場で実装する役割を担う。 本城が "理事長として2032年に去る前提" で、 学校の中核を引き継ぐパートナー。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">松岡 正剛 <span class="ja">まつおか せいごう</span></div>
+            <span class="rel-tag muted">師 / 編集思想</span>
+          </div>
+          <div class="rel-body">
+            イシス編集学校の校長で、 本城が深く影響を受けた知の編集者。 楽天時代に身につけた "システム思考" とは別の、 "関係を編む" 知の体系を本城に与えた。 風越学園の "つくる学び" の根本にあるメンター。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小泉 文明 <span class="ja">こいずみ ふみあき</span></div>
+            <span class="rel-tag muted">比較対象 / 逆構造</span>
+          </div>
+          <div class="rel-body">
+            メルカリのNo.2。 山田進太郎を支え COO → 社長 → 会長と昇った後、 自発的に社長を返した "逆継承型"。 本城が "30で卒業して別領域へ" 行ったのに対し、 小泉は "上がってから戻す" 別タイプ。 日本スタートアップNo.2の対照的な2軌道。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">守安 功 <span class="ja">もりやす いさお</span></div>
+            <span class="rel-tag muted">比較対象 / 継承型</span>
+          </div>
+          <div class="rel-body">
+            DeNA で南場智子の後を継いだ典型的な継承型No.2。 本城が "卒業して別世界へ" 行ったのに対し、 守安は "同じ会社で社長を引き継ぐ" 継承型。 同時代の日本スタートアップNo.2の別の選択肢。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">本城 洋 <span class="ja">父 / 元釧路市議</span></div>
+            <span class="rel-tag muted">原点 / 父</span>
+          </div>
+          <div class="rel-body">
+            元釧路市議会議員。 北海道音別町という地方の公的な仕事を担う家庭が、 本城の <strong>"公教育・公共性への関心"</strong> の原点。 楽天卒業後すぐ "公立中学校長" という公の道に行ったのは、 父の背中の延長。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://ja.wikipedia.org/wiki/%E6%9C%AC%E5%9F%8E%E6%84%BC%E4%B9%8B%E4%BB%8B" target="_blank">本城愼之介 — Wikipedia 日本語版</a></li>
+        <li><a href="https://kazakoshi.ed.jp/staff/honjoshinnosuke/" target="_blank">本城慎之介 — 軽井沢風越学園 公式スタッフページ</a></li>
+        <li><a href="https://corp.rakuten.co.jp/event/anniversary25th/myhistory/01/" target="_blank">楽天25周年「私の楽天履歴 — 本城慎之介さん」 — 楽天グループ公式</a></li>
+        <li><a href="https://www.itmedia.co.jp/business/articles/1810/12/news010.html" target="_blank">30歳で楽天を辞めた元副社長が私財を投じて学校を作る理由 — ITmedia (2018)</a></li>
+        <li><a href="https://jbpress.ismedia.jp/articles/-/83187" target="_blank">「エリート校をつくる」と言って楽天副社長を辞めた男は、 なぜ真逆の自由すぎる学校に辿り着いたのか — JBpress</a></li>
+        <li><a href="https://www.gentosha.jp/article/22607/" target="_blank">たった6人でスタートした「楽天」誕生秘話 — 幻冬舎plus / 上阪徹×三木谷浩史『突き抜けろ』</a></li>
+        <li><a href="https://hello.coacha.com/interview/20190312.html" target="_blank">第2章 自分を確認して「根」を伸ばした16年 — Hello, Coaching!</a></li>
+        <li><a href="https://kodomonokatati.org/interview/010-2/" target="_blank">#010 本城慎之介さん — こどものカタチ（"遠くより深く" の出典）</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXZQOUD28C4N0Y1A420C2000000/" target="_blank">楽天を副社長で退任 学校創設の夢「間に合わない」 — 日本経済新聞</a></li>
+        <li><a href="https://edist.ne.jp/cast/oshimen25_honjyoshinnosuke/" target="_blank">楽天副社長から風越学園理事長へ、 なぜ本城慎之介はイシス編集学校に驚いたのか — イシス編集学校</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
