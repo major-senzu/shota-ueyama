@@ -202,12 +202,47 @@ body.drawer-open .menu-toggle span:nth-child(3) {
   letter-spacing: 0.04em;
 }
 
+/* nested sub-links (auto-injected by site.js) */
+.drawer .nav-sub-list {
+  margin-top: -2px;
+  margin-bottom: 6px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+.drawer .nav-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 6px 0;
+  letter-spacing: -0.01em;
+  transition: color 0.15s, transform 0.2s, opacity 0.15s;
+}
+.drawer .nav-sub:hover {
+  color: var(--bar-fg);
+  transform: translateX(3px);
+}
+.drawer .nav-sub.active {
+  color: var(--bar-fg);
+  font-weight: 500;
+}
+.drawer .nav-sub.active::before {
+  content: '· ';
+  color: rgba(255, 255, 255, 0.6);
+  margin-right: 2px;
+}
+.drawer .nav-link.has-active-sub {
+  color: var(--bar-fg);
+}
+
 @media (max-width: 600px) {
   .topbar { height: 56px; padding: 0 20px; }
   .bottombar { height: 52px; padding: 0 20px; gap: 18px; }
   body { padding-top: 64px !important; padding-bottom: 60px !important; }
   .drawer { padding: 80px 28px 60px; width: 320px; }
   .drawer .nav-link { font-size: 16px; }
+  .drawer .nav-sub { font-size: 14px; }
 }
 
 /* tab nav (Plain / Detail / Photo) */

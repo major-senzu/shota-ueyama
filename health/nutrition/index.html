@@ -381,6 +381,12 @@
   table.raw td:first-child { text-align: left; font-family: inherit; font-size: 13px; }
   table.raw tbody tr:last-child td { border-bottom: none; }
   table.raw tbody tr:hover { background: var(--soft); }
+  /* status-tinted cells in raw table — 一目で過剰/不足が分かる */
+  table.raw td.st-low  { color: var(--st-low-fg);  background: var(--st-low-bg); font-weight: 600; }
+  table.raw td.st-high { color: var(--st-high-fg); background: var(--st-high-bg); font-weight: 600; }
+  table.raw td.st-ok   { color: var(--st-ok-fg); }
+  table.raw tbody tr:hover td.st-low  { background: #d4e3ff; }
+  table.raw tbody tr:hover td.st-high { background: #ffd4d1; }
 
   .empty {
     padding: 40px 20px; text-align: center;
@@ -471,10 +477,10 @@
     <div class="sec-section">
       <div class="sec-head">ミネラル</div>
       <div class="sec-grid cols-4">
-        <div class="sec-counter" data-field="calcium_mg" data-unit="mg" data-dec="0"></div>
-        <div class="sec-counter" data-field="magnesium_mg" data-unit="mg" data-dec="0"></div>
-        <div class="sec-counter" data-field="iron_mg" data-unit="mg" data-dec="1"></div>
-        <div class="sec-counter" data-field="zinc_mg" data-unit="mg" data-dec="1"></div>
+        <div class="sec-counter" data-field="calcium_mg"></div>
+        <div class="sec-counter" data-field="magnesium_mg"></div>
+        <div class="sec-counter" data-field="iron_mg"></div>
+        <div class="sec-counter" data-field="zinc_mg"></div>
       </div>
     </div>
 
@@ -482,12 +488,12 @@
     <div class="sec-section">
       <div class="sec-head">ビタミン</div>
       <div class="sec-grid cols-6">
-        <div class="sec-counter" data-field="vitamin_a_ug" data-unit="μg" data-dec="0"></div>
-        <div class="sec-counter" data-field="vitamin_d_ug" data-unit="μg" data-dec="1"></div>
-        <div class="sec-counter" data-field="vitamin_b1_mg" data-unit="mg" data-dec="2"></div>
-        <div class="sec-counter" data-field="vitamin_b2_mg" data-unit="mg" data-dec="2"></div>
-        <div class="sec-counter" data-field="vitamin_b6_mg" data-unit="mg" data-dec="2"></div>
-        <div class="sec-counter" data-field="vitamin_c_mg" data-unit="mg" data-dec="0"></div>
+        <div class="sec-counter" data-field="vitamin_a_ug"></div>
+        <div class="sec-counter" data-field="vitamin_d_ug"></div>
+        <div class="sec-counter" data-field="vitamin_b1_mg"></div>
+        <div class="sec-counter" data-field="vitamin_b2_mg"></div>
+        <div class="sec-counter" data-field="vitamin_b6_mg"></div>
+        <div class="sec-counter" data-field="vitamin_c_mg"></div>
       </div>
     </div>
 
@@ -597,6 +603,7 @@
     const SOFT = '#f7f7f7';
 
     /* ---- field metadata ---- */
+    /* lower: 増えると悪い項目（差分の色付けに使用）。適正範囲はrangesから判定 */
     const FIELDS = {
       energy_kcal:     { label: 'エネルギー',  unit: 'kcal', dec: 0, lower: false },
       protein_g:       { label: 'タンパク質',  unit: 'g',    dec: 1, lower: false },
@@ -617,6 +624,8 @@
       salt_g:          { label: '塩分',        unit: 'g',    dec: 1, lower: true  },
     };
 
+    const STATUS_LABEL = { low: '不足', ok: '適正', high: '過剰' };
+
     /* groups for chart layout */
     const GROUPS = {
       'charts-macro':   ['energy_kcal','protein_g','fat_g','carbs_g'],
@@ -631,18 +640,70 @@
       sortKey: 'date',
       sortDir: 'desc',
       charts: {},
-      targets: {},
+      ranges: {},
       goalText: '',
     };
 
     const fmt = (v, d) => (v == null || isNaN(v)) ? '—' :
       (d === 0 ? Math.round(v).toString() : Number(v).toFixed(d));
 
+    /* 適正範囲判定: cur < min → 'low' / cur > max → 'high' / それ以外 → 'ok' */
+    function getStatus(cur, range) {
+      if (cur == null || isNaN(cur) || !range) return null;
+      if (range.min != null && cur < range.min) return 'low';
+      if (range.max != null && cur > range.max) return 'high';
+      return 'ok';
+    }
+
+    /* 範囲表示の整形: "2370〜2770 kcal" / "340 mg 以上" / "7.5 g 未満" */
+    function formatRange(range, dec, unit) {
+      if (!range) return '';
+      const u = unit ? (' ' + unit) : '';
+      const fmtN = (v) => (dec === 0 ? Math.round(v).toString() : Number(v).toFixed(dec));
+      if (range.min != null && range.max != null) return fmtN(range.min) + '〜' + fmtN(range.max) + u;
+      if (range.min != null) return fmtN(range.min) + u + ' 以上';
+      if (range.max != null) return fmtN(range.max) + u + ' 未満';
+      return '';
+    }
+
+    /* range trackのHTML生成: 0 〜 trackMax のスケールでmin/maxバンドと現在値マーカーを描画 */
+    function rangeTrackHtml(cur, range, status, dec, unit) {
+      if (!range) return '';
+      const min = range.min, max = range.max;
+      // trackMax: 全要素が収まる上限。max指定があればそれを基準、なければminの2倍。現在値が大きければそれに合わせる
+      let trackMax;
+      if (max != null) trackMax = max * 1.15;
+      else if (min != null) trackMax = min * 2;
+      else return '';
+      if (cur != null && cur > trackMax) trackMax = cur * 1.05;
+
+      const pct = (v) => Math.max(0, Math.min(100, (v / trackMax) * 100));
+      let bands = '';
+      if (min != null && max != null) {
+        bands += `<span class="band-low" style="left:0; width:${pct(min)}%"></span>`;
+        bands += `<span class="band" style="left:${pct(min)}%; width:${pct(max) - pct(min)}%"></span>`;
+        bands += `<span class="band-high" style="left:${pct(max)}%; right:0"></span>`;
+      } else if (min != null) {
+        bands += `<span class="band-low" style="left:0; width:${pct(min)}%"></span>`;
+        bands += `<span class="band" style="left:${pct(min)}%; right:0"></span>`;
+      } else if (max != null) {
+        bands += `<span class="band" style="left:0; width:${pct(max)}%"></span>`;
+        bands += `<span class="band-high" style="left:${pct(max)}%; right:0"></span>`;
+      }
+      const marker = (cur != null && status)
+        ? `<span class="marker st-${status}" style="left:${pct(cur)}%"></span>`
+        : '';
+      const labelLeft  = (min != null) ? formatRange({min: min}, dec, unit).replace(' 以上','') : '0';
+      const labelRight = (max != null) ? formatRange({max: max}, dec, unit).replace(' 未満','') : '';
+      return `<div class="range-track">${bands}${marker}</div>` +
+             `<div class="range-track-labels"><span>${labelLeft}</span><span>${labelRight}</span></div>`;
+    }
+
     function load() {
       fetch(DATA_URL, {cache: 'no-store'})
         .then(r => r.json())
         .then(json => {
-          state.targets  = json.targets || {};
+          state.ranges = json.ranges || {};
           state.goalText = (json.user && json.user._goal) || '';
           state.all = (json.measurements || []).slice()
             .sort((a,b) => a.date.localeCompare(b.date));
@@ -687,20 +748,6 @@
       return '(<span class="' + cls + '">' + sign + val + u + '</span>)';
     }
 
-    function progressInfo(cur, tgt, lowerIsBetter) {
-      // returns {pct: 0-100, reached: bool, over: bool}
-      // higher-is-better: pct = cur/tgt × 100, capped at 200; reached when cur >= tgt
-      // lower-is-better:  pct = cur/tgt × 100; reached when cur <= tgt; over when cur > tgt
-      if (cur == null || tgt == null || tgt === 0) return null;
-      if (lowerIsBetter) {
-        const pct = Math.min(150, (cur / tgt) * 100);
-        return { pct: Math.max(0, pct), reached: cur <= tgt, over: cur > tgt };
-      } else {
-        const pct = Math.min(150, (cur / tgt) * 100);
-        return { pct: Math.max(0, pct), reached: cur >= tgt, over: false };
-      }
-    }
-
     function renderHero() {
       const last = state.all[state.all.length - 1];
       const prev = state.all[state.all.length - 2];
@@ -725,24 +772,28 @@
           dEl.innerHTML = '';
         }
 
-        // target line + progress
-        const tEl = document.getElementById('target-' + m.id);
-        const tgt = state.targets[m.field];
-        if (tgt == null) { tEl.innerHTML = ''; return; }
-        const tStr = fmt(tgt, f.dec) + ' ' + f.unit;
-        const info = progressInfo(cur, tgt, f.lower);
-        let pctTxt = '';
-        let bar = '';
-        if (info) {
-          pctTxt = ' <span style="float:right; color:var(--muted)">' + Math.round(info.pct) + '%</span>';
-          const barWidth = Math.min(100, info.pct);
-          const cls = info.over ? 'over' : (info.reached ? 'reached' : '');
-          bar = '<span class="progress"><span class="' + cls + '" style="width:' + barWidth + '%"></span></span>';
+        // status badge + card border
+        const range = state.ranges[m.field];
+        const status = getStatus(cur, range);
+        const card = document.getElementById('card-' + m.id);
+        const badge = document.getElementById('badge-' + m.id);
+        card.classList.remove('st-low','st-ok','st-high');
+        badge.classList.remove('st-low','st-ok','st-high');
+        if (status) {
+          card.classList.add('st-' + status);
+          badge.classList.add('st-' + status);
+          badge.textContent = STATUS_LABEL[status];
+        } else {
+          badge.textContent = '';
         }
+
+        // 適正範囲表示 + range track
+        const tEl = document.getElementById('target-' + m.id);
+        if (!range) { tEl.innerHTML = ''; return; }
         tEl.innerHTML =
-          '<span class="target-label">目標</span>' +
-          '<span class="target-val">' + tStr + '</span>' +
-          pctTxt + bar;
+          '<span class="target-label">適正</span>' +
+          '<span class="target-val">' + formatRange(range, f.dec, f.unit) + '</span>' +
+          rangeTrackHtml(cur, range, status, f.dec, f.unit);
       });
     }
 
@@ -754,23 +805,23 @@
         const f = FIELDS[field];
         if (!f) return;
         const cur = last ? last[field] : null;
-        const tgt = state.targets[field];
-        const info = progressInfo(cur, tgt, f.lower);
+        const range = state.ranges[field];
+        const status = getStatus(cur, range);
 
-        let html = '<div class="s-label">' + f.label + '</div>' +
+        el.classList.remove('st-low','st-ok','st-high');
+        if (status) el.classList.add('st-' + status);
+
+        let html = '<div class="s-head-row">' +
+          '<div class="s-label">' + f.label + '</div>' +
+          (status ? '<span class="status-badge sm st-' + status + '">' + STATUS_LABEL[status] + '</span>' : '') +
+          '</div>' +
           '<div class="s-row"><span class="s-value">' + fmt(cur, f.dec) + '</span>' +
           '<span class="s-unit">' + f.unit + '</span></div>';
 
-        if (tgt != null) {
-          html += '<div class="s-target">目標 <span class="v">' +
-            fmt(tgt, f.dec) + ' ' + f.unit + '</span>';
-          if (info) html += ' · ' + Math.round(info.pct) + '%';
-          html += '</div>';
-          if (info) {
-            const cls = info.over ? 'over' : (info.reached ? 'reached' : '');
-            const w = Math.min(100, info.pct);
-            html += '<span class="s-progress"><span class="' + cls + '" style="width:' + w + '%"></span></span>';
-          }
+        if (range) {
+          html += '<div class="s-target">適正 <span class="v">' +
+            formatRange(range, f.dec, f.unit) + '</span></div>';
+          html += rangeTrackHtml(cur, range, status, f.dec, f.unit);
         }
         el.innerHTML = html;
       });
@@ -784,9 +835,12 @@
         c.innerHTML = fields.map(field => {
           const f = FIELDS[field];
           return `
-            <div class="chart-card">
+            <div class="chart-card" id="cc-${field}">
               <div class="title">${f.label} <span class="title-unit">(${f.unit})</span></div>
-              <div class="sub"><span class="latest" id="latest-${field}">—</span><span class="latest-unit">${f.unit}</span></div>
+              <div class="sub">
+                <span class="latest" id="latest-${field}">—</span><span class="latest-unit">${f.unit}</span>
+                <span class="status-badge sm" id="cc-badge-${field}" style="margin-left:auto"></span>
+              </div>
               <canvas id="chart-${field}"></canvas>
             </div>`;
         }).join('');
@@ -848,6 +902,19 @@
         const latestEl = document.getElementById('latest-' + field);
         if (latestEl) latestEl.textContent = fmt(lastVal, f.dec);
 
+        // status badge on chart card
+        const status = getStatus(lastVal, state.ranges[field]);
+        const badgeEl = document.getElementById('cc-badge-' + field);
+        if (badgeEl) {
+          badgeEl.classList.remove('st-low','st-ok','st-high');
+          if (status) {
+            badgeEl.classList.add('st-' + status);
+            badgeEl.textContent = STATUS_LABEL[status];
+          } else {
+            badgeEl.textContent = '';
+          }
+        }
+
         const canvas = document.getElementById('chart-' + field);
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -867,19 +934,30 @@
           spanGaps: true,
         }];
 
-        const tgt = state.targets[field];
-        if (tgt != null && labels.length > 0) {
-          datasets.push({
-            label: '目標',
-            data: labels.map(() => tgt),
-            borderColor: f.lower ? '#ff3b30' : '#2ea44f',
-            borderWidth: 1,
-            borderDash: [4, 4],
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            fill: false,
-            tension: 0,
-          });
+        const range = state.ranges[field];
+        if (range && labels.length > 0) {
+          if (range.min != null) {
+            datasets.push({
+              label: '下限',
+              data: labels.map(() => range.min),
+              borderColor: '#2563eb',
+              borderWidth: 1,
+              borderDash: [4, 4],
+              pointRadius: 0, pointHoverRadius: 0,
+              fill: false, tension: 0,
+            });
+          }
+          if (range.max != null) {
+            datasets.push({
+              label: '上限',
+              data: labels.map(() => range.max),
+              borderColor: '#ff3b30',
+              borderWidth: 1,
+              borderDash: [4, 4],
+              pointRadius: 0, pointHoverRadius: 0,
+              fill: false, tension: 0,
+            });
+          }
         }
 
         state.charts[field] = new Chart(ctx, {
@@ -919,7 +997,11 @@
         'fiber_g','saturated_fat_g','salt_g'
       ];
       tb.innerHTML = rows.map(r => {
-        const cells = fieldOrder.map(f => `<td>${fmt(r[f], FIELDS[f].dec)}</td>`).join('');
+        const cells = fieldOrder.map(f => {
+          const status = getStatus(r[f], state.ranges[f]);
+          const cls = status ? ` class="st-${status}"` : '';
+          return `<td${cls}>${fmt(r[f], FIELDS[f].dec)}</td>`;
+        }).join('');
         return `<tr><td>${r.date}</td>${cells}</tr>`;
       }).join('');
       updateSortIndicators();
