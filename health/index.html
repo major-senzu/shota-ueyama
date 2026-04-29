@@ -34,9 +34,21 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     color: var(--muted);
-    margin-bottom: 32px;
+    margin-bottom: 18px;
     letter-spacing: 0.04em;
   }
+
+  /* health subnav (体組成 / 栄養素) */
+  .health-subnav { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .health-subnav a {
+    text-decoration: none;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .health-subnav a:hover { color: var(--fg); }
+  .health-subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
   .crumb a { color: var(--muted); text-decoration: none; }
   .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
   .crumb .sep { margin: 0 8px; }
@@ -357,6 +369,11 @@
       <span>personal</span><span class="sep">/</span>
       <span>012 health</span>
     </div>
+
+    <nav class="health-subnav">
+      <a href="./index.html" class="active">体組成</a>
+      <a href="./nutrition/">栄養素</a>
+    </nav>
 
     <div class="hero">
       <h1>Health</h1>

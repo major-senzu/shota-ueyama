@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>012 · nutrition / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  /* health subnav */
+  .health-subnav { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .health-subnav a {
+    text-decoration: none;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .health-subnav a:hover { color: var(--fg); }
+  .health-subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .hero .source {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); margin-top: 10px; letter-spacing: 0.04em;
+  }
+  .hero .memo {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--soft);
+    border-left: 2px solid var(--fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero .memo .memo-label {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    flex-shrink: 0;
+  }
+  .hero .memo code {
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--fg);
+    background: transparent;
+    user-select: all;
+  }
+
+  /* top counters: 4 main macros (large) */
+  .top-counters {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); margin-bottom: 32px;
+  }
+  .top-counter { background: var(--bg); padding: 22px 18px; }
+  .top-counter .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .top-counter .value-row { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .top-counter .value { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .top-counter .unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .top-counter .delta-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.02em;
+    margin-top: 8px; display: block; width: 100%;
+  }
+  .top-counter .delta-inline .down { color: #2ea44f; font-weight: 500; }
+  .top-counter .delta-inline .up { color: var(--accent); font-weight: 500; }
+  .top-counter .delta-inline .flat { color: var(--muted); }
+  .top-counter .target-line {
+    margin-top: 10px; padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .top-counter .target-line .target-label {
+    text-transform: uppercase; letter-spacing: 0.10em; font-size: 9px;
+  }
+  .top-counter .target-line .target-val {
+    color: var(--fg); font-weight: 500; margin-left: 4px;
+  }
+  .top-counter .target-line .progress {
+    display: inline-block; width: 100%; height: 3px;
+    background: var(--soft); margin-top: 6px; position: relative; overflow: hidden;
+  }
+  .top-counter .target-line .progress > span {
+    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  }
+  .top-counter .target-line .progress > span.reached { background: #2ea44f; }
+  .top-counter .target-line .progress > span.over     { background: var(--accent); }
+
+  /* secondary counters: minerals/vitamins/others (smaller) */
+  .sec-section { margin-bottom: 28px; }
+  .sec-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 8px; font-weight: 500;
+  }
+  .sec-grid {
+    display: grid; gap: 1px; background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .sec-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .sec-grid.cols-6 { grid-template-columns: repeat(6, 1fr); }
+  .sec-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .sec-counter { background: var(--bg); padding: 14px 14px 12px; }
+  .sec-counter .s-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .sec-counter .s-row { display: flex; align-items: baseline; gap: 3px; flex-wrap: wrap; }
+  .sec-counter .s-value { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+  .sec-counter .s-unit { font-size: 10px; color: var(--muted); }
+  .sec-counter .s-target {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--muted); margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .sec-counter .s-target .v { color: var(--fg); font-weight: 500; }
+  .sec-counter .s-progress {
+    display: block; width: 100%; height: 2px;
+    background: var(--soft); margin-top: 5px; overflow: hidden;
+  }
+  .sec-counter .s-progress > span {
+    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  }
+  .sec-counter .s-progress > span.reached { background: #2ea44f; }
+  .sec-counter .s-progress > span.over     { background: var(--accent); }
+
+  @media (max-width: 1000px) {
+    .top-counters { grid-template-columns: repeat(2, 1fr); }
+    .sec-grid.cols-4, .sec-grid.cols-6 { grid-template-columns: repeat(3, 1fr); }
+    .sec-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .top-counters { grid-template-columns: repeat(2, 1fr); }
+    .top-counter .value { font-size: 26px; }
+    .sec-grid.cols-4, .sec-grid.cols-6, .sec-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+    body { padding: 24px 20px 32px; }
+  }
+
+  /* goal summary */
+  .goal-summary {
+    margin: 8px 0 36px;
+    padding: 10px 14px;
+    border-left: 2px solid var(--fg);
+    background: var(--soft);
+    display: flex; align-items: baseline; gap: 12px;
+    font-size: 13px;
+  }
+  .goal-summary .goal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.10em; text-transform: uppercase;
+  }
+  .goal-summary .goal-text { font-weight: 500; color: var(--fg); }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .tabs button:hover { color: var(--fg); }
+  .tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* range selector */
+  .range-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+  .range-bar .range-btns { display: flex; gap: 4px; }
+  .range-bar button {
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 6px 14px; cursor: pointer; color: var(--muted);
+    letter-spacing: 0.06em; transition: all 0.15s;
+  }
+  .range-bar button:hover { color: var(--fg); }
+  .range-bar button.active {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .range-bar .meta {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* chart sections */
+  .chart-section-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg); letter-spacing: 0.10em;
+    text-transform: uppercase; margin: 28px 0 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .chart-section-head:first-child { margin-top: 0; }
+  .charts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
+  .chart-card {
+    border: 1px solid var(--line); padding: 20px 22px 16px;
+    background: var(--bg);
+  }
+  .chart-card .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 4px; font-weight: 500;
+  }
+  .chart-card .sub {
+    font-size: 13px; color: var(--fg); margin-bottom: 14px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .chart-card .sub .latest { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .chart-card .sub .latest-unit { font-size: 12px; color: var(--muted); }
+  .chart-card .title-unit { color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .chart-card canvas { width: 100% !important; height: 180px !important; }
+
+  /* raw data table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); }
+  table.raw {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; min-width: 1400px;
+  }
+  table.raw thead { background: var(--soft); }
+  table.raw th {
+    text-align: right; padding: 12px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  table.raw th:first-child { text-align: left; }
+  table.raw th:hover { color: var(--fg); }
+  table.raw th .arrow { margin-left: 4px; opacity: 0.4; font-size: 9px; }
+  table.raw th.sort-asc .arrow,
+  table.raw th.sort-desc .arrow { opacity: 1; color: var(--fg); }
+  table.raw td {
+    padding: 12px 10px; border-bottom: 1px solid var(--line);
+    text-align: right; white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  table.raw td:first-child { text-align: left; font-family: inherit; font-size: 13px; }
+  table.raw tbody tr:last-child td { border-bottom: none; }
+  table.raw tbody tr:hover { background: var(--soft); }
+
+  .empty {
+    padding: 40px 20px; text-align: center;
+    color: var(--muted); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../profile/" class="nav-link">profile</a>
+    <a href="../index.html" class="nav-link">health</a>
+    <a href="../../travel/" class="nav-link">travel</a>
+    <a href="../../book/" class="nav-link">book</a>
+    <a href="../../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../../geo-history/" class="nav-link">geo-history</a>
+    <a href="../../no2-legends/" class="nav-link">legend</a>
+    <a href="../../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <div class="crumb">
+      <a href="../../index.html">home</a><span class="sep">/</span>
+      <span>personal</span><span class="sep">/</span>
+      <a href="../index.html">012 health</a><span class="sep">/</span>
+      <span>nutrition</span>
+    </div>
+
+    <nav class="health-subnav">
+      <a href="../index.html">体組成</a>
+      <a href="./" class="active">栄養素</a>
+    </nav>
+
+    <div class="hero">
+      <h1>Nutrition</h1>
+      <div class="ja">栄養素の記録（1日摂取量）</div>
+      <div class="source" id="source-line">データソース: 栄養記録アプリ画面OCR</div>
+      <div class="memo">
+        <span class="memo-label">更新方法</span>
+        <code>1日の終わりにアプリ画面のスクショを Claude に渡す → OCR で nutrition.json 更新 → deploy</code>
+      </div>
+    </div>
+
+    <!-- top: 4 large macros -->
+    <div class="top-counters">
+      <div class="top-counter">
+        <div class="label">エネルギー</div>
+        <div class="value-row"><span class="value" id="hero-energy">—</span><span class="unit">kcal</span></div>
+        <span class="delta-inline" id="hero-energy-delta"></span>
+        <div class="target-line" id="target-energy"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">タンパク質</div>
+        <div class="value-row"><span class="value" id="hero-protein">—</span><span class="unit">g</span></div>
+        <span class="delta-inline" id="hero-protein-delta"></span>
+        <div class="target-line" id="target-protein"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">脂質</div>
+        <div class="value-row"><span class="value" id="hero-fat">—</span><span class="unit">g</span></div>
+        <span class="delta-inline" id="hero-fat-delta"></span>
+        <div class="target-line" id="target-fat"></div>
+      </div>
+      <div class="top-counter">
+        <div class="label">炭水化物</div>
+        <div class="value-row"><span class="value" id="hero-carbs">—</span><span class="unit">g</span></div>
+        <span class="delta-inline" id="hero-carbs-delta"></span>
+        <div class="target-line" id="target-carbs"></div>
+      </div>
+    </div>
+
+    <!-- secondary: minerals -->
+    <div class="sec-section">
+      <div class="sec-head">ミネラル</div>
+      <div class="sec-grid cols-4">
+        <div class="sec-counter" data-field="calcium_mg" data-unit="mg" data-dec="0"></div>
+        <div class="sec-counter" data-field="magnesium_mg" data-unit="mg" data-dec="0"></div>
+        <div class="sec-counter" data-field="iron_mg" data-unit="mg" data-dec="1"></div>
+        <div class="sec-counter" data-field="zinc_mg" data-unit="mg" data-dec="1"></div>
+      </div>
+    </div>
+
+    <!-- secondary: vitamins -->
+    <div class="sec-section">
+      <div class="sec-head">ビタミン</div>
+      <div class="sec-grid cols-6">
+        <div class="sec-counter" data-field="vitamin_a_ug" data-unit="μg" data-dec="0"></div>
+        <div class="sec-counter" data-field="vitamin_d_ug" data-unit="μg" data-dec="1"></div>
+        <div class="sec-counter" data-field="vitamin_b1_mg" data-unit="mg" data-dec="2"></div>
+        <div class="sec-counter" data-field="vitamin_b2_mg" data-unit="mg" data-dec="2"></div>
+        <div class="sec-counter" data-field="vitamin_b6_mg" data-unit="mg" data-dec="2"></div>
+        <div class="sec-counter" data-field="vitamin_c_mg" data-unit="mg" data-dec="0"></div>
+      </div>
+    </div>
+
+    <!-- secondary: others -->
+    <div class="sec-section">
+      <div class="sec-head">その他</div>
+      <div class="sec-grid cols-3">
+        <div class="sec-counter" data-field="fiber_g" data-unit="g" data-dec="1"></div>
+        <div class="sec-counter" data-field="saturated_fat_g" data-unit="g" data-dec="1" data-lower="1"></div>
+        <div class="sec-counter" data-field="salt_g" data-unit="g" data-dec="1" data-lower="1"></div>
+      </div>
+    </div>
+
+    <!-- 目標サマリー -->
+    <div class="goal-summary" id="goal-summary">
+      <span class="goal-label">目標</span>
+      <span class="goal-text">—</span>
+    </div>
+
+    <!-- main tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="chart">Chart</button>
+      <button class="tab-btn" data-tab="raw">Raw Data</button>
+    </div>
+
+    <!-- chart panel -->
+    <section class="panel active" id="panel-chart">
+      <div class="range-bar">
+        <div class="range-btns" id="range-btns">
+          <button data-range="7" class="active">7日</button>
+          <button data-range="30">30日</button>
+          <button data-range="90">90日</button>
+          <button data-range="all">全期間</button>
+        </div>
+        <span class="meta" id="range-meta"></span>
+      </div>
+
+      <div class="chart-section-head">メイン栄養素</div>
+      <div class="charts" id="charts-macro"></div>
+
+      <div class="chart-section-head">ミネラル</div>
+      <div class="charts" id="charts-mineral"></div>
+
+      <div class="chart-section-head">ビタミン</div>
+      <div class="charts" id="charts-vitamin"></div>
+
+      <div class="chart-section-head">その他</div>
+      <div class="charts" id="charts-other"></div>
+    </section>
+
+    <!-- raw data panel -->
+    <section class="panel" id="panel-raw">
+      <div class="table-scroll">
+        <table class="raw" id="raw-table">
+          <thead>
+            <tr>
+              <th data-sort="date" class="sort-desc">日付<span class="arrow">▼</span></th>
+              <th data-sort="energy_kcal">エネルギー (kcal)<span class="arrow">▼</span></th>
+              <th data-sort="protein_g">タンパク質 (g)<span class="arrow">▼</span></th>
+              <th data-sort="fat_g">脂質 (g)<span class="arrow">▼</span></th>
+              <th data-sort="carbs_g">炭水化物 (g)<span class="arrow">▼</span></th>
+              <th data-sort="calcium_mg">Ca (mg)<span class="arrow">▼</span></th>
+              <th data-sort="magnesium_mg">Mg (mg)<span class="arrow">▼</span></th>
+              <th data-sort="iron_mg">Fe (mg)<span class="arrow">▼</span></th>
+              <th data-sort="zinc_mg">Zn (mg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_a_ug">Vit A (μg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_d_ug">Vit D (μg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_b1_mg">B1 (mg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_b2_mg">B2 (mg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_b6_mg">B6 (mg)<span class="arrow">▼</span></th>
+              <th data-sort="vitamin_c_mg">Vit C (mg)<span class="arrow">▼</span></th>
+              <th data-sort="fiber_g">食物繊維 (g)<span class="arrow">▼</span></th>
+              <th data-sort="saturated_fat_g">飽和脂肪 (g)<span class="arrow">▼</span></th>
+              <th data-sort="salt_g">塩分 (g)<span class="arrow">▼</span></th>
+            </tr>
+          </thead>
+          <tbody id="raw-tbody">
+            <tr><td colspan="18" class="empty">読み込み中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+  <script>
+  (function(){
+    const DATA_URL = './data/nutrition.json';
+    const FG = '#0a0a0a';
+    const MUTED = '#888';
+    const LINE = '#e5e5e5';
+    const SOFT = '#f7f7f7';
+
+    /* ---- field metadata ---- */
+    const FIELDS = {
+      energy_kcal:     { label: 'エネルギー',  unit: 'kcal', dec: 0, lower: false },
+      protein_g:       { label: 'タンパク質',  unit: 'g',    dec: 1, lower: false },
+      fat_g:           { label: '脂質',        unit: 'g',    dec: 1, lower: false },
+      carbs_g:         { label: '炭水化物',    unit: 'g',    dec: 1, lower: false },
+      calcium_mg:      { label: 'カルシウム',  unit: 'mg',   dec: 0, lower: false },
+      magnesium_mg:    { label: 'マグネシウム',unit: 'mg',   dec: 0, lower: false },
+      iron_mg:         { label: '鉄',          unit: 'mg',   dec: 1, lower: false },
+      zinc_mg:         { label: '亜鉛',        unit: 'mg',   dec: 1, lower: false },
+      vitamin_a_ug:    { label: 'ビタミンA',   unit: 'μg',   dec: 0, lower: false },
+      vitamin_d_ug:    { label: 'ビタミンD',   unit: 'μg',   dec: 1, lower: false },
+      vitamin_b1_mg:   { label: 'ビタミンB1',  unit: 'mg',   dec: 2, lower: false },
+      vitamin_b2_mg:   { label: 'ビタミンB2',  unit: 'mg',   dec: 2, lower: false },
+      vitamin_b6_mg:   { label: 'ビタミンB6',  unit: 'mg',   dec: 2, lower: false },
+      vitamin_c_mg:    { label: 'ビタミンC',   unit: 'mg',   dec: 0, lower: false },
+      fiber_g:         { label: '食物繊維',    unit: 'g',    dec: 1, lower: false },
+      saturated_fat_g: { label: '飽和脂肪酸',  unit: 'g',    dec: 1, lower: true  },
+      salt_g:          { label: '塩分',        unit: 'g',    dec: 1, lower: true  },
+    };
+
+    /* groups for chart layout */
+    const GROUPS = {
+      'charts-macro':   ['energy_kcal','protein_g','fat_g','carbs_g'],
+      'charts-mineral': ['calcium_mg','magnesium_mg','iron_mg','zinc_mg'],
+      'charts-vitamin': ['vitamin_a_ug','vitamin_d_ug','vitamin_b1_mg','vitamin_b2_mg','vitamin_b6_mg','vitamin_c_mg'],
+      'charts-other':   ['fiber_g','saturated_fat_g','salt_g'],
+    };
+
+    const state = {
+      all: [],
+      range: 7,
+      sortKey: 'date',
+      sortDir: 'desc',
+      charts: {},
+      targets: {},
+      goalText: '',
+    };
+
+    const fmt = (v, d) => (v == null || isNaN(v)) ? '—' :
+      (d === 0 ? Math.round(v).toString() : Number(v).toFixed(d));
+
+    function load() {
+      fetch(DATA_URL, {cache: 'no-store'})
+        .then(r => r.json())
+        .then(json => {
+          state.targets  = json.targets || {};
+          state.goalText = (json.user && json.user._goal) || '';
+          state.all = (json.measurements || []).slice()
+            .sort((a,b) => a.date.localeCompare(b.date));
+          if (json.last_synced) {
+            document.getElementById('source-line').textContent =
+              'データソース: 栄養記録アプリ画面OCR · 最終更新 ' + json.last_synced;
+          }
+          if (state.goalText) {
+            document.querySelector('#goal-summary .goal-text').textContent = state.goalText;
+          }
+          buildChartCards();
+          renderAll();
+        })
+        .catch(err => {
+          console.error('failed to load nutrition data', err);
+          const tb = document.getElementById('raw-tbody');
+          if (tb) tb.innerHTML = '<tr><td colspan="18" class="empty">読み込み失敗</td></tr>';
+        });
+    }
+
+    function rangeSlice() {
+      if (state.range === 'all') return state.all;
+      const n = Number(state.range);
+      return state.all.slice(-n);
+    }
+
+    function renderAll() {
+      renderHero();
+      renderSecondary();
+      renderCharts();
+      renderRaw();
+    }
+
+    /* ---- hero (4 main) ---- */
+    function deltaParen(d, decimals, unit, lowerIsBetter) {
+      if (d == null || isNaN(d)) return '';
+      let cls, sign, val;
+      if (d === 0) { cls = 'flat'; sign = '±'; val = (0).toFixed(decimals); }
+      else if (d < 0) { cls = lowerIsBetter ? 'down' : 'up'; sign = '−'; val = Math.abs(d).toFixed(decimals); }
+      else            { cls = lowerIsBetter ? 'up' : 'down'; sign = '+'; val = d.toFixed(decimals); }
+      const u = unit ? (' ' + unit) : '';
+      return '(<span class="' + cls + '">' + sign + val + u + '</span>)';
+    }
+
+    function progressInfo(cur, tgt, lowerIsBetter) {
+      // returns {pct: 0-100, reached: bool, over: bool}
+      // higher-is-better: pct = cur/tgt × 100, capped at 200; reached when cur >= tgt
+      // lower-is-better:  pct = cur/tgt × 100; reached when cur <= tgt; over when cur > tgt
+      if (cur == null || tgt == null || tgt === 0) return null;
+      if (lowerIsBetter) {
+        const pct = Math.min(150, (cur / tgt) * 100);
+        return { pct: Math.max(0, pct), reached: cur <= tgt, over: cur > tgt };
+      } else {
+        const pct = Math.min(150, (cur / tgt) * 100);
+        return { pct: Math.max(0, pct), reached: cur >= tgt, over: false };
+      }
+    }
+
+    function renderHero() {
+      const last = state.all[state.all.length - 1];
+      const prev = state.all[state.all.length - 2];
+
+      const macros = [
+        { id: 'energy', field: 'energy_kcal' },
+        { id: 'protein', field: 'protein_g' },
+        { id: 'fat', field: 'fat_g' },
+        { id: 'carbs', field: 'carbs_g' },
+      ];
+
+      macros.forEach(m => {
+        const f = FIELDS[m.field];
+        const cur = last ? last[m.field] : null;
+        document.getElementById('hero-' + m.id).textContent = fmt(cur, f.dec);
+
+        // delta
+        const dEl = document.getElementById('hero-' + m.id + '-delta');
+        if (prev && cur != null && prev[m.field] != null) {
+          dEl.innerHTML = deltaParen(cur - prev[m.field], f.dec, f.unit, f.lower) + ' 前回 ' + prev.date;
+        } else {
+          dEl.innerHTML = '';
+        }
+
+        // target line + progress
+        const tEl = document.getElementById('target-' + m.id);
+        const tgt = state.targets[m.field];
+        if (tgt == null) { tEl.innerHTML = ''; return; }
+        const tStr = fmt(tgt, f.dec) + ' ' + f.unit;
+        const info = progressInfo(cur, tgt, f.lower);
+        let pctTxt = '';
+        let bar = '';
+        if (info) {
+          pctTxt = ' <span style="float:right; color:var(--muted)">' + Math.round(info.pct) + '%</span>';
+          const barWidth = Math.min(100, info.pct);
+          const cls = info.over ? 'over' : (info.reached ? 'reached' : '');
+          bar = '<span class="progress"><span class="' + cls + '" style="width:' + barWidth + '%"></span></span>';
+        }
+        tEl.innerHTML =
+          '<span class="target-label">目標</span>' +
+          '<span class="target-val">' + tStr + '</span>' +
+          pctTxt + bar;
+      });
+    }
+
+    /* ---- secondary counters ---- */
+    function renderSecondary() {
+      const last = state.all[state.all.length - 1];
+      document.querySelectorAll('.sec-counter[data-field]').forEach(el => {
+        const field = el.dataset.field;
+        const f = FIELDS[field];
+        if (!f) return;
+        const cur = last ? last[field] : null;
+        const tgt = state.targets[field];
+        const info = progressInfo(cur, tgt, f.lower);
+
+        let html = '<div class="s-label">' + f.label + '</div>' +
+          '<div class="s-row"><span class="s-value">' + fmt(cur, f.dec) + '</span>' +
+          '<span class="s-unit">' + f.unit + '</span></div>';
+
+        if (tgt != null) {
+          html += '<div class="s-target">目標 <span class="v">' +
+            fmt(tgt, f.dec) + ' ' + f.unit + '</span>';
+          if (info) html += ' · ' + Math.round(info.pct) + '%';
+          html += '</div>';
+          if (info) {
+            const cls = info.over ? 'over' : (info.reached ? 'reached' : '');
+            const w = Math.min(100, info.pct);
+            html += '<span class="s-progress"><span class="' + cls + '" style="width:' + w + '%"></span></span>';
+          }
+        }
+        el.innerHTML = html;
+      });
+    }
+
+    /* ---- charts ---- */
+    function buildChartCards() {
+      Object.entries(GROUPS).forEach(([containerId, fields]) => {
+        const c = document.getElementById(containerId);
+        if (!c) return;
+        c.innerHTML = fields.map(field => {
+          const f = FIELDS[field];
+          return `
+            <div class="chart-card">
+              <div class="title">${f.label} <span class="title-unit">(${f.unit})</span></div>
+              <div class="sub"><span class="latest" id="latest-${field}">—</span><span class="latest-unit">${f.unit}</span></div>
+              <canvas id="chart-${field}"></canvas>
+            </div>`;
+        }).join('');
+      });
+    }
+
+    function chartOptions(decimals) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: FG, titleColor: '#fff', bodyColor: '#fff',
+            titleFont: { family: 'JetBrains Mono', size: 11 },
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            padding: 8, displayColors: false,
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                if (v == null) return '—';
+                return (decimals === 0 ? Math.round(v).toString() : v.toFixed(decimals));
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { color: LINE },
+            ticks: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 }
+          },
+          y: {
+            grid: { color: SOFT },
+            border: { display: false },
+            ticks: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, maxTicksLimit: 5 }
+          }
+        }
+      };
+    }
+
+    function renderRangeMeta() {
+      const data = rangeSlice();
+      const meta = document.getElementById('range-meta');
+      if (data.length === 0) meta.textContent = 'データなし';
+      else meta.textContent = data.length + '件 · ' + data[0].date + ' → ' + data[data.length-1].date;
+    }
+
+    function renderCharts() {
+      renderRangeMeta();
+      const data = rangeSlice();
+      const labels = data.map(d => d.date.slice(5));
+
+      Object.values(GROUPS).flat().forEach(field => {
+        const f = FIELDS[field];
+        const series = data.map(d => d[field] ?? null);
+        const last = state.all[state.all.length - 1];
+        const lastVal = last ? last[field] : null;
+        const latestEl = document.getElementById('latest-' + field);
+        if (latestEl) latestEl.textContent = fmt(lastVal, f.dec);
+
+        const canvas = document.getElementById('chart-' + field);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (state.charts[field]) state.charts[field].destroy();
+
+        const datasets = [{
+          label: '実測',
+          data: series,
+          borderColor: FG,
+          backgroundColor: 'rgba(10,10,10,0.06)',
+          borderWidth: 1.5,
+          pointRadius: data.length <= 30 ? 2.5 : 0,
+          pointHoverRadius: 4,
+          pointBackgroundColor: FG,
+          tension: 0.25,
+          fill: true,
+          spanGaps: true,
+        }];
+
+        const tgt = state.targets[field];
+        if (tgt != null && labels.length > 0) {
+          datasets.push({
+            label: '目標',
+            data: labels.map(() => tgt),
+            borderColor: f.lower ? '#ff3b30' : '#2ea44f',
+            borderWidth: 1,
+            borderDash: [4, 4],
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            fill: false,
+            tension: 0,
+          });
+        }
+
+        state.charts[field] = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets },
+          options: chartOptions(f.dec)
+        });
+      });
+    }
+
+    /* ---- raw ---- */
+    function sortedRows() {
+      return state.all.slice().sort((a,b) => {
+        const k = state.sortKey;
+        let av = a[k], bv = b[k];
+        if (k === 'date') { av = a.date; bv = b.date; }
+        if (av == null) av = -Infinity;
+        if (bv == null) bv = -Infinity;
+        if (av < bv) return state.sortDir === 'asc' ? -1 : 1;
+        if (av > bv) return state.sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    function renderRaw() {
+      const tb = document.getElementById('raw-tbody');
+      if (!state.all.length) {
+        tb.innerHTML = '<tr><td colspan="18" class="empty">データなし</td></tr>';
+        updateSortIndicators();
+        return;
+      }
+      const rows = sortedRows();
+      const fieldOrder = [
+        'energy_kcal','protein_g','fat_g','carbs_g',
+        'calcium_mg','magnesium_mg','iron_mg','zinc_mg',
+        'vitamin_a_ug','vitamin_d_ug','vitamin_b1_mg','vitamin_b2_mg','vitamin_b6_mg','vitamin_c_mg',
+        'fiber_g','saturated_fat_g','salt_g'
+      ];
+      tb.innerHTML = rows.map(r => {
+        const cells = fieldOrder.map(f => `<td>${fmt(r[f], FIELDS[f].dec)}</td>`).join('');
+        return `<tr><td>${r.date}</td>${cells}</tr>`;
+      }).join('');
+      updateSortIndicators();
+    }
+
+    function updateSortIndicators() {
+      document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+        th.classList.remove('sort-asc','sort-desc');
+        const arrow = th.querySelector('.arrow');
+        if (th.dataset.sort === state.sortKey) {
+          th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+          if (arrow) arrow.textContent = state.sortDir === 'asc' ? '▲' : '▼';
+        } else if (arrow) {
+          arrow.textContent = '▼';
+        }
+      });
+    }
+
+    /* ---- events ---- */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('#range-btns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#range-btns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const r = btn.dataset.range;
+        state.range = (r === 'all') ? 'all' : Number(r);
+        renderCharts();
+      });
+    });
+
+    document.querySelectorAll('table.raw th[data-sort]').forEach(th => {
+      th.addEventListener('click', () => {
+        const k = th.dataset.sort;
+        if (state.sortKey === k) {
+          state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          state.sortKey = k;
+          state.sortDir = 'desc';
+        }
+        renderRaw();
+      });
+    });
+
+    load();
+  })();
+  </script>
+</body>
+</html>
