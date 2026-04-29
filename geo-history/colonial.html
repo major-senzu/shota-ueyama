@@ -524,6 +524,77 @@ const ERAS = {
       'COL':'independent','VEN':'independent','ECU':'independent','PER':'independent','BOL':'independent','CHL':'independent','ARG':'independent','BRA':'independent','PRY':'independent','URY':'independent',
     }
   },
+
+  '1980': {
+    headline: '冷戦のピーク — 二極世界の二つの陣営',
+    desc: 'ベトナム戦争終結(1975)、ソ連のアフガニスタン侵攻(1979)、レーガン政権発足(1981)前夜。世界は<strong>NATO/西側</strong>と<strong>ワルシャワ条約機構/ソ連圏</strong>の二極に分かれ、第三勢力として<strong>非同盟運動</strong>(印・ユーゴ・インドネシア・エジプト等)と<strong>中国(PRC)独立陣営</strong>が並立。脱植民地化はほぼ完了し、旧植民地は新冷戦の代理戦場に。',
+    countries: {
+      // ===== ソ連圏 (USSR + Warsaw Pact + Soviet allies) =====
+      'RUS':'soviet','KAZ':'soviet','UZB':'soviet','TKM':'soviet','KGZ':'soviet','TJK':'soviet',
+      'GEO':'soviet','ARM':'soviet','AZE':'soviet',
+      'EST':'soviet','LVA':'soviet','LTU':'soviet',
+      'BLR':'soviet','UKR':'soviet','MDA':'soviet',
+      'POL':'soviet','HUN':'soviet','CZE':'soviet','SVK':'soviet','ROU':'soviet','BGR':'soviet',
+      'MNG':'soviet','CUB':'soviet',  // Soviet allies
+      'VNM':'soviet','LAO':'soviet','KHM':'soviet',  // Indochina post-1975 (Vietnam Soviet-aligned, KHM after 1979 Vietnamese intervention)
+      'AGO':'soviet','MOZ':'soviet','ETH':'soviet',  // Soviet/Cuban-backed regimes
+      'AFG':'soviet',  // 1979 invasion
+      'YEM':'soviet',  // South Yemen Soviet-aligned (modern unified YEM)
+
+      // ===== 中国陣営 (PRC + DPRK + Albania) =====
+      'CHN':'chinese',
+      'PRK':'chinese',
+      'ALB':'chinese',  // broke with both USSR and PRC by 1978 but historically Maoist; mark chinese for context
+
+      // ===== NATO + Western Bloc =====
+      'USA':'us_aligned','CAN':'us_aligned',
+      'GBR':'us_aligned','FRA':'us_aligned','DEU':'us_aligned','ITA':'us_aligned','PRT':'us_aligned',
+      'NLD':'us_aligned','BEL':'us_aligned','LUX':'us_aligned',
+      'DNK':'us_aligned','NOR':'us_aligned','ISL':'us_aligned',
+      'GRC':'us_aligned','TUR':'us_aligned',
+      // US allies (non-NATO)
+      'JPN':'us_aligned','KOR':'us_aligned',
+      'AUS':'us_aligned','NZL':'us_aligned',
+      'PHL':'us_aligned','THA':'us_aligned',  // SEATO
+      'ISR':'us_aligned',
+      'EGY':'us_aligned',  // post-1979 Camp David
+      'SAU':'us_aligned',
+      'PAK':'us_aligned',  // Cold War US ally
+      'TWN':'us_aligned',  // de facto US-aligned
+
+      // ===== 残存植民地 / 領有 =====
+      'HKG':'british',  // until 1997
+      'PRI':'usa',  // US territory
+      'GRL':'danish',  // Danish realm
+      // ESH (Western Sahara) — post-Spanish withdrawal 1976, contested by Morocco/Polisario
+      // TLS — under Indonesian occupation 1975-1999
+
+      // ===== 非同盟・中立 (default = independent) =====
+      // インド、ユーゴスラビア(SRB,HRV,BIH,SVN,MNE,MKD)、インドネシア、エジプト→1979以前は非同盟
+      // ブラジル、メキシコ等ラテンアメリカ大半、アフリカ大半、サウジ以外の中東等
+      // 全て 'independent' (default)
+    }
+  },
+
+  '2024': {
+    headline: '現代 — 形式的植民地時代の終焉',
+    desc: '<strong>形式的な植民地支配は事実上消滅</strong>し、世界は約200の主権国家からなる。残るのは少数の<strong>海外領土・自治領</strong>(仏領GUF/REU/MYT等、英領FLK/GIB、米領PRI/GUM、デンマーク領GRL等)と<strong>係争地</strong>(西サハラ＝モロッコ実効支配、台湾＝de facto独立、クリミア＝露実効支配)。植民地の代わりに<strong>経済・文化的影響圏</strong>(中国一帯一路、米国同盟網、露CSTO)が地政学を再編。',
+    countries: {
+      // ===== 残存する直接的領有・自治領 =====
+      'GRL':'danish',  // Greenland — autonomous Danish realm
+      'PRI':'usa',     // Puerto Rico — US territory (commonwealth)
+      'ESH':'spanish', // Western Sahara — disputed, formerly Spanish, now 80% Moroccan-controlled
+      'HKG':'chinese', // Hong Kong SAR (under PRC since 1997)
+      'MAC':'chinese', // Macau SAR (under PRC since 1999)
+      'TWN':'independent',  // De facto independent, claimed by PRC
+      // Note: Most French/British/Dutch/American small island territories aren't in 110m resolution
+      // 例: GLP, MTQ, GUF, REU, MYT (仏), FLK, GIB (英), GUM, ASM, MNP (米) — but most don't render at 110m
+
+      // ===== 全ての主権国家 = independent (default) =====
+      // 200+ countries are independent
+      // ロシアによるクリミア併合(2014)・東部ウクライナ実効支配(2022〜)等は国レベル粒度では表現困難
+    }
+  },
 };
 
 // ============ MAP SETUP ============
@@ -613,8 +684,8 @@ function renderEra(year) {
   // Render legend (only powers that are visible in current era)
   const legendOrder = [
     'spanish','portuguese','french','british','dutch','belgian',
-    'german','italian','russian','soviet','ottoman','austrian',
-    'japanese','usa','independent'
+    'german','italian','russian','soviet','us_aligned','chinese',
+    'ottoman','austrian','japanese','usa','danish','independent'
   ];
   document.getElementById('legend').innerHTML = legendOrder
     .filter(k => usedPowers.has(k))

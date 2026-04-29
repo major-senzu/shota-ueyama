@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>map / リサーチマップ — Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+
+    --c-person:  #2563eb;  /* blue */
+    --c-company: #9333ea;  /* purple */
+    --c-product: #ea580c;  /* orange */
+    --c-city:    #374151;  /* dark gray */
+    --c-history: #b45309;  /* brown */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 32px 48px 48px;
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; }
+
+  /* ============ HERO ============ */
+  .hero {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--fg); }
+
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .ja { font-size: 15px; color: var(--muted); margin-bottom: 14px; }
+  .hero .lead { font-size: 14px; line-height: 1.85; color: #333; max-width: 820px; }
+  .hero .lead strong { font-weight: 600; color: var(--fg); }
+
+  /* ============ CONTROLS ============ */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .control-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  .continent-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--fg);
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .continent-btn:hover { border-color: var(--fg); }
+  .continent-btn.active {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px 10px 36px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box input:focus { border-color: var(--fg); }
+  .search-box::before {
+    content: '🔍';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .category-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cat-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cat-chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .cat-chip.off { opacity: 0.35; }
+  .cat-chip:hover { border-color: var(--fg); }
+  .cat-chip[data-cat="person"]  .dot { background: var(--c-person); }
+  .cat-chip[data-cat="company"] .dot { background: var(--c-company); }
+  .cat-chip[data-cat="product"] .dot { background: var(--c-product); }
+  .cat-chip[data-cat="city"]    .dot { background: var(--c-city); }
+  .cat-chip[data-cat="history"] .dot { background: var(--c-history); }
+
+  /* ============ MAP ============ */
+  .map-wrap {
+    border: 1px solid var(--line);
+    background: #fafafa;
+    padding: 4px;
+    margin-bottom: 14px;
+  }
+  #map {
+    width: 100%;
+    height: 640px;
+    background: #f0f0f0;
+  }
+
+  .map-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-align: right;
+  }
+
+  /* ============ POPUP STYLE ============ */
+  .leaflet-popup-content-wrapper {
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .pin-pop {
+    font-family: 'Inter', sans-serif;
+    min-width: 220px;
+    max-width: 300px;
+  }
+  .pin-pop .ptag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .pin-pop .ptag.person  { background: var(--c-person); }
+  .pin-pop .ptag.company { background: var(--c-company); }
+  .pin-pop .ptag.product { background: var(--c-product); }
+  .pin-pop .ptag.city    { background: var(--c-city); }
+  .pin-pop .ptag.history { background: var(--c-history); }
+  .pin-pop h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .pin-pop .place {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pin-pop .body {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #222;
+    margin-bottom: 10px;
+  }
+  .pin-pop .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1px;
+  }
+  .pin-pop .src:hover { color: var(--fg); border-color: var(--fg); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 760px) {
+    body { padding: 24px 18px 32px; }
+    .hero h1 { font-size: 28px; }
+    #map { height: 480px; }
+    .control-row { gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">legend</a>
+    <a href="./" class="nav-link active">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <!-- ============ HERO ============ -->
+    <header class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; research &nbsp;/&nbsp; map</div>
+      <h1>map</h1>
+      <div class="ja">リサーチマップ — 関連人物・企業・特産品を地図に集約</div>
+      <p class="lead">
+        <strong>geo-history</strong>と<strong>No.2 Legends</strong>のリサーチで登場した<strong>人物の出身地</strong>・<strong>企業の本社</strong>・<strong>特産品の原産地</strong>等を地図に蓄積するアーカイブ。
+        ピンをタップすると関係性とリサーチページへのリンクが表示される。リサーチが進むごとにピンを追加していく。
+      </p>
+    </header>
+
+    <!-- ============ CONTROLS ============ -->
+    <div class="controls">
+      <div class="control-row">
+        <button class="continent-btn active" data-continent="world">▤ World</button>
+        <button class="continent-btn" data-continent="asia">▸ Asia</button>
+        <button class="continent-btn" data-continent="europe">▸ Europe</button>
+        <button class="continent-btn" data-continent="americas">▸ Americas</button>
+        <button class="continent-btn" data-continent="africa">▸ Africa</button>
+        <button class="continent-btn" data-continent="oceania">▸ Oceania</button>
+      </div>
+
+      <div class="control-row">
+        <div class="search-box">
+          <input type="search" id="search" placeholder="人物・企業・地名・キーワードで検索…" autocomplete="off">
+        </div>
+        <div class="category-filters">
+          <span class="cat-chip" data-cat="person"><span class="dot"></span>人物</span>
+          <span class="cat-chip" data-cat="company"><span class="dot"></span>企業</span>
+          <span class="cat-chip" data-cat="product"><span class="dot"></span>特産品</span>
+          <span class="cat-chip" data-cat="city"><span class="dot"></span>都市・名所</span>
+          <span class="cat-chip" data-cat="history"><span class="dot"></span>歴史</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ MAP ============ -->
+    <div class="map-wrap">
+      <div id="map"></div>
+    </div>
+    <div class="map-status" id="status">— pins —</div>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg></a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./pins.js"></script>
+  <script>
+    // ===== Map init =====
+    const map = L.map('map', {
+      center: [25, 30],
+      zoom: 2,
+      scrollWheelZoom: true,
+      worldCopyJump: true
+    });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    const COLORS = {
+      person:  getComputedStyle(document.documentElement).getPropertyValue('--c-person').trim(),
+      company: getComputedStyle(document.documentElement).getPropertyValue('--c-company').trim(),
+      product: getComputedStyle(document.documentElement).getPropertyValue('--c-product').trim(),
+      city:    getComputedStyle(document.documentElement).getPropertyValue('--c-city').trim(),
+      history: getComputedStyle(document.documentElement).getPropertyValue('--c-history').trim(),
+    };
+
+    const CONTINENT_BOUNDS = {
+      world:    [[-55, -160], [70, 170]],
+      asia:     [[5, 50], [55, 150]],
+      europe:   [[35, -15], [70, 60]],
+      americas: [[-55, -170], [70, -25]],
+      africa:   [[-35, -20], [37, 55]],
+      oceania:  [[-50, 110], [5, 180]]
+    };
+
+    let activeContinent = 'world';
+    let activeCats = new Set(['person','company','product','city','history']);
+    let activeQuery = '';
+    const layerGroup = L.layerGroup().addTo(map);
+
+    function escapeHtml(s) {
+      return String(s||'').replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+
+    function makePopupHtml(p) {
+      const labels = {person:'人物', company:'企業', product:'特産品', city:'都市・名所', history:'歴史'};
+      const srcLink = p.source ? `<a class="src" href="${p.source}">→ リサーチページへ</a>` : '';
+      return `<div class="pin-pop">
+        <span class="ptag ${p.cat}">${labels[p.cat]||p.cat}</span>
+        <h3>${escapeHtml(p.name)}</h3>
+        <div class="place">${escapeHtml(p.place)}</div>
+        <div class="body">${escapeHtml(p.detail)}</div>
+        ${srcLink}
+      </div>`;
+    }
+
+    function isInBounds(p, bbox) {
+      const [[s,w],[n,e]] = bbox;
+      return p.lat >= s && p.lat <= n && p.lng >= w && p.lng <= e;
+    }
+
+    function render() {
+      layerGroup.clearLayers();
+      const bbox = CONTINENT_BOUNDS[activeContinent];
+      const q = activeQuery.toLowerCase().trim();
+
+      const visible = PINS.filter(p => {
+        if (!activeCats.has(p.cat)) return false;
+        if (activeContinent !== 'world' && !isInBounds(p, bbox)) return false;
+        if (q) {
+          const hay = (p.name + ' ' + p.place + ' ' + p.detail).toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      visible.forEach(p => {
+        const m = L.circleMarker([p.lat, p.lng], {
+          radius: 7,
+          fillColor: COLORS[p.cat] || '#666',
+          color: '#fff',
+          weight: 2,
+          fillOpacity: 0.9
+        });
+        m.bindPopup(makePopupHtml(p), { maxWidth: 320 });
+        m.bindTooltip(p.name, { direction: 'top', offset: [0,-6], className: 'pin-tooltip' });
+        layerGroup.addLayer(m);
+      });
+
+      document.getElementById('status').textContent =
+        `表示中: ${visible.length} / ${PINS.length} pins  ·  ${activeContinent}` +
+        (q ? `  ·  「${activeQuery}」` : '');
+    }
+
+    // ===== Continent buttons =====
+    document.querySelectorAll('.continent-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.continent-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeContinent = btn.dataset.continent;
+        map.fitBounds(CONTINENT_BOUNDS[activeContinent], { padding: [20,20] });
+        render();
+      });
+    });
+
+    // ===== Category chips =====
+    document.querySelectorAll('.cat-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat;
+        if (activeCats.has(cat)) {
+          activeCats.delete(cat);
+          chip.classList.add('off');
+        } else {
+          activeCats.add(cat);
+          chip.classList.remove('off');
+        }
+        render();
+      });
+    });
+
+    // ===== Search =====
+    let searchTimer;
+    document.getElementById('search').addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        activeQuery = e.target.value;
+        render();
+      }, 150);
+    });
+
+    // ===== Initial render =====
+    map.fitBounds(CONTINENT_BOUNDS.world, { padding: [20,20] });
+    render();
+  </script>
+
+</body>
+</html>
