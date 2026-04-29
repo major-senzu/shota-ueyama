@@ -1,31 +1,31 @@
 {
-  "_comment": "栄養記録アプリ画面のスクショからOCR入力。",
+  "_comment": "栄養記録アプリ画面のスクショからOCR入力。適正範囲はranges (min/max)で管理。",
   "source": "栄養記録アプリ画面OCR",
   "last_synced": null,
   "user": {
     "_profile": "175cm, 21歳, 男性, 体重65.4kg",
     "_lifestyle": "デスクワーク中心 + 1日1hの筋トレ",
     "_goal": "筋トレで筋肉を増やし、健康な体作り（細マッチョ70kg / 体脂肪13%）",
-    "_target_basis": "BMR 1648kcal × 活動係数1.45 = TDEE 約2400kcal + lean bulk surplus 200kcal = 2600kcal。タンパク質2g/kg。ミネラル/ビタミンは食事摂取基準2025（18-29歳男性推奨量）"
+    "_range_basis": "適正範囲はユーザー指定値。エネルギー/三大栄養素は活動量・体重から逆算、ミネラル/ビタミンは食事摂取基準2025（18-29歳男性 推奨量〜耐容上限量）"
   },
-  "targets": {
-    "energy_kcal": 2600,
-    "protein_g": 130,
-    "fat_g": 75,
-    "carbs_g": 350,
-    "calcium_mg": 800,
-    "magnesium_mg": 340,
-    "iron_mg": 7.5,
-    "zinc_mg": 11,
-    "vitamin_a_ug": 900,
-    "vitamin_d_ug": 8.5,
-    "vitamin_b1_mg": 1.4,
-    "vitamin_b2_mg": 1.6,
-    "vitamin_b6_mg": 1.6,
-    "vitamin_c_mg": 100,
-    "fiber_g": 22,
-    "saturated_fat_g": 20,
-    "salt_g": 7.0
+  "ranges": {
+    "energy_kcal":     { "min": 2370,  "max": 2770 },
+    "protein_g":       { "min": 146.6, "max": 179.2 },
+    "fat_g":           { "min": 57.3,  "max": 70.1 },
+    "carbs_g":         { "min": 302.6, "max": 369.8 },
+    "calcium_mg":      { "min": 800,   "max": 2500 },
+    "magnesium_mg":    { "min": 340,   "max": null },
+    "iron_mg":         { "min": 7,     "max": null },
+    "zinc_mg":         { "min": 9,     "max": 40 },
+    "vitamin_a_ug":    { "min": 850,   "max": 2700 },
+    "vitamin_d_ug":    { "min": 9,     "max": 100 },
+    "vitamin_b1_mg":   { "min": 0.9,   "max": null },
+    "vitamin_b2_mg":   { "min": 1.4,   "max": null },
+    "vitamin_b6_mg":   { "min": 1.5,   "max": 55 },
+    "vitamin_c_mg":    { "min": 100,   "max": null },
+    "fiber_g":         { "min": 20,    "max": null },
+    "saturated_fat_g": { "min": null,  "max": 19.99 },
+    "salt_g":          { "min": null,  "max": 7.5 }
   },
   "schema": {
     "fields": [

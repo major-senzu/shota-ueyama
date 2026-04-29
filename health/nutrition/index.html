@@ -88,17 +88,42 @@
     user-select: all;
   }
 
+  /* status colors */
+  :root {
+    --st-low:  #2563eb;
+    --st-low-bg:  #e8f0ff;
+    --st-low-fg:  #1e3fa6;
+    --st-ok:   #2ea44f;
+    --st-ok-bg:   #e3f5e8;
+    --st-ok-fg:   #166534;
+    --st-high: #ff3b30;
+    --st-high-bg: #ffe5e3;
+    --st-high-fg: #9a1f17;
+  }
+
   /* top counters: 4 main macros (large) */
   .top-counters {
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 1px; background: var(--line);
     border: 1px solid var(--line); margin-bottom: 32px;
   }
-  .top-counter { background: var(--bg); padding: 22px 18px; }
+  .top-counter {
+    background: var(--bg); padding: 22px 18px;
+    position: relative;
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .top-counter.st-low  { border-left-color: var(--st-low); }
+  .top-counter.st-ok   { border-left-color: var(--st-ok); }
+  .top-counter.st-high { border-left-color: var(--st-high); }
+  .top-counter .label-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; gap: 6px;
+  }
   .top-counter .label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; color: var(--muted); letter-spacing: 0.10em;
-    text-transform: uppercase; margin-bottom: 12px;
+    text-transform: uppercase;
   }
   .top-counter .value-row { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
   .top-counter .value { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
@@ -124,15 +149,74 @@
   .top-counter .target-line .target-val {
     color: var(--fg); font-weight: 500; margin-left: 4px;
   }
-  .top-counter .target-line .progress {
-    display: inline-block; width: 100%; height: 3px;
-    background: var(--soft); margin-top: 6px; position: relative; overflow: hidden;
+
+  /* status badge */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+    line-height: 1;
+    white-space: nowrap;
   }
-  .top-counter .target-line .progress > span {
-    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  .status-badge::before {
+    content: ''; display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
   }
-  .top-counter .target-line .progress > span.reached { background: #2ea44f; }
-  .top-counter .target-line .progress > span.over     { background: var(--accent); }
+  .status-badge.st-low  { background: var(--st-low-bg);  color: var(--st-low-fg); }
+  .status-badge.st-low::before  { background: var(--st-low); }
+  .status-badge.st-ok   { background: var(--st-ok-bg);   color: var(--st-ok-fg); }
+  .status-badge.st-ok::before   { background: var(--st-ok); }
+  .status-badge.st-high { background: var(--st-high-bg); color: var(--st-high-fg); }
+  .status-badge.st-high::before { background: var(--st-high); }
+  .status-badge.sm { padding: 2px 6px; font-size: 9px; }
+  .status-badge.sm::before { width: 5px; height: 5px; }
+
+  /* range track: visualizes adequate band + current marker */
+  .range-track {
+    position: relative;
+    height: 6px;
+    background: var(--soft);
+    margin-top: 6px;
+    border-radius: 3px;
+    overflow: visible;
+  }
+  .range-track .band {
+    position: absolute;
+    top: 0; height: 100%;
+    background: rgba(46, 164, 79, 0.22);
+    border-radius: 2px;
+  }
+  .range-track .band-low {
+    position: absolute;
+    top: 0; height: 100%;
+    background: rgba(37, 99, 235, 0.10);
+  }
+  .range-track .band-high {
+    position: absolute;
+    top: 0; height: 100%;
+    background: rgba(255, 59, 48, 0.10);
+  }
+  .range-track .marker {
+    position: absolute;
+    top: -3px;
+    width: 3px; height: 12px;
+    border-radius: 1px;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 1px var(--bg);
+  }
+  .range-track .marker.st-low  { background: var(--st-low); }
+  .range-track .marker.st-ok   { background: var(--st-ok); }
+  .range-track .marker.st-high { background: var(--st-high); }
+  .range-track-labels {
+    display: flex; justify-content: space-between;
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--muted);
+    letter-spacing: 0.02em;
+  }
 
   /* secondary counters: minerals/vitamins/others (smaller) */
   .sec-section { margin-bottom: 28px; }
@@ -163,15 +247,18 @@
     letter-spacing: 0.04em;
   }
   .sec-counter .s-target .v { color: var(--fg); font-weight: 500; }
-  .sec-counter .s-progress {
-    display: block; width: 100%; height: 2px;
-    background: var(--soft); margin-top: 5px; overflow: hidden;
+  .sec-counter {
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s;
   }
-  .sec-counter .s-progress > span {
-    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  .sec-counter.st-low  { border-left-color: var(--st-low); }
+  .sec-counter.st-ok   { border-left-color: var(--st-ok); }
+  .sec-counter.st-high { border-left-color: var(--st-high); }
+  .sec-counter .s-head-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 4px; margin-bottom: 6px;
   }
-  .sec-counter .s-progress > span.reached { background: #2ea44f; }
-  .sec-counter .s-progress > span.over     { background: var(--accent); }
+  .sec-counter .s-head-row .s-label { margin-bottom: 0; }
 
   @media (max-width: 1000px) {
     .top-counters { grid-template-columns: repeat(2, 1fr); }
@@ -339,6 +426,7 @@
     <nav class="health-subnav">
       <a href="../index.html">体組成</a>
       <a href="./" class="active">栄養素</a>
+      <a href="../strength/">筋トレ</a>
     </nav>
 
     <div class="hero">
@@ -353,26 +441,26 @@
 
     <!-- top: 4 large macros -->
     <div class="top-counters">
-      <div class="top-counter">
-        <div class="label">エネルギー</div>
+      <div class="top-counter" id="card-energy">
+        <div class="label-row"><span class="label">エネルギー</span><span class="status-badge" id="badge-energy"></span></div>
         <div class="value-row"><span class="value" id="hero-energy">—</span><span class="unit">kcal</span></div>
         <span class="delta-inline" id="hero-energy-delta"></span>
         <div class="target-line" id="target-energy"></div>
       </div>
-      <div class="top-counter">
-        <div class="label">タンパク質</div>
+      <div class="top-counter" id="card-protein">
+        <div class="label-row"><span class="label">タンパク質</span><span class="status-badge" id="badge-protein"></span></div>
         <div class="value-row"><span class="value" id="hero-protein">—</span><span class="unit">g</span></div>
         <span class="delta-inline" id="hero-protein-delta"></span>
         <div class="target-line" id="target-protein"></div>
       </div>
-      <div class="top-counter">
-        <div class="label">脂質</div>
+      <div class="top-counter" id="card-fat">
+        <div class="label-row"><span class="label">脂質</span><span class="status-badge" id="badge-fat"></span></div>
         <div class="value-row"><span class="value" id="hero-fat">—</span><span class="unit">g</span></div>
         <span class="delta-inline" id="hero-fat-delta"></span>
         <div class="target-line" id="target-fat"></div>
       </div>
-      <div class="top-counter">
-        <div class="label">炭水化物</div>
+      <div class="top-counter" id="card-carbs">
+        <div class="label-row"><span class="label">炭水化物</span><span class="status-badge" id="badge-carbs"></span></div>
         <div class="value-row"><span class="value" id="hero-carbs">—</span><span class="unit">g</span></div>
         <span class="delta-inline" id="hero-carbs-delta"></span>
         <div class="target-line" id="target-carbs"></div>
@@ -407,9 +495,9 @@
     <div class="sec-section">
       <div class="sec-head">その他</div>
       <div class="sec-grid cols-3">
-        <div class="sec-counter" data-field="fiber_g" data-unit="g" data-dec="1"></div>
-        <div class="sec-counter" data-field="saturated_fat_g" data-unit="g" data-dec="1" data-lower="1"></div>
-        <div class="sec-counter" data-field="salt_g" data-unit="g" data-dec="1" data-lower="1"></div>
+        <div class="sec-counter" data-field="fiber_g"></div>
+        <div class="sec-counter" data-field="saturated_fat_g"></div>
+        <div class="sec-counter" data-field="salt_g"></div>
       </div>
     </div>
 

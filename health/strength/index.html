@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>012 · strength / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+    --push: #ff6b3d;
+    --pull: #2563eb;
+    --legs: #16a34a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    letter-spacing: 0.04em;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  /* health subnav */
+  .health-subnav { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .health-subnav a {
+    text-decoration: none;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .health-subnav a:hover { color: var(--fg); }
+  .health-subnav a.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+  .hero { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .hero .source {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); margin-top: 10px; letter-spacing: 0.04em;
+  }
+  .hero .memo {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--soft);
+    border-left: 2px solid var(--fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero .memo .memo-label {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    flex-shrink: 0;
+  }
+  .hero .memo code {
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--fg);
+    background: transparent;
+  }
+
+  /* BIG 3 hero counters */
+  .big3 {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); margin-bottom: 28px;
+  }
+  .big3-card { background: var(--bg); padding: 22px 18px; }
+  .big3-card.total { background: #0a0a0a; color: #fff; }
+  .big3-card.total .label,
+  .big3-card.total .delta-inline,
+  .big3-card.total .target-line { color: #aaa; }
+  .big3-card.total .target-line .target-val { color: #fff; }
+  .big3-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .big3-card .value-row { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .big3-card .value { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .big3-card .unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .big3-card.total .unit { color: #aaa; }
+  .big3-card .delta-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.02em;
+    margin-top: 8px; display: block;
+  }
+  .big3-card .delta-inline .up { color: #2ea44f; font-weight: 500; }
+  .big3-card .delta-inline .down { color: var(--accent); font-weight: 500; }
+  .big3-card .delta-inline .flat { color: var(--muted); }
+  .big3-card.total .delta-inline .up { color: #4ade80; }
+  .big3-card .target-line {
+    margin-top: 10px; padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .big3-card.total .target-line { border-top-color: #333; }
+  .big3-card .target-line .target-label {
+    text-transform: uppercase; letter-spacing: 0.10em; font-size: 9px;
+  }
+  .big3-card .target-line .target-val {
+    color: var(--fg); font-weight: 500; margin-left: 4px;
+  }
+  .big3-card .target-line .progress {
+    display: block; width: 100%; height: 4px;
+    background: var(--soft); margin-top: 6px; overflow: hidden;
+  }
+  .big3-card.total .target-line .progress { background: #333; }
+  .big3-card .target-line .progress > span {
+    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  }
+  .big3-card.total .target-line .progress > span { background: #4ade80; }
+  .big3-card .target-line .progress > span.reached { background: #2ea44f; }
+  .big3-card .placeholder {
+    margin-top: 8px; padding: 8px 10px;
+    background: var(--soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .big3-card.total .placeholder { background: #1a1a1a; color: #888; }
+
+  @media (max-width: 1000px) {
+    .big3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .big3 { grid-template-columns: repeat(2, 1fr); }
+    .big3-card .value { font-size: 26px; }
+    body { padding: 24px 20px 32px; }
+  }
+
+  /* Goal banner / projection */
+  .goal-banner {
+    margin-bottom: 28px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .goal-banner.placeholder {
+    background: var(--soft);
+    border-style: dashed;
+  }
+  .goal-banner .gb-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 12px; gap: 12px; flex-wrap: wrap;
+  }
+  .goal-banner .gb-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; font-weight: 500;
+  }
+  .goal-banner .gb-deadline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg); letter-spacing: 0.04em;
+  }
+  .goal-banner .gb-bar-wrap {
+    position: relative; height: 28px; background: var(--soft);
+    border: 1px solid var(--line);
+  }
+  .goal-banner .gb-bar {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--push), var(--pull));
+    transition: width 0.4s;
+  }
+  .goal-banner .gb-bar.reached { background: #2ea44f; }
+  .goal-banner .gb-text {
+    margin-top: 10px;
+    display: flex; gap: 18px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .goal-banner .gb-text strong { font-weight: 600; }
+  .goal-banner .gb-text .label-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .goal-banner .gb-empty {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    text-align: center; padding: 6px 0;
+  }
+
+  /* Routine card */
+  .routine-card {
+    margin-bottom: 36px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .routine-card .rc-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 10px; font-weight: 500;
+  }
+  .routine-card .rc-cycle {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .routine-card .rc-day {
+    padding: 10px 12px; border: 1px solid var(--line);
+    background: var(--soft);
+    font-size: 12px;
+  }
+  .routine-card .rc-day.next {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .routine-card .rc-day .rc-d-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .routine-card .rc-day.next .rc-d-label { color: #aaa; }
+  .routine-card .rc-day .rc-d-name {
+    font-weight: 600; font-size: 13px; margin-bottom: 4px;
+  }
+  .routine-card .rc-day .rc-d-list {
+    font-size: 11px; line-height: 1.4;
+    color: var(--fg);
+  }
+  .routine-card .rc-day.next .rc-d-list { color: #ddd; }
+  .routine-card .rc-day .rc-d-rest {
+    font-size: 12px; color: var(--muted);
+    text-align: center; padding: 14px 0;
+  }
+  .routine-card .rc-day.next .rc-d-rest { color: #aaa; }
+  .routine-card .rc-suggest {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--fg);
+  }
+  .routine-card .rc-suggest .label-mono {
+    color: var(--muted); font-size: 10px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    margin-right: 8px;
+  }
+  @media (max-width: 760px) {
+    .routine-card .rc-cycle { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Exercise sections */
+  .ex-section { margin-bottom: 28px; }
+  .ex-section .ex-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 10px; font-weight: 500;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .ex-section .ex-head .ex-head-jp { font-weight: 400; color: var(--muted); letter-spacing: 0.04em; }
+  .ex-section .ex-head .group-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px;
+  }
+  .group-dot.push { background: var(--push); }
+  .group-dot.pull { background: var(--pull); }
+  .group-dot.legs { background: var(--legs); }
+
+  .ex-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  @media (max-width: 760px) { .ex-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .ex-grid { grid-template-columns: 1fr; } }
+  .ex-card {
+    border: 1px solid var(--line); padding: 14px 16px;
+    background: var(--bg); position: relative;
+  }
+  .ex-card.big3::before {
+    content: 'BIG 3';
+    position: absolute; top: 10px; right: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; color: var(--accent);
+    letter-spacing: 0.10em; font-weight: 600;
+    border: 1px solid var(--accent);
+    padding: 1px 5px;
+  }
+  .ex-card .ex-name {
+    font-size: 14px; font-weight: 600;
+    margin-bottom: 8px; padding-right: 50px;
+    line-height: 1.3;
+  }
+  .ex-card .ex-latest {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--fg); letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+  .ex-card .ex-latest .ex-weight {
+    font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
+  }
+  .ex-card .ex-latest .ex-sets {
+    color: var(--muted); margin-left: 4px;
+  }
+  .ex-card .ex-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+    margin-top: 6px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .ex-card .ex-meta .ex-5rm .v { color: var(--fg); font-weight: 500; }
+  .ex-card .ex-empty {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    padding: 8px 0;
+  }
+  .ex-card .ex-target {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .ex-card .ex-target .v { color: var(--fg); font-weight: 500; }
+  .ex-card .ex-target .progress {
+    display: block; width: 100%; height: 2px;
+    background: var(--soft); margin-top: 5px; overflow: hidden;
+  }
+  .ex-card .ex-target .progress > span {
+    display: block; height: 100%; background: var(--fg); transition: width 0.4s;
+  }
+  .ex-card .ex-target .progress > span.reached { background: #2ea44f; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+  .tabs button:hover { color: var(--fg); }
+  .tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* range selector */
+  .range-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .range-bar .range-btns { display: flex; gap: 4px; }
+  .range-bar button {
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 6px 14px; cursor: pointer; color: var(--muted);
+    letter-spacing: 0.06em; transition: all 0.15s;
+  }
+  .range-bar button:hover { color: var(--fg); }
+  .range-bar button.active {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .range-bar .meta {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* chart sections */
+  .chart-section-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg); letter-spacing: 0.10em;
+    text-transform: uppercase; margin: 28px 0 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .chart-section-head:first-child { margin-top: 0; }
+  .charts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
+  .chart-card {
+    border: 1px solid var(--line); padding: 20px 22px 16px;
+    background: var(--bg);
+  }
+  .chart-card .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.10em;
+    text-transform: uppercase; margin-bottom: 4px; font-weight: 500;
+  }
+  .chart-card .sub {
+    font-size: 13px; color: var(--fg); margin-bottom: 14px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .chart-card .sub .latest { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .chart-card .sub .latest-unit { font-size: 12px; color: var(--muted); }
+  .chart-card .title-unit { color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .chart-card canvas { width: 100% !important; height: 180px !important; }
+
+  /* raw selector */
+  .raw-selector {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .raw-selector label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .raw-selector select {
+    font-family: inherit; font-size: 13px;
+    padding: 6px 30px 6px 10px; border: 1px solid var(--line);
+    background: var(--bg); cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23888' d='M0 0l5 6 5-6z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  /* raw data table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); }
+  table.raw {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; min-width: 700px;
+  }
+  table.raw thead { background: var(--soft); }
+  table.raw th {
+    text-align: right; padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  table.raw th:first-child, table.raw th.left { text-align: left; }
+  table.raw td {
+    padding: 12px 14px; border-bottom: 1px solid var(--line);
+    text-align: right; white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+  table.raw td:first-child, table.raw td.left { text-align: left; font-family: inherit; font-size: 13px; }
+  table.raw tbody tr:last-child td { border-bottom: none; }
+  table.raw tbody tr:hover { background: var(--soft); }
+
+  .empty {
+    padding: 40px 20px; text-align: center;
+    color: var(--muted); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../profile/" class="nav-link">profile</a>
+    <a href="../index.html" class="nav-link">health</a>
+    <a href="../../travel/" class="nav-link">travel</a>
+    <a href="../../book/" class="nav-link">book</a>
+    <a href="../../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../../geo-history/" class="nav-link">geo-history</a>
+    <a href="../../no2-legends/" class="nav-link">legend</a>
+    <a href="../../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+    <div class="crumb">
+      <a href="../../index.html">home</a><span class="sep">/</span>
+      <span>personal</span><span class="sep">/</span>
+      <a href="../index.html">012 health</a><span class="sep">/</span>
+      <span>strength</span>
+    </div>
+
+    <nav class="health-subnav">
+      <a href="../index.html">体組成</a>
+      <a href="../nutrition/">栄養素</a>
+      <a href="./" class="active">筋トレ</a>
+    </nav>
+
+    <div class="hero">
+      <h1>Strength</h1>
+      <div class="ja">筋トレ記録（推定5RMベース）</div>
+      <div class="source" id="source-line">データソース: manual entry via Claude Code</div>
+      <div class="memo">
+        <span class="memo-label">更新方法</span>
+        <code>Claude にセッション内容を伝える（例「今日はベンチ 60×10/10/8」）→ strength.json更新 → deploy</code>
+      </div>
+    </div>
+
+    <!-- BIG 3 hero counters -->
+    <div class="big3">
+      <div class="big3-card" data-key="bench_press">
+        <div class="label">ベンチプレス 5RM</div>
+        <div class="value-row"><span class="value" id="b3-bench">—</span><span class="unit">kg</span></div>
+        <span class="delta-inline" id="b3-bench-delta"></span>
+        <div class="target-line" id="b3-bench-target"></div>
+      </div>
+      <div class="big3-card" data-key="deadlift">
+        <div class="label">デッドリフト 5RM</div>
+        <div class="value-row"><span class="value" id="b3-dead">—</span><span class="unit">kg</span></div>
+        <span class="delta-inline" id="b3-dead-delta"></span>
+        <div class="target-line" id="b3-dead-target"></div>
+      </div>
+      <div class="big3-card" data-key="squat">
+        <div class="label">スクワット 5RM</div>
+        <div class="value-row"><span class="value" id="b3-squat">—</span><span class="unit">kg</span></div>
+        <span class="delta-inline" id="b3-squat-delta"></span>
+        <div class="target-line" id="b3-squat-target"></div>
+      </div>
+      <div class="big3-card total" data-key="total">
+        <div class="label">Big 3 合計</div>
+        <div class="value-row"><span class="value" id="b3-total">—</span><span class="unit">kg</span></div>
+        <span class="delta-inline" id="b3-total-delta"></span>
+        <div class="target-line" id="b3-total-target"></div>
+      </div>
+    </div>
+
+    <!-- Goal banner -->
+    <div class="goal-banner placeholder" id="goal-banner">
+      <div class="gb-head">
+        <span class="gb-title">Goal Tracker · Big 3 合計</span>
+        <span class="gb-deadline" id="gb-deadline"></span>
+      </div>
+      <div class="gb-empty" id="gb-empty">目標は1stセッション後に設定予定</div>
+      <div class="gb-bar-wrap" id="gb-bar-wrap" style="display:none">
+        <div class="gb-bar" id="gb-bar"></div>
+      </div>
+      <div class="gb-text" id="gb-text" style="display:none"></div>
+    </div>
+
+    <!-- Routine reference -->
+    <div class="routine-card">
+      <div class="rc-head">3-Day Cycle Routine · 10reps × 3sets基本</div>
+      <div class="rc-cycle" id="rc-cycle"></div>
+      <div class="rc-suggest" id="rc-suggest"></div>
+    </div>
+
+    <!-- Exercise cards by group -->
+    <div class="ex-section">
+      <div class="ex-head"><span class="group-dot push"></span>Push <span class="ex-head-jp">／ 胸・肩・三頭</span></div>
+      <div class="ex-grid" id="ex-grid-push"></div>
+    </div>
+    <div class="ex-section">
+      <div class="ex-head"><span class="group-dot pull"></span>Pull <span class="ex-head-jp">／ 背中・二頭</span></div>
+      <div class="ex-grid" id="ex-grid-pull"></div>
+    </div>
+    <div class="ex-section">
+      <div class="ex-head"><span class="group-dot legs"></span>Legs <span class="ex-head-jp">／ 脚</span></div>
+      <div class="ex-grid" id="ex-grid-legs"></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="chart">Chart</button>
+      <button class="tab-btn" data-tab="raw">Raw Data</button>
+    </div>
+
+    <!-- chart panel -->
+    <section class="panel active" id="panel-chart">
+      <div class="range-bar">
+        <div class="range-btns" id="range-btns">
+          <button data-range="7" class="active">7日</button>
+          <button data-range="30">30日</button>
+          <button data-range="90">90日</button>
+          <button data-range="all">全期間</button>
+        </div>
+        <span class="meta" id="range-meta"></span>
+      </div>
+
+      <div class="chart-section-head">Big 3</div>
+      <div class="charts" id="charts-big3"></div>
+
+      <div class="chart-section-head">Push</div>
+      <div class="charts" id="charts-push"></div>
+
+      <div class="chart-section-head">Pull</div>
+      <div class="charts" id="charts-pull"></div>
+
+      <div class="chart-section-head">Legs</div>
+      <div class="charts" id="charts-legs"></div>
+    </section>
+
+    <!-- raw panel -->
+    <section class="panel" id="panel-raw">
+      <div class="raw-selector">
+        <label for="raw-ex-select">EXERCISE:</label>
+        <select id="raw-ex-select"></select>
+      </div>
+      <div class="table-scroll">
+        <table class="raw" id="raw-table">
+          <thead>
+            <tr>
+              <th class="left" data-sort="date">日付</th>
+              <th>セット1</th>
+              <th>セット2</th>
+              <th>セット3</th>
+              <th>追加セット</th>
+              <th>推定5RM (kg)</th>
+              <th>推定1RM (kg)</th>
+            </tr>
+          </thead>
+          <tbody id="raw-tbody">
+            <tr><td colspan="7" class="empty">セッションを記録してください</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+  <script>
+  (function(){
+    const DATA_URL = './data/strength.json';
+    const FG = '#0a0a0a';
+    const MUTED = '#888';
+    const LINE = '#e5e5e5';
+    const SOFT = '#f7f7f7';
+
+    const state = {
+      data: null,
+      range: 7,
+      charts: {},
+      selectedExId: null,
+    };
+
+    /* ---- helpers ---- */
+    const fmt = (v, d=1) => (v == null || isNaN(v)) ? '—' :
+      (d === 0 ? Math.round(v).toString() : Number(v).toFixed(d));
+
+    // Epley: 1RM = w * (1 + r/30)
+    const est1RM = (w, r) => (w == null || r == null) ? null : w * (1 + r / 30);
+    // 5RM = 1RM / (1 + 5/30) = 1RM × 6/7 ≈ 0.857
+    // Or directly: 5RM = w * (30 + r) / 35
+    const est5RM = (w, r) => (w == null || r == null) ? null : w * (30 + r) / 35;
+
+    /** Compute best estimated 5RM from a session's sets for a given exercise */
+    function sessionBest5RM(session, exId) {
+      const sets = (session.exercises || {})[exId];
+      if (!Array.isArray(sets) || !sets.length) return null;
+      let best = 0;
+      sets.forEach(s => {
+        const v = est5RM(s.weight_kg, s.reps);
+        if (v != null && v > best) best = v;
+      });
+      return best > 0 ? best : null;
+    }
+
+    function sessionBest1RM(session, exId) {
+      const sets = (session.exercises || {})[exId];
+      if (!Array.isArray(sets) || !sets.length) return null;
+      let best = 0;
+      sets.forEach(s => {
+        const v = est1RM(s.weight_kg, s.reps);
+        if (v != null && v > best) best = v;
+      });
+      return best > 0 ? best : null;
+    }
+
+    /** All sessions in chronological order that contain exId */
+    function sessionsFor(exId) {
+      const all = (state.data?.sessions || []).slice()
+        .sort((a,b) => a.date.localeCompare(b.date));
+      return all.filter(s => Array.isArray((s.exercises || {})[exId]));
+    }
+
+    /** Latest session entry for exId, or null */
+    function latestSessionFor(exId) {
+      const arr = sessionsFor(exId);
+      return arr.length ? arr[arr.length - 1] : null;
+    }
+
+    /** Find session ~7 days before the given date (returns its 5RM or null) */
+    function weekAgo5RM(exId, currentDate) {
+      const target = new Date(currentDate);
+      target.setDate(target.getDate() - 7);
+      const arr = sessionsFor(exId);
+      // pick the most recent session on or before target
+      let best = null;
+      arr.forEach(s => {
+        if (s.date <= toISO(target)) best = s;
+      });
+      return best ? sessionBest5RM(best, exId) : null;
+    }
+    function toISO(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const dd = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${dd}`;
+    }
+
+    /** Suggested next routine day based on most recent session */
+    function nextRoutineDay() {
+      const cycle = state.data?.routine?.cycle || ['day1','day2','day3','rest'];
+      const sessions = (state.data?.sessions || []).slice()
+        .sort((a,b) => a.date.localeCompare(b.date));
+      if (!sessions.length) return cycle[0];
+      const last = sessions[sessions.length - 1];
+      const idx = cycle.indexOf(last.day);
+      if (idx < 0) return cycle[0];
+      return cycle[(idx + 1) % cycle.length];
+    }
+
+    /* ---- load ---- */
+    function load() {
+      fetch(DATA_URL, {cache: 'no-store'})
+        .then(r => r.json())
+        .then(json => {
+          state.data = json;
+          if (json.last_synced) {
+            document.getElementById('source-line').textContent =
+              'データソース: manual entry via Claude Code · 最終更新 ' + json.last_synced;
+          }
+          renderAll();
+        })
+        .catch(err => {
+          console.error('failed to load strength data', err);
+        });
+    }
+
+    function renderAll() {
+      renderBig3();
+      renderGoalBanner();
+      renderRoutine();
+      renderExerciseCards();
+      buildExerciseSelect();
+      renderCharts();
+      renderRaw();
+    }
+
+    /* ---- BIG 3 hero ---- */
+    function renderBig3() {
+      const big3 = [
+        { key: 'bench_press', heroId: 'b3-bench', tgtKey: 'bench_press_5rm' },
+        { key: 'deadlift',    heroId: 'b3-dead',  tgtKey: 'deadlift_5rm' },
+        { key: 'squat',       heroId: 'b3-squat', tgtKey: 'squat_5rm' },
+      ];
+      let totalCur = 0, totalHaveAny = false;
+      let totalPrev = 0, prevHaveAny = false;
+
+      big3.forEach(b => {
+        const last = latestSessionFor(b.key);
+        const cur = last ? sessionBest5RM(last, b.key) : null;
+        document.getElementById(b.heroId).textContent = fmt(cur, 1);
+        if (cur != null) { totalCur += cur; totalHaveAny = true; }
+
+        const prev = last ? weekAgo5RM(b.key, last.date) : null;
+        if (prev != null) { totalPrev += prev; prevHaveAny = true; }
+        const dEl = document.getElementById(b.heroId + '-delta');
+        if (cur != null && prev != null) {
+          const d = cur - prev;
+          const cls = d > 0 ? 'up' : (d < 0 ? 'down' : 'flat');
+          const sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
+          dEl.innerHTML = '<span class="' + cls + '">' + sign + Math.abs(d).toFixed(1) + ' kg</span> 1週間前比';
+        } else {
+          dEl.textContent = '';
+        }
+
+        // target
+        const tEl = document.getElementById(b.heroId + '-target');
+        const tgt = state.data?.targets?.[b.tgtKey];
+        if (tgt == null) {
+          tEl.innerHTML = '<div class="placeholder">目標未設定</div>';
+        } else {
+          const pct = cur != null ? Math.min(100, (cur / tgt) * 100) : 0;
+          const reached = cur != null && cur >= tgt;
+          tEl.innerHTML =
+            '<span class="target-label">目標</span>' +
+            '<span class="target-val">' + fmt(tgt,1) + ' kg</span>' +
+            (cur != null ? ' <span style="float:right; color:var(--muted)">' + Math.round(pct) + '%</span>' : '') +
+            (cur != null ? '<span class="progress"><span class="' + (reached ? 'reached' : '') + '" style="width:' + pct + '%"></span></span>' : '');
+        }
+      });
+
+      // total card
+      document.getElementById('b3-total').textContent = totalHaveAny ? fmt(totalCur,1) : '—';
+      const dEl = document.getElementById('b3-total-delta');
+      if (totalHaveAny && prevHaveAny) {
+        const d = totalCur - totalPrev;
+        const cls = d > 0 ? 'up' : (d < 0 ? 'down' : 'flat');
+        const sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
+        dEl.innerHTML = '<span class="' + cls + '">' + sign + Math.abs(d).toFixed(1) + ' kg</span> 1週間前比';
+      } else {
+        dEl.textContent = '';
+      }
+
+      const tEl = document.getElementById('b3-total-target');
+      const totalTgt = state.data?.targets?.big3_total_5rm;
+      if (totalTgt == null) {
+        tEl.innerHTML = '<div class="placeholder">目標未設定</div>';
+      } else {
+        const pct = totalHaveAny ? Math.min(100, (totalCur / totalTgt) * 100) : 0;
+        const reached = totalHaveAny && totalCur >= totalTgt;
+        tEl.innerHTML =
+          '<span class="target-label">目標</span>' +
+          '<span class="target-val">' + fmt(totalTgt,1) + ' kg</span>' +
+          (totalHaveAny ? ' <span style="float:right">' + Math.round(pct) + '%</span>' : '') +
+          (totalHaveAny ? '<span class="progress"><span class="' + (reached ? 'reached' : '') + '" style="width:' + pct + '%"></span></span>' : '');
+      }
+    }
+
+    /* ---- Goal banner ---- */
+    function renderGoalBanner() {
+      const banner = document.getElementById('goal-banner');
+      const empty = document.getElementById('gb-empty');
+      const barWrap = document.getElementById('gb-bar-wrap');
+      const text = document.getElementById('gb-text');
+      const deadlineEl = document.getElementById('gb-deadline');
+
+      const totalTgt = state.data?.targets?.big3_total_5rm;
+      const deadline = state.data?.targets?.deadline;
+
+      // calc current total
+      let totalCur = 0, hasAny = false;
+      ['bench_press','deadlift','squat'].forEach(k => {
+        const last = latestSessionFor(k);
+        const v = last ? sessionBest5RM(last, k) : null;
+        if (v != null) { totalCur += v; hasAny = true; }
+      });
+
+      if (!totalTgt || !hasAny) {
+        banner.classList.add('placeholder');
+        empty.style.display = '';
+        barWrap.style.display = 'none';
+        text.style.display = 'none';
+        deadlineEl.textContent = deadline ? ('期限: ' + deadline) : '';
+        return;
+      }
+
+      banner.classList.remove('placeholder');
+      empty.style.display = 'none';
+      barWrap.style.display = '';
+      text.style.display = '';
+
+      const pct = Math.min(100, (totalCur / totalTgt) * 100);
+      const reached = totalCur >= totalTgt;
+      const bar = document.getElementById('gb-bar');
+      bar.style.width = pct + '%';
+      bar.classList.toggle('reached', reached);
+
+      const remaining = Math.max(0, totalTgt - totalCur);
+      // simple linear projection: take last 4 weeks of total 5RM increase
+      const projection = projectGoalDate(totalCur, totalTgt);
+
+      text.innerHTML =
+        '<div><span class="label-mono">CURRENT</span><strong>' + fmt(totalCur,1) + ' kg</strong></div>' +
+        '<div><span class="label-mono">GOAL</span><strong>' + fmt(totalTgt,1) + ' kg</strong></div>' +
+        '<div><span class="label-mono">REMAINING</span><strong>' + fmt(remaining,1) + ' kg</strong></div>' +
+        '<div><span class="label-mono">PROGRESS</span><strong>' + Math.round(pct) + '%</strong></div>' +
+        (projection ? ('<div><span class="label-mono">推定到達</span><strong>' + projection + '</strong></div>') : '');
+
+      deadlineEl.textContent = deadline ? ('期限: ' + deadline) : '';
+    }
+
+    function projectGoalDate(cur, tgt) {
+      // need at least 2 sessions over time to estimate rate
+      // compute big3-total per session over time, do simple linear regression
+      const sessions = (state.data?.sessions || []).slice()
+        .sort((a,b) => a.date.localeCompare(b.date));
+      const points = [];
+      sessions.forEach(s => {
+        let total = 0, has = false;
+        ['bench_press','deadlift','squat'].forEach(k => {
+          const v = sessionBest5RM(s, k);
+          if (v != null) { total += v; has = true; }
+        });
+        if (has) points.push({date: s.date, total});
+      });
+      if (points.length < 2) return null;
+      // x = days from first, y = total
+      const t0 = new Date(points[0].date).getTime();
+      const xs = points.map(p => (new Date(p.date).getTime() - t0) / 86400000);
+      const ys = points.map(p => p.total);
+      const n = xs.length;
+      const meanX = xs.reduce((a,b)=>a+b,0) / n;
+      const meanY = ys.reduce((a,b)=>a+b,0) / n;
+      let num = 0, den = 0;
+      for (let i = 0; i < n; i++) { num += (xs[i]-meanX)*(ys[i]-meanY); den += (xs[i]-meanX)**2; }
+      if (den === 0) return null;
+      const slope = num / den; // kg per day
+      if (slope <= 0) return 'ペース不明（停滞 or データ不足）';
+      const remainingDays = (tgt - cur) / slope;
+      if (!isFinite(remainingDays) || remainingDays > 365 * 3) return '到達まで時間が必要';
+      const target = new Date();
+      target.setDate(target.getDate() + Math.ceil(remainingDays));
+      return toISO(target) + ' 頃 (+' + slope.toFixed(2) + ' kg/日)';
+    }
+
+    /* ---- Routine card ---- */
+    function renderRoutine() {
+      const rt = state.data?.routine;
+      if (!rt) return;
+      const exMap = state.data?.exercises || {};
+      const cycle = rt.cycle || ['day1','day2','day3','rest'];
+      const next = nextRoutineDay();
+      const cycleEl = document.getElementById('rc-cycle');
+      cycleEl.innerHTML = cycle.map(dayKey => {
+        const day = rt[dayKey];
+        if (!day) return '';
+        const isNext = dayKey === next;
+        if (dayKey === 'rest') {
+          return `<div class="rc-day ${isNext ? 'next' : ''}">
+            <div class="rc-d-label">${dayKey}</div>
+            <div class="rc-d-rest">休息</div>
+          </div>`;
+        }
+        const list = (day.exercises || []).map(eid => exMap[eid]?.label || eid).join('<br>');
+        return `<div class="rc-day ${isNext ? 'next' : ''}">
+          <div class="rc-d-label">${dayKey}</div>
+          <div class="rc-d-name">${day.label || dayKey}</div>
+          <div class="rc-d-list">${list}</div>
+        </div>`;
+      }).join('');
+
+      const sug = document.getElementById('rc-suggest');
+      const nextDay = rt[next];
+      if (next === 'rest') {
+        sug.innerHTML = '<span class="label-mono">NEXT</span>休息日';
+      } else if (nextDay) {
+        sug.innerHTML = '<span class="label-mono">NEXT</span>' + (nextDay.label || next);
+      } else {
+        sug.textContent = '';
+      }
+    }
+
+    /* ---- Exercise cards ---- */
+    function renderExerciseCards() {
+      const exMap = state.data?.exercises || {};
+      const groups = {push: [], pull: [], legs: []};
+      Object.entries(exMap).forEach(([id, info]) => {
+        if (!info || !groups[info.group]) return;
+        groups[info.group].push({id, ...info});
+      });
+      Object.entries(groups).forEach(([g, list]) => {
+        const el = document.getElementById('ex-grid-' + g);
+        if (!el) return;
+        el.innerHTML = list.map(ex => exerciseCardHtml(ex)).join('');
+      });
+    }
+
+    function exerciseCardHtml(ex) {
+      const last = latestSessionFor(ex.id);
+      const big3Class = ex.is_big3 ? ' big3' : '';
+      if (!last) {
+        return `<div class="ex-card${big3Class}">
+          <div class="ex-name">${ex.label}</div>
+          <div class="ex-empty">未記録</div>
+        </div>`;
+      }
+      const sets = last.exercises[ex.id];
+      const setsStr = sets.map(s => `${fmt(s.weight_kg, s.weight_kg % 1 === 0 ? 0 : 1)}×${s.reps}`).join(' / ');
+      const maxSet = sets.reduce((m, s) => (s.weight_kg > (m?.weight_kg ?? -1) ? s : m), null);
+      const e5 = est5RM(maxSet?.weight_kg, maxSet?.reps);
+      const e1 = est1RM(maxSet?.weight_kg, maxSet?.reps);
+      const tgtKey = ex.is_big3 ? (ex.id + '_5rm') : null;
+      const tgt = tgtKey ? state.data?.targets?.[tgtKey] : null;
+
+      let targetHtml = '';
+      if (tgt != null && e5 != null) {
+        const pct = Math.min(100, (e5/tgt) * 100);
+        const reached = e5 >= tgt;
+        targetHtml = `<div class="ex-target">目標 5RM: <span class="v">${fmt(tgt,1)} kg</span> · ${Math.round(pct)}%
+          <span class="progress"><span class="${reached ? 'reached' : ''}" style="width:${pct}%"></span></span></div>`;
+      }
+
+      return `<div class="ex-card${big3Class}">
+        <div class="ex-name">${ex.label}</div>
+        <div class="ex-latest"><span class="ex-weight">${maxSet ? fmt(maxSet.weight_kg, maxSet.weight_kg % 1 === 0 ? 0 : 1) : '—'}</span>
+          <span class="ex-sets"> kg max · ${setsStr}</span></div>
+        <div class="ex-meta">
+          <span>${last.date}</span>
+          <span class="ex-5rm">推定5RM <span class="v">${fmt(e5,1)} kg</span></span>
+          <span>1RM ${fmt(e1,1)} kg</span>
+        </div>
+        ${targetHtml}
+      </div>`;
+    }
+
+    /* ---- Charts ---- */
+    function rangeSlice(allDates) {
+      if (state.range === 'all') return allDates;
+      const n = Number(state.range);
+      // last n days from latest date
+      if (allDates.length === 0) return [];
+      const last = new Date(allDates[allDates.length - 1]);
+      const start = new Date(last);
+      start.setDate(start.getDate() - n + 1);
+      const startISO = toISO(start);
+      return allDates.filter(d => d >= startISO);
+    }
+
+    function chartOptions(decimals) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: FG, titleColor: '#fff', bodyColor: '#fff',
+            titleFont: { family: 'JetBrains Mono', size: 11 },
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            padding: 8, displayColors: false,
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                if (v == null) return '—';
+                return (decimals === 0 ? Math.round(v).toString() : v.toFixed(decimals)) + ' kg';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { color: LINE },
+            ticks: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 }
+          },
+          y: {
+            grid: { color: SOFT },
+            border: { display: false },
+            ticks: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, maxTicksLimit: 5 }
+          }
+        }
+      };
+    }
+
+    function buildChartCard(exId, label, isBig3) {
+      return `<div class="chart-card">
+        <div class="title">${label} <span class="title-unit">(推定5RM)</span></div>
+        <div class="sub"><span class="latest" id="latest-${exId}">—</span><span class="latest-unit">kg</span></div>
+        <canvas id="chart-${exId}"></canvas>
+      </div>`;
+    }
+
+    function renderCharts() {
+      const exMap = state.data?.exercises || {};
+      const groups = {big3: [], push: [], pull: [], legs: []};
+      Object.entries(exMap).forEach(([id, info]) => {
+        if (!info) return;
+        if (info.is_big3) groups.big3.push({id, ...info});
+        if (groups[info.group]) groups[info.group].push({id, ...info});
+      });
+
+      // dedupe big3 from group containers
+      ['push','pull','legs'].forEach(g => {
+        groups[g] = groups[g].filter(ex => !ex.is_big3);
+      });
+
+      Object.entries(groups).forEach(([g, list]) => {
+        const el = document.getElementById('charts-' + g);
+        if (!el) return;
+        if (!list.length) { el.innerHTML = ''; return; }
+        el.innerHTML = list.map(ex => buildChartCard(ex.id, ex.label, !!ex.is_big3)).join('');
+      });
+
+      // overall date range
+      const allSessions = (state.data?.sessions || []).slice()
+        .sort((a,b) => a.date.localeCompare(b.date));
+      const allDates = allSessions.map(s => s.date);
+      const sliced = rangeSlice(allDates);
+
+      const meta = document.getElementById('range-meta');
+      if (!sliced.length) meta.textContent = 'データなし';
+      else meta.textContent = sliced.length + 'セッション · ' + sliced[0] + ' → ' + sliced[sliced.length-1];
+
+      // for each exercise, plot 5RM over time within range
+      Object.values(groups).flat().forEach(ex => {
+        const allEx = sessionsFor(ex.id);
+        const filtered = allEx.filter(s => sliced.includes(s.date));
+        const labels = filtered.map(s => s.date.slice(5));
+        const data = filtered.map(s => sessionBest5RM(s, ex.id));
+
+        const lastVal = allEx.length ? sessionBest5RM(allEx[allEx.length-1], ex.id) : null;
+        const latestEl = document.getElementById('latest-' + ex.id);
+        if (latestEl) latestEl.textContent = fmt(lastVal, 1);
+
+        const canvas = document.getElementById('chart-' + ex.id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (state.charts[ex.id]) state.charts[ex.id].destroy();
+
+        const datasets = [{
+          label: '推定5RM',
+          data,
+          borderColor: FG,
+          backgroundColor: 'rgba(10,10,10,0.06)',
+          borderWidth: 1.5,
+          pointRadius: data.length <= 30 ? 3 : 1,
+          pointHoverRadius: 5,
+          pointBackgroundColor: FG,
+          tension: 0.25,
+          fill: true,
+          spanGaps: true,
+        }];
+
+        const tgtKey = ex.is_big3 ? (ex.id + '_5rm') : null;
+        const tgt = tgtKey ? state.data?.targets?.[tgtKey] : null;
+        if (tgt != null && labels.length > 0) {
+          datasets.push({
+            label: '目標',
+            data: labels.map(() => tgt),
+            borderColor: '#2ea44f',
+            borderWidth: 1,
+            borderDash: [4, 4],
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            fill: false,
+            tension: 0,
+          });
+        }
+
+        state.charts[ex.id] = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets },
+          options: chartOptions(1)
+        });
+      });
+    }
+
+    /* ---- Raw data ---- */
+    function buildExerciseSelect() {
+      const sel = document.getElementById('raw-ex-select');
+      const exMap = state.data?.exercises || {};
+      const opts = Object.entries(exMap).map(([id, info]) =>
+        `<option value="${id}">${info.label}</option>`).join('');
+      sel.innerHTML = opts;
+      // default: bench_press if available
+      if (exMap.bench_press) {
+        sel.value = 'bench_press';
+        state.selectedExId = 'bench_press';
+      } else {
+        state.selectedExId = sel.value;
+      }
+      sel.addEventListener('change', e => {
+        state.selectedExId = e.target.value;
+        renderRaw();
+      });
+    }
+
+    function renderRaw() {
+      const tb = document.getElementById('raw-tbody');
+      if (!state.selectedExId) {
+        tb.innerHTML = '<tr><td colspan="7" class="empty">種目を選択してください</td></tr>';
+        return;
+      }
+      const arr = sessionsFor(state.selectedExId).slice().reverse(); // newest first
+      if (!arr.length) {
+        tb.innerHTML = '<tr><td colspan="7" class="empty">この種目の記録なし</td></tr>';
+        return;
+      }
+      tb.innerHTML = arr.map(s => {
+        const sets = s.exercises[state.selectedExId];
+        const cell = (i) => {
+          const set = sets[i];
+          if (!set) return '—';
+          return `${fmt(set.weight_kg, set.weight_kg % 1 === 0 ? 0 : 1)} kg × ${set.reps}`;
+        };
+        const extraCount = Math.max(0, sets.length - 3);
+        const extra = extraCount === 0 ? '—' : `+${extraCount}セット`;
+        const e5 = sessionBest5RM(s, state.selectedExId);
+        const e1 = sessionBest1RM(s, state.selectedExId);
+        return `<tr>
+          <td class="left">${s.date}</td>
+          <td>${cell(0)}</td>
+          <td>${cell(1)}</td>
+          <td>${cell(2)}</td>
+          <td>${extra}</td>
+          <td>${fmt(e5,1)}</td>
+          <td>${fmt(e1,1)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* ---- events ---- */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('#range-btns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#range-btns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const r = btn.dataset.range;
+        state.range = (r === 'all') ? 'all' : Number(r);
+        renderCharts();
+      });
+    });
+
+    load();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "_comment": "筋トレセッション記録。Claude Code上でユーザーが「今日のメニューと各セットの重量×回数」を伝える → ClaudeがJSON反映 → deploy。",
+  "source": "manual entry via Claude Code",
+  "last_synced": null,
+  "user": {
+    "_profile": "175cm, 21歳, 男性, 体重65.4kg",
+    "_lifestyle": "デスクワーク中心 + 1日1hの筋トレ",
+    "_scheme": "10回 × 3セットを基本",
+    "_goal_text": "1stセッション後に現在の重量をベースに目標値を設定する"
+  },
+  "routine": {
+    "cycle": ["day1", "day2", "day3", "rest"],
+    "day1": {
+      "label": "Push Day（胸・肩・三頭）",
+      "exercises": ["bench_press", "smith_machine", "incline_db_press", "cable_fly"]
+    },
+    "day2": {
+      "label": "Pull Day（背中・二頭）",
+      "exercises": ["deadlift", "pull_up", "lat_pulldown", "pulley_row", "incline_db_curl"]
+    },
+    "day3": {
+      "label": "Legs Day（脚）",
+      "exercises": ["squat", "leg_press", "leg_extension"]
+    },
+    "rest": {
+      "label": "Rest Day",
+      "exercises": []
+    }
+  },
+  "exercises": {
+    "bench_press":      { "label": "ベンチプレス",                 "group": "push", "is_big3": true,  "in_routine": "day1" },
+    "smith_machine":    { "label": "スミスマシンショルダープレス", "group": "push", "in_routine": "day1" },
+    "shoulder_press":   { "label": "ショルダープレス",             "group": "push", "in_routine": null },
+    "incline_db_press": { "label": "インクラインダンベルプレス",   "group": "push", "in_routine": "day1" },
+    "cable_fly":        { "label": "ケーブルフライ",               "group": "push", "in_routine": "day1" },
+    "pec_fly":          { "label": "ペックフライ",                 "group": "push", "in_routine": null },
+    "deadlift":         { "label": "デッドリフト",                 "group": "pull", "is_big3": true,  "in_routine": "day2" },
+    "pull_up":          { "label": "懸垂",                         "group": "pull", "in_routine": "day2" },
+    "lat_pulldown":     { "label": "ラットプルダウン",             "group": "pull", "in_routine": "day2" },
+    "pulley_row":       { "label": "プーリーロー",                 "group": "pull", "in_routine": "day2" },
+    "incline_db_curl":  { "label": "インクラインダンベルカール",   "group": "pull", "in_routine": "day2" },
+    "squat":            { "label": "スクワット",                   "group": "legs", "is_big3": true,  "in_routine": "day3" },
+    "leg_press":        { "label": "レッグプレス",                 "group": "legs", "in_routine": "day3" },
+    "leg_extension":    { "label": "レッグエクステンション",       "group": "legs", "in_routine": "day3" }
+  },
+  "targets": {
+    "_note": "1stセッション後に現在値ベースで設定。big3_total_5rmは bench+dead+squat の推定5RM合計。",
+    "bench_press_5rm": null,
+    "deadlift_5rm": null,
+    "squat_5rm": null,
+    "big3_total_5rm": null,
+    "deadline": null,
+    "milestones": []
+  },
+  "sessions": []
+}
