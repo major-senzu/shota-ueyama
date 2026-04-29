@@ -4,26 +4,27 @@
   "last_synced": null,
   "user": {
     "_profile": "175cm, 21歳, 男性, 体重65.4kg",
+    "_lifestyle": "デスクワーク中心 + 1日1hの筋トレ",
     "_goal": "筋トレで筋肉を増やし、健康な体作り（細マッチョ70kg / 体脂肪13%）",
-    "_target_basis": "TDEE 2550kcal + 筋肥大lean bulk surplus 250kcal、タンパク質2g/kg、ミネラル/ビタミンは食事摂取基準2025（18-29歳男性）"
+    "_target_basis": "BMR 1648kcal × 活動係数1.45 = TDEE 約2400kcal + lean bulk surplus 200kcal = 2600kcal。タンパク質2g/kg。ミネラル/ビタミンは食事摂取基準2025（18-29歳男性推奨量）"
   },
   "targets": {
-    "energy_kcal": 2800,
+    "energy_kcal": 2600,
     "protein_g": 130,
-    "fat_g": 80,
-    "carbs_g": 380,
+    "fat_g": 75,
+    "carbs_g": 350,
     "calcium_mg": 800,
-    "magnesium_mg": 370,
+    "magnesium_mg": 340,
     "iron_mg": 7.5,
     "zinc_mg": 11,
     "vitamin_a_ug": 900,
-    "vitamin_d_ug": 10,
+    "vitamin_d_ug": 8.5,
     "vitamin_b1_mg": 1.4,
     "vitamin_b2_mg": 1.6,
-    "vitamin_b6_mg": 1.7,
+    "vitamin_b6_mg": 1.6,
     "vitamin_c_mg": 100,
-    "fiber_g": 25,
-    "saturated_fat_g": 22,
+    "fiber_g": 22,
+    "saturated_fat_g": 20,
     "salt_g": 7.0
   },
   "schema": {
