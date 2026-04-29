@@ -1,7 +1,7 @@
 {
   "_comment": "HealthPlanet APIから自動同期される。手動編集は health-sync.py で上書きされる点に注意。",
   "source": "HealthPlanet API (Tanita BC-1K01-BL)",
-  "last_synced": "2026-04-30 01:46",
+  "last_synced": "2026-04-30 01:48",
   "user": {
     "height_cm": 175,
     "_goal": "健康な細マッチョ"
