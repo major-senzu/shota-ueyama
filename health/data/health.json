@@ -1,7 +1,7 @@
 {
   "_comment": "HealthPlanet APIから自動同期される。手動編集は health-sync.py で上書きされる点に注意。",
   "source": "HealthPlanet API (Tanita BC-1K01-BL)",
-  "last_synced": null,
+  "last_synced": "2026-04-30 01:46",
   "user": {
     "height_cm": 175,
     "_goal": "健康な細マッチョ"
@@ -20,12 +20,35 @@
   },
   "schema": {
     "measurement_fields": [
-      "weight_kg", "body_fat_pct", "muscle_mass_kg", "muscle_score",
-      "visceral_fat_level", "basal_metabolic_rate", "metabolic_age",
-      "estimated_bone_mass_kg", "body_water_pct", "bmi"
+      "weight_kg",
+      "body_fat_pct",
+      "muscle_mass_kg",
+      "muscle_score",
+      "visceral_fat_level",
+      "basal_metabolic_rate",
+      "metabolic_age",
+      "estimated_bone_mass_kg",
+      "body_water_pct",
+      "bmi"
     ],
-    "parts": ["right_arm", "left_arm", "right_leg", "left_leg", "trunk"],
-    "part_fields": ["muscle_mass_kg", "body_fat_pct"]
+    "parts": [
+      "right_arm",
+      "left_arm",
+      "right_leg",
+      "left_leg",
+      "trunk"
+    ],
+    "part_fields": [
+      "muscle_mass_kg",
+      "body_fat_pct"
+    ]
   },
-  "measurements": []
+  "measurements": [
+    {
+      "date": "2026-04-30",
+      "weight_kg": 65.4,
+      "body_fat_pct": 16.8,
+      "bmi": 21.4
+    }
+  ]
 }
