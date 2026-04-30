@@ -1,7 +1,7 @@
 {
   "_comment": "healthplanet.jp 画面のスクショからOCR入力。APIは生データ（体重・体脂肪率）しか返さないため画面値を手動で取り込む運用。",
   "source": "healthplanet.jp screenshot OCR (Tanita BC-1K01-BL)",
-  "last_synced": "2026-04-30 02:15",
+  "last_synced": "2026-04-30 22:51",
   "user": {
     "height_cm": 175,
     "_goal": "健康な細マッチョ"
@@ -46,22 +46,22 @@
   "measurements": [
     {
       "date": "2026-04-30",
-      "weight_kg": 65.4,
-      "body_fat_pct": 16.8,
-      "muscle_mass_kg": 51.6,
+      "weight_kg": 66.3,
+      "body_fat_pct": 18.1,
+      "muscle_mass_kg": 51.5,
       "muscle_score": -1,
-      "visceral_fat_level": 5.0,
-      "basal_metabolic_rate": 1568,
+      "visceral_fat_level": 5.5,
+      "basal_metabolic_rate": 1567,
       "metabolic_age": 18,
       "estimated_bone_mass_kg": 2.8,
-      "body_water_pct": 56.1,
-      "bmi": 21.3,
+      "body_water_pct": 54.2,
+      "bmi": 21.6,
       "parts": {
-        "right_arm": { "muscle_mass_kg": 2.4, "body_fat_pct": 13.8 },
-        "left_arm":  { "muscle_mass_kg": 2.4, "body_fat_pct": 14.4 },
-        "right_leg": { "muscle_mass_kg": 9.8, "body_fat_pct": 14.3 },
-        "left_leg":  { "muscle_mass_kg": 9.5, "body_fat_pct": 15.1 },
-        "trunk":     { "muscle_mass_kg": 27.5, "body_fat_pct": 18.7 }
+        "right_arm": { "muscle_mass_kg": 2.4, "body_fat_pct": 14.7 },
+        "left_arm":  { "muscle_mass_kg": 2.3, "body_fat_pct": 14.9 },
+        "right_leg": { "muscle_mass_kg": 9.5, "body_fat_pct": 15.8 },
+        "left_leg":  { "muscle_mass_kg": 9.6, "body_fat_pct": 15.7 },
+        "trunk":     { "muscle_mass_kg": 27.7, "body_fat_pct": 20.2 }
       }
     }
   ]
