@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後藤芳光 / Yoshimitsu Goto — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { min-height: 100vh; padding: 0; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head { display: flex; align-items: center; gap: 28px; margin-bottom: 16px; }
+  .hero-face {
+    width: 124px; height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px; font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    position: relative; z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px; line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong { color: var(--hero-fg); font-weight: 700; }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px; row-gap: 14px;
+    font-size: 13px;
+  }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .origins-row:first-child { border-top: none; }
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0; top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0; top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="後藤"><img src="https://image.itmedia.co.jp/business/articles/2303/01/kk_sbg_01.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+          <h1>後藤芳光 / Yoshimitsu Goto</h1>
+        </div>
+      </div>
+      <p class="summary">
+        神奈川県鎌倉市に生まれ、湘南高校から2年浪人を経て一橋大学へ。安田信託銀行（現みずほ信託銀行）で
+        13年の銀行員生活を送ったあと、2000年に当時の上司・<strong>笠井和彦さん</strong>に誘われて
+        ソフトバンクへ。 以降26年、 <strong>孫正義さんの "金庫番"</strong> として、 Yahoo! BB の立ち上げ・
+        ボーダフォン日本買収・スプリント買収・ARM買収・ビジョンファンド組成・ソフトバンク株式会社上場——
+        日本史上最大規模の資金調達と買収案件のすべてを、 財務側で支え続けた男。 2018年からCFO、 2025年現在は
+        CFO兼CISO兼CSusO（最高サステナビリティ責任者）として "攻めの財務" を実装する。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">孫正義さん（ソフトバンクグループ創業者・会長兼社長 / 2000–現在 / 26年目）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年月日</div>
+          <div class="fact-value">1963年2月15日（63歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">神奈川県鎌倉市</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表（ストレートと推定）</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">SBG時価総額 約 ¥30兆 (2026) / NAV ¥27.9兆 / 動かしてきた累計買収額 ¥10兆超</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">既婚（詳細非公開）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">プロ野球観戦（福岡ソフトバンクホークス球団社長兼任）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">神奈川県の一般家庭出身（詳細非公開）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">ソフトバンクグループ 取締役・専務執行役員 CFO兼CISO兼CSusO (2018–現在) / 福岡ソフトバンクホークス株式会社 代表取締役社長兼オーナー代行 (2013–現在) / 元 ソフトバンク財務部長 (2000–2012) / 元 安田信託銀行（現みずほ信託銀行）/ 一橋大学社会学部卒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR                                    -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>孫正義さんの "前のめり" を、財務でだけ止められる男</strong>」。 孫さんが
+        Yahoo! BB ・ボーダフォン・スプリント・ARM・ビジョンファンド・Stargate と<strong>ゼロが二桁多い
+        買収案件</strong>を次々に持ち込むたびに、 後藤さんは <strong>NAV・LTV・流動性の3指標</strong>
+        だけを盾に「いける／止める」を判断する。 派手な発表はせず、 メディアに出るのは決算とリスク説明の時だけ。
+        2019年WeWork巨額損失の場面では「<strong>今回は孫さんを叱った</strong>」と公言する数少ない人物でもある。
+        「攻めの財務」を体現する <strong>守備固め型 × CFO型 × 全う型</strong> No.2 の典型例。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS                                   -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1963年2月15日</strong>、神奈川県鎌倉市生まれ。 父母の職業など家庭環境の詳細は本人がメディアで語っていないため非公開。 鎌倉という<strong>湘南エリアの落ち着いた住宅地</strong>で思春期を過ごし、 そこから湘南高校・一橋大学へと進んだ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>神奈川県立湘南高等学校</strong>。 県内屈指の進学校で、 旧制湘南中学からの伝統校。 ここから一橋大学へ進学する生徒も少なくないルートで、 「派手さはないが手堅い秀才型」 という後藤さんの後の評価につながる教育環境。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学受験</div>
+          <div class="origins-body">
+            現役・1浪では志望校に届かず、 <strong>2年間の浪人生活</strong>を経て一橋大学社会学部に合格。 「派手な早熟タイプ」 ではなく、 <strong>2年浪人してでも望む大学に行く泥臭さ</strong>を持っていた。 浪人時代の苦労は、 後にYahoo! BB の事業立ち上げで <strong>"絶対に折れない財務責任者"</strong> として孫さんから信頼される素地になった、と本人が振り返っている。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>一橋大学社会学部（1987年卒）</strong>。 当時の一橋は商学部・経済学部が花形で、 社会学部は数こそ少ないが <strong>"骨太な思考力で勝負する系"</strong> の学生が集まる場所。 後藤さんの "数字よりも構造で考える" 思考は、 ここで形成された可能性が高い。 ただし本人はメディアで大学時代の活動を多く語っておらず、 派手なエピソードはほぼ無い。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            進学していない。 24歳で安田信託銀行に新卒入行し、 <strong>13年の銀行員生活</strong>で財務・信託・運用の実務を徹底的に積む現場派ルートを選択。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>湘南の進学校 → 2浪 → 一橋社会学部</strong>」 という流れの中で、 "派手な天才肌" ではなく <strong>"挫折を経た秀才"</strong> としての自己認識を確立。 数字を読み、 構造を見抜き、 折れない——という財務責任者としての原型は、 浪人時代の規律と一橋社会学部の骨太さの掛け算で出来上がった。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「投資には期限のオブリゲーション（義務）が無いから、しなきゃいいだけ。状況が悪ければ、撃ち方やめもできる。」</div>
+        <div class="src">— 後藤芳光さん（日経ビジネス「非常時には撃ち方やめもできる」より要旨）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1963</td>
+            <td>神奈川県鎌倉市生まれ。 湘南エリアの一般家庭で育つ。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">15-18</td>
+            <td class="col-year">1978-81</td>
+            <td><strong>神奈川県立湘南高校</strong>に進学。 県内屈指の進学校で、 派手さよりも骨太な思考力を培う3年間。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18-20</td>
+            <td class="col-year">1981-83</td>
+            <td><strong>2年浪人</strong>。 一発合格組ではなく、 「望む場所にたどり着くために2年余分に努力する」 という規律をこの時期に身につける。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">20</td>
+            <td class="col-year">1983</td>
+            <td><strong>一橋大学社会学部入学</strong>。 構造的に物事を捉える思考訓練を4年間積む。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">24</td>
+            <td class="col-year">1987</td>
+            <td><strong>安田信託銀行（現みずほ信託銀行）入行</strong>。 13年間の銀行員生活で財務・信託・運用を徹底的に学ぶ。 後にCFOとして必要な "資金繰り感覚" の原型はこの13年で出来た。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2000.06</td>
+            <td><strong>笠井和彦さんの誘いでソフトバンク入社</strong>。 安田信託銀行の元上司・笠井さんが先にSBに移籍し、 「一緒に来るか？」 と声をかけた。 後藤さんは「はい、喜んで」と即答。 ソフトバンク財務部長就任。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38-40</td>
+            <td class="col-year">2001-03</td>
+            <td><strong>Yahoo! BB の立ち上げ</strong>。 後藤さん本人が「23年間で最も大変だった」と振り返る経験。 ADSLインフラの全国展開・莫大な先行投資・解約率高止まり——財務責任者として、 孫さんの "ゼロが二桁多い投資" を現実の資金繰りに落とし込む地獄の3年間。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2006</td>
+            <td><strong>ボーダフォン日本買収（1.7兆円）</strong>。 当時の日本企業では史上最大規模のLBO型買収。 後藤さんは関連事業室長を兼務し、 銀行団との交渉と買収後の財務統合を主導。 SBが "通信会社" になる転換点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2012</td>
+            <td><strong>SBG 常務執行役員 財務部長就任</strong>。 笠井さんの直下から、グループ全体の財務を統括する立場に昇格。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2013.07</td>
+            <td><strong>スプリント買収（約1.8兆円）</strong>。 前任CFO笠井さんの主導案件。 後藤さんは300億円規模のドル調達を有利な為替で先行確保し、 結果として約3,000億円の為替差益を確保。 笠井さんと後藤さんの "二人三脚" の到達点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2013.10</td>
+            <td><strong>笠井和彦さん急逝（肺カルチノイド癌）</strong>。 同月、 福岡ソフトバンクホークス株式会社 代表取締役社長兼オーナー代行に就任。 SBG財務の <strong>"次代の頭"</strong> として完全継承。 13年間師事した笠井さんからの事実上の "バトン"。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">51</td>
+            <td class="col-year">2014</td>
+            <td>ソフトバンクグループ取締役就任。 経営の意思決定の場へ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">53</td>
+            <td class="col-year">2016.07</td>
+            <td><strong>ARM買収（3.3兆円）</strong>。 孫さんがトルコ料理店の昼食で14分で決めた案件。 後藤さんは <strong>みずほ銀行から1兆円のブリッジローン</strong>を緊急で引っ張り、 史上最速級のクロージングを実現。 SBの "テック投資会社" 化を財務でブーストした瞬間。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">2017</td>
+            <td><strong>SBG 専務執行役員 財務統括 就任</strong>。 同年、<strong>ビジョンファンド1（10兆円）</strong>の財務設計を主導。 PIF・ムバダラとの巨額調達スキームを実装。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">55</td>
+            <td class="col-year">2018.04</td>
+            <td><strong>CFO兼CISO就任</strong>。 名実ともにSBGの "金庫番" の頂点へ。 同年12月、 <strong>ソフトバンク株式会社 東証一部上場（時価総額7.2兆円、日本史上最大規模のIPO）</strong>。 主幹事ライン・条件交渉の中央で指揮。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">56</td>
+            <td class="col-year">2019.11</td>
+            <td><strong>WeWork問題で四半期7,000億円超の営業損失</strong>。 後藤さん「<strong>今回は孫さんを叱った</strong>」と公言。 創業者の前のめりに対して財務側から明示的に <strong>"NO"</strong> を言える数少ない人物として記憶される事件。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">57-59</td>
+            <td class="col-year">2020-22</td>
+            <td>コロナショック直後、 <strong>4.5兆円の資産売却プログラム</strong> を主導。 アリババ株を段階的に売却し、 自社株買い・社債償還・流動性確保を同時実行。 LTV<25%目標を死守。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">60</td>
+            <td class="col-year">2023.09</td>
+            <td><strong>ARM米NASDAQ再上場</strong>（時価総額600億ドル超）。 2016年買収時から7年越しの "出口" 設計を完遂。 SBGの保有比率90%を維持しつつ流動性のあるドル建て資産化に成功。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">62</td>
+            <td class="col-year">2025</td>
+            <td><strong>OpenAI / Stargate計画への巨額コミット</strong>（数兆円規模）。 AI時代に向けたSBの最終勝負を、 <strong>NAV・LTV・流動性の3指標を維持しながら</strong> 実装する局面へ。 CSusO（最高サステナビリティ責任者）も兼務。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（孫正義さん）との関係構造              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（孫正義さん）との関係構造</h2>
+      <p>
+        2000年4月、 安田信託銀行で経営再建を担っていた笠井和彦さん（後藤さんの直属上司）に、 孫正義さんから
+        突然電話がかかった。 「ソフトバンクのCFOになってくれないか」。 笠井さんは外資系金融機関への移籍が
+        ほぼ固まっていたが、 孫さんの熱意に押されて転身を決断。 笠井さんは <strong>「孫さんのビジネスは、
+        普通の感覚よりゼロが二桁多い」</strong> と表現した。
+      </p>
+      <p>
+        笠井さんがソフトバンクへ動くにあたって、 後藤さんに「<strong>一緒に来るか？</strong>」と
+        声をかける。 後藤さんは即座に「<strong>はい、喜んで</strong>」と応じた。 当時37歳。 安田信託銀行で
+        13年勤めた後の決断だった。 — つまり後藤さんがソフトバンクに来た本当の入口は、 孫さんではなく
+        <strong>笠井さん経由</strong>。 これは後藤さんのキャリア設計上、 極めて重要な事実。
+      </p>
+      <p>
+        以降、孫さんと後藤さんの関係は <strong>"前のめりの王と、止められる金庫番"</strong> という構造になる。
+        孫さんが <strong>14分でARM買収を決めた</strong> 時、 1兆円ブリッジローンを引っ張れたのは後藤さん。
+        孫さんが WeWork で7,000億円の損失を出した時、 「<strong>今回は孫さんを叱った</strong>」 と
+        公言したのも後藤さん。 多くのCFOは創業者に従属するが、 後藤さんは <strong>"財務でだけNoを言える"</strong>
+        立ち位置を保ち続けた。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「この23年で一番大変だったのは、Yahoo! BB の立ち上げ。 当時の孫さんの判断スピードと、 現実の
+        資金繰りの現場のギャップを埋めるのが、 本当に難しかった。」<br>
+        — 後藤芳光さん（ITmedia ビジネスオンライン「孫正義氏に伴走して20年」より要旨）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">笠井さん経由、間接的に孫さんへ</div>
+          <div class="stage-body">2000年6月、 安田信託銀行から笠井さんに連れられて入社。 孫さんと直接の面接で口説かれたわけではない。 「笠井さんが信頼している人物だから」 という間接信頼で始まった関係。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">2001-2006: Yahoo! BB の地獄を共有</div>
+          <div class="stage-body">財務部長として、 孫さんの "ゼロが二桁多い投資" を現実の銀行交渉に落とし込む3年間。 解約率の高止まり・ADSL設備の先行投資をどう資金繰りで支えるか——孫さんと後藤さんの信頼は、 ここで完成した。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">2013-2018: 笠井さんから独り立ち</div>
+          <div class="stage-body">笠井さんの急逝（2013.10）で、 後藤さんが事実上のSBG財務トップに。 ARM買収・ビジョンファンド組成・SB上場——孫さんの巨大投資ビジョンを、 NAV/LTV/流動性の3指標で実装し続けた "全盛期"。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 拮抗</div>
+          <div class="stage-title">2019-: "孫さんを叱る" CFO</div>
+          <div class="stage-body">WeWork問題以降、 後藤さんは公の場で「今回は孫さんを叱った」と発言できる数少ないCFOになった。 創業者に対して財務でだけNoを言う構造を、 26年の関係で構築した。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        後藤さんは、 創業も独立もせず、 <strong>26年間ずっと孫さんの財務責任者であり続けた</strong>。
+        途中で外資系金融機関やPEファンドからのオファーがなかったわけではないだろうし、 ホークス球団社長として
+        単独で事業会社CEOになることも可能だった。 にもかかわらず、 SBGのCFOから一度も離れなかった。
+      </p>
+      <p>
+        理由は3つある。 ① 笠井さんという <strong>"次のロールモデル"</strong> をすぐ近くで見ていた。 笠井さんは
+        富士銀行・安田信託で実績を作ったあとSBへ移り、 孫さんのCFOとして人生を賭けた。 後藤さんは笠井さんの
+        生き方そのものを内面化した。 ② 孫さんの <strong>"ゼロが二桁多い世界"</strong> でしか触れられない
+        ファイナンス・ダイナミクスがある。 通信会社の1.7兆円買収・10兆円ファンドの組成・1兆円ブリッジローンの
+        即日調達——これは独立CFOでは経験できない領域。 ③ <strong>"孫さんを止められる人間が他にいない"</strong>
+        という構造的需要。 孫さんが前のめりであるほど、 NAV/LTV/流動性を死守する金庫番が組織にとって
+        死活的に重要になる。 後藤さん自身、 「自分の役割は替えがきかない」 という自覚があったはず。
+      </p>
+      <p>
+        後藤さんのNo.2観は、 Tim Cookの "継承型" でも 小泉文明さんの "逆継承型" でもない。
+        <strong>"創業者の暴走に "撃ち方やめ" を言える唯一の人間"</strong>として、 26年間ポジションを動かさなかった
+        <strong>全う型 × CFO型 × 守備固め型</strong> の典型。 No.1になる選択肢を全て潰し、 No.2に専念した。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">巨額ファイナンス + 銀行団交渉 + リスク管理。 安田信託13年で培った銀行マインド + SB26年で実装した投資会社財務の <strong>掛け算</strong>。 1兆円規模のブリッジローンを<strong>即日でアレンジできる人脈</strong>を持つ、日本では極めて稀有な人材。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 + ブレーキ。 孫さんが "ビジョンと買収" だけ考えればいいように、 <strong>銀行団交渉・社債発行・上場準備・財務統合・リスク説明</strong> を全部巻き取る。 同時に、 暴走しそうな時は<strong>明示的にブレーキを踏む</strong>権限を持つ唯一のCFO。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">後藤さんがいなければ、 SBGは <strong>2016年のARM買収・2017年のビジョンファンド組成・2020年のコロナ資産売却</strong> のいずれかで資金繰りが詰まっていた可能性が高い。 孫さんの "前のめり" は財務的に支える人間がいて初めて成立する。</div>
+        <div class="vk">語法・哲学</div>
+        <div class="vv">「<strong>投資には期限のオブリゲーションが無い、しなきゃいいだけ</strong>」 — 株式投資会社の本質を一言で表したフレーズ。 NAV・LTV・流動性の3指標で経営を語る、 日本の財務トップの中でも<strong>最も投資銀行家的な発想</strong>を持つCFO。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2001-2003 Yahoo! BB の立ち上げ。</strong> 本人が「23年で一番大変だった」と公言する地獄期。
+        ADSL設備の全国展開には毎月数百億円の先行投資が必要で、 解約率は高止まり。 銀行団は "ITバブル後" で
+        極めて懐疑的。 後藤さんは <strong>毎日のように銀行と交渉して延命資金を確保</strong>し続けた。
+        孫さんが「やる」と決めた事業を、 後藤さんが資金繰りで現実化した最初の大事件。
+      </p>
+      <p>
+        <strong>② 2013年10月の笠井さん急逝。</strong> 13年師事した上司・笠井さんが肺カルチノイド癌で急死。
+        同月、 後藤さんは <strong>福岡ソフトバンクホークス株式会社 社長兼オーナー代行</strong>に就任、
+        SBGの財務トップも事実上継承。 「<strong>急にバトンを渡された</strong>」 状況で、 翌年からの
+        ARM買収・ビジョンファンド組成・SB上場の主役を担う。
+      </p>
+      <p>
+        <strong>③ 2016年7月のARM買収（3.3兆円）。</strong> 孫さんが14分で決めた案件を、 後藤さんが
+        <strong>みずほから1兆円のブリッジローン</strong>を引っ張って即日アレンジ。 史上最速級のクロージング。
+        買収公表時にロンドン市場で価格が上がる前に資金を確定するという "戦争"を勝ち抜いた。
+      </p>
+      <p>
+        <strong>④ 2019年11月のWeWork問題と "撃ち方やめ"。</strong> 四半期営業損失7,000億円超。
+        後藤さんはDiamond Online のインタビューで <strong>「今回は孫さんを叱った」</strong>と公言。
+        日本のCFOで創業者を公の場で "叱った" と言える人物は極めて稀。 創業者尊重ではなく
+        <strong>機能尊重</strong>の関係を、 26年かけて構築してきた証。
+      </p>
+      <p>
+        <strong>⑤ 2020-2022年のコロナ資産売却プログラム（4.5兆円）。</strong> アリババ株の段階売却・
+        Tモバイル株売却・ARM事前売却交渉などを並行実行し、 流動性を <strong>2年分の社債償還カバー</strong>
+        まで積み増した。 これがあったからこそ、 2023年のARM米国IPOまで持ちこたえられた。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        後藤さんの引き際は、 まだ来ていない。 2026年4月時点で63歳・CFO在任26年目。 笠井さんが急逝で
+        バトンを置いていったのと対照的に、 後藤さんは <strong>"自分が降りるタイミングを自分で設計する"</strong>
+        フェーズに入っている。 だが孫さんが現役で前のめりであり続ける限り、 後藤さんが引く可能性は低い。
+      </p>
+      <p>
+        一方、 後継者問題はSBGの最大の構造リスクの一つ。 孫さん本人は何度か後継者構想を語ってきたが
+        （Vikram Solさん、Marcelo Claureさん、Rajeev Misraさんなど）、 いずれも "孫さんの後継" の話で
+        あり、 <strong>"後藤さんの後継"</strong>は SBG社内で明確に語られていない。 これは
+        <strong>後藤さんが "替えがきかない" レベルの構造ポジション</strong>を握っていることの裏返し。
+      </p>
+      <p>
+        もし後藤さんが将来的に降りるとしたら、 シナリオは2つしかない。 ① 孫さんの引退と同時に
+        会長職などにスライドし、 名実ともにSBG経営から距離を置く。 ② 福岡ソフトバンクホークスや
+        まちづくり・地域経済などへ <strong>セカンドキャリア</strong>を切り出す——どちらも
+        <strong>"孫さんが現役の限り、CFOから降りない"</strong> という制約条件付きの将来像になる。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">後藤芳光さんの No.2 型</div>
+        <div class="type-name">守備固め型 × CFO型 × 全う型</div>
+        <div class="type-body">
+          孫正義さんという <strong>"日本最強の前のめり創業者"</strong> に対して、 26年間 NAV/LTV/流動性の
+          3指標で<strong>"撃ち方やめ"のボタン</strong>を握り続けた金庫番。 派手な発表もせず、
+          メディア出演も決算とリスク説明だけ。 創業者の暴走に対して <strong>機能で対峙する</strong>、
+          日本のCFOとして最も完成度の高い型。
+          <br><br>
+          ▸ <strong>守備固め型</strong>: 攻めは孫さんに任せ、 守りに徹する。 ただし守りの定義が
+          「銀行団・社債市場・PE市場・規制当局」 全方位という、 規模が桁違い。
+          <br><br>
+          ▸ <strong>CFO型</strong>: 営業・プロダクト・人事ではなく、 <strong>"金"</strong> でだけ
+          創業者と対峙する。 これはCharlie Munger・Tim Cookとも違う、 日本型のCFO型No.2の到達点。
+          <br><br>
+          ▸ <strong>全う型</strong>: 26年同じポジションで動かない。 創業者が引退するまで自分も降りない。
+          Charlie Mungerが Buffettに対してそうしたように、 後藤さんも孫さんに対してそうしている。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">No.1の前のめりに、 機能でだけ "NO" を言える立場を作れ</div>
+          <div class="lesson-body">
+            後藤さんは孫さんに対して人格でも上下関係でもなく <strong>"財務という機能"</strong> でNoを言う。
+            「今回は孫さんを叱った」 と公言できるのは、 <strong>NAV/LTV/流動性の3指標</strong> という
+            判断軸を握っているから。 翔太も Wanderlust で 西川さん・西原さんに対して "感情で反対" するのではなく、
+            <strong>"指標で止める"</strong> 立場を確立しろ。 No.2が機能でNoを言えない組織は、 創業者の暴走で死ぬ。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">入口は "間接信頼" で構わない。 笠井さん経由でも26年もつ</div>
+          <div class="lesson-body">
+            後藤さんは孫さんに直接口説かれたわけではない。 <strong>笠井さんという中間人物経由</strong>で
+            ソフトバンクに入った。 だが26年もった。 翔太がCOOやNo.2を選ぶ時、 No.1との直接の "運命の出会い"
+            にこだわらなくていい。 <strong>信頼できる中間人物</strong>から入ることで、 関係構築のスピードと
+            深さは十分に確保できる。 重要なのは <strong>"入った後に何を積み上げるか"</strong>。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">26年降りないNo.2であれ。 ただし "降り方" は最初から設計しろ</div>
+          <div class="lesson-body">
+            後藤さんは <strong>"孫さんが現役の限り降りない"</strong> という生き方を選んだ。 これは
+            小泉文明さんの "逆継承" とは正反対の選択。 翔太がもしWLでCOOを引き受けるなら、
+            <strong>"いつまで現役で支え続けるか"</strong> の腹を決めろ。 同時に、 笠井さんが急逝で
+            バトンを置いた事例も忘れるな。 後継者育成は <strong>自分が現役のうちに</strong>始めるのが、
+            真のNo.2の責任。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>神奈川県鎌倉市出身。 湘南エリアの落ち着いた空気の中で育ち、 派手さよりも地に足のついた思考を好む。</li>
+        <li>大学受験で<strong>2年浪人</strong>。 「望む場所に行くために2年余分に努力する」 という規律が、 後の26年CFOの忍耐力の原型。</li>
+        <li>趣味は<strong>プロ野球観戦</strong>。 福岡ソフトバンクホークス球団社長を兼務しているため、 公の趣味と仕事が重なる珍しいタイプ。</li>
+        <li><strong>笠井和彦さん</strong>は安田信託銀行時代の上司であり、 SBに連れてきてくれた "親代わり"。 笠井さんの2013年の急逝は、 後藤さんの人生最大のショック事件と推察される。</li>
+        <li>孫さんがARM買収を "トルコ料理店で14分で決めた" 時、 後藤さんはみずほから<strong>1兆円のブリッジローンを即日確保</strong>。 14分の意思決定 vs 1兆円の即日調達——SBの "速度" を体現する2人組。</li>
+        <li>2019年WeWork問題後のDiamond Onlineインタビューで <strong>「今回は孫さんを叱った」</strong>と発言。 日本のCFOで創業者を公の場で "叱った" と言える人物は極めて稀。</li>
+        <li>「<strong>投資には期限のオブリゲーションが無い、しなきゃいいだけ</strong>」 が口癖。 これがSBの財務戦略を一言で表すフレーズになった。</li>
+        <li>NAV・LTV・流動性の <strong>3指標</strong>でだけ経営を語る。 日本の事業会社CFOとしては <strong>最も投資銀行家的な発想</strong>を持つ。</li>
+        <li>2025年、 <strong>CSusO（最高サステナビリティ責任者）</strong>を兼務。 CFO/CISO/CSusOの3冠は、 SBGの規模で見ても異例の集中体制。</li>
+        <li>湘南高校・一橋大学・安田信託銀行・SBという経歴は、 全て<strong>"派手さよりも実力本位"</strong> の組織選択。 後藤さん自身の人格的傾向を端的に表している。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">孫正義さん <span class="ja">Son Masayoshi / SBG創業者</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            ソフトバンクグループ創業者・会長兼社長。 後藤さんが2000年から26年支え続けている "前のめりの王"。 ARMを14分で買い、 ビジョンファンドを10兆円で組成し、 OpenAI/Stargateに数兆円コミットする男。 後藤さんが財務でだけ "撃ち方やめ" を言える唯一のCFO。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">笠井和彦さん <span class="ja">Kasai Kazuhiko / 前SBG CFO</span></div>
+            <span class="rel-tag">前任 / メンター</span>
+          </div>
+          <div class="rel-body">
+            富士銀行 → 安田信託銀行で実績を作り、 2000年に孫さんに口説かれてSB入り。 後藤さんを引き連れてSBへ。 後藤さんの直属上司として13年師事した <strong>"親代わり"</strong>。 2013年10月、 肺カルチノイド癌で急逝。 後藤さんは同月、ホークス球団社長兼オーナー代行として笠井さんのバトンを受け取る。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">宮内謙さん <span class="ja">Miyauchi Ken / SB社長</span></div>
+            <span class="rel-tag">並列 / 通信事業</span>
+          </div>
+          <div class="rel-body">
+            ソフトバンク株式会社 元社長。 後藤さんがCFOとして上場準備を主導した2018年12月の上場時、 通信事業の責任者だった人物。 通信会社の現場責任者×財務責任者の役割分担で、 SB単体上場を達成。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Rajeev Misraさん <span class="ja">ラジーブ・ミスラ / 元VF CEO</span></div>
+            <span class="rel-tag">並列 / VF責任者</span>
+          </div>
+          <div class="rel-body">
+            ビジョンファンド初代CEO（旧ドイツ銀行）。 後藤さんと並行して、 投資側のリスクを管理した人物。 後藤さんが SBG本体側のCFO、 ミスラさんがVFのCFO的存在で、 投資判断と財務管理が二重構造になっていた時期の片輪。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Charlie Munger <span class="ja">チャーリー・マンガー</span></div>
+            <span class="rel-tag muted">比較対象 / 全う型</span>
+          </div>
+          <div class="rel-body">
+            Buffettに対して45年副会長を全うしたMunger。 孫さんに対して26年CFOを全う中の後藤さん。 両者とも創業者に対して "機能でだけNoを言える" 唯一の人物として知られ、 引退タイミングを創業者と同期させる "全う型" の典型例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック / Apple</span></div>
+            <span class="rel-tag muted">比較対象 / 補完型</span>
+          </div>
+          <div class="rel-body">
+            Jobsの下でオペレーションを設計した補完型No.2。 Cookは継承したが、 後藤さんは継承せずCFOで全うする道を選んだ。 同じ "創業者の苦手領域を埋める補完型" でも、 引き際の方向が異なる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小泉文明さん <span class="ja">Koizumi Fumiaki / メルカリ会長</span></div>
+            <span class="rel-tag muted">対極 / 逆継承型</span>
+          </div>
+          <div class="rel-body">
+            メルカリで山田進太郎さんから一度社長を継承し、 自発的に返した <strong>"逆継承型"</strong>。 一方の後藤さんは社長を継承せず、 CFOのまま26年動かない <strong>"全う型"</strong>。 同じ日本のNo.2でも引き際の哲学が真逆で、 比較すると後藤さんの "降りない" 選択の構造的意味が浮かび上がる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">湘南高校・一橋社会学部 <span class="ja">教育の原点</span></div>
+            <span class="rel-tag muted">原点 / 思考の原型</span>
+          </div>
+          <div class="rel-body">
+            派手さよりも骨太な思考力を養う教育環境。 2年浪人を経た忍耐力と、 一橋社会学部の構造思考が、 26年降りないCFOの土台を作った。 後藤さんが「数字より構造で考える」 タイプである理由は、 学生時代に遡る。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://group.softbank/en/about/officer/goto" target="_blank">Biography: Yoshimitsu Goto — SoftBank Group Corp. 公式</a></li>
+        <li><a href="https://ja.wikipedia.org/wiki/%E5%BE%8C%E8%97%A4%E8%8A%B3%E5%85%89" target="_blank">後藤芳光 — Wikipedia 日本語版</a></li>
+        <li><a href="https://www.itmedia.co.jp/business/articles/2303/01/news174.html" target="_blank">孫正義氏に伴走して20年、ソフトバンクG金庫番が「最も大変だった」こととは？ — ITmedia ビジネスオンライン</a></li>
+        <li><a href="https://www.itmedia.co.jp/business/articles/2303/02/news123.html" target="_blank">ソフトバンクグループ後藤氏「CFOをゴールとみなしてはいけない」と語る真意 — ITmedia ビジネスオンライン</a></li>
+        <li><a href="https://diamond.jp/articles/-/221432" target="_blank">「今回は孫さんを叱った」ソフトバンクの金庫番、後藤芳光CFOを直撃 — Diamond Online</a></li>
+        <li><a href="https://business.nikkei.com/atcl/gen/19/00415/122800008/" target="_blank">「今は自由演技。撃ち方やめもできる」ソフトバンクG・後藤CFO — 日経ビジネス</a></li>
+        <li><a href="https://business.nikkei.com/atcl/NBD/19/special/00986/" target="_blank">後藤芳光・ソフトバンクグループCFOに聞く 非常時には「撃ち方やめ」もできる — 日経ビジネス</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXMZO47718490U9A720C1962M00/" target="_blank">ソフトバンク「世界一へ投資惜しまず」 後藤球団社長 ホークス進化の源泉(4) — 日本経済新聞</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXNASFK2302O_T21C13A0000000/" target="_blank">笠井和彦さんを悼む ゲームセットはあまりに突然に — 日本経済新聞</a></li>
+        <li><a href="https://www.data-max.co.jp/2013/11/21/post_16455_dm1742_1.html" target="_blank">福岡ソフトバンクホークス（株）故・笠井社長の後任に後藤芳光氏が就任 — Net-IB / 九州企業特報</a></li>
+        <li><a href="https://kinzai-online.jp/node/12176" target="_blank">ソフトバンクグループの財務戦略を支える「攻め」の社債活用 — きんざいOnline</a></li>
+        <li><a href="https://globalleaderstoday.online/maximizing-corporate-value-yoshimitsu-gotos-radical-financial-philosophy-at-softbank/" target="_blank">Maximizing Corporate Value: Yoshimitsu Goto's Radical Financial Philosophy at SoftBank — Global Leaders Today</a></li>
+        <li><a href="https://irbank.net/E02778/officer?m=%E5%BE%8C%E8%97%A4%E8%8A%B3%E5%85%89" target="_blank">9984 ソフトバンクグループ 役員の状況 — 後藤芳光 — IRBank</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

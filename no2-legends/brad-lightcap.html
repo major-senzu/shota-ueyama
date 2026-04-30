@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brad Lightcap — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block { margin-bottom: 64px; }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="BL"><img src="https://techcrunch.com/wp-content/uploads/2026/02/brad-lightcap-GettyImages-2147824375-1.jpg?w=1024" alt="Brad Lightcap" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+      <h1>Brad Lightcap</h1>
+        </div>
+      </div>
+      <p class="summary">
+        JPMorgan の M&A バンカー → Dropbox 戦略財務 → Y Combinator Continuity Fund 投資家を経て、
+        2018年 27歳で OpenAI の <strong>"first business hire"</strong> として参画。CFO → COO と昇格し、
+        Microsoft との $13B 提携、ChatGPT Enterprise の商業化、SoftBank 主導 $40B ラウンドを束ねた "<strong>静かな実行者</strong>"。
+        2023年 11月のクーデターでは 48時間で約40社の主要顧客と直接対話し、流出をゼロに抑えた "firefighter"。
+        2026年 4月に COO ロールを Special Projects へ委譲し、自発的に役割再定義した
+        <strong>AI 時代版 "若手 CFO/COO 型 No.2"</strong> の到達点。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Sam Altman（OpenAI CEO・YC時代から9年/2016–現在）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1991年（34–35歳・2026.04 時点）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">米国 / 現在は San Francisco 在住</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / 既婚（家族情報は意図的に非公開）</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">OpenAI 評価額 $500B 規模 / 史上最大 $40B 民間ラウンドを主導（2025年・SoftBank）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 Sarah Lightcap（Meta PMと報道）/ 子 2 人と推定（息子・娘、報道ベース）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">Duke Blue Devils・SF 49ers・Warriors / 国際旅行 / X（@bradlightcap、低頻度・実務的）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">愛読書（推定 / 公開発言ベース）</div>
+          <div class="fact-value">『The Innovator's Dilemma』(Christensen) / 『The Hard Thing About Hard Things』(Horowitz) / 『Sapiens』(Harari)</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">OpenAI Special Projects (2026.04–現在) / OpenAI COO (2022.05–2026.04) / OpenAI CFO (2019–2022) / OpenAI Startup Fund 創設・運営 (2021–2024.04) / YC Continuity Fund Investor (2016–2018) / Dropbox Head of Finance & Operations(BU) (2013–2016) / J.P. Morgan IB Analyst (2012–2013)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR — 一言で言うと？                   -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>9年同じ船に乗り、ビジョナリーが燃やす炎の隣で、契約書と顧客リストを握り続けた "firefighter COO"</strong>」。
+        Y Combinator で出会った Sam Altman の隣に 2018年から立ち、 <strong>Microsoft $13B / SoftBank $40B / 評価額 $500B</strong> を全て自分のサインで通した。
+        Altman が議会と国家元首と話す間、Lightcap は <strong>顧客・出資者・規制当局・財務</strong> を回す。
+        2023年 11月の 5日間のクーデターで、彼は表に出て熱く語る代わりに、48時間で約40社の主要顧客に直接電話し、社内には 1通のメモを書いた。
+        流出はゼロ。雇われ No.2 が "創業者級の信頼" で動いた稀有なケース。 2026年 4月、自発的に COO の椅子を後継に渡し、
+        Special Projects へ脱皮した引き方も含めて、 <strong>AI 時代の「静謐な右腕」モデル</strong> の最重要事例。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS — 生い立ち・学歴                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1991年</strong>、米国生まれ（出生地・両親職業など個人情報は非公開）。 兄弟構成・幼少期エピソードは公開ソースがほぼない。 個人の露出を意図的に絞る "プライバシー意識の高い No.2" としての姿勢が、 学生時代から一貫している。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            米国内の高校に在学（特定情報なし）。 後年の Duke 進学・Investment Banking 内定から、 学業優秀層であることは確実。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Duke University（〜2012年卒業）</strong>。 経済学 (Economics) と 歴史学 (History) のダブルメジャー BA。 在学中は <strong>Duke Entrepreneurship and Venture Capital Club</strong>、Student Government、 学生新聞 <em>The Chronicle</em> に所属。 「ビジネス × 政策・歴史」を掛け合わせる視座が大学時代から。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職: J.P. Morgan</div>
+          <div class="origins-body">
+            <strong>2012〜2013年</strong>、 J.P. Morgan（NY）で <strong>Investment Banking Analyst</strong>。 テクノロジー領域の M&A を担当。 21〜22歳でウォール街の最も激しい現場に入り、 大型 M&A の構造設計・財務モデリング・ナイトワークに身を晒した。 シリコンバレーへの "翻訳者" としての基礎技術がここで完成。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職: Dropbox</div>
+          <div class="origins-body">
+            <strong>2013年11月〜2016年1月</strong>、 Dropbox に Strategic Finance として参画、 後に <strong>Head of Finance & Operations（Business Unit）</strong>。 Mailbox 買収、 Dropbox for Business の立ち上げに関与。 「IB の数字屋」から「プロダクト企業の事業屋」への移行を実地で経験。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職: Y Combinator</div>
+          <div class="origins-body">
+            <strong>2016年1月〜2018年7月</strong>、 <strong>Y Combinator Continuity Fund</strong>（YC のグロースファンド）の Investor / Principal。 当時の YC 社長は Sam Altman。 ここで <strong>Altman との 9年の同行</strong> が始まる。 Altman は後に "Brad and I have worked together for the past 9 years…it was clear 9 years ago that Brad was exceptional" と公式発言。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職: OpenAI</div>
+          <div class="origins-body">
+            <strong>2018年8月頃、27歳で OpenAI の "first business hire" として参画</strong>。 当時 OpenAI は約40人の非営利研究機関で、 ビジネス側の人間は事実上 Lightcap 1人。 2019年 CFO 就任、 2022年5月 COO 昇格、 2025年3月 ロール拡張、 2026年4月 Special Projects へ移行——8年間で OpenAI の「外」を全て建てた。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"Brad and I have worked together for the past 9 years … it was clear 9 years ago that Brad was exceptional."</div>
+        <div class="src">— Sam Altman（OpenAI Leadership Updates / 2025年3月）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1991</td>
+            <td>米国生まれ。 出生地・両親職業など詳細は非公開。 学生時代からプライバシー意識が高い。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">2009</td>
+            <td>Duke University 入学（経済学・歴史学）。 起業/VC クラブ・学生新聞 The Chronicle に所属し、 "ビジネス × 政策・歴史" の視座を形成。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">21</td>
+            <td class="col-year">2012</td>
+            <td><strong>J.P. Morgan IB Analyst（NY・テック M&A）</strong>。 ウォール街の数字と契約書の世界で、 21歳で大型 M&A の現場を経験。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">2013</td>
+            <td>Dropbox 戦略財務へ。 IB 数字屋から SaaS 事業屋への転身。 Mailbox 買収、Dropbox for Business 立ち上げを経験。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">2016</td>
+            <td><strong>Y Combinator Continuity Fund 参画。 Sam Altman と出会う</strong>。 後の OpenAI No.2 への 9年の同行が始まる起点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">2018.08</td>
+            <td><strong>OpenAI に "first business hire" として参画</strong>。 当時非営利・40人規模。 ビジネス側の人員は事実上ゼロからの建設。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">2019</td>
+            <td>OpenAI <strong>CFO</strong> 就任。 同年 Microsoft から $1B 出資、 capped-profit 子会社化を実務で支える。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2021</td>
+            <td><strong>OpenAI Startup Fund 立ち上げ</strong>（$100M → 後に $175M）。 Descript・Harvey・Mem・Speak などへ投資。 投資家経験を活かして AI エコシステムの "種" を撒く役。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">2022.05</td>
+            <td><strong>OpenAI COO に昇格</strong>。 同年11月 ChatGPT 公開。 "研究機関" から "プロダクト企業" への変貌期に、 商業化の全責任を担う。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2023.01</td>
+            <td>Microsoft から <strong>$10B+ 追加投資</strong> を確定（累計 $13B+）。 GPT-3 / GPT-4 のインフラ規模をシリコンバレー史で最大級に押し上げる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2023.11</td>
+            <td><strong>Altman 解任クーデターで "firefighter" として動く</strong>。 11/18 朝 社内メモ発信、 48時間で約40社の主要顧客に直接電話。 流出ゼロ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">33</td>
+            <td class="col-year">2024.04</td>
+            <td>OpenAI Startup Fund を Ian Hathaway へ引継ぎ。 自分は商業ローンチ／資本政策に集中する役割再分担。 同月、東京オフィス開所を主導（ロンドン・パリ・ダブリン続く）。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2025.03</td>
+            <td><strong>SoftBank 主導 $40B ラウンド完了（評価額 $300B、史上最大の民間テック調達）</strong>。 同月 OpenAI 公式 Leadership Update で "Altman = research/product / Lightcap = business/operations" の役割分離を契約として宣言。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2025.12</td>
+            <td>SoftBank 投資の追加分含めフルファンド完了。 評価額 $500B 規模へ。 同年 Microsoft 提携の収益シェア上限再交渉も指揮。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2026.04.03</td>
+            <td><strong>COO 退任、 OpenAI "Special Projects" リードへ移行</strong>。 複雑な投資・案件を Altman 直下で担当。 商業日常運営を後任の Denise Dresser（CRO）等に委譲。 自発的役割再定義による "卒業型" の引き方。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1 (Sam Altman) との関係構造           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Sam Altman）との関係構造</h2>
+      <p>
+        Lightcap と Altman の関係は <strong>2016年の YC で始まり、現在 9年目</strong>。 シリコンバレーの No.1–No.2 関係としては最長クラスで、
+        Brockman の OpenAI 共同創業（2015年〜）とほぼ同期間 Altman に伴走する稀有な存在。
+      </p>
+      <p>
+        二人の役割は最初から明確で、 2025年3月の OpenAI 公式 Leadership Update で <strong>契約として明文化</strong> された。
+        Altman = research / product / 政府・規制・国家対応。 Lightcap = business / operations / 顧客・出資者・パートナーシップ・財務・グローバル展開。
+        「<strong>Altman が外で語る、Lightcap が内で握る</strong>」。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Sam Altman is counting on OpenAI COO Brad Lightcap to transform the business."<br>
+        — Bloomberg (2024年2月)
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">YC Continuity で並ぶ机</div>
+          <div class="stage-body">2016年、 25歳の Lightcap は YC Continuity Fund に着任。 当時の YC 社長は Sam Altman。 投資家として 2年強、 横で AGI とスタートアップの両方を見続けた。 Altman は後に "9年前から exceptional だった" と公式発言。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">非営利から $13B 提携への変身</div>
+          <div class="stage-body">2018年 OpenAI 参画、 first business hire。 2019年 CFO、 同年 Microsoft $1B、 capped-profit 子会社化。 2023年 Microsoft $10B+ 追加。 Altman の交渉と Lightcap のディール構造設計の二人三脚で、 OpenAI を "研究機関" から "テック企業" に変えた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 試練と firefighter</div>
+          <div class="stage-title">5日間のクーデターを内側から止めた人</div>
+          <div class="stage-body">2023年11月、 Altman 解任。 Lightcap は 48時間で社内メモを書き、 約40社の主要顧客に電話。 流出ゼロで Altman 復帰までの 5日間を持ちこたえる。 Brockman が "辞表" で、Lightcap は "電話" で Altman を支えた、対照的な忠誠の示し方。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 卒業設計</div>
+          <div class="stage-title">COO から Special Projects への自発的脱皮</div>
+          <div class="stage-body">2026年4月、 8年務めた COO ロールを後継に委譲し、 Altman 直下の Special Projects へ。 解任ではなく "より戦略的な領域への移行"。 No.2 の終わり方として理想形——商業日常を渡し、 自分は次の難題に集中する。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Lightcap は <strong>"なれなかった No.2" でも "ならなかった No.2" でもない</strong>。 27歳で世界で最も注目される AI 研究機関の "first business hire"
+        になれるチャンスは、彼にとって CEO ポジションよりも遥かに価値があった。 "ビジョナリーの隣で実装する" ことを 早い段階から自分の役割と定義していた。
+      </p>
+      <p>
+        J.P. Morgan の M&A Analyst → Dropbox の戦略財務 → YC の投資家——彼のキャリア軌跡は一貫して <strong>「他者のビジョンに数字と契約書を貼り付ける役」</strong>。
+        起業を志向するのではなく、 "建てる人を建てる人" に向かう志向が初期から明確。 Altman に出会った時、 ビジョナリーと右腕の組み合わせとして
+        パズルの最後のピースが嵌った。
+      </p>
+      <p>
+        2026年 4月の Special Projects 移行も、 同じ思想の延長線上にある。 <strong>"COO の椅子" は彼にとって目的ではなく、ある時期に必要な役割だった</strong>。
+        次の段階で必要なのは複雑な投資・案件のリードだから、 椅子を渡して動く。 "肩書きで自己定義しない No.2" の到達点。 翔太が Wanderlust の COO 候補から
+        独立 CEO へ揺れている瞬間に、 最も参照すべき "肩書きとの距離感" を体現している。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">財務 × オペレーション × 顧客対応の三位一体。 J.P. Morgan で M&A の構造設計、 Dropbox で SaaS 事業の数字、 YC で投資判断を磨いた複合能力で、 OpenAI の Microsoft / SoftBank / Apple / Coca-Cola など全方位の契約とパートナーシップを束ねる。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 (Translation) × 防衛 (Defense)。 Altman の "AGI で世界を変える" を "今期の収益・ARR・契約条項" に変換しつつ、 危機時には組織を顧客の流出から守る防御層になる。 ビジョンと現金の境界線を引く役。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Lightcap がいなければ、 OpenAI は研究の卓越と Altman のカリスマがあっても、 Microsoft $13B / SoftBank $40B を交渉する人材がおらず、 ChatGPT の商業化スピードは数年遅れた可能性が高い。 2023年11月のクーデターで顧客流出 50%を起こし、 その後の $500B 評価額にも到達しなかった。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">2026年4月、 COO ロールを Denise Dresser（CRO）等に委譲し、 自分は Special Projects へ。 「自分が抜けても回る組織を残す」ことが No.2 の最後の貢献。 後任に建設工程を渡し、自分は Altman の隣で次の難題（複雑案件・投資）に集中する。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2018年の "first business hire"。</strong> 27歳で、 Tesla / Google / Microsoft 等の大手から声がかかる中、 当時は非営利・40人規模・収益ゼロの OpenAI を選んだ。
+        Altman の YC 時代の顔を信じて飛び込む決断。 「ビジョナリーの隣の最初の business 人」 としての孤独を引き受けた。
+      </p>
+      <p>
+        <strong>② 2023年11月の 5日間。</strong> Altman 解任の 11/17 翌朝、 Lightcap は社内メモを書き、 約40社の顧客に電話を回した。
+        Brockman が即座に辞任という "強い忠誠" を示した一方で、 Lightcap は組織と顧客の橋を維持する "静かな忠誠" を選んだ。
+        この役割分担が Altman の 5日後の復帰を可能にした。 No.2 が複数いる組織の <strong>「強い忠誠」と「静かな忠誠」の補完</strong> の教科書的事例。
+      </p>
+      <p>
+        <strong>③ 2026年4月 の自発的役割移行。</strong> COO ロールを 4年弱で後継に渡し、 自分は Special Projects へ。
+        多くの No.2 が "辞めるか / CEO になるか" の二択で消えていく中、 Lightcap は <strong>第三の道——「組織内で役割を自分で再定義する」</strong> を選んだ。
+        肩書きの権威ではなく、 Altman との直接の信頼関係に依拠したからこそ可能な動き。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        Lightcap の "引き際" は 2026年4月3日に、 35歳で訪れた——ただしそれは <strong>退社ではなく、役割の自発的再定義</strong>。
+        TechCrunch / Bloomberg の同日報道によれば、 COO ロールは 商業日常を CRO Denise Dresser らへ、 自分は Altman 直下で
+        "Special Projects" として複雑な投資・案件をリードする。
+      </p>
+      <p>
+        この引き方は AI 時代の No.2 の <strong>「卒業の発明」</strong> として記録に値する。 古典的な選択肢——
+        ① 全う型（生涯 No.2）、② 継承型（CEO へ昇格）、③ 巣立ち型（独立して新会社）——のいずれでもない。
+        <strong>"組織内で No.2 のまま、難易度の高い領域に移動する"</strong> という第四の道。
+        Altman との 9年の信頼があるからこそ、 肩書き格下げに見える移動が "戦略的脱皮" として機能する。
+      </p>
+      <p>
+        翔太が Wanderlust の次期 COO ⇄ 独立 CEO の二択で揺れているこの時期、 Lightcap が示した
+        <strong>「肩書きを目的化しない No.2 のキャリア設計」</strong> は最重要参照点。 椅子に縛られるのではなく、
+        信頼の総量で動ける関係を 1人と築く——これがこの "卒業型 × 役割再定義型" の核心。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Brad Lightcap の No.2 型</div>
+        <div class="type-name">CFO型 × 静謐型 × 卒業型（役割再定義）</div>
+        <div class="type-body">
+          財務とオペレーションを軸に、 9年同じ船で Altman に伴走。 表に出ず、 内で握る。 必要な時期に必要な肩書きを取り、
+          時期が来たら自発的に椅子を渡し、 次の難題へ移る。 <strong>「肩書きで自己定義しない」</strong> AI 時代の No.2 の最先端事例。
+          <br><br>
+          ▸ <strong>CFO型</strong>: J.P. Morgan → Dropbox → YC → OpenAI CFO → COO。 一貫して数字と契約書を扱う筋肉を磨いた。
+          ▸ <strong>静謐型</strong>: Twitter は実務的、 家族情報は意図的に非公開。 Altman がバズる、 Lightcap は仕事する。
+          ▸ <strong>卒業型</strong>: 2026年4月、 COO を後継に委譲し Special Projects へ。 役職降格に見えて実は信頼の昇格。
+          <br><br>
+          Tim Cook が <strong>「13年待って継承する」</strong> 継承型 No.2 だとすれば、 Brockman が <strong>「並走しながら建て続ける」</strong> 並走型 No.2、
+          そして Lightcap は <strong>「肩書きから自由に役割を再定義する」</strong> 卒業型 No.2。 同じ OpenAI の中でも対照的な 2人の No.2 像。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 4 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">9年同じ船に乗る覚悟を、 最初から契約として握れ</div>
+          <div class="lesson-body">
+            Altman と Lightcap の関係は YC 時代から 9年。 No.2 の信頼は 1〜2年では蓄積されない。 翔太も西川さんと、 もしくは別のビジョナリーと組むなら、
+            <strong>「3年・5年・9年」の節目で互いに何を達成しているか</strong> を初期から文書で握れ。 短期の役職交渉ではなく、 長期の役割設計から始める。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">役割分離は曖昧にせず、 公式に "宣言" せよ</div>
+          <div class="lesson-body">
+            2025年3月の OpenAI Leadership Update では Altman = research/product、 Lightcap = business/ops が明文化された。
+            <strong>No.2 の役割は "察し" や "暗黙" で運用してはいけない</strong>。 Wanderlust の COO ロールも、 西川さんと公式に分担を宣言してから就任せよ。
+            "外で話すのは誰か" "契約に署名するのは誰か" "採用の最終判断は誰か"——曖昧さは長期的に必ず摩擦を生む。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">危機の 48時間で何ができるか、 平時から訓練せよ</div>
+          <div class="lesson-body">
+            2023年11月の 5日間で、 Lightcap は <strong>「CEO がいない瞬間に組織を持ちこたえる能力」</strong> を実証した。
+            メモを書く、 顧客に電話する、 社員を落ち着かせる——派手さはないが、 No.2 の真価はここで決まる。 翔太も平時から
+            "今 西川さんが消えたら、 自分は最初の 48時間に何をするか" のシナリオを書いておけ。 危機演習はキャリアの保険。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">肩書きで自己定義するな。 役割を自分で書き換える筋肉を持て</div>
+          <div class="lesson-body">
+            Lightcap は 2026年4月、 COO の椅子を自発的に後継へ渡した。 多くの No.2 がここで "辞めるか / CEO 昇格か" の二択で動く中、
+            彼は <strong>"組織内で役割を再定義する" という第三の道</strong> を発明した。 翔太も "Wanderlust の COO" を 5年後・10年後に同じ形で続けるとは限らない。
+            肩書きではなく信頼関係の総量で動ける関係を、 西川さんと早い段階から築け。 そうすれば降格に見える移動も、 卒業として機能する。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>X（旧Twitter）アカウント <strong>@bradlightcap</strong> は実務的・低頻度。 プロダクトリリースや実績数字中心で、 個人色は意図的に薄い。 Altman の派手な発言の "対" として機能する静謐さ。</li>
+        <li><strong>Wikipedia 英語版に単独項目すら存在しない</strong>（2026年4月時点）。 $500B 企業の元 COO としては異例。 個人露出を絞る姿勢が徹底している証左。</li>
+        <li>米エグゼクティブサーチ業界の評価: <strong>"He is a total genius. Top-tier CEOs say 'Brad is the next great CEO in technology.'"</strong>（Fortune 2025年1月）。 CEO の椅子は今も多方から打診されている。</li>
+        <li>eFinancialCareers (2023): <strong>"OpenAI の firefighting COO — 32歳の元 JPMorgan アナリスト"</strong>。 危機対応の "実行者" として業界に認知された瞬間。</li>
+        <li>2024年4月、 OpenAI 東京オフィス開所式典で演台に立った。 海外オフィス展開（東京・ロンドン・パリ・ダブリン・シンガポール）の指揮も Lightcap。</li>
+        <li>Duke Blue Devils（母校バスケ）、 SF 49ers、 Golden State Warriors の熱心なファン。 ベイエリア定住型のスポーツ嗜好。</li>
+        <li>愛読書（公開発言ベース）: 『The Innovator's Dilemma』(Christensen)、『The Hard Thing About Hard Things』(Horowitz)、『Sapiens』(Harari)。 「技術的破壊 × 経営の困難 × 人類史」の三つ巴で世界を見る。</li>
+        <li>OpenAI Startup Fund を 2021年に立ち上げ、 2024年4月に Ian Hathaway へ引継ぎ。 自分が建てた仕組みを後継に渡す動きを、 COO 卒業の 2年前に既に練習していた。</li>
+        <li>Sam Altman の 9年の同行。 シリコンバレーの No.1–No.2 関係としては最長クラス。 Altman の Stripe 同期である Greg Brockman の OpenAI 共同創業（2015〜）と並ぶ長さ。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sam Altman <span class="ja">サム・アルトマン</span></div>
+            <span class="rel-tag">No.1 / 9年の同行</span>
+          </div>
+          <div class="rel-body">
+            Lightcap が 2016年 YC 時代から仕える唯一の No.1。 Altman 自身が "9年前から exceptional だった" と公式発言。 役割分担は Altman = research/product、 Lightcap = business/ops で 2025年3月に契約として明文化。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Greg Brockman <span class="ja">グレッグ・ブロックマン</span></div>
+            <span class="rel-tag">並列 No.2 / OpenAI President</span>
+          </div>
+          <div class="rel-body">
+            OpenAI 共同創業者・President。 Brockman = 技術 / Lightcap = ビジネス の役割分担。 2023年11月のクーデターで Brockman は即辞任、 Lightcap は社内メモと顧客電話で組織を持ちこたえた——同じ Altman 忠誠でも示し方が対照的。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Mira Murati <span class="ja">ミラ・ムラティ</span></div>
+            <span class="rel-tag">並列 No.2 / 元CTO</span>
+          </div>
+          <div class="rel-body">
+            OpenAI 元 CTO。 ChatGPT・GPT-4・Sora を技術統括した同時期の No.2。 Murati は 2024年に独立して Thinking Machines を立ち上げ "巣立ち型"、 Lightcap は組織内で役割を再定義する "卒業型"——対照的な引き方。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jason Kwon <span class="ja">ジェイソン・クォン</span></div>
+            <span class="rel-tag">並列 No.2 / Chief Strategy</span>
+          </div>
+          <div class="rel-body">
+            OpenAI Chief Strategy Officer。 法務出身で Altman の右腕として規制・政策・法務を担当。 Lightcap = 商業・財務 / Kwon = 法務・戦略 の補完。 OpenAI は No.2 が複数並列する稀有な構造。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Will Gaybrick <span class="ja">ウィル・ゲイブリック</span></div>
+            <span class="rel-tag muted">比較対象 / 同型キャリア</span>
+          </div>
+          <div class="rel-body">
+            Stripe President of Product & Business。 Thrive Capital 投資家 → CFO → CPO → President と役割可変型。 Lightcap と同じ "投資家経由でビジョナリー No.1 の隣に着く" 経路の代表例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Daniela Amodei <span class="ja">ダニエラ・アモデイ</span></div>
+            <span class="rel-tag muted">比較対象 / 同世代 No.2</span>
+          </div>
+          <div class="rel-body">
+            Anthropic President。 兄 Dario CEO の隣で組織・採用・運営を担う共同創業者。 Lightcap = 雇われ No.2 / Daniela = 共同創業 No.2 で出自は違うが、 役割分離（外向き / 内向き）の形は瓜二つ。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag muted">比較対象 / 翻訳型の先輩</span>
+          </div>
+          <div class="rel-body">
+            Zuckerberg の COO として Meta を広告事業に変えた COO の代表。 Sandberg = 営業・収益化 / Lightcap = 財務・契約 で軸は近い。 Lightcap は Sandberg の 9年（2008〜2022）よりさらに早く、 27歳で同等のロールに入った。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Denise Dresser <span class="ja">デニーズ・ドレッサー</span></div>
+            <span class="rel-tag muted">後継 / OpenAI CRO</span>
+          </div>
+          <div class="rel-body">
+            Slack 元 CEO。 OpenAI Chief Revenue Officer として 2026年4月の Lightcap 移行に伴い商業日常運営の一部を継承。 Lightcap が "建てた家" を後継に渡す相手。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://www.bloomberg.com/news/articles/2024-02-08/sam-altman-is-counting-on-openai-coo-brad-lightcap-to-transform-the-business" target="_blank">Sam Altman Is Counting on OpenAI COO Brad Lightcap to Transform the Business — Bloomberg (2024)</a></li>
+        <li><a href="https://fortune.com/2025/01/13/ceo-headhunter-openai-coo-recruiter-search-firm-executive-tech-skills/" target="_blank">The 34-year-old tech executive CEO headhunters have on their radar — Fortune (2025/01)</a></li>
+        <li><a href="https://www.efinancialcareers.com/news/2023/11/open-ai-sam-altman-brad-lightcap" target="_blank">OpenAI's firefighting COO is a 32-year-old ex-JPMorgan analyst — eFinancialCareers (2023/11)</a></li>
+        <li><a href="https://www.cnbc.com/2023/11/18/openai-exec-addresses-ceo-sam-altmans-firing-in-note-to-employees-read-the-full-memo.html" target="_blank">OpenAI exec addresses CEO Sam Altman's firing in note to employees — CNBC (2023/11/18)</a></li>
+        <li><a href="https://openai.com/index/leadership-updates-march-2025/" target="_blank">Leadership updates — OpenAI (2025年3月)</a></li>
+        <li><a href="https://techcrunch.com/2026/04/03/openai-executive-shuffle-new-roles-coo-brad-lightcap-fidji-simo-kate-rouch/" target="_blank">OpenAI executive shuffle: COO Brad Lightcap moves to special projects — TechCrunch (2026/04/03)</a></li>
+        <li><a href="https://www.cnbc.com/2025/03/31/openai-closes-40-billion-in-funding-the-largest-private-fundraise-in-history-softbank-chatgpt.html" target="_blank">OpenAI closes $40 billion funding round — CNBC (2025/03)</a></li>
+        <li><a href="https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-strategy-and-corporate-finance-blog/the-exchange-navigating-the-new-frontier-with-brad-lightcap" target="_blank">Navigating the new frontier with OpenAI's COO Brad Lightcap — McKinsey "The Exchange"</a></li>
+        <li><a href="https://www.crunchbase.com/person/brad-lightcap" target="_blank">Brad Lightcap — Crunchbase</a></li>
+        <li><a href="https://www.insead.edu/bio/brad-lightcap" target="_blank">Brad Lightcap — INSEAD speaker bio</a></li>
+        <li><a href="https://x.com/bradlightcap" target="_blank">Brad Lightcap (@bradlightcap) on X</a></li>
+        <li><a href="https://milkeninstitute.org/events/global-conference-2024/speakers/brad-lightcap" target="_blank">Brad Lightcap — Milken Institute Global Conference 2024</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

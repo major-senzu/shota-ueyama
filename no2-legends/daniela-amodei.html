@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniela Amodei — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="DA"><img src="https://wisetoast.com/wp-content/uploads/2026/03/Daniela-Amodei-Biography-780x415.webp" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Daniela Amodei</h1>
+        </div>
+      </div>
+      <p class="summary">
+        サンフランシスコのイタリア系×ユダヤ系の家庭に生まれた、文学と音楽のリベラルアーツ系。
+        フルート奨学金で UC Santa Cruz に進み summa cum laude で卒業。 議員事務所の広報からキャリアを始め、
+        Stripe の初期社員（採用→リスク）、 OpenAI の VP Safety & Policy を経て、 2021年に4歳上の兄
+        <strong>Dario Amodei</strong> と共に <strong>Anthropic</strong> を共同創業。 兄が研究と
+        ビジョン、彼女が組織・運営・商業—— 役割を完全分業した "兄妹No.2" の最も鮮やかな現代例。
+        2026年、Anthropic は評価額 <strong>$380B</strong>、 彼女自身も Time 100 と Forbes ビリオネア入り。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Dario Amodei（兄 / Anthropic CEO・2021–現在 / 5年継続中）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1987年（39歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">San Francisco / California</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">女性 / 既婚（ストレート）</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">Anthropic 評価額 約$380B（2026）/ 推定純資産 $7B（Forbes 2026.02）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">既婚（2017年8月、Holden Karnofsky と結婚）/ 息子1人</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">クラシック音楽 / フルート・声楽 / 文学（特にヴィクトリア朝）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Riccardo Amodei（イタリア系米国人 / トスカーナ Massa Marittima 出身の革職人 / 故人）/ 母 Elena Engel（ユダヤ系米国人 / シカゴ生まれ / 図書館プロジェクトマネージャー）/ 兄 Dario Amodei（1983年生・Anthropic CEO）/ 夫 Holden Karnofsky（Coefficient Giving 共同創設者・元 Open Philanthropy）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Anthropic 共同創業者・President（2021–）/ OpenAI VP Safety & Policy（2018–2020）/ Stripe Risk Manager（2015–2018）/ Stripe Lead Technical Recruiter（2013–2015）/ House Rep. Matt Cartwright 広報（2013以前）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- TL;DR -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>兄を信じ抜いた、人事・運営・商業の純粋補完型No.2</strong>」。
+        Mira Murati が "翻訳型 × 巣立ち型" の右側だとすれば、 Daniela は <strong>"補完型 × 全う型"</strong> の最も静かな完成形。
+        フルート奨学金の文学少女が、 政治広報→Stripe→OpenAIと、各時代の <strong>"急成長フロンティア"</strong> で
+        毎回 "兄/天才の隣で組織を作る人" を選び続け、 ついに兄と二人で <strong>$380B のAI企業</strong> を立ち上げた。
+        Dario が Anthropic の <strong>"頭脳と物語"</strong> を担うなら、 Daniela は <strong>"骨格と血流"</strong> ——
+        採用、運営、ガバナンス、商業、安全方針。 自身の純資産 $7B、 評価額は OpenAI に次ぐ世界2位。
+        それでもなお、 彼女は CEO の椅子を欲しがらない。 <strong>"兄妹No.2"</strong> という稀有な型で、
+        John Collison（Stripe）に並ぶ "創業期からの並列補完者" の現代版。
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1987年、サンフランシスコ生まれ</strong>。 父 <strong>Riccardo Amodei</strong> はトスカーナ
+            <strong>Massa Marittima</strong> 出身のイタリア系移民で革職人。 母 <strong>Elena Engel</strong> は
+            シカゴ生まれのユダヤ系米国人で図書館プロジェクトマネージャー。 兄 <strong>Dario Amodei</strong>（4歳上）
+            と二人兄妹。 イタリア系×ユダヤ系という移民第二世代の文化的ハイブリッドが家庭環境の核にあった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">家庭</div>
+          <div class="origins-body">
+            父 Riccardo は Daniela がまだ若い頃、 <strong>長年の闘病の末に他界</strong>。 兄 Dario は妹を
+            "幼少期からの最も近しい知的パートナー" と公言する。 兄妹の絆は、父の闘病・死去という
+            <strong>"早すぎた喪失"</strong> によって深く形成された。 後に二人で会社を作るという選択の根は、
+            ここにある。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">
+            San Francisco Bay Area で育つ。 Riccardo の革職人としての職人気質、 Elena の図書館での文化教育、
+            兄 Dario の早熟な数学的才能——というベイエリア・リベラル知識層の典型的家庭環境。 Daniela は
+            <strong>"兄が物理を解いている横で本を読む文学少女"</strong> として育った。 これが彼女の "言葉と人"
+            への信仰の原点。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            San Francisco の <strong>Lowell High School</strong>（カリフォルニア最難関の公立マグネット校 /
+            アジア系・ユダヤ系・知識層子弟の進学校）。 兄 Dario も同校卒。 ここで彼女は学業優秀でありながら、
+            数学・科学のオリンピアードに突き進んだ兄とは <strong>意図的に逆方向</strong>—— 文学・音楽・政治へと
+            向かった。 補完型No.2の原型はこの高校時代に既に完成している。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">音楽</div>
+          <div class="origins-body">
+            幼少期から <strong>クラシックフルート</strong> に没頭。 後に <strong>声楽（クラシカル・ボーカル）</strong>
+            にも進む。 UC Santa Cruz への進学は <strong>フルート奨学金（partial music scholarship）</strong>
+            による。 <strong>2008年、UCSC Concerto Competition で優勝、ソリストとして出演</strong>。 文学者でありながら
+            音楽家でもある二刀流。 後の "AI 時代に人文学はますます重要になる" 発言の背景にあるのは、彼女自身の音楽体験。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>UC Santa Cruz（2009年卒業）</strong>。 <strong>BA in English Literature（英文学）</strong>、
+            副専攻 <strong>Politics（政治学）</strong>、 加えて音楽の専攻履修。 <strong>summa cum laude</strong>
+            （最優等）卒業。 Stanford でも MIT でもない、 リベラルな西海岸の州立大学を選んだ点が彼女の "兄とは違う道"
+            の象徴。 <strong>"AGI を作る兄の隣で、人文学を完璧に持っている妹"</strong> という構図がここで成立した。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">最初のキャリア</div>
+          <div class="origins-body">
+            大学卒業後、 <strong>政治と公衆衛生</strong> の道へ。 <strong>ペンシルベニア州の連邦下院議員選挙キャンペーン</strong>
+            に従事し勝利に貢献。 続いて Washington D.C. で <strong>House Rep. Matt Cartwright（民主党・PA-08区）の広報</strong>
+            を担当。 「言葉で人を動かす仕事」が職能化される。 だが2013年、 ワシントンの政治の遅さに見切りを
+            つけ、 <strong>テック業界に転身</strong>—— 急成長中の <strong>Stripe</strong> へ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            <strong>"兄が作る世界の隣で、人と組織を扱う人間"</strong>。 文学（言葉）+ 音楽（時間と感情）+ 政治（権力）
+            の3つを学んだ20代前半で、 既に "ビジョナリーになる" のではなく <strong>"ビジョナリーを動かす組織を作る"</strong>
+            という適性が完成していた。 Sheryl Sandberg と同じく、 リベラルアーツ × 政治広報 × 急成長テック企業
+            運営という、 No.2 のための "サンドバーグ・パターン" を再現する形になる。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"AIの世界では、人文学を学ぶことはこれまで以上に重要になる。技術が進化するほど、人間とは何か・何を大事にするかを問える人が必要になる。"</div>
+        <div class="src">— Daniela Amodei（Fortune インタビュー / 2026年）/ 文学・音楽・政治を学んだ自身のキャリアを踏まえた、AI 時代の人文学擁護</div>
+      </div>
+    </section>
+
+    <!-- 微分ポイント -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1987</td>
+            <td>San Francisco 生まれ。 父=イタリア系革職人、母=ユダヤ系図書館員、兄 Dario は4歳上。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">幼</td>
+            <td class="col-year">1990s</td>
+            <td>クラシックフルートに没頭。 兄が物理オリンピアードに進むのと <strong>意図的に逆方向</strong>、 文学・音楽の道を選ぶ。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">青</td>
+            <td class="col-year">2000s</td>
+            <td><strong>父 Riccardo の闘病・他界</strong>。 兄妹の絆が決定的に強化される。 Anthropic 共創の根がここにある。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">14-17</td>
+            <td class="col-year">2001-04</td>
+            <td>San Francisco の <strong>Lowell High School</strong> へ。 兄も同校卒。 全米屈指の公立マグネット校で文学・政治を磨く。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">学歴</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">2005</td>
+            <td>UC Santa Cruz に <strong>フルート奨学金</strong> で進学。 文学・政治・音楽の3本柱。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">学歴</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">21</td>
+            <td class="col-year">2008</td>
+            <td><strong>UCSC Concerto Competition 優勝</strong>。 声楽ソリストとして大学オケと共演。 "音楽家になる" 選択肢を実際に持っていた。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">2009</td>
+            <td><strong>UCSC を summa cum laude で卒業</strong>（英文学 BA、 政治学副専攻、 音楽履修）。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">学歴</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22-25</td>
+            <td class="col-year">2009-12</td>
+            <td>政治・公衆衛生の現場へ。 PA 連邦下院選挙キャンペーン → <strong>House Rep. Matt Cartwright（PA-08）の広報</strong> in DC。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">2013</td>
+            <td><strong>Stripe 入社</strong>（初期社員）。 政治からテックへ転身。 採用部門のソロリクルーターとして開始、 <strong>1年で人事チームを 45→300人に拡大</strong>。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">2015</td>
+            <td>Stripe 内で <strong>Risk Program Manager → Risk Manager</strong> に転身。 Operations / User Policy / Underwriting の3チーム26人を率い、 <strong>損失率を72%削減（同社史上最低）</strong>。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2017.08</td>
+            <td><strong>Holden Karnofsky と結婚</strong>。 夫は Open Philanthropy（現 Coefficient Giving）共同創設者で EA / 効果的利他主義の中心人物。 兄 Dario と元ルームメイト。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">2018</td>
+            <td><strong>OpenAI へ転職</strong>。 GPT-2 開発期のチーム運営を担当 → <strong>VP of Safety & Policy</strong> 昇格。 兄 Dario が Research Director（後 VP of Research）として在籍中の同社へ "後追い参加"。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">33</td>
+            <td class="col-year">2020.末</td>
+            <td><strong>OpenAI を兄と共に離脱</strong>。 安全性・営利化の方向性をめぐる対立から、 7名の同僚を伴って退社。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">34</td>
+            <td class="col-year">2021.01</td>
+            <td><strong>Anthropic 共同創業</strong>（兄 Dario が CEO、 Daniela が President）。 創業時 7名 + 共同設立者複数。 シードで $124M 調達。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35-37</td>
+            <td class="col-year">2022-24</td>
+            <td>Claude 1, 2, 3 のリリース。 <strong>Responsible Scaling Policy（RSP）の設計</strong>、 Amazon・Google・Microsoft Azure とのクラウド提携を主導。 評価額は $5B → $60B → $183B と急上昇。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">36</td>
+            <td class="col-year">2023.09</td>
+            <td><strong>Time 100 Most Influential People in AI 入り</strong>（兄 Dario と並んで）。 業界の "兄妹" としての認知が公式化。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2025.01</td>
+            <td><strong>夫 Holden Karnofsky が Anthropic に入社</strong>（Member of Technical Staff）。 Responsible Scaling Policy 設計に従事。 兄妹 + 夫という稀有な家族企業構造に。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2025</td>
+            <td>Anthropic 年次収益 $10B 規模に到達。 Forbes ビリオネア入り、推定純資産 $7B。 <strong>世界の女性ビリオネア兄妹創業者の代表格</strong>に。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2026.04</td>
+            <td><strong>Time 100 Most Influential People 2026 選出</strong>（兄 Dario と並んで / Dolores Huerta も同 UCSC 卒）。 評価額 $380B、 OpenAI に次ぐ世界2位の AI 企業に。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- No.1との関係構造 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Dario Amodei）との関係構造</h2>
+      <p>
+        Daniela と Dario の関係は、 <strong>4歳差の兄妹であり、 仕事のパートナーでもある</strong>—— No.2 史上
+        極めて稀な構造を持つ。 Steve Jobs と Tim Cook、 Larry Page と Sundar Pichai、 Sam Altman と Mira Murati
+        ——これらは全て <strong>"他人"</strong> 同士の出会いだが、 Daniela と Dario は <strong>30年以上、毎日会話してきた家族</strong>。
+        この深さが、 役割分業の鋭さに繋がっている。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "We've been collaborating since I was probably ten years old. Dario was working on
+        physics problems and I was reading novels next to him. Now we're doing the same thing,
+        just at a much larger scale."<br>
+        — Daniela Amodei（Future of Life Institute Podcast）
+      </p>
+      <p>
+        Stripe・OpenAI・Anthropic と <strong>3社連続で Dario の "後を追う形" で同じ会社に入った</strong>
+        わけではない。 Stripe は Daniela が単独で先に入り、 OpenAI は逆に Dario が先、 Anthropic は二人で
+        立ち上げた。 つまり <strong>"片方が常に先を走る関係"</strong> ではなく、 <strong>"互いに別々の領域で道を作ってきた者
+        同士の合流"</strong>。 これが Anthropic の創業基盤を強くしている。
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 幼少期</div>
+          <div class="stage-title">物理を解く兄、 文学を読む妹</div>
+          <div class="stage-body">San Francisco の家庭で、 4歳上の兄が物理オリンピアードに突き進むのと並行して、 Daniela は意図的に文学・音楽・政治に向かう。 同じ家庭から逆方向に伸びる二本の枝。 父 Riccardo の死がこの二本を一つに束ねた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 別々の登山</div>
+          <div class="stage-title">Stripe / OpenAI で並行修行</div>
+          <div class="stage-body">2013年、Daniela は Stripe で組織と運営を学ぶ。 Dario は Princeton PhD → Baidu → Google Brain → OpenAI と研究の道を進む。 二人は別々の山を登りながら、 互いの進捗を共有し続けた。 共創の準備期間。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — OpenAI 合流</div>
+          <div class="stage-title">同じ屋根の下での試運転</div>
+          <div class="stage-body">2018年、Daniela が OpenAI に合流。 兄が Research VP、 妹が Safety & Policy VP として、 同じ会社の中で "Dario の研究" と "Daniela の組織" の組み合わせを試運転。 結果、 OpenAI の方向性に共に違和感を持ち、 二人で離脱を決断。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — Anthropic</div>
+          <div class="stage-title">兄=研究, 妹=組織の完全分業</div>
+          <div class="stage-body">2021年創業。 役割は明示的に分割—— Dario が <strong>研究・ビジョン・対外メッセージ</strong>、 Daniela が <strong>採用・運営・商業・ガバナンス</strong>。 5年経っても境界線は揺れない。 これは "兄妹" だからこそ可能な、 完全合意のもとの分業。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- No.2を選んだ動機 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Daniela が CEO ではなく President という "No.2 の椅子" を選んだ理由は、 <strong>"自分の得意領域への自覚"</strong>
+        が極めて強いからである。 彼女は文学・政治広報・人事・運営という <strong>"言葉と人と組織"</strong> の専門家であり、
+        AI 研究のフロンティアの判断を自分が下すべきだとは考えていない。 Sheryl Sandberg が Mark Zuckerberg の
+        プロダクト判断に立ち入らなかったのと同じ構造。
+      </p>
+      <p>
+        加えて、 <strong>"兄妹である"</strong> という事実が、 No.2 の選択を強固にしている。 兄を信じることに
+        理由は要らない。 ガバナンスの揺らぎ、 創業者間の対立、 ビジョンの食い違い——他社で No.2 を不安定にする
+        要因のほぼ全てが、 兄妹であることで <strong>事前に解消</strong> されている。 だから Daniela は権限闘争の
+        コストをかけずに、 自分の領域に100%集中できる。
+      </p>
+      <p>
+        Daniela 自身の言葉: <strong>"I think the role I'm meant to play is the operational and people side."</strong>
+        — 兄が研究と物語を担い、 自分は組織と運営を担う。 兄妹だからこそ、 役割を交代する誘惑が生まれない。
+        <strong>"全う型No.2"</strong> の最も自然で揺るぎない例。
+      </p>
+    </section>
+
+    <!-- 提供した独自価値 -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">人事 → リスク → 安全方針 → 商業の <strong>"組織の血流"</strong> 設計能力。 Stripe で採用と人事を 45→300人に拡大、 リスク部門で損失率72%削減。 OpenAI で安全方針の枠組みを構築。 これら全てを Anthropic で再現・拡張。 兄が触れない "人と運用" の領域を完璧に統治。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 (Complementarity) + 信任 (Trust)。 Dario の研究判断には立ち入らず、 採用・組織文化・商業契約・政府渉外・安全ポリシーを全て担当。 兄妹間の <strong>"先験的な信頼"</strong> を企業ガバナンスの基盤に変換した稀有な例。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Daniela がいなければ、 Dario は研究組織を一人で作れない。 OpenAI で見たように、 研究者集団は <strong>"運営の専門家がいないと内部対立で崩壊する"</strong>。 Anthropic が "安全に拡大できる組織" であり続けるのは、 兄が研究に集中できる骨格を妹が作っているから。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">未だ継承していない。 全う型として、 Anthropic を <strong>最低でも10年</strong> 兄妹で運営する見通し。 Dario が CEO を続ける限り、 Daniela は President を続ける。 Tim Cook 型の継承（CEO 昇格）も、 Mira Murati 型の巣立ち（独立創業）も、 現時点では選択していない。</div>
+      </div>
+    </section>
+
+    <!-- 試練と決断 -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 父 Riccardo の闘病と他界。</strong> Daniela がまだ若い頃、 父はトスカーナの家族からの
+        移民として米国で長い闘病の末に亡くなる。 これは彼女のキャリア全体に影を落とす最大の事件であり、
+        後の "兄と二人で何かを作る" 決断の根。 また、 <strong>"健康と時間は有限である"</strong> という意識を
+        20代で内面化した経験でもある。
+      </p>
+      <p>
+        <strong>② 2020年、OpenAI 離脱の決断。</strong> 兄 Dario と共に7名の同僚を引き連れて OpenAI を退社。
+        営利化と安全性の優先順位をめぐる対立。 <strong>"大企業の中で安全を後回しにされる" より、 "小さく作り直す"</strong>
+        を選んだ瞬間。 Mira Murati の OpenAI 離脱（2024年）の4年前に、 同じ判断を兄妹で先行して下していた。
+        ここで彼女は <strong>"組織を作り直す側"</strong> に回るキャリア軸を確定させた。
+      </p>
+      <p>
+        <strong>③ 2025年、夫 Holden Karnofsky の入社。</strong> 効果的利他主義（EA）の中心人物である夫が
+        Anthropic 技術スタッフとして Responsible Scaling Policy 設計に参加。 これは <strong>"家族企業化"</strong> の
+        批判を受けた一方、 Daniela の判断は <strong>"AI 安全性の専門家として彼以上の人材は外にいない"</strong> という
+        実利。 夫・兄・自分という三角形を組織の中に置くガバナンス設計の難しさを引き受けた。
+      </p>
+    </section>
+
+    <!-- 引き際・継承 -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        <strong>Daniela は、引かない</strong>。 これが彼女の引き際の特徴。 Mira Murati のような巣立ち、
+        Tim Cook のような継承、 Sheryl Sandberg のような完全引退——どれも今のところ選択肢に入っていない。
+        理由は単純で、 <strong>"兄が CEO を続ける限り、 自分は President を続ける"</strong> という相互
+        依存的な合意があるから。
+      </p>
+      <p>
+        この型は <strong>John Collison（Stripe）</strong> に最も近い。 兄 Patrick が CEO、 弟 John が
+        President として、 役割を交代せずに10年以上並走。 Anthropic の Amodei 兄妹も、 同じく
+        "並列補完者" の道を5年継続中。 評価額 $380B に到達してなお、 兄妹は役割を入れ替えない。
+      </p>
+      <p>
+        ただし、 仮に Dario が CEO を引いた場合、 Daniela が継承する可能性は <strong>低い</strong>。
+        彼女自身が "AI 研究の最終判断者" になるつもりがないと公言しているため、 後継は外部の研究者（Jared Kaplan など）
+        になる可能性が高い。 Daniela は <strong>"President のまま会長か取締役へ"</strong>、 という静かな
+        移行が想定される。
+      </p>
+    </section>
+
+    <!-- No.2の型 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Daniela Amodei の No.2 型</div>
+        <div class="type-name">兄妹No.2 × 補完型 × 全う型</div>
+        <div class="type-body">
+          兄を信じ抜くことで、 ガバナンスのコストをゼロに抑え、 自分の領域（人と組織）に100%集中する補完型。
+          5年で <strong>$380B</strong> の AI 企業を共同で立ち上げた現代史上最速の兄妹創業の "妹側"。
+          <br><br>
+          ▸ <strong>兄妹No.2</strong>: 他人同士のNo.2が抱える "信頼コスト" を、 血縁で前払いした稀有な型。
+          John Collison（兄 Patrick × 弟 John の Stripe 兄弟No.2）に並ぶ現代の代表例。<br>
+          ▸ <strong>補完型</strong>: 文学・政治広報・人事・運営という、 兄が触れない領域を完璧に持っている。
+          Sheryl Sandberg の正統後継者。<br>
+          ▸ <strong>全う型</strong>: 5年継続中、 さらに最低5年は継続見通し。 巣立ち（Mira Murati）でも継承（Tim Cook）でもなく、
+          <strong>"兄妹で経営し続ける"</strong> 第三の道を選択した。
+        </div>
+      </div>
+    </section>
+
+    <!-- 翔太への設計図 -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"血縁レベルの信頼" を持つ相手としか共同創業しない。 信頼コストはゼロに近づけられる</div>
+          <div class="lesson-body">
+            Daniela と Dario は30年以上の兄妹であり、 ガバナンス上の対立コストが構造的にゼロに近い。
+            Wanderlust の西川さん・西原さんとの関係性も、 翔太にとっての "兄妹級の信頼" でなければ、
+            COO や次期 CEO として動き続けるのは困難。 <strong>共同創業 = 信頼の前払い</strong>。 信頼が足りない
+            状態で共同創業すると、 ガバナンスのコストが事業のコストを上回る。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">CEO になりたくない自分を恥じるな。 "Number Two" は劣化した Number One ではない</div>
+          <div class="lesson-body">
+            Daniela は CEO の椅子を一度も欲しがらない。 文学・政治・人事・組織が彼女の専門領域であり、
+            AI 研究の最終判断は兄の領域だと完全に割り切っている。 翔太にとっての <strong>"急がない・余裕・優しさ"</strong>
+            の哲学と最も整合する型はこれ。 「自分は CEO じゃない」と認めた上で、 自分の領域で最高の組織家
+            になる方が、 中途半端な CEO より遥かに価値がある。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">人文学を捨てるな。 AI 時代に "人と言葉" を扱える人間が最も希少になる</div>
+          <div class="lesson-body">
+            Daniela は文学・音楽・政治を学んだことを、 AI 企業を運営する上で最も役立っているスキルだと
+            公言する。 翔太の慶應法学部・政治学科という背景は、 Stanford CS や MIT EE よりも
+            <strong>"AGI 時代に希少になる" 学位</strong>。 人と言葉を扱える人間が、 兄/共同創業者の隣で
+            最も価値を出す。 文系である自分を肯定しろ——それが Wanderlust や独立後の最大の武器になる。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 雑学・人柄 -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>父 Riccardo は <strong>イタリア・トスカーナ州 Massa Marittima</strong> 出身の革職人。 母方はシカゴのユダヤ系。 イタリア系×ユダヤ系という、 二つの強い文化的アイデンティティのハイブリッド。 これが彼女の "言葉と物語への執着" の源。</li>
+        <li>大学時代、 <strong>クラシック声楽でソリストとしてオーケストラと共演</strong>。 UC Santa Cruz Concerto Competition 優勝（2008）。 音楽家になる選択肢を実際に持っていた。 兄は数学・物理、 妹は音楽・文学——両親が "知性の二つの形" を別々に育てた。</li>
+        <li>夫 Holden Karnofsky は <strong>効果的利他主義（EA）の生みの親の一人</strong>。 GiveWell 共同創設、 Open Philanthropy（現 Coefficient Giving）共同創設。 Dario と元ルームメイト。 <strong>"Anthropic は EA の論理から生まれた組織" </strong> と言われる所以。</li>
+        <li>Stripe 入社時はソロ採用担当。 <strong>1年で人事チームを 45→300人に拡大</strong> し、 その後リスク部門に転身。 「組織を作る」と「組織を守る」の両方を一社で経験した稀な経歴。</li>
+        <li>Anthropic の採用基準として彼女が公言するのは <strong>"EQ・コミュニケーション能力・優しさ・好奇心"</strong>。 技術スコアだけで判断しない。 これは兄 Dario の研究偏重と <strong>意図的に補完</strong> する採用哲学。</li>
+        <li>2026年、 Forbes で <strong>推定純資産 $7B</strong>。 ただし <strong>本人は派手な消費をしない</strong>。 EA 思想に従い、 大半をフィランソロピーに振り向ける見通し。 兄 Dario も同様。</li>
+        <li>2026年4月、 <strong>Time 100 Most Influential People 2026</strong> 入り。 同年同 UC Santa Cruz 卒業生として <strong>Dolores Huerta</strong>（公民権運動の伝説）も選ばれ、 UCSC が二人同時に Time 100 を出すという珍事に。</li>
+        <li>取材では兄ほど前面に出ず、 <strong>静かで論理的、笑顔は柔らかい</strong>。 Sandberg のような "ブランドとしての No.2" にはならず、 Anthropic の中の運営者として黒子に徹する姿勢。</li>
+        <li>Anthropic の研究文化として知られる <strong>"Constitutional AI"・"Responsible Scaling Policy"</strong> は、 兄の研究方針と妹の組織設計の合作。 RSP は事実上 Daniela の作品と評される。</li>
+      </ul>
+    </section>
+
+    <!-- 関連の深い人物 -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Dario Amodei <span class="ja">兄 / Anthropic CEO</span></div>
+            <span class="rel-tag">No.1 / 兄</span>
+          </div>
+          <div class="rel-body">
+            4歳上の兄。 Princeton 物理学PhD → Baidu → Google Brain → OpenAI VP Research → 2021年に Daniela と Anthropic 共同創業。 研究・ビジョン・対外メッセージを担当。 妹との役割分業は5年揺らぎなし。 兄妹No.2の "No.1側"。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Holden Karnofsky <span class="ja">夫 / EA共同創設</span></div>
+            <span class="rel-tag">家族 / 共同創業圏</span>
+          </div>
+          <div class="rel-body">
+            2017年結婚。 GiveWell・Open Philanthropy（現 Coefficient Giving）共同創設者で効果的利他主義の中心人物。 Dario と元ルームメイトで、 Daniela との婚約期は3人共同生活。 2025年1月から Anthropic 技術スタッフとして RSP 設計に参加。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Jared Kaplan <span class="ja">ジャレッド・カプラン</span></div>
+            <span class="rel-tag">共同創業 / 研究</span>
+          </div>
+          <div class="rel-body">
+            Anthropic 共同創業者・Chief Science Officer。 Johns Hopkins 物理学教授からの転身。 OpenAI 時代から Dario の研究パートナー。 Dario の後継候補として最も有力な研究側人物。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Chris Olah <span class="ja">クリス・オラー</span></div>
+            <span class="rel-tag">共同創業 / 研究</span>
+          </div>
+          <div class="rel-body">
+            Anthropic 共同創業者・解釈可能性研究の世界的権威。 Distill.pub 創設者。 OpenAI 時代から Dario の右腕で、 Anthropic の "安全研究の象徴" として外向きの顔を担う。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sam Altman <span class="ja">サム・アルトマン</span></div>
+            <span class="rel-tag muted">前職 / 別離</span>
+          </div>
+          <div class="rel-body">
+            OpenAI CEO。 Daniela の OpenAI 時代の最終的な上司。 営利化・安全性をめぐる方向性の対立から Amodei 兄妹は離脱。 Mira Murati が4年遅れて同じ判断を下した時、 Daniela・Dario の先行例が引用された。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">John Collison <span class="ja">ジョン・コリソン</span></div>
+            <span class="rel-tag muted">同型 / 兄弟No.2</span>
+          </div>
+          <div class="rel-body">
+            Stripe 共同創業者・President。 兄 Patrick が CEO、 弟 John が President として並列補完する <strong>"兄弟No.2"</strong> の代表。 Daniela・Dario の "兄妹No.2" は、 性別こそ違えど構造的には Collison 型の正統後継。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag muted">先行例 / 同型</span>
+          </div>
+          <div class="rel-body">
+            Meta COO 14年の女性 No.2 の代名詞。 政治・公衆衛生（Treasury 経由）→ 急成長テック企業の運営者という Daniela のキャリアパスは、 Sandberg の正統再現。 違いは Sandberg = 全う型 / Daniela = 創業時から共同。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Mira Murati <span class="ja">ミラ・ムラティ</span></div>
+            <span class="rel-tag muted">同時代 / 対極</span>
+          </div>
+          <div class="rel-body">
+            OpenAI 元CTO、 Thinking Machines Lab 創業。 Daniela と同時代の女性AI No.2 の双璧。 違いは Daniela = 兄妹No.2・全う型 / Murati = 巣立ち型・独立創業。 同じ OpenAI 離脱組として、 引き際の哲学が対照的。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 参考資料 -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Daniela_Amodei" target="_blank">Daniela Amodei — Wikipedia (英語版)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Dario_Amodei" target="_blank">Dario Amodei — Wikipedia</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Anthropic" target="_blank">Anthropic — Wikipedia</a></li>
+        <li><a href="https://news.ucsc.edu/2026/04/alumna-and-anthropic-co-founder-daniela-amodei-and-civil-rights-activist-dolores-huerta-named-in-times-100-most-influential-people-of-2026/" target="_blank">UCSC alumna Daniela Amodei named in Time's 100 Most Influential People of 2026 — UCSC News (2026.04)</a></li>
+        <li><a href="https://time.com/collection/100-most-influential-people/2026/dario-daniela-amodei/" target="_blank">Dario Amodei and Daniela Amodei: The 100 Most Influential People of 2026 — TIME</a></li>
+        <li><a href="https://time.com/collections/time100-ai/6309047/daniela-and-dario-amodei/" target="_blank">Dario and Daniela Amodei: The 100 Most Influential People in AI 2023 — TIME</a></li>
+        <li><a href="https://fortune.com/2025/12/02/daniela-amodei-anthropic-cofounder-claude-openai/" target="_blank">What to know about Anthropic cofounder Daniela Amodei — Fortune (2025.12)</a></li>
+        <li><a href="https://fortune.com/2026/02/07/anthropic-cofounder-daniela-amodei-humanities-majors-soft-skills-hiring-ai-stem/" target="_blank">Anthropic cofounder says studying the humanities will be 'more important than ever' — Fortune (2026.02)</a></li>
+        <li><a href="https://fortune.com/2025/02/13/anthropic-hired-president-daniela-amodei-husband-ai-safety-responsible-scaling/" target="_blank">Anthropic hired president Daniela Amodei's husband to work on the company's AI safety strategy — Fortune (2025.02)</a></li>
+        <li><a href="https://futureoflife.org/podcast/daniela-and-dario-amodei-on-anthropic/" target="_blank">Daniela and Dario Amodei on Anthropic — Future of Life Institute Podcast</a></li>
+        <li><a href="https://sixthstreet.com/podcasts/a-conversation-with-daniela-amodei-co-founder-and-president-of-anthropic/" target="_blank">A Conversation with Daniela Amodei — Sixth Street Podcast</a></li>
+        <li><a href="https://www.vanta.com/resources/hiring-10x-engineers-at-anthropic" target="_blank">Building the Team at Anthropic: Daniela Amodei on Hiring — Vanta Frameworks for Growth</a></li>
+        <li><a href="https://time.com/6980000/anthropic/" target="_blank">Inside Anthropic, the AI Company Betting That Safety Can Sell — TIME</a></li>
+        <li><a href="https://www.linkedin.com/in/daniela-amodei-790bb22a/" target="_blank">Daniela Amodei — LinkedIn</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

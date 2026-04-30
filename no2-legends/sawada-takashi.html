@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>澤田 貴司 — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff; --fg: #0a0a0a; --muted: #888; --line: #e5e5e5; --soft: #f7f7f7;
+    --hero-bg: #0a0a0a; --hero-fg: #ffffff; --hero-muted: #999; --hero-line: #2a2a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero .summary strong { color: var(--hero-fg); font-weight: 700; }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="澤田"><img src="https://withwomentimes.com/keyperson_images/sawada_takashi/square1.jpg" alt="澤田貴司" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORP</div>
+          <h1>澤田 貴司</h1>
+        </div>
+      </div>
+      <p class="summary">
+        石川県の山村に生まれ、上智大学アメフト部キャプテン。 1981年伊藤忠商事入社、米セブン-イレブン買収を経験。 1997年、伊藤忠の同期だった玉塚元一と共に <strong>柳井正の下にスカウト</strong> され、 ファーストリテイリング副社長として 「SPA × 店舗自立型」モデルを完成させた。 次期社長を <strong>固辞</strong> して2002年退任、 玉塚と <strong>リヴァンプ</strong> を共同創業して企業再生のプロへ。 そして2016年、ファミリーマート社長として "本物のNo.1" へ進化した、 <strong>"日本で最も完成された巣立ち型No.2"</strong>。 通称「燃える男」。
+      </p>
+      <hr>
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">柳井 正（ファーストリテイリング 創業者・1997–2002 / 5年間）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年月日</div>
+          <div class="fact-value">1957年7月12日（68歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">石川県白山市（旧吉野谷村）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">非公開</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻 / 子供あり（詳細非公開）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">スキー / 音楽（学生時代から松任谷由実と親交）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">ロッテベンチャーズ・ジャパン代表取締役 (2022–) / 元 ファミリーマート社長 (2016–2021) / 元 ユニー・ファミリーマートHD社長 (2019–2021) / リヴァンプ共同創業者 (2005) / 元 ファーストリテイリング副社長 (1998–2002) / 元 伊藤忠商事 (1981–1997)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>No.2を全うし、独立して再びNo.1になり、それでも"創業者の精神"を語り続ける"燃える男"</strong>」。 柳井正の <strong>"原理原則" "経営者意識"</strong> を最も忠実に継承し、 ファミマでそれを実装した男。 ファーストリテイリングでは <strong>玉塚元一と並ぶ"二大右腕"</strong> として SPA × 店舗自立型モデルを完成させたが、 <strong>次期社長を固辞して</strong> 2002年に退任。 リヴァンプ創業 → ファミマ社長 → ロッテベンチャーズ代表へ進化し続ける、 <strong>日本で最も完成された巣立ち型No.2</strong>。 玉塚との二人三脚は、 日本スタートアップ史上稀な "兄弟No.2" の事例。
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+      <div class="origins-table">
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body"><strong>1957年7月12日</strong>、石川県白山市（旧吉野谷村）生まれ。 <strong>白山連峰の麓</strong>、人口数千人の山村で育った。 父親は地元の働き者で、後年、澤田の人生観に決定的な影響を残す存在となる。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">幼少期</div>
+          <div class="origins-body">山村で自然に囲まれ、 体を動かすことが日常。 <strong>体力・行動力・素直さ</strong> という、後年の「燃える男」キャラの土台がこの時期に形成された。 学校では運動神経が良く、 友人にも恵まれたタイプ。 都会のエリート街道とは無縁の "地に足のついた田舎少年" の典型。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body"><strong>石川県立金沢桜丘高等学校</strong>。 ここで人生を変える経験——<strong>米国カリフォルニア州にホームステイ</strong>。 NASAの物理学者宅に滞在し、 <strong>"宇宙と物理"</strong> への憧憬を抱く。 上智大学理工学部物理学科を選ぶのは、この時のNASA体験が直接の動機。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body"><strong>上智大学 理工学部 物理学科（1981年卒）</strong>。 <strong>アメリカンフットボール部</strong>に所属、 4年時には<strong>キャプテン</strong>を務める。 物理学者を目指していたが、 アメフトと体育会系のリーダー経験が彼を企業人へ向かわせた。 学業＋スポーツ＋友人——青春の3要素を全て揃えた典型的な体育会系上位層。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">音楽との関係</div>
+          <div class="origins-body">学生時代から<strong>松任谷由実（ユーミン）と親交</strong>があり、 自宅にも出入りしていた。 後年、<strong>苗場SURF&SNOWコンサートの発案者の一人</strong>とされる。 物理学者志望・アメフトキャプテン・ユーミンと親交——一見不思議な組み合わせが、 後の "全方位型リーダー" 澤田を予告している。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body"><strong>"行動力 × 素直さ × 体育会系リーダーシップ"</strong>。 慶應SFCや東大法学部のような "戦略・知性で勝つ" タイプではなく、 <strong>現場で人を動かして勝つ</strong> タイプとして、 24歳までに自己定義は固まっていた。</div>
+        </div>
+      </div>
+      <div class="origins-quote">
+        <div class="q">「父親の葬儀で、人は何のために働くのか、初めてわかった」</div>
+        <div class="src">— 澤田貴司、 東洋経済(2020)。 伊藤忠時代に父を亡くした体験が、 後のキャリア大転換 (1997年の伊藤忠退社) の引き金となった</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr><th class="col-age">年齢</th><th class="col-year">西暦</th><th>出来事</th><th class="col-rate">変化率</th><th class="col-axis">軸</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-age">0</td><td class="col-year">1957</td><td>石川県白山市（旧吉野谷村）の山村に生まれる。 父親は地元の働き者。 自然と体育会系気質の土台がこの頃に。</td><td class="col-rate">★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">17</td><td class="col-year">1974</td><td>金沢桜丘高校時代、 <strong>米国カリフォルニアでNASA物理学者宅にホームステイ</strong>。 物理と宇宙への憧憬が決定的に。</td><td class="col-rate">★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">22</td><td class="col-year">1979</td><td>上智大学アメフト部 <strong>キャプテン</strong> に。 学業（物理）+ 体育会系リーダー + ユーミンとの親交、という稀有なキャラが完成。</td><td class="col-rate">★★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">23</td><td class="col-year">1981</td><td><strong>伊藤忠商事入社、化学品部門</strong>。 物理学者の道を諦め、商社マンへ。 体育会系の素直さで配属を受け入れた典型的な日本企業エリートのスタート。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">30代前半</td><td class="col-year">1990前後</td><td><strong>米国セブン-イレブン買収プロジェクト</strong>に従事。 イトーヨーカ堂による米セブン買収という日本流通史の大事件を伊藤忠側で目撃。 <strong>"小売 × M&A"</strong> の素地がここで仕込まれる。</td><td class="col-rate">★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">30代</td><td class="col-year">1990年代前半</td><td><strong>父親逝去</strong>。 葬儀の場で「<strong>人は何のために働くのか</strong>」を初めて自問。 これがやがて伊藤忠を辞める引き金となる。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">試練</span></td></tr>
+          <tr><td class="col-age">40</td><td class="col-year">1997</td><td><strong>伊藤忠商事を退社、ファーストリテイリングへ</strong>。 同期の<strong>玉塚元一</strong>も同時期に柳井正にスカウトされ、 <strong>"伊藤忠の二人組がユニクロを作る"</strong> 伝説の始まり。 ユニクロ年商600億円規模の段階。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">41</td><td class="col-year">1998</td><td><strong>ファーストリテイリング副社長</strong>に就任。 柳井正のNo.2として、 <strong>SPA（製造小売り）モデル × 店舗自立型運営手法</strong> を完成させる。 ユニクロのフリースブームが始まる直前の準備期間。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">42</td><td class="col-year">1999</td><td><strong>フリースブーム到来</strong>。 ユニクロの売上が爆発、 全国展開。 澤田と玉塚は柳井の右腕・左腕として現場を回す。 ユニクロが「日本のグローバルブランド候補」になる起点。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">45</td><td class="col-year">2002</td><td><strong>次期社長就任を打診されるが固辞、退任</strong>。 玉塚はその後社長を継承（2002年）。 澤田は「<strong>自分は補完役で創業者にはなれない</strong>」と判断し独立の道を選ぶ。 No.2 の引き際の典型的判断。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+          <tr><td class="col-age">46</td><td class="col-year">2003</td><td><strong>KIACON投資ファンド代表</strong>として独立。 自分の資金とネットワークで企業再生・投資の世界へ。 大企業のNo.2から個人の起業家への転身。</td><td class="col-rate">★★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">48</td><td class="col-year">2005</td><td><strong>玉塚元一とリヴァンプ共同創業</strong>。 ユニクロで5年間並走した相棒と再合流、 企業再生のプロとして第二の人生スタート。 <strong>兄弟No.2の完成形</strong>。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">59</td><td class="col-year">2016.09</td><td><strong>ファミリーマート社長就任</strong>。 リヴァンプ創業から11年、 ついに自分が "本物のNo.1" に。 サークルKサンクス統合という業界激震期にCEOへ。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">61</td><td class="col-year">2019.05</td><td><strong>ユニー・ファミリーマートHD社長兼任</strong>。 上場会社の社長として <strong>サークルK統合 → ドン・キホーテ売却</strong> を陣頭指揮。 ファミマの構造改革を完成させる。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">63</td><td class="col-year">2021.03</td><td><strong>副会長に退任</strong>、後任は細見研介。 5年でファミマ社長を全うし、 「自分の役割は終わった」と判断。 No.1 経験を経た後の "二度目の引き際"。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+          <tr><td class="col-age">64</td><td class="col-year">2022.03</td><td>ファミマ顧問へ。 同年5月、 <strong>ロッテベンチャーズ・ジャパン代表取締役</strong>就任。 投資家・経営助言者として "第三の人生" を始動。</td><td class="col-rate">★★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">65–68</td><td class="col-year">2023–現在</td><td>ロッテベンチャーズで日本のスタートアップに投資。 講演・取材も精力的にこなし、 <strong>"創業者育成"</strong> に第三のミッションを見出す。</td><td class="col-rate">★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（柳井 正）との関係構造</h2>
+      <p>1997年、 ユニクロは年商600億円規模、 まだ"郊外型衣料品チェーン"の枠を出ていなかった。 柳井正は世界的ブランドへの転換を構想し、 そのために <strong>伊藤忠の二人組（澤田と玉塚）</strong> を一気にスカウトした。 これが日本流通史を書き換えた決断。</p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">「澤田と玉塚は、私の右腕と左腕だった」<br>— 柳井正（自伝『一勝九敗』他）</p>
+      <p>柳井 = "原理原則と戦略" の人。 澤田 = "現場と熱量" の人。 <strong>知性 × 行動力</strong> の補完関係が、 ユニクロを世界ブランドへ押し上げる準備期間を可能にした。 だが澤田は5年で退社を選ぶ。 「<strong>自分は柳井さんのような創業者にはなれない</strong>」と素直に認め、 別の場所で自分の道を探す決断を下した。</p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">伊藤忠からの双子スカウト</div>
+          <div class="stage-body">1997年、 柳井正は<strong>伊藤忠の同期2人</strong>を同時にスカウト。 澤田40歳・玉塚35歳。 <strong>"二人セット"</strong>という前代未聞の引き抜きが、 ユニクロのグローバル化準備の起点となった。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">SPA × 店舗自立の完成</div>
+          <div class="stage-body">入社1年で副社長。 <strong>SPA（製造小売り）モデル</strong>と<strong>店舗自立型運営</strong>を1998年までに確立。 柳井が "原理原則" を語り、 澤田が現場で実装。 これがフリースブーム(1999)の準備になった。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">ユニクロ年商急拡大期</div>
+          <div class="stage-body">1999–2001年、 ユニクロは年商600億→4,000億へ。 澤田・玉塚・柳井の三人体制が日本流通史を書き換える。 澤田は <strong>燃える男</strong> として現場を回し、玉塚は緻密に経営を支えた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 引き際</div>
+          <div class="stage-title">次期社長を固辞して退任</div>
+          <div class="stage-body">2002年、 次期社長を打診されるが <strong>"自分は創業者ではない"</strong> と固辞。 玉塚に道を譲り退任。 数年後、玉塚もファーストリテイリングを去り、 2人でリヴァンプを創業。 <strong>柳井 → 玉塚 → 澤田</strong> の連鎖が始まる。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>澤田は <strong>"自分は柳井さんのような創業者にはなれない"</strong> と早期に自覚した稀有なタイプ。 上智大物理学科 → 伊藤忠 → ファーストリテイリング副社長まで、 全て <strong>"誰かのトップを実現する補完役"</strong> として生きた。 それでも、 引き際を決めて独立し、 <strong>リヴァンプ → ファミマ社長</strong> と進化することで、 "No.2 を経て本物のNo.1 になる" 第二の道を切り拓いた。</p>
+      <p>本人の言葉: <strong>「現場で燃えていたい。 その方が自分らしい」</strong>。 デスクで戦略を考えるより、 店舗で社員と話す。 PowerPointより、 紙とペンと仲間との議論。 これが <strong>"燃える男"</strong> と呼ばれる所以。 No.2 の本質は <strong>"創業者の弱点を引き受けること"</strong> ——澤田はこの原則を、柳井・玉塚・自分自身の3つの場面で実演した。</p>
+      <p>Sandberg や Belinda が "翻訳型" だとすれば、 澤田は <strong>"熱量型 × 巣立ち型"</strong>。 翻訳より <strong>現場で同じ熱を持って戦う</strong> ことを選んだ。 退任後も柳井正への尊敬を語り続け、 関係は今も切れていない。 これが "巣立ち型" の理想形。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">現場力 × 組織変革 × 人を動かす熱量。 伊藤忠時代の米セブン買収、 ユニクロのSPA × 店舗自立、 ファミマのサークルK統合——<strong>"既存組織を変える"</strong> ことの全領域を実装した。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">熱量補完 × 現場翻訳。 柳井の"原理原則"を <strong>店舗とアルバイトに伝わる言葉</strong> に翻訳した。 「ストアスタッフこそHEROだ」というファミマ時代のメッセージは、 ユニクロ時代の店舗自立思想の延長線。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">澤田なしのファーストリテイリングは、 おそらく1998–2001年のSPA転換が <strong>2–3年遅れ</strong>、 フリースブームに乗り遅れた可能性が高い。 玉塚と澤田の二人組が同時期に去っていたら、 柳井は孤独になりすぎていた。</div>
+        <div class="vk">継承後の影響</div>
+        <div class="vv">ファミマでは <strong>本物のNo.1</strong> として5年勤め、サークルK統合・ドンキ売却・店舗業務改革を完成。 ロッテベンチャーズで創業者育成に転身。 <strong>"No.2を経たNo.1は強い"</strong> を実証した。</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p><strong>① 1990年代 父親の逝去。</strong> 伊藤忠時代、 商社マンとして順風満帆だった澤田が、 <strong>父の葬儀の場で「人は何のために働くのか」</strong>を初めて自問した。 この問いが、 後にユニクロ転身、 そしてファミマ社長就任へとつながる人生の "縦の軸" となる。</p>
+      <p><strong>② 2002年 次期社長就任の固辞。</strong> 柳井正から後継候補に指名されたが、 澤田は <strong>"自分は創業者の器ではない"</strong> と固辞。 自分を客観視できる No.2 の典型例。 玉塚に道を譲り、 数年後 同じく退任した玉塚と <strong>リヴァンプ</strong> を共同創業。</p>
+      <p><strong>③ 2016–2021年 ファミマ社長としての不完全燃焼。</strong> サークルK統合・ドンキ売却・コンビニ業界飽和——5年で多くを成し遂げたが、 日経は澤田を <strong>"4度目の不完全燃焼"</strong> と評した。 No.1としての澤田は、 No.2時代ほどの自由を持てなかった。 これが "No.2の方が向いていた" という説の根拠でもある。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>澤田は <strong>2回の引き際</strong> を経験した稀有な人物。 1回目は2002年、 ファーストリテイリング副社長を退任し玉塚に道を譲った。 2回目は2021年、 ファミマ社長を退任し細見研介に譲った。 <strong>どちらも"自分の役割は終わった"</strong> と判断しての自発的退任。</p>
+      <p>引き際の特徴: <strong>"関係を壊さない"</strong>。 柳井正とは今も交流があり、 玉塚元一とはリヴァンプで同じ釜の飯を食った相棒のまま。 ファミマの細見社長への継承も摩擦なし。 No.2 の引き際の理想——<strong>"次に進む先と、これまでの関係の両方を守る"</strong> を3度実演した。</p>
+      <p>現在は <strong>ロッテベンチャーズ・ジャパン代表取締役</strong> として日本のスタートアップに投資。 自分が3度経験した "No.2 → 巣立ち → No.1" のキャリアを、 次世代の創業者に伝授することを第三の使命としている。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">澤田 貴司 の No.2 型</div>
+        <div class="type-name">巣立ち型 × 熱量補完型 × 現場翻訳型</div>
+        <div class="type-body">
+          柳井正の "原理原則と戦略" を <strong>店舗とアルバイトに伝わる熱量</strong> に翻訳した5年間。 SPA × 店舗自立型モデルの完成は、 澤田の現場力なしには成立しなかった。 そして「自分は創業者ではない」と素直に認め、 玉塚に道を譲って独立した。
+          <br><br>
+          ▸ <strong>巣立ち型</strong>: 5年で副社長を辞し、 リヴァンプ → ファミマ社長 → ロッテベンチャーズと進化<br>
+          ▸ <strong>熱量補完型</strong>: 戦略の柳井に対し、 現場で人を動かす "燃える男"<br>
+          ▸ <strong>現場翻訳型</strong>: 経営理念を店舗の言葉に変える翻訳力<br><br>
+          玉塚元一が "計算された巣立ち" だとすれば、 澤田は <strong>"熱量で巣立った"</strong>。 そして <strong>柳井 → 自分自身</strong> という稀な継承の系譜——伊藤忠の同期2人が、 共に柳井のNo.2を経て、 共に独立し、 共にNo.1になった、 日本企業史上最も完成された "兄弟No.2" の片割れ。
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"自分は創業者ではない"を素直に認めると、選択肢が増える</div>
+          <div class="lesson-body">澤田は2002年、柳井から次期社長を打診されたが <strong>"自分は創業者ではない"</strong> と固辞した。 これは敗北ではなく <strong>自己認識</strong>。 結果、 リヴァンプ創業 → ファミマ社長 という、 ユニクロの社長を継ぐより自由なキャリアを切り拓いた。 翔太がWanderlustで「次期COO」として響さんのNo.2を経るとしても、 <strong>"自分の本当の器"</strong> を客観視することが、 次の選択肢を開く鍵になる。</div>
+        </li>
+        <li>
+          <div class="lesson-head">No.2を経たNo.1は、創業者より強い</div>
+          <div class="lesson-body">澤田はNo.2を経験してからファミマ社長になった。 <strong>柳井の現場での実装力 + リヴァンプでの企業再生力 + 自分の熱量</strong>が融合した結果、 ファミマで5年で構造改革を完成させた。 翔太が独立CEOになるなら、 <strong>"No.2経験を一度経る"</strong> ことは決して回り道ではない。 むしろ、 創業者になる前の最強のトレーニング。</div>
+        </li>
+        <li>
+          <div class="lesson-head">"燃える男"でいい。熱量で勝つNo.2の道がある</div>
+          <div class="lesson-body">Sandbergは戦略・データ・翻訳で勝つNo.2だった。 澤田は違う。 <strong>"現場で燃え、人を動かし、自分が一番熱い"</strong> ——これが澤田流のNo.2。 PowerPointや戦略ドキュメントだけが No.2 のスキルではない。 <strong>熱量</strong> こそが、 創業者が最も必要としているものでもある。 翔太の人生哲学（急がない・余裕・優しさ）と矛盾しない、 「優しい燃える男」型のNo.2像が、 澤田から学べる。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>通称「<strong>燃える男</strong>」。 日経新聞は彼の人生を "4度の不完全燃焼" と評した——伊藤忠・ユニクロ・リヴァンプ・ファミマ、 全てに自分は未だ満足していない、と。</li>
+        <li>高校時代、 <strong>米国カリフォルニアでNASA物理学者宅にホームステイ</strong>。 物理学者を志した原体験。</li>
+        <li>大学時代から<strong>松任谷由実（ユーミン）と親交</strong>。 自宅にも出入りし、 <strong>苗場SURF&SNOWコンサート</strong>の発案者の一人。</li>
+        <li>上智大学アメフト部キャプテン。 「<strong>外見ワイルド・中身繊細</strong>」とDiamondに評された通り、 一見豪快だが細やかな配慮を持つ。</li>
+        <li>玉塚元一とは<strong>伊藤忠の同期</strong>。 2人ともファーストリテイリング副社長を務め、 後にリヴァンプを共同創業。 <strong>日本企業史上最も完成された"兄弟No.2"</strong>。</li>
+        <li>父親の葬儀での自問——「<strong>人は何のために働くのか</strong>」が、 商社マンから小売の創業現場への大転換の引き金。</li>
+        <li>ファミマ社長時代のスローガンは「<strong>ストアスタッフこそHERO</strong>」——ユニクロ時代の店舗自立思想の延長。</li>
+        <li>2022年退任後、 ロッテベンチャーズ・ジャパン代表として日本のスタートアップ投資・育成へ。 ベンチャー創業者へ自分の経験を伝授する第三の人生。</li>
+        <li>柳井正からは今も「右腕」と呼ばれている。 退任から20年以上経っても、 関係は途切れていない。</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">柳井 正 <span class="ja">やない ただし</span></div><span class="rel-tag">No.1 / 創業者</span></div>
+          <div class="rel-body">5年間仕えた相手。 ファーストリテイリング創業者。 1997年、 伊藤忠の澤田・玉塚を同時にスカウトした稀代の経営者。 退任から20年以上経っても澤田を「右腕」と呼び続け、 関係は今も切れていない。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">玉塚 元一 <span class="ja">たまつか げんいち</span></div><span class="rel-tag">兄弟No.2 / 盟友</span></div>
+          <div class="rel-body">伊藤忠同期、 ファーストリテイリング副社長同期、 リヴァンプ共同創業者。 <strong>日本企業史上最も完成された"兄弟No.2"</strong>の相棒。 玉塚はユニクロ社長を継承（2002）、 澤田は固辞して独立。 補完関係が完璧。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">松任谷 由実 <span class="ja">まつとうや ゆみ</span></div><span class="rel-tag muted">学生時代からの友人</span></div>
+          <div class="rel-body">学生時代から親交。 自宅にも出入りし、 <strong>苗場SURF&SNOWコンサート</strong>の発案者の一人。 物理学者志望・アメフトキャプテン・ユーミンと親交——澤田の "全方位型リーダー" の象徴。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">細見 研介 <span class="ja">ほそみ けんすけ</span></div><span class="rel-tag muted">後継 / ファミマ社長</span></div>
+          <div class="rel-body">2021年に澤田からファミマ社長を引き継いだ伊藤忠出身者。 澤田自身が伊藤忠出身であり、 <strong>"伊藤忠 → ファミマ"</strong> の系譜が引き継がれた象徴的継承。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">本田 宗一郎 / 藤沢 武夫 <span class="ja">本田・藤沢</span></div><span class="rel-tag muted">原型 / 補完型No.2の祖</span></div>
+          <div class="rel-body">"技術の本田、経営の藤沢" は、 "戦略の柳井、現場の澤田" の祖型。 創業者と補完型No.2の関係性は、 戦後日本企業史を貫く一つの型——澤田はその現代版を体現した。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">小泉 文明 <span class="ja">こいずみ ふみあき</span></div><span class="rel-tag muted">類型 / メルカリ巣立ち型</span></div>
+          <div class="rel-body">メルカリ・山田進太郎のNo.2。 COO → 社長 → 会長と動きながら、 山田に社長を返した "逆継承型"。 澤田と小泉は、 共に "巣立ち型" の現代版No.2の双璧。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">伊藤 謙介 <span class="ja">いとう けんすけ</span></div><span class="rel-tag muted">対比 / 京セラ継承型</span></div>
+          <div class="rel-body">稲盛和夫の右腕として30年以上京セラを支えた継承型No.2。 澤田が「巣立ち型」なら、 伊藤は「全う型」。 同じ補完型でも、 引き際の選び方で人生が分かれる。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">ロッテ創業家 <span class="ja">辛東彬・辛東主</span></div><span class="rel-tag muted">第3の舞台</span></div>
+          <div class="rel-body">2022年5月、ロッテベンチャーズ・ジャパン代表として再合流。 澤田の <strong>"創業者育成"</strong> という第三のミッションが ここで本格化。 No.2 → No.1 → 投資家 という連鎖の終着点。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://ja.wikipedia.org/wiki/%E6%BE%A4%E7%94%B0%E8%B2%B4%E5%8F%B8" target="_blank">澤田貴司 — Wikipedia</a></li>
+        <li><a href="https://toyokeizai.net/articles/-/355622" target="_blank">父親の葬儀で知った｢人は何のために働くのか｣ — 東洋経済オンライン (2020)</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXZQOGH225NF0S1A120C2000000/" target="_blank">「燃える男」ファミマ澤田貴司氏、4度目の不完全燃焼 — 日本経済新聞 (2021)</a></li>
+        <li><a href="https://challenger.newsweekjapan.jp/guest.php/sawada_takashi/" target="_blank">CHALLENGING INNOVATOR — Newsweek Japan</a></li>
+        <li><a href="https://withwomentimes.com/keyperson/sawada_takashi/" target="_blank">澤田貴司 株式会社ファミリーマート — WITH WOMEN</a></li>
+        <li><a href="https://dimension-note.jp/articles/interview/8129/" target="_blank">仕掛け人・澤田貴司が語る「大ヒットを生む会社」の作り方 — DIMENSION NOTE</a></li>
+        <li><a href="https://gekiryu-online.jp/2022/05/102026" target="_blank">ファミリーマート前社長澤田氏、ロッテ子会社代表取締役に就任 — 激流オンライン (2022)</a></li>
+        <li><a href="https://diamond.jp/articles/-/259768" target="_blank">ファミマ社長交代、「外見ワイルド中身繊細」の新社長が即刻迎える正念場 — Diamond (2020)</a></li>
+        <li><a href="https://mag.sendenkaigi.com/kouhou/201808/internal-public-relations/013710.php" target="_blank">ファミマ・澤田貴司社長がこだわる社内広報「ストアスタッフこそがHEROだ！」 — 広報会議 (2018)</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

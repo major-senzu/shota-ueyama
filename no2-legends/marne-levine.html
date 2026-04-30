@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marne Levine — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff; --fg: #0a0a0a; --muted: #888; --line: #e5e5e5; --soft: #f7f7f7;
+    --hero-bg: #0a0a0a; --hero-fg: #ffffff; --hero-muted: #999; --hero-line: #2a2a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="ML"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/2017_Marnie_Levine_%28cropped%29.jpg" alt="Marne Levine" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORP</div>
+          <h1>Marne Levine</h1>
+        </div>
+      </div>
+      <p class="summary">
+        オハイオの女子校から Miami University → 米国財務省 Larry Summers の下で <strong>22歳から官僚キャリア</strong>。 Sheryl Sandberg と Robert Rubin / Summers の元で同時期に働いた "財務省同窓"。 Sandberg が Facebook 入りした2年後、<strong>2010年に Sandberg 直々のリクルートで Facebook へ</strong>。 VP Global Public Policy → Instagram 初代 COO（4年でMAU 2億→10億、広告ゼロから$3B規模へ）→ Meta 初代 CBO。 <strong>Sandberg が辞めた8ヶ月後、自分も静かに Meta を去った</strong>、"Sandberg's Sandberg" と呼ばれた政策×事業の翻訳者。
+      </p>
+      <hr>
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Sheryl Sandberg / Mark Zuckerberg（Meta 系列・2010–2023 / 13年間）／ Larry Summers（財務省・NEC 通算 約9年）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1970年10月1日（55歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">オハイオ州 Shaker Heights（米国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">女性</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $25M (2023)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">夫 Philip Deutch（NGP Energy Tech Partners 共同創業者）/ 息子 2人</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">家族との時間 / Lean In Foundation 等の社会活動 / 障害者の可視化（補聴器使用の発信）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">親族</div>
+          <div class="fact-value">父 Mark Levine（眼科医・Shaker Heights）/ 母 Teri Levine / 義父 John M. Deutch（クリントン政権 元 CIA 長官・元 国防副長官）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Brain Co. COO (2025.10–) / Everview Partners 取締役 (2025.02–) / Rock & Roll Hall of Fame 理事 (2025.07–) / 元 Meta CBO (2021–2023) / 元 Instagram 初代 COO (2014–2019) / 元 Facebook VP Global Public Policy (2010–2014) / 元 White House NEC Chief of Staff (2009–2010) / 元 US Treasury Deputy Asst Secretary (1990s)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>Sandberg が作った "翻訳の役割" を、もう一段深く Instagram と Meta に流し込んだ "サンドバーグのサンドバーグ"</strong>」。 財務省 → ホワイトハウス → Facebook → Instagram → Meta CBO というキャリアアークは、Sandberg のそれを <strong>15年遅れでなぞった</strong>もの。 Instagram COO として4年で MAU を <strong>2億 → 10億</strong>、広告売上を <strong>ゼロから年商$3B規模</strong> に育て、Sandberg が Meta を去った直後、CBO として最終フェーズを引き継ぎ、 <strong>2023年に Sandberg を追うように静かに退任</strong>。 4歳で部分的聴力を失い、40代まで補聴器を使わずに通した "見えない障害" の持ち主でもある、 政策と事業を翻訳する Tech No.2 の純粋系統。
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+      <div class="origins-table">
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body"><strong>1970年10月1日</strong>、オハイオ州生まれ。 父 <strong>Mark Levine</strong> は Shaker Heights の眼科医、 母 <strong>Teri Levine</strong>。 クリーブランド近郊 Shaker Heights という、 米国の典型的な "ユダヤ系中産階級の郊外" で育つ。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">信仰</div>
+          <div class="origins-body">ユダヤ教（Jewish）。 Sandberg と同じユダヤ系米国人。 Shaker Heights は伝統的にユダヤ系コミュニティが厚いエリアで、 <strong>"勉強・規律・公的奉仕"</strong> という価値観が幼少期から刷り込まれた。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">幼少期と "見えない障害"</div>
+          <div class="origins-body"><strong>4歳で部分的に聴力を失う</strong>。 だが本人は40代になるまで補聴器を着けることを拒み続けた。 「弱さを見せたくない」「人と違う自分を認めたくない」という気持ちで、 <strong>"周りに気付かれないよう必死に努力する good girl"</strong> として育つ。 これが結果的に <strong>"言語と文書で勝負する官僚 / 政策担当"</strong> としての武器を磨いた皮肉な原点。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body"><strong>Laurel School（オハイオ州、女子校・1988年卒）</strong>。 私立の進学系女子校。 <strong>"女子だけの環境で発言とリーダーシップを鍛えられた"</strong> 14歳〜18歳の経験が、後年 Lean In のメッセージへの自然な共鳴を生む。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body"><strong>Miami University (Ohio), BA Political Science & Speech Communications（1992年卒）</strong>。 <strong>フロリダの University of Miami ではない</strong>、オハイオ州オックスフォードの州立リベラルアーツ大。 アイビーリーグでも MIT でもない、<strong>地味な "公共セクター志向の州立大"</strong>。 Sandberg が Harvard 首席卒なら、Levine は <strong>"州立大からの叩き上げ"</strong>。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">最初のキャリア</div>
+          <div class="origins-body">1993年、22歳で <strong>米国財務省へ直行</strong>。 Larry Summers の下で <strong>1990年代後半までに Deputy Assistant Secretary（次官補代理）まで昇格</strong>。 アジア通貨危機・略奪的融資・銀行立法などの実務を担当。 <strong>"修士もなしに財務省で次官補代理まで上る"</strong> 異例のキャリア。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body"><strong>Harvard Business School, MBA（2005年卒）</strong>。 30代に入ってからの "後付け MBA"。 既に財務省と Harvard 学長補佐としてキャリアを積んだ後、 <strong>"民間に出るための翻訳ライセンス"</strong> として HBS を取得。 Sandberg 同様 HBS 卒だが、Sandberg は学部直後、Levine は実務 9 年後という違い。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body"><strong>"Summers の最も若い右腕の一人"</strong>。 22歳で財務省入りし、Sandberg と同じ建物で働き始めた時点で、 自分の役割は明確に <strong>"頭の良いトップを動かす実務スタッフ"</strong> と定義されていた。 起業の発想は最初から無く、政策→事業の翻訳者として生きる軸が10代から決まっていたタイプ。</div>
+        </div>
+      </div>
+      <div class="origins-quote">
+        <div class="q">"That was the first moment I realized maybe I'd lost part of myself."</div>
+        <div class="src">— Marne Levine、HBS 在学中の自己発見について。"good girl" として走り続けた20代の終わりに見えた違和感</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr><th class="col-age">年齢</th><th class="col-year">西暦</th><th>出来事</th><th class="col-rate">変化率</th><th class="col-axis">軸</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-age">0</td><td class="col-year">1970</td><td>オハイオ州 Shaker Heights のユダヤ系眼科医家庭に生まれる。</td><td class="col-rate">★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">4</td><td class="col-year">1974</td><td><strong>部分的聴力喪失</strong>。 だが補聴器を拒み続けることで、 後年の "努力で全部カバーする good girl" 像が形成される。</td><td class="col-rate">★★★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">17</td><td class="col-year">1988</td><td>Laurel School（女子校）卒業。 Miami University (Ohio) へ。 アイビーではないが、 政治学と speech communications を専攻し公共セクターを志向。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">22</td><td class="col-year">1992</td><td>Miami University 卒業、 直後に <strong>米国財務省入り</strong>。 Larry Summers の下で実務スタートアップ。 修士なし、22歳の州立大卒という "不利な経歴"。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">26–30</td><td class="col-year">1996–2000</td><td><strong>財務省 Deputy Assistant Secretary（次官補代理）</strong>。 アジア通貨危機・略奪的融資・銀行立法を担当。 同建物で <strong>Sheryl Sandberg（Rubin の Chief of Staff）と並走</strong>——人生の運命的同窓関係の起点。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">31</td><td class="col-year">2001</td><td>Summers の Harvard 学長就任に同行、 <strong>Harvard President's Chief of Staff</strong> として2年間。 大統領→学長と環境は変わっても、 "Summers の右腕" としての連続性は維持。</td><td class="col-rate">★★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">33</td><td class="col-year">2003</td><td><strong>HBS MBA 入学（30代の "後付け資本"）</strong>。 同年6月、 <strong>Philip Deutch と結婚</strong>。 義父は元 CIA 長官 John Deutch。 政策×ファイナンスの婚姻関係が確立。</td><td class="col-rate">★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">35</td><td class="col-year">2005</td><td>HBS MBA 取得。 卒業直後、 ワシントンに戻らず <strong>Steve Case の Revolution Money</strong> に Product Manager で参画——民間プロダクトの実地修行。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">39</td><td class="col-year">2009</td><td><strong>オバマ政権 NEC Chief of Staff / Special Asst to the President</strong>。 NEC 委員長は再び Summers。 <strong>16年越しに Summers の右腕に戻る</strong>、人生最大の政界の頂点。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">40</td><td class="col-year">2010</td><td><strong>Sheryl Sandberg 直々のリクルートで Facebook 入社、 VP Global Public Policy</strong>。 政府→Tech 移行の典型ルート。 Sandberg が2年前に作ったキャリアアークを15年遅れでなぞる。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">44</td><td class="col-year">2014.09</td><td><strong>Instagram 初代 COO 就任</strong>。 Kevin Systrom（共同創業者・CEO）の隣に Sandberg が送り込んだ "翻訳役"。 当時 MAU 2億、広告ゼロ。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">45</td><td class="col-year">2015</td><td><strong>40代でついに補聴器を使い始める</strong>。 「人生が指数関数的に変わった」と公言、 <strong>テック業界の障害者可視化のロールモデル</strong> に。 40年間隠してきた弱さを公にした転機。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">価値観</span></td></tr>
+          <tr><td class="col-age">47</td><td class="col-year">2017</td><td>Instagram MAU 7億超、Stories 収益化、 Live 投入。 <strong>Instagram の広告売上が年商 $3B 規模</strong> に。 Sandberg が 2008–2010 で Facebook にやったことを Instagram で再現。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">48</td><td class="col-year">2018.09</td><td><strong>Systrom と Krieger（Instagram 共同創業者）が Zuckerberg と決裂し退任</strong>。 Levine は残留し、 Facebook 本体に戻り <strong>VP Global Partnerships, Business and Corp Dev</strong> へ。 創業者退任後の "Instagram の番人" となる。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">試練</span></td></tr>
+          <tr><td class="col-age">51</td><td class="col-year">2021.06</td><td><strong>Meta 初代 CBO（Chief Business Officer）就任</strong>。 Sandberg の COO 体制を支える "ビジネスサイド総責任者"。 ATT・Reels収益化・TikTok 対抗という最大の収益危機を引き受ける。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">52</td><td class="col-year">2022.06</td><td><strong>Sandberg が Meta COO 退任発表</strong>。 Levine は CBO のまま残るが、 <strong>"Sandberg なき Meta" への過渡期の重さ</strong> を一身に背負う。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">試練</span></td></tr>
+          <tr><td class="col-age">52</td><td class="col-year">2023.02</td><td><strong>Meta 退任発表（13年在籍）</strong>。 Sandberg が辞めて8ヶ月後、 <strong>後任の COO は置かず、CBO は Nicola Mendelsohn と Justin Osofsky に分割</strong>。 Sandberg ラインの幕引き。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+          <tr><td class="col-age">54</td><td class="col-year">2025</td><td><strong>Everview Partners 取締役（2月）→ Rock & Roll Hall of Fame 理事（7月）→ Brain Co. COO（10月）</strong>。 Meta から完全離脱して2年、 ベンチャー × 文化 × AI スタートアップに第二の人生を分散展開。</td><td class="col-rate">★★★</td><td><span class="axis-tag">第二章</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Sheryl Sandberg / Mark Zuckerberg）との関係構造</h2>
+      <p>Levine の "支えた No.1" は Mark Zuckerberg ではなく、 まず <strong>Sheryl Sandberg そのもの</strong>。 Zuckerberg にとって Sandberg が "翻訳者" だったように、Levine は <strong>Sandberg の翻訳者の翻訳者</strong>として機能した。 出会いは 1990年代後半の <strong>クリントン政権下の財務省</strong>——Sandberg は Robert Rubin 長官の Chief of Staff、Levine は Summers 副長官の下で次官補代理級。 同じ建物・同じ時代・同じユダヤ系・同じ HBS（Levine は後発）という、ほぼコピーのキャリア。</p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">"Marne is one of the smartest, most thoughtful people I know. She's been a partner to me for over 20 years."<br>— Sheryl Sandberg（社内メモより）</p>
+      <p>2010年、Sandberg は Facebook COO として広告事業を確立した直後、 <strong>"自分と同じキャリア型の若手を Facebook に呼び寄せる"</strong> 判断を下し、 NEC で Summers の右腕をしていた Levine をリクルート。 これは Tech 業界の「Sandberg ピプライン」の象徴的な人事だった。 結果、Levine は <strong>Facebook → Instagram → Meta CBO</strong> と、Sandberg が辿った階段を15年遅れで一段下を歩み、 Sandberg が辞めた8ヶ月後に自分も辞めた——Tech 史上もっとも完成度の高い "師弟並走モデル" の一つ。</p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">財務省同窓 (1996–2000)</div>
+          <div class="stage-body">クリントン政権下の同じ建物。 Sandberg は Rubin の Chief of Staff、 Levine は Summers の Deputy Asst Secretary。 Sandberg が4歳上、 ほぼ同じ役職レベル。 直接の上下関係ではないが、<strong>"Summers/Rubin の若手女性スタッフ"</strong> として強い同僚意識が生まれる。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 招聘</div>
+          <div class="stage-title">2010年 Facebook へ</div>
+          <div class="stage-body">Sandberg が Facebook COO として広告事業を確立した直後、 NEC で Summers の右腕に戻っていた Levine を <strong>Facebook VP Global Public Policy としてリクルート</strong>。 これが "Sandberg のサンドバーグ" 関係の本格起点。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — Instagram 派遣</div>
+          <div class="stage-title">2014年 翻訳者の派遣</div>
+          <div class="stage-body">Facebook が Instagram を $1B で買収した2年後、 Sandberg は <strong>自分の翻訳者を Instagram の Systrom の隣に送り込んだ</strong>。 Levine は Instagram 初代 COO として4年、 Sandberg が Facebook でやったことを Instagram で再現する。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 同時退場</div>
+          <div class="stage-title">2022–23 師弟の幕引き</div>
+          <div class="stage-body">2022年6月 Sandberg COO 退任発表、 2023年2月 Levine CBO 退任発表。 <strong>8ヶ月差で師弟がほぼ同時に Meta を去る</strong>。 後任 COO は置かず、CBO は分割。 Sandberg ラインの "ビジネスサイド" は組織図上から消えた。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>Levine は <strong>22歳で財務省に入った時点で "No.2 として歴史を動かす" 軸を選んでいた</strong>。 Miami University (Ohio) という <strong>"アイビーでもない州立大の学部卒"</strong> で財務省に直行し、修士なしのまま Deputy Assistant Secretary まで上がるキャリアは、 起業ではなく <strong>"トップに引き上げてもらって育つ"</strong> ことに賭けたもの。 Summers → Sandberg → Zuckerberg と、 No.1 が3人変わっても <strong>"翻訳者"</strong> という役割定義だけは32年間動かなかった。</p>
+      <p>本人は HBS 在学中、 "I love coffee, but I don't photograph it. That's not who I am." と語り、 <strong>"目立つ自分を演じない"</strong> 哲学を早期に確立。 4歳から続いた "見えない聴覚障害" という弱さを隠す癖が、結果的に <strong>"派手なリーダーではなく、 トップの隣で実務を回す No.2"</strong> としての適性に転化した。</p>
+      <p>Sandberg が "設計した No.2" だとすれば、 Levine は <strong>"Sandberg というロールモデルを選んだ No.2"</strong>。 32年間に渡って Summers / Sandberg という "支配的なメンター" の隣を選び続けた、 No.2 のキャリア型をもっとも純粋に体現したタイプ。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">政策 × 政府関係 × プロダクト × 広告事業。 22歳から財務省・NEC で培った "規制者の言語" を Facebook に持ち込み、 Instagram COO として広告ビジネスを <strong>ゼロから年商$3B規模</strong> に育てた。 政府人脈と事業実装を同時に持つ稀有な人材。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">"翻訳者の翻訳者"。 Sandberg が Zuckerberg のビジョンを商業化したように、 Levine は <strong>Sandberg のビジネスモデルを Instagram と Meta の各事業に深く浸透させた</strong>。 Sandberg のスケールアウト装置。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">Levine なしの Instagram は、 Systrom と Zuckerberg の不和を緩衝する人物を欠き、 おそらく <strong>2018年より早い段階で広告化に失敗</strong> し、 TikTok に対抗する Reels 戦略への移行も遅れていた。 政策面では Cambridge Analytica の対応が更に混乱した可能性が高い。</div>
+        <div class="vk">継承後の影響</div>
+        <div class="vv">Levine の退任後、 Meta は <strong>CBO を1人で持つことを諦め、 Mendelsohn と Osofsky に役割を分割</strong>。 つまり Sandberg = Levine ラインの "1人で全方位を見る No.2" の時代は組織図上から終わった。 Meta の経営文化の世代交代の象徴。</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p><strong>① 4歳から40代までの "見えない聴覚障害"。</strong> 補聴器を着けることを拒み続け、 <strong>"good girl の完璧主義"</strong> で40年間カバーした。 2015年、Instagram COO 期にようやく補聴器を使い始め、 「人生が指数関数的に変わった」と公言。 No.2 の <strong>"自分の弱さを隠して走り続ける"</strong> 危うさと、それが解放された瞬間の象徴。</p>
+      <p><strong>② 2018年 Instagram 創業者 Systrom / Krieger の退任。</strong> Zuckerberg と Systrom の不和が決定的になり、 Instagram 創業チームが Meta を去った。 <strong>Levine は残留を選び</strong>、Facebook 本体に戻って Global Partnerships を率いた。 No.2 として、<strong>"創業者か、母艦か"</strong> の踏み絵で母艦を選んだ瞬間。</p>
+      <p><strong>③ 2021–22年 Meta の収益危機。</strong> ATT（App Tracking Transparency）で広告売上が $10B 規模で吹き飛び、TikTok が短尺動画市場を席巻。 Levine は CBO として Reels 収益化・新興市場展開を主導するも、 株価は2022年に60%下落。 <strong>Sandberg が COO 退任を決断する直接の背景</strong> となった経営危機を、Levine は最前線で受けた。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>2023年2月、Levine は <strong>Meta 退任を発表（13年在籍）</strong>。 Sandberg が前年6月に COO 退任を発表してから <strong>わずか8ヶ月後</strong>。 <strong>後任の CBO は置かれず</strong>、 広告事業は Nicola Mendelsohn、 パートナーシップは Justin Osofsky に分割された。 これは事実上、 <strong>"Sandberg ライン" の Meta における幕引き</strong>を意味する。</p>
+      <p>引き際の特徴: <strong>"Zuckerberg を CEO のまま残し、 自分も Sandberg と8ヶ月差で去った"</strong>。 内紛も、訴訟も、メディア批判もなし。 Sandberg の "綺麗な離別" を完全踏襲。 No.2 が CEO 昇格を狙って騒動を起こすパターンを完全回避。</p>
+      <p>退任後の Levine は、 静かなセカンドキャリアを選択。 <strong>2025年2月 Everview Partners 取締役 → 7月 Rock & Roll Hall of Fame 理事 → 10月 Brain Co. COO</strong>。 ベンチャー、 文化、 AI スタートアップに役割を分散。 Sandberg のような "自分のブランド本" を出さず、 Lean In Foundation や Women for Women International、 Trilateral Commission の理事業に専念する <strong>"裏方の第二の人生"</strong>。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Marne Levine の No.2 型</div>
+        <div class="type-name">翻訳型 × 系譜型 × 並走引き際型</div>
+        <div class="type-body">
+          Sandberg が作ったキャリアアーク（財務省→ホワイトハウス→ビッグテック→COO/CBO）を <strong>15年遅れで完全になぞった "系譜型"</strong>。 Sandberg が Zuckerberg のビジョンを商業化したように、 Levine は Sandberg のビジネスモデルを Instagram と Meta 各事業に深く浸透させた。 そして Sandberg が辞めた8ヶ月後に自分も辞めた。
+          <br><br>
+          ▸ <strong>翻訳型</strong>: 政策→事業、Sandberg→Instagram、創業者→広告主の翻訳が本質的役割<br>
+          ▸ <strong>系譜型</strong>: Sandberg というロールモデルの "次世代版" として完全コピーのキャリア<br>
+          ▸ <strong>並走引き際型</strong>: 師の退任に8ヶ月遅れで自分も去る、 No.2 系譜の "綺麗な幕引き"<br><br>
+          Sheryl Sandberg が "Tech No.2 翻訳型の最高峰" だとすれば、Levine は <strong>"Sandberg を Sandberg たらしめた人事の証明"</strong>。 13年で去り、 Lean In のような著作も出さず、 "黒子" として徹底的に消えた純粋系。 No.2 系譜の継承可能性を体現した稀有な事例。
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"アイビーじゃなくても No.2 になれる"。 学歴の不利は実務で逆転できる</div>
+          <div class="lesson-body">Sandberg は Harvard 首席卒・HBS Baker Scholar の "完全エリート"。 一方 Levine は <strong>Miami University (Ohio) という州立大の学部卒</strong>。 修士なしで22歳から財務省に直行し、 30代で後付け HBS、 40歳で Facebook VP、 51歳で Meta CBO。 <strong>学歴のハンデは、Summers と Sandberg という "ロールモデルの隣で実務を10年積む" ことで完全に逆転できる</strong>。 翔太の慶應法政治学科という出自も、 同じく <strong>"叩き上げ型 No.2"</strong> の入口として十分に機能する。</div>
+        </li>
+        <li>
+          <div class="lesson-head">"ロールモデルの隣を選び続ける" のも No.2 戦略</div>
+          <div class="lesson-body">Levine は32年間、Summers → Sandberg → Zuckerberg と、 <strong>"自分より一段大きいトップの隣"</strong> を選び続けた。 起業も、独立も、CEO 昇格も狙わず、 ひたすら <strong>"トップを支える専門性"</strong> を磨いた。 No.2 として生きると決めたら、 <strong>ロールモデルの選択がそのままキャリアの設計図になる</strong>。 翔太にとって響さん・翔己さん・西原さんという "選んだトップ" が、Summers / Sandberg と同じ意味を持つ可能性。</div>
+        </li>
+        <li>
+          <div class="lesson-head">"師が辞めたら自分も静かに去る" 美学</div>
+          <div class="lesson-body">Sandberg が辞めた8ヶ月後、 Levine も辞めた。 内紛も、CEO 昇格争いも、メディア騒動もなし。 <strong>"師と並走し、師と共に幕を引く"</strong>——No.2 の最も成熟した引き際の一つ。 これは "辞めたいから辞める" のではなく、 <strong>"自分の役割が終わった瞬間を見極める" 嗅覚</strong>。 翔太がいつ Wanderlust の COO として動くか、 いつ離れるかを判断する時の、最も精緻な参照点。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li><strong>4歳で部分的聴力喪失</strong>。 だが40代まで補聴器を拒み続け、 2015年から使い始めて「人生が指数関数的に変わった」と公言。 Tech 業界の障害者可視化のロールモデル。</li>
+        <li><strong>夫 Philip Deutch の父は John M. Deutch（クリントン政権 元 CIA 長官・元 国防副長官）</strong>。 政治・諜報・エネルギーの強い人脈を婚姻で得た。</li>
+        <li><strong>"Philip Levine（マイアミビーチ元市長）" とは別人</strong>。 夫の苗字 "Deutch" と本人の旧姓 "Levine" が紛らわしいだけ。 メディアでも時々誤解される。</li>
+        <li>大学は <strong>Miami University (Ohio)</strong>——フロリダの University of Miami ではない。 Sandberg・Sheryl と違い、 アイビーリーグでも MIT でもない州立大学。</li>
+        <li>HBS の MBA は <strong>30代後半に取得した "後付け資本"</strong>。 既に財務省 Deputy Asst Secretary を経験した後の、 "民間移行ライセンス" としての MBA。</li>
+        <li>Sandberg と <strong>20年以上のパートナーシップ</strong>。 「Marne is one of the smartest, most thoughtful people I know」と Sandberg は社内メモで言及。</li>
+        <li>Instagram COO 期は <strong>"I love coffee, but I don't photograph it. That's not who I am."</strong> と語り、 自分が Instagram のターゲットユーザーでないことを公言した珍しい COO。</li>
+        <li>Lean In への寄稿で <strong>"息子達のため、 そして将来の妻や娘のために、 私はワークを引き受ける"</strong> と書き、 White House の仕事を受諾した動機を語った。</li>
+        <li>2023年の Meta 最終年の総報酬は <strong>$26.39M</strong>。 純資産は約 $25M（2023年時点）と Sandberg ($1.5B) の1/60にとどまるが、 これは "翻訳者の翻訳者" の経済的位置を示している。</li>
+        <li>引退後は <strong>Chegg 取締役（2013年–）、Clear Secure 独立取締役、 Trilateral Commission 委員、 National Endowment for Democracy 理事</strong> など、 公共と民間の理事業を多数兼任。</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div><span class="rel-tag">最大の師 / 系譜の起点</span></div>
+          <div class="rel-body">財務省同窓→Facebook 招聘→Instagram 派遣→8ヶ月差で同時退任。 32年に渡る "Tech No.2 系譜" のメンター。 Levine の <strong>"Sandberg のサンドバーグ"</strong> という二つ名は、 この関係の濃度を象徴する。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Larry Summers <span class="ja">ラリー・サマーズ</span></div><span class="rel-tag">最初の No.1</span></div>
+          <div class="rel-body">22歳の Levine を財務省に引き上げた最初のメンター。 Harvard 学長期、NEC 委員長期と <strong>3度の "Summers の右腕"</strong> を経験。 Sandberg と Levine の双方を生んだ "No.2 製造機" としての Summers 像が浮かぶ。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Mark Zuckerberg <span class="ja">マーク・ザッカーバーグ</span></div><span class="rel-tag">最終の No.1</span></div>
+          <div class="rel-body">13年間 Meta で間接的・直接的に仕えた相手。 Levine は Zuckerberg と直接の "ドア前会話" 関係はなかったが、 Sandberg の翻訳者として Zuckerberg のビジョンを Instagram と各事業に流し込んだ。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Kevin Systrom <span class="ja">ケビン・シストロム</span></div><span class="rel-tag muted">直接の上司 / Instagram</span></div>
+          <div class="rel-body">Instagram 共同創業者・CEO。 2014年、 Sandberg が Levine を初代 COO として送り込んだ相手。 4年で MAU を 2億→7億に拡大した相棒。 2018年に Zuckerberg と決裂して退任した時、 Levine は残留を選んだ。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Philip Deutch <span class="ja">フィリップ・ドイチュ</span></div><span class="rel-tag muted">夫 / 思想的相棒</span></div>
+          <div class="rel-body">NGP Energy Tech Partners 共同創業者。 クリーンエネルギー投資家。 父 John Deutch は元 CIA 長官。 Sandberg の Dave Goldberg と同じく、 シリコンバレーの "Tech 妻 × 投資家夫" のパワー・カップル。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">John M. Deutch <span class="ja">ジョン・ドイチュ</span></div><span class="rel-tag muted">義父 / 政府人脈</span></div>
+          <div class="rel-body">クリントン政権 元 CIA 長官 (1995–96)・元 国防副長官・元 MIT 教授。 Levine の <strong>政府・国家安全保障人脈の源泉</strong>。 Tech 政策の世界で Levine が異例の影響力を持った背景。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Nicola Mendelsohn <span class="ja">ニコラ・メンデルソン</span></div><span class="rel-tag">後継者 / 広告</span></div>
+          <div class="rel-body">2023年に Levine の CBO の広告事業部分を引き継いだ Meta の幹部。 Levine が一人で持っていた役割を分割した、 <strong>"Sandberg = Levine ライン後の世代"</strong> の代表。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Justin Osofsky <span class="ja">ジャスティン・オソフスキー</span></div><span class="rel-tag">後継者 / パートナーシップ</span></div>
+          <div class="rel-body">Levine の CBO のうちパートナーシップ部分を引き継いだ Meta 幹部。 Mendelsohn と Osofsky の二人で <strong>Levine 一人の役割を埋める</strong> という人事自体が、 Levine の貢献の大きさの証明。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Marne_Levine" target="_blank">Marne Levine — Wikipedia</a></li>
+        <li><a href="https://www.cnbc.com/2023/02/13/meta-chief-business-officer-marne-levine-leaving-after-13-years-.html" target="_blank">Meta CBO Marne Levine leaving after 13 years — CNBC (2023)</a></li>
+        <li><a href="https://fortune.com/2023/02/14/marne-levines-leaves-meta-facebook-nicola-mendelsohn/" target="_blank">Marne Levine leaves Meta — Fortune (2023)</a></li>
+        <li><a href="https://www.marieclaire.com/career-advice/news/a26761/instagram-coo-marne-levine/" target="_blank">Instagram COO Marne Levine on her career — Marie Claire</a></li>
+        <li><a href="https://www.businessoffashion.com/news/technology/facebook-names-marne-levine-first-chief-business-officer/" target="_blank">Facebook names Marne Levine first Chief Business Officer — BoF (2021)</a></li>
+        <li><a href="https://results4america.org/people/marne-levine/" target="_blank">Marne Levine — Results for America bio</a></li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:2017_Marnie_Levine_(cropped).jpg" target="_blank">Photo (2017, F8 Conference) — Wikimedia Commons (CC BY 2.0 / Anthony Quintano)</a></li>
+        <li>Sheryl Sandberg『Lean In』(2013) — Levine 寄稿章</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

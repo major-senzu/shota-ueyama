@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belinda Johnson — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff; --fg: #0a0a0a; --muted: #888; --line: #e5e5e5; --soft: #f7f7f7;
+    --hero-bg: #0a0a0a; --hero-fg: #ffffff; --hero-muted: #999; --hero-line: #2a2a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero .summary strong { color: var(--hero-fg); font-weight: 700; }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 36px 0 28px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="BJ"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Belinda_Johnson_at_Milken_Global_Conference_2017.jpg/400px-Belinda_Johnson_at_Milken_Global_Conference_2017.jpg" alt="Belinda Johnson" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Belinda Johnson</h1>
+        </div>
+      </div>
+      <p class="summary">
+        テキサスの法律事務所からYahoo!の法務トップ、そして2011年に <strong>Brian Chesky の "最初のエグゼクティブ採用"</strong> としてAirbnbへ。 General Counsel → CBALO → 同社初のCOOへと9年で駆け上がり、 当時 "違法民泊" として各国政府から訴訟と規制圧力を浴びていたAirbnbを <strong>"対立ではなく協働"</strong> の戦略で世界190カ国に展開させた。 Brian Chesky を "プロダクトとデザイン" に専念させるため、規制・訴訟・政策・上場準備を全て引き受けた、 "Airbnb のシェリル・サンドバーグ" と呼ばれる弁護士出身の翻訳型No.2。 2020年3月、IPO前夜に綺麗に去った。
+      </p>
+      <hr>
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Brian Chesky（Airbnb 共同創業者・CEO / 2011–2020 / 9年間）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1967年（58歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">テキサス州（米国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">女性</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $100M+ (2026)</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">夫 Brent Johnson（作家・元弁護士）/ 子供 2人</div>
+        </div>
+        <div>
+          <div class="fact-label">居住</div>
+          <div class="fact-value">カリフォルニア州 Redwood City</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Airbnb COO (2018–2020) / Airbnb 取締役 (2020–現在) / 元 Airbnb CBALO・General Counsel (2011–2018) / PayPal 取締役 (2017–) / 元 Yahoo! General Counsel (1999–2011)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>"違法民泊" を "規制と協働するグローバルプラットフォーム" に翻訳した、弁護士出身のサンドバーグ</strong>」。 Brian Chesky が <strong>"デザインとプロダクト"</strong> しか興味がない若い創業者だったとき、Belinda は <strong>規制 × 訴訟 × 政策 × 上場準備</strong> の全方位で Airbnb を世界190カ国に展開させた。 Uberが各都市の市長と戦っている間、Airbnbは <strong>"地元志向のキャンペーン" と "対話"</strong> で味方を増やした。 これが Belinda の戦略。 9年で COO に昇り詰め、IPO前夜（2020年3月、奇しくもパンデミック直前）に綺麗に退任。 "サンドバーグ型 × 引き際型" の最も新しい完成形。
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+      <div class="origins-table">
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body"><strong>1967年</strong>、米国テキサス州生まれ。 詳しい生年月日や両親の職業は公開していない、典型的な"裏方型"のプロフィール公開姿勢。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">幼少期・性格</div>
+          <div class="origins-body">テキサスの典型的なミドルクラスの家庭で育つ。 後年のインタビューで <strong>"何にでも『はい』と言う"</strong> ことがキャリアを切り開いたと語っており、 子供の頃から<strong>引き受けて学ぶ</strong>姿勢が刷り込まれていた。 Forbes最も影響力ある女性100人にも選ばれる人物が、徹底的に"出しゃばらない"のが特徴。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body"><strong>The University of Texas at Austin（学士）</strong>。 そのまま同大ロースクールへ進学。テキサスから一歩も出ずに法曹界に入った"地元キャリア"の出発点。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">大学院（法科大学院）</div>
+          <div class="origins-body"><strong>The University of Texas School of Law, JD（1991年卒）</strong>。 <strong>Harvard でも Stanford でもなく、地元のテキサス・ロー</strong>。 アイビーリーグ卒のエリートではない、テキサスの実務派弁護士からのスタート。これが"対立より協働"を選ぶ実務家気質の根。</div>
+        </div>
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body"><strong>"地に足のついた実務派"</strong>。 ワシントンや東海岸のエリート街道とは無縁。 法律で社会の課題を解決することに興味があり、テック起業家になる発想は最初からなかった。 <strong>"トップを支える法律家"</strong> という役割定義は、24歳の卒業時点ですでに明確だった。</div>
+        </div>
+      </div>
+      <div class="origins-quote">
+        <div class="q">"Envision what you want, and believe you can achieve it."</div>
+        <div class="src">— Belinda Johnson、 Quartzインタビュー(2018)。 "想い描いて、信じる"。 派手なビジョン語りではなく、地味な確信を選ぶ哲学</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr><th class="col-age">年齢</th><th class="col-year">西暦</th><th>出来事</th><th class="col-rate">変化率</th><th class="col-axis">軸</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="col-age">0</td><td class="col-year">1967</td><td>米国テキサス州で生まれる。 詳細は非公開。 "出しゃばらない" 性格はこの頃から。</td><td class="col-rate">★</td><td><span class="axis-tag">性格形成</span></td></tr>
+          <tr><td class="col-age">24</td><td class="col-year">1991</td><td><strong>UT Austin School of Law (JD) 卒業</strong>。 ハーバード・スタンフォードではなく、地元テキサス・ロー。 ダラス地域の法律事務所に入社。</td><td class="col-rate">★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">29</td><td class="col-year">1996</td><td><strong>AudioNet (後のBroadcast.com) の General Counsel に転身</strong>。 Mark Cuban が共同創業した黎明期インターネットラジオ会社。 5年で <strong>テック × 法務</strong> のキャリアを確立。</td><td class="col-rate">★★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">32</td><td class="col-year">1999</td><td><strong>Yahoo! が Broadcast.com を $5.7B で買収</strong>。 Belinda は Yahoo! に統合され、 <strong>General Counsel として12年勤務</strong>。 ドットコムバブルの頂点と崩壊を法務トップで乗り越える。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">44</td><td class="col-year">2011</td><td><strong>Airbnb の General Counsel として参画</strong>。 Brian Chesky の <strong>"最初のエグゼクティブ採用"</strong>。 当時 Airbnb はSeed段階で6人程度。 デスクは Brian の <strong>"2フィート（60cm）隣"</strong>。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">人生軸</span></td></tr>
+          <tr><td class="col-age">45</td><td class="col-year">2012</td><td><strong>NY州との規制戦争に直面</strong>。 ニューヨーク市が "違法民泊" として Airbnb を訴える。 Belinda は <strong>"対立ではなく対話"</strong> を選び、 自治体・規制当局との交渉を全面指揮する戦略を確立。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">48</td><td class="col-year">2015.07</td><td><strong>Chief Business Affairs and Legal Officer (CBALO) に昇格</strong>。 法務に加え、政策・PR・コミュニケーションも統括。 単なる General Counsel から <strong>"事業運営型No.2"</strong> へ進化。</td><td class="col-rate">★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">50</td><td class="col-year">2017.01</td><td><strong>PayPal 取締役会就任</strong>。 Airbnb 内部だけでなく、シリコンバレーの取締役ネットワークに入る。 Forbes "最も影響力ある女性100人" 96位 (2017)。</td><td class="col-rate">★★★</td><td><span class="axis-tag">キャリア</span></td></tr>
+          <tr><td class="col-age">51</td><td class="col-year">2018.02</td><td><strong>Airbnb 同社初の COO に就任</strong>。 同時期にCFO Laurence Tosi が退任、Brian は <strong>"Belinda こそ自分のパートナー"</strong> と公言。 Forbes "最も影響力ある女性100人" 69位に上昇 (2018)。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">役割確立</span></td></tr>
+          <tr><td class="col-age">52</td><td class="col-year">2019.11</td><td><strong>COO 退任を発表</strong>。 IPO 準備が整い、Belinda は "次のチャプターへ" と発表。 Brian は CEO のまま、Belinda だけが綺麗に去る決断。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+          <tr><td class="col-age">52</td><td class="col-year">2020.03</td><td><strong>正式に COO 退任、取締役会へ移行</strong>。 奇しくも <strong>パンデミック直前</strong>。 Airbnbは予約キャンセル対応の修羅場へ突入するが、Belinda は既に第一線から退いていた。 結果的に "完璧なタイミング" の引き際に。</td><td class="col-rate">★★★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+          <tr><td class="col-age">53</td><td class="col-year">2020.12</td><td><strong>Airbnb IPO（NASDAQ上場、初値時価総額$100B超）</strong>。 Belinda は取締役として上場の瞬間を見届ける。 9年の翻訳が結実した瞬間。</td><td class="col-rate">★★★★</td><td><span class="axis-tag">業績</span></td></tr>
+          <tr><td class="col-age">53–58</td><td class="col-year">2020–現在</td><td>Airbnb 取締役 + PayPal 取締役 + 慈善活動。 メディア露出を意識的に減らし、家族との時間と取締役業務に専念する "完全引退型" のセカンドキャリア。</td><td class="col-rate">★★★</td><td><span class="axis-tag">引き際</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Brian Chesky）との関係構造</h2>
+      <p>2011年、Airbnb はまだ社員数十人の段階。 Brian Chesky は29歳のRISDデザイナー出身、 法律も規制も訴訟も "何も知らない" 共同創業者だった。 そこに44歳のYahoo! General Counsel が "Brian の最初のエグゼクティブ採用" として参画——これが <strong>9年間で Airbnb を世界190カ国の上場企業</strong> に変えた関係の起点。</p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">"I learn from her every day, and I'm a better leader because she is my partner."<br>— Brian Chesky（2018年COO就任発表時）</p>
+      <p>Brianはオフィスで Belinda のデスクを <strong>自分の "2フィート (60cm) 隣"</strong> に置いた。 <strong>"毎日、何度も話す。 友人だと思っている"</strong> と Brian は公言。 Sandberg と Zuckerberg がドア前で1時間立ち話したのと同じ "親密×対極" の関係。 Belinda の最初の仕事は、Brian が <strong>"悪いニュースも聞きたい"</strong> と明言したこと——そこからすべての信頼が始まった。</p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">"最初のエグゼクティブ採用"</div>
+          <div class="stage-body">2011年、Yahoo!の General Counsel から Airbnb 6人目のスタッフへ。 Brian は "悪いニュースも聞きたい" と最初に伝え、Belinda は "それで信頼が定まった" と回想。 デスクが2フィート隣、毎日複数回の対話。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">"対話戦略"の発明</div>
+          <div class="stage-body">NY・SF・パリ・ベルリン——各都市の規制圧力をBelindaが <strong>訴訟ではなく協働</strong> で解決。 Uberが市長と戦争している間、Airbnbは政策担当者と共に座り、データを共有し、ホスト税を払う仕組みを共同設計した。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">同社初のCOO</div>
+          <div class="stage-body">2018年、CFOが退任した混乱期に Belinda が COO へ昇格。 Brian は "Belinda こそ自分のパートナー" と明言。 法務 → CBALO → COO という "弁護士からNo.2"のキャリアパスを確立。 法務とビジネスの摩擦が "ほぼゼロ" だったとBrianは公言。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 引き際</div>
+          <div class="stage-title">IPO前夜の綺麗な退任</div>
+          <div class="stage-body">2019年11月退任発表、 2020年3月正式退任、 2020年12月IPO。 <strong>パンデミック直前のタイミング</strong>に偶然はあるが、 Brian を CEO のまま残し、自分だけが取締役に移行する Sandberg型の引き際を選んだ。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>Belinda は <strong>創業者になる選択肢を一度も検討しなかった</strong>。 弁護士キャリアの最初から、彼女の役割定義は明確に <strong>"誰かのトップを実現する法律家・実務家"</strong> だった。 Mark Cuban の Broadcast.com、 Yahoo! の歴代CEO、 そして Brian Chesky——3人の創業者・CEO に仕えた経験を持つ稀有な弁護士。</p>
+      <p>Sandberg のように "Lean In" で女性リーダーシップを語ることもなく、 メディア露出も最小限に保つ。 これは <strong>"私の役割は、Brianを輝かせること"</strong> という No.2 の純粋な自己定義。 Sequoia インタビューで本人は <strong>"私はビジネスを運ぶリーダーだ"</strong> と語ったが、その先には常に "誰かの夢" があった。</p>
+      <p>Sandberg が <strong>"設計した No.2"</strong> なら、Belinda は <strong>"自然体の No.2"</strong>。 設計の意図ではなく、 性格と価値観として "黒子" を選んだタイプ。 47歳までYahoo! の法務トップとして培った "巨大組織を動かす実務" を、 6人のスタートアップに持ち込み、9年で世界190カ国・$100B企業に育てた。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">法務 × 政策 × 政府関係 × 訴訟戦略。 Yahoo!時代に培った <strong>"巨大プラットフォームの法務"</strong> を Airbnb に持ち込み、各国規制との交渉、ホスト課税の設計、ユーザー保護方針の整備、IPO準備までを一気通貫で実装。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 × 補完 × 黒子。 Brian の "デザインで世界を変える" ビジョンを <strong>"政府と協働する世界企業"</strong> に翻訳。 Brian が政府関係や訴訟を一切考えなくていい状態を9年間維持した。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">Belinda なしの Airbnb は、おそらく <strong>Uber と同じ規制戦争</strong> の道を辿り、 NY・パリ・ベルリン等の主要都市から撤退を余儀なくされていた。 "対話戦略"こそ Airbnb の競争優位の源泉だった。</div>
+        <div class="vk">継承後の影響</div>
+        <div class="vv">Belindaの政策チーム文化は今もAirbnbに残る。 後任のCOOは置かず、Brianが <strong>"Belindaの仕事は属人的だった"</strong> と認めて役割を分散。 つまり、彼女の貢献は組織図ではなく "文化" として継承された。</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p><strong>① 2012–2016年 NY州との規制戦争。</strong> ニューヨーク市が "違法民泊" として Airbnb を訴え、 30日未満の短期賃貸を実質禁止する法律を成立させた。 Belinda は <strong>"訴訟ではなく対話"</strong> で各州・各市と個別交渉を続け、 全面禁止を回避し続けた。 No.2 の最も重い役割——<strong>"創業者を訴訟の盾になって守る"</strong> を地で実演。</p>
+      <p><strong>② 2018年 CFO Laurence Tosi 退任 × IPO遅延。</strong> 当時のCFOがBrianと衝突し退任、 これが Belinda の COO 昇格のきっかけ。 経営チーム内の対立をBelindaが緩衝材となって整理し、 IPO計画は2018年から2020年に延期された。 No.2 の <strong>"組織内の感情の翻訳者"</strong> としての役割。</p>
+      <p><strong>③ 2019–2020年 引き際の決断。</strong> COO就任からわずか2年で退任を選択。 IPOまであと1年というタイミング。 Sandberg が14年、Cookが15年勤めたのに対し、Belindaは <strong>"自分の仕事は終わった"</strong> と早期に判断。 結果的にパンデミック直前の "完璧な引き際"となった。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>2019年11月、Belinda は <strong>"次のチャプターに進みたい"</strong> と退任を発表。 9年で COO を辞めるのは、 Sandberg(14年)・Cook(13年)と比べると <strong>明らかに"短い"</strong>。 Brian は後任のCOOを置かず、Belindaの仕事を <strong>複数の幹部に分散</strong>——つまり彼女の役割は本質的に <strong>"代替不可能"</strong> だった。</p>
+      <p>引き際の特徴: <strong>"Brian を CEO のまま残し、自分だけが取締役に移行"</strong>。 Sandberg の "綺麗な離別" を完全踏襲した。 No.2 が CEO 昇格を狙って内紛を起こすパターンを完全回避。 2020年3月の正式退任から1ヶ月後にパンデミックが世界を襲うが、Belinda はすでに第一線から離れていたため、Brian が一人でクライシスを陣頭指揮することになった——皮肉にも、これが "彼女の引き際の見事さ" を証明した。</p>
+      <p>現在は <strong>Airbnb 取締役・PayPal 取締役・慈善活動</strong>。 Sandberg と違い "Lean In" のような著作も出さず、メディア露出も最小限。 文字通りの "黒子" として静かに第二の人生を送る。 これが Belinda 流の引き際。</p>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Belinda Johnson の No.2 型</div>
+        <div class="type-name">翻訳型 × 引き際型 × 弁護士発祥型</div>
+        <div class="type-body">
+          創業者の <strong>"デザインとプロダクトへの純粋な情熱"</strong> を、 <strong>"190カ国の規制と協働するグローバルプラットフォーム"</strong> に翻訳した。 9年間 Brian Chesky を法律・政策・政府関係の一切から解放し、Brian がプロダクトに集中できる環境を作った。
+          <br><br>
+          ▸ <strong>翻訳型</strong>: ビジョン → 法的枠組み・規制対応・政策への変換が本質的役割<br>
+          ▸ <strong>引き際型</strong>: COO就任2年・参画9年で退任、IPO前夜に綺麗に去った<br>
+          ▸ <strong>弁護士発祥型</strong>: General Counsel から COO に上り詰めた稀有なキャリアパス<br><br>
+          Sheryl Sandberg が "Tech No.2 翻訳型の最高峰" だとすれば、Belinda は <strong>"Sandberg の正統後継 × アジャイル版"</strong>。 14年ではなく9年で去り、Lean In のようなブランドも作らず、 "黒子" として徹底的に消えた。 No.2 の理想形の一つ。
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"対立"ではなく"協働"を選ぶ。それが翻訳型No.2の核</div>
+          <div class="lesson-body">Uber が各都市の市長と戦争している間、Airbnb は規制当局と一緒に座り、データを共有し、ホスト税の仕組みを共同設計した。 これが Belinda の <strong>"対話戦略"</strong>。 ぶつかれば創業者を守れない。 譲れば事業が成立しない。 その間の <strong>"協働で勝つ道"</strong> を設計するのが、翻訳型No.2の本質。 翔太がWanderlustでクライアントと、政府関係者と、社員と築くべき関係性そのもの。</div>
+        </li>
+        <li>
+          <div class="lesson-head">創業者を"嫌な役割"から完全に解放せよ</div>
+          <div class="lesson-body">Brian Chesky は9年間、訴訟・規制・政府関係を一切考えなくてよかった。 Belinda が全部引き受けたから。 No.2 の最大の貢献は <strong>"創業者が考えなくていい状態を作る"</strong> こと。 翔太がCOOになるなら、創業者(響さん)が "デザインとビジョンだけ" に集中できる環境設計が最重要KPI。 補完とは "代わりにやる" ではなく "考えなくていい状態を作る" こと。</div>
+        </li>
+        <li>
+          <div class="lesson-head">引き際は"短くて綺麗"でも完璧でありうる</div>
+          <div class="lesson-body">Sandberg が14年、Cookが15年、Belindaは9年。 9年で去った Belinda の引き際は、Sandberg より短いが <strong>同等以上に美しい</strong>。 IPO前夜・パンデミック直前という奇跡のタイミング。 Brian を CEO のまま、自分は取締役へ。 「長く居ること」が美徳ではなく、 <strong>「役割を全うしたら去る」</strong> ことが核。 翔太の独立判断にも直結する設計図。</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>Brian Chesky は彼女のデスクを自分のデスクの <strong>"2フィート (60cm) 隣"</strong> に置いた。 物理的な距離 = 信頼の距離。</li>
+        <li><strong>"Airbnb のシェリル・サンドバーグ"</strong> と呼ばれることに本人は意外と無頓着で、 自分のキャリアを "それぞれ独自" と表現する。</li>
+        <li>採用哲学: <strong>"3年後の会社規模を想定して採用せよ"</strong>。 Sequoia インタビューでの名言。スタートアップ採用の鉄則として今も引用される。</li>
+        <li>"部屋の大人 (the adult in the room) になろうとする経験者は採用するな" と公言。 経験豊富であっても <strong>柔軟性</strong> がない人材を排除する哲学。</li>
+        <li>Forbes "最も影響力ある女性100人" に2017年(96位)、 2018年(69位)選出。 知名度より影響力、というBelindaの哲学を反映。</li>
+        <li>Mark Cuban が共同創業した Broadcast.com 出身。 Cuban とは今も親交がある。</li>
+        <li>Yahoo! では <strong>12年</strong> General Counsel を務めた——これは Yahoo! の歴代経営陣の誰よりも長い。</li>
+        <li>家族はカリフォルニア州 Redwood City 在住。 シリコンバレーの中心ではなく "ベイエリアの郊外" を選ぶライフスタイル。</li>
+        <li>Sequoia の Alfred Lin の助言で <strong>Walmart の政策責任者から学んだ</strong>。 異業種から学ぶ姿勢が政策戦略の核。</li>
+        <li>パンデミック直前の2020年3月退任は計画的ではない偶然。 だが結果的に "完璧な引き際" として歴史に刻まれた。</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Brian Chesky <span class="ja">ブライアン・チェスキー</span></div><span class="rel-tag">No.1 / 創業者</span></div>
+          <div class="rel-body">9年間仕えた相手。 RISD出身のデザイナー、 法律も規制も知らない28歳の創業者。 Belinda を "最初のエグゼクティブ採用" として迎え、 デスクを2フィート隣に置いた。 "I learn from her every day" と公言。 関係は決裂せず、Belindaは取締役として今も Brian の隣にいる。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div><span class="rel-tag">先行モデル</span></div>
+          <div class="rel-body">"Tech No.2 翻訳型" の先行モデル。 Belinda は明示的に "Airbnb のサンドバーグ" と呼ばれたが、 14年勤めた Sandberg に対し9年で去った点、 Lean In のような著作を作らなかった点で <strong>"黒子の純度"</strong> ではBelindaが上回る。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Mark Cuban <span class="ja">マーク・キューバン</span></div><span class="rel-tag muted">最初の創業者ボス</span></div>
+          <div class="rel-body">Broadcast.comの共同創業者。 1996年に Belinda を General Counsel として採用した最初の "創業者型のNo.1"。 Yahoo! 売却の経験を通じて、 Belindaは "Tech 弁護士" のキャリアを確立した。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Joe Gebbia <span class="ja">ジョー・ゲビア</span></div><span class="rel-tag muted">共同創業者</span></div>
+          <div class="rel-body">Airbnb 共同創業者・元CPO。 Brian の RISD 同級生。 Belinda は Brian だけでなく Joe・Nathan の3人と緊密に連携し、 創業3人組のすべてに信頼された "中和剤" 的No.2だった。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Nathan Blecharczyk <span class="ja">ネイサン・ブレチャージク</span></div><span class="rel-tag muted">共同創業者・CSO</span></div>
+          <div class="rel-body">Airbnb 共同創業者・CTO/CSO。 Harvard出身のエンジニア。 Belinda は政府関係を、 Nathan は China事業を担い、 創業3人組と Belinda の "4人体制" でAirbnbを動かした。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Laurence Tosi <span class="ja">ローレンス・トージ</span></div><span class="rel-tag muted">前任CFO / 対立者</span></div>
+          <div class="rel-body">2015–2018年Airbnb CFO。 Brian と路線対立して退任した張本人。 Tosi の退任が Belinda の COO 昇格のトリガーとなった。 No.2 の "組織内対立を緩衝する役割" を象徴するエピソード。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Alfred Lin <span class="ja">アルフレッド・リン</span></div><span class="rel-tag muted">投資家 / 助言者</span></div>
+          <div class="rel-body">Sequoia Capital パートナー、 元Zappos COO。 Airbnbの取締役として Belinda の戦略助言者を務めた。 Walmartの政策責任者から学ぶよう勧めたのも Alfred。 No.2 にとっての <strong>"外部の知恵"</strong> としてのVCの典型例。</div>
+        </div>
+        <div class="rel">
+          <div class="rel-head"><div class="rel-name">Brent Johnson <span class="ja">ブレント・ジョンソン</span></div><span class="rel-tag muted">夫 / 思想的相棒</span></div>
+          <div class="rel-body">作家、元弁護士。 Belinda のキャリアを支える "ホームの相棒"。 Sandberg の Dave Goldberg と同じく、 シリコンバレーの "パワー・カップル" でありながらメディア露出を抑える静かな夫婦像。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Belinda_Johnson" target="_blank">Belinda Johnson — Wikipedia</a></li>
+        <li><a href="https://articles.sequoiacap.com/2019-01-09-belinda-johnson" target="_blank">Seven Questions with Belinda Johnson — Sequoia Capital (2019)</a></li>
+        <li><a href="https://qz.com/work/1175702/airbnb-coo-belinda-johnson-thrives-by-saying-yes" target="_blank">Airbnb's Belinda Johnson is a woman on the rise — Quartz (2018)</a></li>
+        <li><a href="https://www.cnbc.com/2019/11/22/airbnb-coo-belinda-johnson-to-step-down.html" target="_blank">Airbnb COO Belinda Johnson to step down — CNBC (2019)</a></li>
+        <li><a href="https://fortune.com/2018/02/01/airbnb-cto-tosi-out/" target="_blank">Airbnb CFO Laurence Tosi Is Out, Belinda Johnson named COO — Fortune (2018)</a></li>
+        <li><a href="https://fortune.com/2015/07/13/airbnb-belinda-johnson-promotion/" target="_blank">AirBnB promotes Belinda Johnson — Fortune (2015)</a></li>
+        <li><a href="https://law.utexas.edu/news/2018/02/02/belinda-johnson-91-named-first-coo-of-airbnb/" target="_blank">Belinda Johnson '91 Named First COO of Airbnb — Texas Law News (2018)</a></li>
+        <li><a href="https://www.linkedin.com/in/johnsonbelinda/" target="_blank">Belinda Johnson — LinkedIn</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

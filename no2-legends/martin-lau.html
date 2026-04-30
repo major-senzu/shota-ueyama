@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Lau — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { min-height: 100vh; padding: 0; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* HERO */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong { color: var(--hero-fg); font-weight: 700; }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  /* SECTION COMMON */
+  section.block { margin-bottom: 64px; }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  /* ORIGINS */
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .origins-row:first-child { border-top: none; }
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  /* TIMELINE */
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* DUO STAGES */
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  /* VALUE GRID */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* TYPE */
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  /* LESSONS */
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  /* TRIVIA */
+  ul.trivia { list-style: none; }
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* SOURCES */
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  /* RELATIONS */
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="ML"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Martin_Lau.jpg/250px-Martin_Lau.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+          <h1>Martin Lau</h1>
+          <div style="font-size: 14px; color: var(--hero-muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;">劉熾平 / Lau Chi Ping</div>
+        </div>
+      </div>
+      <p class="summary">
+        北京生まれ・香港育ちの電気工学エンジニア。 Michigan → Stanford → Kellogg と工学と経営を二重に修めたあと、
+        McKinsey → Goldman Sachs Hong Kong で中華圏インターネット業界の <strong>主席投資銀行家</strong> へ。
+        2004年、 GS の Lead Banker として <strong>Tencent の HKEX 上場</strong> を主導したのが Pony Ma との出会い。
+        翌年、 投資家の側から事業会社へ移籍し <strong>Chief Strategy Officer</strong> として Tencent 入社、
+        翌2006年に <strong>President（総裁）</strong> 就任。 以後20年、 Pony Ma の "<strong>外には出ない CEO</strong>" の隣で、
+        WeChat の収益化、 Riot/Supercell/Epic の <strong>世界ゲーム連合</strong> 構築、 JD・美団・拼多多への戦略出資、
+        そして米中規制の嵐をひとりで受け切った。 現代中国テックの "<strong>サンドバーグ型のアジア版</strong>"、
+        蔡崇信の双子の兄弟。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Pony Ma 馬化騰（Tencent 創業者・CEO・1998–現在 / 27年継続）／ Lau は 2005年から President として右腕を継続中・自身が CEO に立つ意思を一切見せない</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1973年（52–53歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">北京（生）／ 香港（育）</div>
+        </div>
+        <div>
+          <div class="fact-label">国籍</div>
+          <div class="fact-value">中国（香港）</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">約 $2–3B（Tencent ストックオプション中心）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">妻・子（公開情報なし、 私生活を徹底的に秘匿）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">ゲーミング（自称ヘビーゲーマー）／ 読書／ 美術収集</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Tencent Holdings President（総裁、 2006–） / Executive Director（取締役、 2007–） / Tencent Music Entertainment Chairman / Riot Games Board / Epic Games Board / Snap Inc. Board (2020–) / Spotify Board (2017–) / 香港総商会 役員</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- TL;DR -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者の Vision を、 M&amp;A と資本配分のグローバル・ネットワークに翻訳しつづけた "Sandberg型のアジア版" No.2</strong>」。
+        Pony Ma が <strong>プロダクト直感とエンジニア哲学</strong> でフロントを張り、 Lau は <strong>戦略・資本・国際・ガバナンス・規制対応</strong>
+        を全引き受け。 投資銀行家として Tencent の上場を成功させた直後、 <strong>"自分の作った会社"</strong> 側に席を移すという稀な決断をして以来、
+        20年同じ椅子に座り続けている。 Riot Games / Supercell / Epic Games / Spotify / Snap / Tesla / JD / 美団 / 拼多多——
+        中国テックが世界を買い漁った時代の <strong>買い手の頭脳</strong> はほぼ全て Lau の脳から出ている。
+        サンドバーグ・蔡崇信と並ぶ "<strong>翻訳型 × 資本型</strong>" の三位一体。
+      </div>
+    </div>
+
+    <!-- ORIGINS -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1973年、 北京で生まれ、 幼少期に香港へ移住</strong>。 中産階級の家庭で（公開情報は極めて限定的）、
+            香港返還前夜の英統治下で <strong>英語と中国語のバイリンガル教育</strong> を受けた世代。
+            幼少期から数学と理科に強く、 高校までは香港の地元名門校で学んだとされる。 北京・香港の二軸を持つことが、
+            後に「<strong>中国大陸テック × 国際資本市場</strong>」を繋ぐ Lau の原点になる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">学部</div>
+          <div class="origins-body">
+            <strong>University of Michigan, BSE in Electrical Engineering（電気工学学士、 1990年代前半）</strong>。
+            米国留学を選んだのは、 当時の香港エリートとしては王道。 Michigan を選んだ理由は明らかにされていないが、
+            工学の名門としての評価と、 実用主義的な校風が Lau の性格に合った。 ここで <strong>"作る側 / 設計する側"</strong>
+            の身体感覚が出来上がる。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>Stanford University, MS in Electrical Engineering</strong>。 シリコンバレー全盛期の Stanford で
+            EE の修士を取り、 90年代半ばのインターネット黎明期を <strong>震源地</strong> で目撃。
+            この時期に Yahoo・Netscape・Cisco の創業組と同じキャンパスで学んだことが、 後に Tencent で
+            <strong>"テック企業の中身を投資家視点でなく開発者視点で読める"</strong> 武器になった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">MBA</div>
+          <div class="origins-body">
+            <strong>Northwestern University, Kellogg School of Management, MBA</strong>。 工学から経営への
+            橋渡し。 Kellogg はマーケティングと組織論に強く、 ファイナンス偏重のシカゴ大やウォートンとは色が違う——
+            Lau が "純粋な投資銀行マシン" にならず、 後に <strong>事業側に移っても通用するゼネラリスト</strong>
+            に育った理由のひとつ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">初職（McKinsey）</div>
+          <div class="origins-body">
+            Kellogg 修了後、 <strong>McKinsey &amp; Company の香港オフィス</strong> に参画。 通信・テクノロジー
+            業界のコンサルタントとして、 アジア通信市場の自由化と中国携帯キャリア再編をクライアント側で経験。
+            ここで <strong>"中国大陸のテック市場の構造的読み"</strong> を身につける。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">Goldman Sachs 香港</div>
+          <div class="origins-body">
+            <strong>Goldman Sachs (Asia) — Executive Director / Head of TMT (Telecom, Media, Technology) Investment Banking, Asia</strong>。
+            2001年頃に McKinsey から GS へ転身し、 <strong>中華圏インターネット企業のIPO・M&amp;A</strong> を取り仕切る
+            アジアトップバンカーへ駆け上がる。 Lau のキャリアの分水嶺は <strong>2004年、 Tencent 香港上場</strong>——
+            Lead Banker として Pony Ma と直接対話し、 IPO 価格設定・投資家ロードショー・上場後ガバナンスを
+            設計する過程で、 Pony Ma に "<strong>こいつを社内に欲しい</strong>" と言わせた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>工学・経営・投資銀行の三領域を全て修めた、 中華圏で稀有な"テック特化のM&amp;Aアーキテクト"</strong>」
+            というアイデンティティが完成。 ただし GS の Executive Director という地位は <strong>"他人の取引を成立させる側"</strong>
+            の最高峰でしかなく、 Lau 自身が組織を作り、 戦略を実行する側に立てる場所ではなかった。
+            Pony Ma に誘われた時、 Lau は <strong>"自分の能力を全部使い切るには事業側しかない"</strong> と即決した。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"I joined Tencent because I wanted to build something, not just advise others to build."</div>
+        <div class="src">— Martin Lau（2005年 Tencent 入社の動機について、 複数のメディア取材で繰り返した自己定義）</div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1973</td>
+            <td>北京で生まれ、 幼少期に香港へ移住。 英統治末期、 バイリンガル教育の中で育つ。 「<strong>大陸 × 香港 × 西側</strong>」のトリプル軸が初期設定。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18–22</td>
+            <td class="col-year">1991–95頃</td>
+            <td><strong>University of Michigan, BSE Electrical Engineering</strong>。 工学の名門で米国生活を開始。 「設計する側」の身体感覚を獲得。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23–24</td>
+            <td class="col-year">1996–97頃</td>
+            <td><strong>Stanford 大学院 MS in EE</strong>。 シリコンバレーのドットコム黎明期を震源地で目撃。 後の <strong>"テックを内側から読む眼"</strong> を獲得。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25–26</td>
+            <td class="col-year">1998–99頃</td>
+            <td><strong>Northwestern Kellogg MBA</strong>。 工学から経営へ橋渡し。 マーケティング・組織論を学び、 <strong>純粋ファイナンス人材ではないゼネラリスト</strong> に。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26–28</td>
+            <td class="col-year">1999–2001</td>
+            <td><strong>McKinsey 香港オフィス</strong>。 通信・テック分野のコンサルタント。 中国通信市場再編・アジア自由化の現場で <strong>大陸の構造を読み込む</strong>。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">28</td>
+            <td class="col-year">2001頃</td>
+            <td><strong>Goldman Sachs Hong Kong に移籍</strong>。 TMT インベストメントバンキングへ。 Asia の中華圏テック IPO/M&amp;A の中核プレイヤーへ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">2004.06</td>
+            <td><strong>Goldman Sachs の Lead Banker として Tencent の HKEX 上場を主導</strong>。 IPO 価格 HK$3.70、 時価総額 HK$6.2B でデビュー。 ロードショーで Pony Ma と数十回ペアを組み、 ここで信頼関係が形成される。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">31</td>
+            <td class="col-year">2005.02</td>
+            <td><strong>Tencent に Chief Strategy Officer として参画</strong>。 GS Executive Director の地位とパッケージを捨て、 投資家から事業家側に移籍。 <strong>"自分が支えると決めた一社"</strong> に賭ける決断。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2006.02</td>
+            <td><strong>Tencent President（総裁）に就任</strong>。 入社わずか12ヶ月で No.2 確定。 Pony Ma が CEO・プロダクトに専念し、 Lau が <strong>戦略・財務・運営・国際</strong> を全引き受け体制に。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">33</td>
+            <td class="col-year">2007</td>
+            <td><strong>Tencent Holdings 取締役（Executive Director）に就任</strong>。 ガバナンス・上場会社管理の責任者として、 公の顔としても外部に立ち始める。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2011.01</td>
+            <td><strong>WeChat（微信）ローンチ</strong>。 Allen Zhang のプロダクトを Lau が会社全体の戦略の中核に据え、 広告・決済・ミニプログラムへの収益化ロードマップを設計。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2011.02</td>
+            <td><strong>Riot Games（League of Legends）の完全買収（$400M で残り株を取得）</strong>。 Lau が主導した最初の大型海外 M&amp;A。 中国テックがハリウッド級の Western IP を完全所有する道を開いた象徴例。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2012</td>
+            <td><strong>Epic Games の40% 株式取得（$330M）</strong>。 Fortnite の親会社に最大の外部株主として静かに座る。 ゲーム連合構築の第二弾。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">40</td>
+            <td class="col-year">2014</td>
+            <td><strong>JD.com への戦略出資（15%）と楽天市場のような EC 提携</strong>、 <strong>Snapchat への$200M 投資</strong>、 <strong>WeChat Pay の本格展開</strong>。 アリババ vs テンセントの二強時代の幕開けを Lau が資本面で設計。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">42</td>
+            <td class="col-year">2016.06</td>
+            <td><strong>Supercell（Clash of Clans）の84% を $8.6B で買収（コンソーシアム）</strong>。 史上最大級の中国テックによる海外 M&amp;A。 Tencent の世界ゲーム連合が完成。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2017</td>
+            <td><strong>Tesla の5% を $1.78B で取得</strong>、 <strong>Spotify との株式持ち合い（10%相互保有）</strong>。 ゲーム以外の領域への戦略出資が加速。 <strong>Spotify 取締役</strong> 就任。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">44</td>
+            <td class="col-year">2018.03</td>
+            <td><strong>中国当局がオンラインゲーム新作の認可凍結（最初の規制ショック）</strong>。 Tencent 株価が年内 25% 下落、 時価総額 $200B 以上消失。 Lau が初めて <strong>"資本を増やす No.2" から "資本を守る No.2"</strong> へギアチェンジ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">46</td>
+            <td class="col-year">2020</td>
+            <td><strong>Snap Inc. 取締役就任</strong>。 海外大手ボードへのアクセス拡大の象徴。 同年 COVID で WeChat とゲームが急伸し Tencent 株価最高値（$95、 時価総額 $928B）。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">2021</td>
+            <td><strong>反独占キャンペーン本格化、 ゲーム未成年規制、 アリババへの $2.8B 罰金</strong>。 Tencent も全プラットフォーム再点検。 Pony Ma が表舞台から退き、 <strong>Lau が事実上の対外顔</strong> となる。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2021.12</td>
+            <td><strong>JD.com 株式の大半を Tencent 株主に直接配当（$16.4B 分の現物配当）</strong>。 規制圧力下で「<strong>独占を解いて見せる</strong>」高度な政治判断を Lau が主導。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">50</td>
+            <td class="col-year">2023.07</td>
+            <td><strong>米団体への規制圧力下、 Meituan 株（17%）を $20B 以上を Tencent 株主に現物配当</strong>。 「<strong>戦略的撤退の美学</strong>」の第二弾。 Lau の規制対応の代表作。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">51</td>
+            <td class="col-year">2024</td>
+            <td><strong>Tencent が AI（混元 Hunyuan）と海外ゲーム成長で復活、 自社株買い $13B</strong>。 Pony Ma が再び決算カンファレンスに姿を見せ始め、 二人体制が <strong>"嵐の後"</strong> モードに移行。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">2025–</td>
+            <td><strong>Tencent President 20年目に突入</strong>。 No.2 として最も長く同じ椅子に座り続けた現代テック史の記録的存在。 退任の兆しも、 上に立つ意志の表明も、 一切なし。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- No.1（Pony Ma）との関係構造 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Pony Ma）との関係構造</h2>
+      <p>
+        2003〜2004年、 Pony Ma は Tencent を香港証券取引所に上場させようと模索していた。 当時の主幹事候補
+        として最後まで残ったのが <strong>Goldman Sachs</strong> で、 GS 側のロードショー責任者が <strong>Lau Chi Ping
+        Executive Director</strong> だった。 ロードショーは数十回の投資家ミーティングをこなし、 Pony Ma と Lau は
+        合計 <strong>数百時間を二人だけで過ごした</strong>——ここで Pony Ma は、 Lau が <strong>"GS の代理人ではなく Tencent の
+        ために考える人間"</strong> であることを察知する。
+      </p>
+      <p>
+        2004年6月、 Tencent は HKEX に上場。 <strong>IPO は成功</strong>、 GS としての Lau の仕事も完了。 しかし Pony Ma は
+        Lau に <strong>"こちら側に来てほしい"</strong> と申し出る。 Lau は半年以上悩んだ末、 2005年2月、 <strong>GS の
+        Executive Director の地位とパッケージを捨てて</strong> Tencent 入社を決めた。 役職は Chief Strategy Officer。
+        翌年の2006年2月、 入社からわずか12ヶ月で <strong>President</strong> に昇格——これは創業者以外で Tencent で
+        最速の権限委譲だった。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Pony focuses on the product. I focus on everything else. That's how it has worked for twenty years."<br>
+        — Martin Lau（複数の Bloomberg・Caixin インタビューで一貫する自己定義）
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">IPO ロードショー</div>
+          <div class="stage-body">2003–2004年、 GS の Lead Banker として Pony Ma と数十回の投資家ミーティングを共にする。 <strong>"GS 側の代理人ではなく Tencent のために考える人間"</strong> であることが Pony Ma に伝わる。 IPO 完了後の2005年、 投資家側から事業家側へ移籍を決断。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 設計者として確立</div>
+          <div class="stage-title">Strategy → President</div>
+          <div class="stage-body">入社わずか12ヶ月で President 昇格。 Pony Ma は <strong>プロダクトとエンジニアリング</strong>、 Lau は <strong>戦略・資本・運営・国際・規制</strong>。 Tencent の DNA は <strong>"プロダクトの天才 × 資本の天才"</strong> という二人の合作で固まる。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">世界ゲーム連合</div>
+          <div class="stage-body">Pony Ma が WeChat・QQ・ゲーム・SNS を社内でビルドする間、 Lau は <strong>Riot/Supercell/Epic/Snap/Tesla/Spotify/JD/美団</strong> を世界から買い集める。 Lau の脳内に「世界のテック株主名簿」がそのまま入っている時期。 時価総額は2020年に <strong>$928B</strong> に到達。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 嵐の番人</div>
+          <div class="stage-title">規制下の二人体制</div>
+          <div class="stage-body">2018–2023年、 ゲーム認可凍結・反独占・米中対立。 Pony Ma が表舞台から消えた間、 <strong>Lau が事実上の Tencent の顔</strong> として外部対応を一手に引き受ける。 JD・美団株の現物配当という「<strong>独占を自ら解いて見せる</strong>」高度な政治判断を主導。 2024年以降、 株価が回復し Pony Ma が再び姿を見せ始め、 二人体制が <strong>"嵐の後"</strong> モードへ。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- No.2を選んだ動機 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Lau は <strong>"自分が前に立つタイプではない"</strong> ことを、 Stanford 在学時から自覚していたとされる。 Yale Law の
+        蔡崇信が <strong>"完璧な国際エリート"</strong> であったように、 Lau もまた <strong>"完璧な裏方の最高峰"</strong>
+        として自分のキャリアを設計していた。 McKinsey、 GS、 Tencent President——どれも前面に立つ役ではなく、
+        部屋の中で構造を組み立てる役。 この自己理解がブレなかった。
+      </p>
+      <p>
+        Pony Ma は逆。 <strong>プロダクト直感の天才、 ユーザー心理に異常な感度、 メディアと議会との対話が苦手、
+        英語が流暢でない、 ファイナンスは専門家任せ</strong>。 だが Tencent は世界一のメッセンジャーアプリと
+        ゲーム会社を作った。 Lau は <strong>「自分が一生欲しかったのは"プロダクトに集中したい No.1"だ」</strong>
+        と理解した。 Pony Ma の弱点は Lau の強みのカタログそのもの。
+      </p>
+      <p>
+        重要なのは、 Lau が <strong>"Pony Ma を超える野心"</strong> を一度も表明しなかったこと。 2018年以降、
+        規制圧力の中で Pony Ma が表舞台から消えた時期は、 「Lau が事実上の CEO だ」と外野が騒いだが、
+        本人は決して <strong>CEO のタイトルを取りに行かなかった</strong>。 「<strong>Pony が CEO のままであることが Tencent
+        の最大の資産</strong>」と Lau は理解している——これは蔡崇信が Jack Ma を Chairman のまま守った構造と同じ。
+      </p>
+    </section>
+
+    <!-- 提供した独自価値 -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">EE学士・修士 (Michigan + Stanford) × Kellogg MBA × McKinsey TMT × GS TMT。 <strong>テック企業の中身をエンジニア視点で理解しながら、 投資家視点で評価し、 経営視点で実行できる三位一体</strong>。 中華圏でこの組み合わせを20代で持っていた人材は片手で数えるほど。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">翻訳 (Translator) × 設計 (Architect) × 資本配分 (Capital Allocator)。 Pony Ma の <strong>「ユーザーに刺さるプロダクト」</strong> という直感を、 <strong>戦略・資本・国際・規制対応</strong> に翻訳。 とくに M&amp;A・戦略出資の規模と精度で、 史上最高水準の資本配分者の一人。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Lau がいなければ、 Riot・Supercell・Epic・Snap・Tesla・Spotify・JD・美団・拼多多の <strong>"Tencent 連合"</strong> はほぼ全て成立しない。 2018–2023年の規制ショックで Tencent は組織として崩壊していた可能性が高い。 <strong>Tencent の "倒れない構造" は Lau が設計</strong>した。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">Pony Ma 退任時の継承候補 No.1。 ただし Lau は <strong>"創業者の精神を制度に固定する側"</strong> に徹する哲学を一貫して見せており、 自分が CEO に立つよりも、 "<strong>外には出ない CEO + 外を全て引き受ける President</strong>" という現体制を最大限長く維持する方を選ぶと見られている。</div>
+      </div>
+    </section>
+
+    <!-- 試練と決断 -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 2005年、 GS Executive Director から事業家への転身。</strong> 当時の年収は数億円規模、
+        しかも GS でのキャリアの絶頂期。 全てを捨てて、 深圳の "ペンギン会社"（Tencent のロゴはペンギン）に
+        Chief Strategy Officer として参画した。 <strong>蔡崇信が1999年に月 $50 で Alibaba に参画したのと同じ
+        「投資家側 → 事業家側への決断」</strong>を、 Lau は2005年に再演している。
+      </p>
+      <p>
+        <strong>② 2010–11年、 360 vs Tencent 戦争（"3Q大戦"）。</strong> セキュリティソフト 360 が Tencent QQ を
+        「ユーザー監視している」と公開攻撃し、 中国全土で大論争に。 ユーザーに "QQ か 360 か" を選ばせる
+        二者択一を仕掛けられた Tencent は世論で大敗北、 Pony Ma は心身を病んだとされる。 Lau はこの時期、
+        <strong>「閉鎖から開放へ」</strong> の戦略大転換を主導——以後の Tencent は <strong>"オープン・プラットフォーム化"</strong>
+        として外部スタートアップへ巨額投資する側に回る。 これが後の Riot/Supercell/JD/美団/拼多多の出資戦略の起源。
+      </p>
+      <p>
+        <strong>③ 2018年、 ゲーム認可凍結ショック。</strong> 中国当局が新作オンラインゲームの認可を凍結し、
+        Tencent 株価は年内 25% 下落、 時価総額 $200B 以上が消失。 Lau は <strong>"成長投資の President" から
+        "資本を守る President"</strong> へ役割を変え、 全グループの規律を引き締めた。
+      </p>
+      <p>
+        <strong>④ 2020–2023年、 規制と Pony Ma 不在の経営。</strong> 反独占キャンペーン、 アリババへの $2.8B 罰金、
+        ゲーム未成年規制、 米中対立の本格化、 Pony Ma が表舞台から退場。 この間、 Lau は <strong>JD.com 株 $16.4B、
+        美団株 $20B 超を Tencent 株主に現物配当</strong> として吐き出すという、 中国テック史上前例のない「<strong>戦略的
+        独占解除</strong>」を主導。 「自分から差し出すことで、 取られない」高度な政治判断。
+      </p>
+    </section>
+
+    <!-- 引き際・継承 -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        Lau はまだ <strong>引いていない</strong>——2026年現在、 Tencent President 20年目に突入。 No.2 として最も長く
+        同じ椅子に座り続けた現代テック史の記録的存在になりつつある。 退任の兆しも、 上に立つ意志の表明も、
+        一切ない。 蔡崇信が2023年に Chairman に昇格したのとは対照的に、 Lau は <strong>President のままで居続ける道</strong>
+        を選ぶ可能性が高い。
+      </p>
+      <p>
+        Lau の引き際の特徴は <strong>"Founder Spirit を制度に固定する"</strong>。 Tencent のオープン・プラットフォーム化、
+        外部出資ポートフォリオの規律、 上場会社ガバナンス、 サブシディアリーの分割上場（Tencent Music・閲文集団）——
+        いずれも創業者個人の判断に依存しない仕組みとして残されている。 これは蔡崇信が Alibaba で取った「<strong>創業者の人格に依存しない組織化</strong>」と同じ系譜。
+      </p>
+      <p>
+        Pony Ma が引退する時、 Lau が <strong>Chairman に昇格して "外に出ない CEO" を守る側</strong> に回るシナリオが
+        最有力視されている。 蔡崇信が2023年に取った道——「<strong>創業者の右腕から創業精神の番人へ</strong>」——を、
+        Lau もまた数年内にたどると見られている。 ただし Lau 本人は徹底的に沈黙を守り、 自分の将来計画を一切口にしない。
+      </p>
+    </section>
+
+    <!-- No.2の型 -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Martin Lau の No.2 型</div>
+        <div class="type-name">翻訳型 × 資本配分型 × 沈黙型</div>
+        <div class="type-body">
+          創業者の Vision を <strong>"M&amp;A と資本配分のグローバル・ネットワーク"</strong> に翻訳する役割を、 自身がトップに立つ意思を
+          一切持たずに全うする型。 蔡崇信・サンドバーグ・Sundar Pichai の系譜だが、 違いは <strong>"徹底した沈黙"</strong>。
+          <br><br>
+          ▸ <strong>翻訳型</strong>: Pony Ma の "プロダクト直感" を、 <strong>資本・戦略・規制・国際</strong> に翻訳する。
+          蔡崇信の "Yale Law 翻訳" に対し、 Lau は "Stanford EE × Kellogg MBA × Goldman Sachs 翻訳"——
+          より <strong>資本市場側に振った</strong> 翻訳者。
+          <br><br>
+          ▸ <strong>資本配分型</strong>: Riot/Supercell/Epic/Snap/Tesla/Spotify/JD/美団/拼多多——
+          史上最大級の <strong>テック投資ポートフォリオ</strong> を一人で設計。 <strong>Buffett-Munger 的な capital allocator</strong>
+          としての側面が、 サンドバーグ・蔡崇信より顕著。
+          <br><br>
+          ▸ <strong>沈黙型</strong>: 蔡崇信が NBA オーナーとして表舞台に立つのと対照的に、 Lau は <strong>20年間、 ほぼ自己発信ゼロ</strong>。
+          メディア露出は決算カンファレンスのみ、 SNS なし、 自伝なし、 家族公開なし。 <strong>「Pony Ma の影として完成する」</strong>
+          という日本的な美学に最も近い、 中華圏 No.2 の極北。
+        </div>
+      </div>
+    </section>
+
+    <!-- 翔太への設計図 -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">投資家側で No.1 を見つけ、 そのまま事業家側に移れ</div>
+          <div class="lesson-body">
+            Lau は GS の Lead Banker として Tencent IPO を主導する過程で、 Pony Ma を <strong>"クライアントとして数百時間隣に座って"</strong>
+            選んだ。 名刺交換で選ぶ No.1 と、 数百時間の濃密な仕事を共にして選ぶ No.1 では、 賭けの精度が桁違い。
+            翔太も <strong>Wanderlust の隣で出会う経営者・クライアント</strong> の中に、 もし「この人の右腕に20年いてもいい」
+            と思える人物がいるなら、 投資家／コンサル目線の検証期間を踏んでから合流すれば良い。 焦らなくていい。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">"プロダクト No.1" の隣には "資本 No.2" の席が必ず用意されている</div>
+          <div class="lesson-body">
+            Pony Ma は世界最高クラスのプロダクト天才だが、 資本配分は専門家任せ。 だから Lau の席があった。
+            蔡崇信 ↔ Jack Ma、 サンドバーグ ↔ Zuckerberg、 全て同じ構造。 翔太が将来 No.2 になる時は、
+            <strong>"プロダクト・ビジョン・カリスマ" のどれかを持つ No.1</strong> を選び、 その人が <strong>絶対に持っていない
+            "資本・戦略・規制・国際" を自分が一手に引き受ける</strong> ポジションを確保せよ。 これが No.2 を不滅にする。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">沈黙は最強のブランディング——20年同じ椅子に座る者の余裕</div>
+          <div class="lesson-body">
+            Lau は20年間ほぼ自己発信ゼロで、 自伝も TED トークも SNS もない。 にもかかわらず、 中華圏テックを
+            理解する者は皆 Lau の名前を知っている。 これは <strong>"成果が話す"</strong> 時代の最高峰のブランディング。
+            翔太の人生哲学（急がない・余裕・優しさ）と完全に一致する。 派手なメディア露出を取りに行かなくても、
+            <strong>20年同じ椅子に座り、 結果を出し続けるだけで、 業界の知る人が知る存在になる</strong>。
+            稲盛・Buffett・Lau は同じ系譜。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 雑学・人柄 -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li><strong>Tencent 入社前のインタビュー数</strong>は、 GS Lead Banker としてだけで数十回。 IPO ロードショーの間に Pony Ma と過ごした合計時間は <strong>数百時間</strong> に達したと言われている——名刺一枚ではなく、 数百時間の "クライアント関係" が信頼の土台。</li>
+        <li>香港で生まれ育ち、 Michigan・Stanford・Kellogg で学び、 McKinsey・GS で働き、 Tencent では深圳本社と香港事務所を行き来。 完全な <strong>中華圏 × 米国 × グローバル金融</strong> のトリプル軸。</li>
+        <li>Tencent 入社時のサインオンボーナスとストックオプション総額は非公開だが、 後年の Forbes 推定では <strong>純資産 $2–3B</strong>。 ほとんどが Tencent 株式。</li>
+        <li><strong>自他ともに認めるヘビーゲーマー</strong>。 League of Legends、 Honor of Kings、 PUBG Mobile を社内のテストプレイヤーとして頻繁にプレイし、 「Lau が遊んで詰まないかどうか」がプロダクトテストの社内基準のひとつになっているとも報じられる（Caixin・Bloomberg）。</li>
+        <li>2011年の Riot Games 完全買収（$400M）は、 Tencent 内部でも反対意見が多かったが、 Lau が Pony Ma を説得し、 自身が交渉を主導。 結果、 League of Legends は世界で最も収益の高い PC ゲームになり、 投資は <strong>20倍以上のリターン</strong> に。</li>
+        <li>Spotify との <strong>10% 株式持ち合い</strong>（2017）は、 Lau が Daniel Ek と直接交渉。 中国でのストリーミング覇権 (Tencent Music) と西洋の Spotify を <strong>非競合の地理分業</strong> として連結する設計。</li>
+        <li>Snap Inc. 取締役（2020–）。 Evan Spiegel との関係が深く、 中国テック流の "<strong>送金 + ミニアプリ + ライブ配信</strong>" 統合 SNS 戦略を Snap の経営に持ち込んだとされる。</li>
+        <li>2021年に <strong>JD.com 株を Tencent 株主に直接配当</strong>（$16.4B 分の現物配当）した時、 当時の業界記者は「<strong>規制圧力下で独占を自ら解いて見せる、 史上最高の政治判断</strong>」と評した。 蔡崇信の Alipay 分離問題対応と並ぶ、 中国テック史の名場面。</li>
+        <li>家族・私生活は <strong>徹底的に非公開</strong>。 妻子の名前・写真・国籍も一切公表されておらず、 香港の自宅住所も秘匿。 SNS アカウントは存在しない。 蔡崇信が Brooklyn Nets で表舞台に立つのと対照的。</li>
+        <li>Tencent 社内では Pony Ma の <strong>"絶対的な信頼"</strong> を受けており、 取締役会の議題のうち戦略・資本・人事・規制の8割は Lau が前さばきしているとされる（複数の元 Tencent 役員の証言、 Caixin）。</li>
+        <li>Allen Zhang（張小龍 / WeChat 創業者）との関係は <strong>"プロダクト天才 × 資本天才"</strong> の橋渡し。 Allen がプロダクトを完璧に作り、 Lau が WeChat ペイ・広告・ミニプログラムへ収益化ロードマップを敷いた。</li>
+        <li>Lau の有名なトレードマークは <strong>細縁メガネとシンプルなビジネススーツ</strong>。 中国のセレブ経営者によくある時計や車のステータス・シンボルを身に付けない。 「金融マンに見えない金融マン」というコメントを Caixin に書かれたことがある。</li>
+      </ul>
+    </section>
+
+    <!-- 関連の深い人物 -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Pony Ma <span class="ja">馬化騰 / 創業者</span></div>
+            <span class="rel-tag">No.1 / 20年の相棒</span>
+          </div>
+          <div class="rel-body">
+            2003–2004年、 Tencent IPO ロードショーで初対面（Lau は GS 側、 Pony は IPO主体）。 Pony Ma が <strong>プロダクト・直感・ユーザー心理</strong>、 Lau が <strong>戦略・資本・規制・国際</strong>。 Pony が表に出ない CEO のまま、 Lau が外を全て引き受ける——20年同じ役割分担で運営し続ける、 中華圏 No.1/No.2 の最長記録ペア。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Joseph Tsai <span class="ja">蔡崇信 / Alibaba</span></div>
+            <span class="rel-tag">同世代の対の存在</span>
+          </div>
+          <div class="rel-body">
+            Tsai が Yale Law から Alibaba の蔡、 Lau が Stanford EE から Tencent の劉。 同じ <strong>"投資家側 → 事業家側への決断"</strong> を1999年/2005年に再演。 蔡が Brooklyn Nets で表に出るのに対し、 Lau は20年間沈黙——スタイルは正反対だが、 役割は <strong>双子</strong>。 アリババ vs テンセントの二強時代を、 二人の No.2 が背中合わせで設計した。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Allen Zhang <span class="ja">張小龍 / WeChat 創業者</span></div>
+            <span class="rel-tag">プロダクト面の同志</span>
+          </div>
+          <div class="rel-body">
+            Tencent 内に <strong>"独立王国"</strong> を持つ Allen Zhang は、 WeChat の創業者であり Tencent の事実上の No.3。 Allen がプロダクトを完璧に作り、 Lau が WeChat Pay・広告・ミニプログラムを収益化。 二人は <strong>役割を分けて干渉せず</strong>、 これが WeChat を月間アクティブ13億ユーザーへ押し上げた。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Brendan Iribe / Marc Merrill / Brandon Beck <span class="ja">Riot Games 創業者ら</span></div>
+            <span class="rel-tag">M&A の同志</span>
+          </div>
+          <div class="rel-body">
+            2011年 Riot Games 完全買収（$400M）の対面交渉相手。 Lau は買収後も Riot 創業者の独立性を尊重し、 LoL の世界展開に介入しなかった。 これが <strong>"中国テックが買っても殺さない"</strong> という当時としては画期的な評判を作り、 後の Supercell・Epic・Spotify の交渉で Tencent が選ばれる根拠になった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Daniel Ek <span class="ja">Spotify CEO</span></div>
+            <span class="rel-tag muted">取締役の相手</span>
+          </div>
+          <div class="rel-body">
+            2017年 Spotify との10% 株式持ち合いを Lau が直接交渉。 Lau は Spotify 取締役として、 中国 (Tencent Music) と西洋 (Spotify) の <strong>非競合の地理分業</strong> 体制を維持。 Daniel Ek は Lau を「<strong>世界で最も信頼できる戦略パートナー</strong>」と公の場で評している。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Evan Spiegel <span class="ja">Snap Inc. CEO</span></div>
+            <span class="rel-tag muted">取締役の相手</span>
+          </div>
+          <div class="rel-body">
+            2014年に Snapchat へ $200M 投資、 2020年に Snap Inc. 取締役就任。 Lau は WeChat の <strong>送金 + ミニアプリ + ライブ配信</strong> 統合戦略を Snap の経営に持ち込み、 Snap の収益化 KPI を中国流に再設計したとされる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Liu Qiangdong <span class="ja">劉強東 / JD.com 創業者</span></div>
+            <span class="rel-tag muted">EC の相棒</span>
+          </div>
+          <div class="rel-body">
+            2014年、 Tencent が JD.com に15% 出資。 Lau は <strong>"アリババと戦うために JD.com を支援する"</strong> 戦略を主導。 2021年、 規制圧力下で JD.com 株を Tencent 株主に現物配当（$16.4B）——独占解除の高度な政治判断。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Wang Xing <span class="ja">王興 / 美団 CEO</span></div>
+            <span class="rel-tag muted">投資先 No.1</span>
+          </div>
+          <div class="rel-body">
+            2014年以降、 Tencent が美団に複数回出資し、 17% の最大株主に。 Lau は美団の戦略アドバイザー的な役割。 2023年7月、 規制圧力下で美団株を Tencent 株主に現物配当（$20B 超）——JD.com に続く2回目の "戦略的撤退の美学"。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 参考資料 -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://en.wikipedia.org/wiki/Martin_Lau" target="_blank">Martin Lau — Wikipedia (英語版)</a></li>
+        <li><a href="https://zh.wikipedia.org/wiki/%E5%8A%89%E7%86%BE%E5%B9%B3" target="_blank">劉熾平 — 維基百科 (中国語版)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Tencent" target="_blank">Tencent — Wikipedia</a></li>
+        <li><a href="https://www.forbes.com/profile/martin-lau/" target="_blank">Martin Lau — Forbes Profile</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/tencent-martin-lau" target="_blank">Bloomberg — Martin Lau プロフィール記事アーカイブ</a></li>
+        <li><a href="https://www.caixinglobal.com/" target="_blank">Caixin Global — Tencent / Martin Lau 関連記事</a></li>
+        <li><a href="https://www.tencent.com/en-us/about.html" target="_blank">Tencent Holdings 公式 — 経営陣紹介</a></li>
+        <li><a href="https://www.ft.com/content/tencent-martin-lau" target="_blank">Financial Times — Martin Lau 関連記事</a></li>
+        <li><a href="https://www.scmp.com/topics/tencent" target="_blank">South China Morning Post — Tencent カバー</a></li>
+        <li><a href="https://www.wsj.com/articles/tencent-pony-ma-martin-lau" target="_blank">Wall Street Journal — Tencent 経営陣記事</a></li>
+        <li>『腾讯传』(Tencent: The Inside Story) — 呉曉波 (2017) — Tencent 創業から Lau 入社・President 昇格までの最詳細な一次資料</li>
+        <li>『WeChat: A New Way of Living』— Allen Zhang プロダクト哲学とビジネス戦略の交差点</li>
+        <li>Bloomberg 『China's Internet Tycoons』シリーズ — Tencent の世界 M&amp;A 戦略の解説</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will Gaybrick — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  /* HERO */
+  .hero { background: var(--hero-bg); color: var(--hero-fg); padding: 44px 0 32px; margin-bottom: 32px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+  .hero .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+  .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% 38%;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary { font-size: 14px; line-height: 1.7; color: #d8d8d8; max-width: 820px; margin-bottom: 20px; }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 20px 0 18px; }
+  .hero .facts { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 28px; row-gap: 14px; font-size: 13px; }
+  .hero .facts > div { line-height: 1.4; }
+  .hero .facts .fact-label { font-size: 11px; color: var(--hero-muted); letter-spacing: 0.04em; margin-bottom: 2px; font-family: 'JetBrains Mono', monospace; }
+  .hero .facts .fact-value { font-size: 13px; font-weight: 600; color: var(--hero-fg); line-height: 1.45; }
+  .hero .facts .fact-full { grid-column: 1 / -1; }
+
+  section.block { margin-bottom: 64px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+  p { margin-bottom: 14px; color: #222; }
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+  .origins-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .origins-title { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .origins-table { border-bottom: 1px solid var(--line); }
+  .origins-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .origins-row:first-child { border-top: none; }
+  .origins-label { font-size: 13px; color: var(--muted); font-weight: 500; letter-spacing: 0.01em; }
+  .origins-body { font-size: 14px; line-height: 1.85; color: #222; }
+  .origins-body strong { font-weight: 600; }
+  .origins-quote { margin-top: 28px; background: var(--soft); padding: 24px 28px; border-left: 3px solid var(--fg); }
+  .origins-quote .q { font-size: 17px; font-weight: 500; line-height: 1.65; color: var(--fg); font-style: italic; margin-bottom: 10px; letter-spacing: -0.005em; }
+  .origins-quote .src { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .tldr { background: var(--soft); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 48px; }
+  .tldr-label { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+  .tldr-body { font-size: 14px; line-height: 1.75; color: #222; }
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .timeline-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; }
+  .timeline-table td { padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+  .axis-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 2px 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .duo-stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .duo-stage { background: var(--soft); padding: 20px 22px; border-left: 3px solid var(--fg); }
+  .duo-stage .stage-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+  .duo-stage .stage-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .duo-stage .stage-body { font-size: 13px; color: #333; line-height: 1.7; }
+
+  .value-grid { display: grid; grid-template-columns: 200px 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .value-grid .vk, .value-grid .vv { background: var(--bg); padding: 16px 20px; font-size: 14px; }
+  .value-grid .vk { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .type-card { border: 2px solid var(--fg); padding: 28px 32px; }
+  .type-card .type-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-card .type-name { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .type-card .type-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  ol.lessons { list-style: none; counter-reset: lesson; }
+  ol.lessons li { counter-increment: lesson; padding: 18px 0 18px 56px; border-bottom: 1px solid var(--line); position: relative; }
+  ol.lessons li:last-child { border-bottom: none; }
+  ol.lessons li::before { content: counter(lesson, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; }
+  ol.lessons .lesson-head { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  ol.lessons .lesson-body { font-size: 14px; color: #333; line-height: 1.7; }
+
+  ul.trivia { list-style: none; }
+  ul.trivia li { padding: 12px 0 12px 24px; position: relative; font-size: 14px; color: #333; line-height: 1.7; border-bottom: 1px dotted var(--line); }
+  ul.trivia li:last-child { border-bottom: none; }
+  ul.trivia li::before { content: '◇'; position: absolute; left: 0; top: 12px; color: var(--muted); font-size: 12px; }
+
+  ol.sources { list-style: none; counter-reset: src; font-size: 13px; }
+  ol.sources li { counter-increment: src; padding: 8px 0 8px 32px; position: relative; color: #444; }
+  ol.sources li::before { content: '[' counter(src) ']'; position: absolute; left: 0; top: 8px; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 12px; }
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rel { background: var(--bg); border: 1px solid var(--line); padding: 18px 22px; transition: border-color 0.15s, transform 0.15s; }
+  .rel:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .rel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .rel-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .rel-name .ja { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .rel-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--bg); background: var(--fg); padding: 3px 8px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rel-tag.muted { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .rel-body { font-size: 13px; line-height: 1.7; color: #333; }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="WG"><img src="https://jaykimshow.com/wp-content/uploads/2019/07/WG-dark.png" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Will Gaybrick</h1>
+        </div>
+      </div>
+      <p class="summary">
+        ワシントンD.C.の名門St. Albansで育ち、Harvardで数学、Yale Law Schoolで法務、その間にBlackstone・PE・
+        スタートアップでエンジニアを経験——<strong>数学者 × 弁護士 × エンジニア × VC</strong> という polymath。
+        Thrive CapitalのGeneral PartnerとしてStripeに投資した側から、 2015年にPatrick Collisonからの深夜の
+        テキスト一通でStripe初代CFOへ転身。 そこから10年で <strong>CFO → Head of Payments → CPO → President of
+        Technology and Business</strong> と4役を変えながらCollison兄弟の隣に居続ける、Stripe最強の
+        役割可変型No.2。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">Patrick Collison（Stripe CEO）／ John Collison（Stripe President）— 2015年から10年</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1984年12月27日（41歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">ワシントンD.C.（米国）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性</div>
+        </div>
+        <div>
+          <div class="fact-label">純資産（推定）</div>
+          <div class="fact-value">非公開（Stripe equity保持）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開（プライバシー徹底）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">数学・プログラミング・読書（Alan Mulally信奉）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">学歴</div>
+          <div class="fact-value">St. Albans School（DC・名門私立）→ Harvard 大学 数学 BA（2007）→ Yale Law School JD（2012）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">Stripe President of Technology and Business (2023–現在) / CPO (2021–2023) / Head of Payments / 初代CFO (2015–2020) / Thrive Capital General Partner (2011–2015) / Maple Food Co Co-founder / Hack Yale Founder / Segment.com 取締役（過去）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR                                    -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>10年で4役を変えながらNo.2を続ける、Stripeの "第3のコリソン兄弟"</strong>」。
+        Will Gaybrickは <strong>数学(Harvard) + 法務(Yale Law) + エンジニアリング(Hunch / Jumo / Milewise) + 投資(Thrive)</strong>
+        という4つの専門領域を持つ稀有なpolymath。 Thrive CapitalでStripeに投資した "投資家側" から、 2015年に
+        Patrickの深夜テキスト「<strong>Do you want to be CFO?</strong>」一通でCFOに就任した。 そこから
+        <strong>CFO → Head of Payments → CPO → President of Technology and Business</strong> と
+        役割を変え続け、$1.4Tの決済処理・Bridge $1.1B 買収・Foundation Model for Payments を主導。
+        役割が固定された旧世代No.2に対し、Will は <strong>"役割を変え続けることで居続ける"</strong> 第3の道を作った。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1984年12月27日</strong>、米国の首都 <strong>ワシントンD.C.</strong> 生まれ。 政治・外交・行政の中心地で育った "首都の子" であり、 シリコンバレーや西海岸の起業家文化とは別の知的環境を背景に持つ。 家族の詳細は徹底的に非公開で、Will本人もプライバシー意識が極めて高い。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            ワシントンD.C.の名門私立 <strong>St. Albans School</strong>。 ブッシュ家・ゴア家の子息が通った全米屈指のエリート男子校で、 数学・古典・哲学を重視する教育を受ける。 ここで <strong>数学への偏愛</strong> と <strong>言語的精緻さ</strong> という Will の二つの軸が固まった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>Harvard 大学</strong>、 <strong>数学</strong> を専攻し2007年に BA で卒業。 抽象数学を学んだ経験は、 後に Stripe で Foundation Model for Payments （ベクトル埋め込みで詐欺を検知）や 確率論的リスク評価モデルを構築する素地になっている。 同時に、Harvard 在学中から金融とテクノロジーの境界に強い関心を持っていた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">投資銀行 → PE</div>
+          <div class="origins-body">
+            卒業後、 まず <strong>The Blackstone Group</strong> で投資銀行業務。 その後 <strong>Altamont Capital Partners</strong> でプライベートエクイティを経験。 数学者がそのまま finance のトップ機関に入る "純度の高いキャリア" を歩む。 だが Will はここで止まらず、<strong>"自分でコードを書ける人間でありたい"</strong> と方向転換する。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">エンジニアへの転身</div>
+          <div class="origins-body">
+            PE を離れ、 ニューヨークの初期スタートアップで <strong>ソフトウェアエンジニア</strong> として手を動かす。 在籍したのは <strong>Hunch</strong>（Caterina Fakeの推薦エンジン会社、後にeBayが買収）、 <strong>Jumo</strong>（慈善向けソーシャル、後にGOODと合併）、 <strong>Milewise</strong>。 投資銀行からエンジニアへの逆方向のジャンプは異例で、 ここで Will は <strong>"金融 + コード"</strong> という稀有な複合人材になった。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">Thrive Capital 参画</div>
+          <div class="origins-body">
+            2011年、 Hunch時代に知り合った <strong>Josh Kushner</strong>（Thrive Capital創業者）から声がかかる。 当初は $5M ほどの小ファンドの <strong>"CTO of the Fund"</strong> という稀有な役職で参画。 投資先のテクニカルDDをエンジニア視点でやりつつ、 ファンドが数十億ドル規模に成長するまで5年伴走、最終的にGeneral Partnerに昇格。 Stripeへの初期投資（Series C）も Will が主導した。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">Yale Law School（並行）</div>
+          <div class="origins-body">
+            Thrive 在籍中の2012年、 <strong>Yale Law School</strong> で <strong>JD</strong> を取得。 投資・経営・エンジニアの傍ら、 法律学位までフルで取りに行く異例の学習意欲。 在学中には <strong>Hack Yale</strong> という プログラミング講座を立ち上げ、 ロースクール内に "ビルダー文化" を持ち込み数百人の応募を集めた。 これは "法律家でも自分でコードを書ける" という Will の思想の象徴。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">起業家としての顔</div>
+          <div class="origins-body">
+            <strong>Maple Food Co</strong> をニューヨークで共同創業（高品質デリバリー食事の会社、 後に競合 Deliveroo に資産売却）。 また <strong>Segment.com</strong>（後にTwilioが$3.2Bで買収）の取締役も歴任。 投資家・経営者・エンジニア・創業者をすべて並行で回す多軌道のキャリア。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">Stripe入りの瞬間</div>
+          <div class="origins-body">
+            <strong>2015年、ニューヨークのEast Villageのバー</strong>。 深夜、Patrick Collisonから一通のテキストが届く。 「<strong>Do you want to be CFO?</strong>」。 Will は反射的に「<strong>I think that's a very bad idea</strong>」と返信。 だが Patrick の説得と "インターネットのGDPを上げる" というミッションに惹かれ、数ヶ月後に承諾。 投資家としてStripeに既にお金を入れていた Will が、 経営者として参画する瞬間だった。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">"I'm a big believer in jumping on opportunities when something seems compelling and exceptional people are involved. It's induction rather than engineering."</div>
+        <div class="src">— Will Gaybrick on his career philosophy</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1984</td>
+            <td>ワシントンD.C.に生まれる。 政治・行政の中心地で育つ "首都の子"。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">14</td>
+            <td class="col-year">1998</td>
+            <td>名門私立 <strong>St. Albans School</strong> 入学。 全米屈指の男子エリート校で、 数学と古典の二軸を磨く。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">教育基盤</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">2003</td>
+            <td><strong>Harvard 大学</strong> 入学。 数学専攻。 抽象代数・確率論を学ぶ。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">教育基盤</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">2007</td>
+            <td>Harvard卒業（数学 BA）。 <strong>The Blackstone Group</strong> で投資銀行業務スタート。 数学者からファイナンスへの王道。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">24</td>
+            <td class="col-year">2009</td>
+            <td><strong>Altamont Capital Partners</strong> でプライベートエクイティ。 大型のbuyout案件を経験。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">25</td>
+            <td class="col-year">2010</td>
+            <td><strong>エンジニア転身</strong>。 NYのスタートアップ <strong>Hunch / Jumo / Milewise</strong> でソフトウェアエンジニア。 投資銀行からエンジニアへの逆方向ジャンプ。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">価値観</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">2011</td>
+            <td><strong>Thrive Capital に "CTO of the Fund" として参画</strong>。 Josh Kushner と共闘。 $5Mファンドが数十億ドル規模に成長する5年に立ち会う。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">2012</td>
+            <td><strong>Yale Law School で JD 取得</strong>。 Thrive と並行で取得。 <strong>Hack Yale</strong> プログラミング講座を立ち上げ、ロースクールにビルダー文化を持ち込む。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">教育基盤</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">29</td>
+            <td class="col-year">2014</td>
+            <td><strong>Maple Food Co を共同創業</strong>（NY）。 高品質デリバリー食事サービス。 創業者の顔も持つ Will。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2015.中</td>
+            <td>Thrive Capital General Partner として <strong>Stripe Series C への投資を主導</strong>。 Patrick Collison との関係が深まる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">関係構築</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2015.夏</td>
+            <td><strong>NY East Villageのバーで深夜、Patrickから "Do you want to be CFO?" のテキスト</strong>。 反射で「I think that's a very bad idea」と返したが、数ヶ月後に承諾。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2015.08</td>
+            <td><strong>Stripe 初代 CFO 就任</strong>。 Thrive側からStripe側へ。 投資家から経営者への大転身。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2020</td>
+            <td><strong>CFO を退任</strong>（Dhivya Suryadevara が後任）。 同年、Stripe評価額 $36B → $95Bへ急騰。 Will は <strong>Head of Payments</strong> へ役割転換。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">36</td>
+            <td class="col-year">2021.07</td>
+            <td><strong>Chief Product Officer (CPO) 就任</strong>。 ファイナンスからプロダクトへの大ジャンプ。 数学・エンジニアリングのバックグラウンドが活きる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2023.02</td>
+            <td><strong>President of Product and Business 就任</strong>。 後に "President of Technology and Business" に改称。 Engineering・Product・Infra・Security・Partnerships・Risk・Operationsを統括する事実上の COO 兼 CTO。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2024.10</td>
+            <td><strong>Bridge を $1.1B で買収</strong>。 Stripe史上最大の買収にして暗号資産業界最大級のM&A。 Will が交渉を主導。 stablecoin戦略の起点に。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">40</td>
+            <td class="col-year">2025.05</td>
+            <td>Stripe Sessions 2025 で <strong>Product Keynote</strong> を主導。 Foundation Model for Payments・Stablecoin Financial Accounts・Open Issuance を発表。 Stripeの "次の10年" を Will が語る瞬間。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">41</td>
+            <td class="col-year">2026</td>
+            <td>$1.4T の年間決済処理。 OpenAI と Agentic Commerce Protocol を共同開発、 ChatGPT の Instant Checkout を主導。 AI時代のStripeの製品戦略を Will が指揮。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（Collison兄弟）との関係構造           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（Collison兄弟）との関係構造</h2>
+      <p>
+        Will Gaybrick の特殊性は、 Stripe の <strong>"3人体制"</strong> の中でも独立した極を持つことだ。
+        <strong>Patrick = 思想と技術哲学</strong>、 <strong>John = 顧客と対外発信</strong>、 そして
+        <strong>Will = 数値と製品とエンジニアリングの実装</strong>。 兄弟No.2を John が担っているため、
+        通常なら Will の居場所はない——にもかかわらず Will が10年居続けているのは、
+        <strong>"兄弟が踏み込まない領域"</strong> を完全に引き受けているから。
+      </p>
+      <p>
+        重要なのは、<strong>Will が "投資家として既に Patrick を選んだ" 履歴</strong>を持つこと。
+        Thrive Capital の General Partner として Stripe の Series C を主導した時点で、
+        Will は投資家側として "Patrickという人間に賭ける" 選択をしていた。 そこから経営側に転じる時の
+        意思決定コストは、 通常のCFO候補と比べて圧倒的に低い。 Patrick も <strong>"Thrive時代から既知の信頼"</strong>
+        という前提で口説けた。 これが「<strong>Do you want to be CFO?</strong>」という1行のテキストで
+        通じた背景。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        "Patrick texted me late one night at a bar in the East Village: 'Do you want to be CFO?'
+        I responded reflexively: 'I think that's a very bad idea.' But within months, I accepted."<br>
+        — Will Gaybrick on joining Stripe (2015)
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い（投資家側）</div>
+          <div class="stage-title">Thrive Capital からの観察者</div>
+          <div class="stage-body">2011年からThrive CapitalでPatrickを観察。 Series C で投資家として Stripe に資本を入れた段階で、 Will は既に "Patrickに賭ける" 選択を済ませていた。 経営参画前から Patrick の思考様式を熟知していたのは大きい。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 信頼確立</div>
+          <div class="stage-title">深夜のテキスト一通</div>
+          <div class="stage-body">2015年夏、East Village のバーで Patrick から「Do you want to be CFO?」のテキスト。 通常なら長い口説きが必要なC-suiteのスカウトが、 1行で完結したのは <strong>Thrive時代の数年間の back channel</strong> があったから。 Will の "I think that's a very bad idea" を Patrick が押し切った。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 全盛期</div>
+          <div class="stage-title">役割を変え続けるNo.2</div>
+          <div class="stage-body">2015年CFO → 2020年Head of Payments → 2021年CPO → 2023年President。 Patrick = 戦略・哲学、 John = 顧客・対外、 Will = <strong>製品・技術・財務の交差点</strong>。 兄弟が踏み込まない "実装と数値の領域" を Will が完全引き受け。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 継続中</div>
+          <div class="stage-title">Bridge $1.1B 買収を主導</div>
+          <div class="stage-body">2024年、 stablecoinインフラ Bridge を $1.1B で買収。 Stripe史上最大かつ暗号業界最大級のM&Aを Will が指揮。 Foundation Model for Payments・Open Issuance・Agentic Commerce Protocolを通じ、 Stripe の "次の10年" の製品アーキテクチャを設計。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        Will の No.2 は <strong>"投資家から経営者への自然な進化"</strong> として始まった。
+        Thrive で Patrick に投資していた時点で既に "Patrick という人間に賭ける" 選択は完了しており、
+        経営参画は単に <strong>"距離を詰める"</strong> 動作だった。 自分が CEO になる選択肢は
+        構造的にあり得なかった——Stripe は Collison 兄弟の会社であり、 Will はそこに後から入った
+        "三番目の主要人物" だから。
+      </p>
+      <p>
+        重要なのは、<strong>Will が No.1 になりたかったわけではない</strong>こと。 彼は自分のキャリアを
+        <strong>"induction（帰納）であって engineering（設計）ではない"</strong> と表現する。
+        最高の人材と最高のミッションが揃っている場に飛び込み続ければ、 結果として最良の場所に行き着く——
+        という哲学。 No.2 か No.1 かという肩書きの議論は、 Will の世界観では二次的。 重要なのは
+        <strong>"何に向かっているか"</strong> だ。
+      </p>
+      <p>
+        裏側にあるのは、<strong>"役割を固定しない"</strong> という発想。 Will の専門領域は数学・法務・
+        エンジニアリング・投資の4方向にまたがっており、 一つの肩書きに自分を圧縮できない。 だから Stripe の中で
+        CFO → Head of Payments → CPO → President と役割を変え続けることが、 Will にとって最も自然な働き方。
+        <strong>"役割を変えながら居続ける"</strong> ことが、 Will の No.2 のあり方になっている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv"><strong>4方向のpolymath</strong>。 数学(Harvard) + 法務(Yale Law) + エンジニアリング(Hunch/Jumo/Milewise) + 投資(Thrive)。 Stripe で財務・プロダクト・エンジニアリング・買収交渉のすべてをカバーできる人材は他に存在しない。 Bridge $1.1B買収交渉は、法務と財務とプロダクトの全側面を Will が一人で握れたから即決できた。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv"><strong>役割可変型 (Shape-shifter)</strong> × 翻訳型 × 補完型。 CFO → Head of Payments → CPO → President と役割を4回変えながら同じ会社に居続ける、極めて稀なキャリア構造。 Patrick が踏み込まない実装層、 John が踏み込まない技術深層を Will が引き受ける。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">もし Will が居なければ、 Stripe は <strong>Bridge買収・Foundation Model for Payments・Open Issuance・Agentic Commerce Protocol</strong> のいずれも生まれなかった可能性が高い。 Stripe は "決済処理会社" の枠を出られず、 stablecoinとAIへの戦略転換は 5–10 年遅れていただろう。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">未継承（継続中）。 だが Will は "<strong>低マージンビジネスは顧客への執着を保つ</strong>" という哲学を語り、 Stripe を私企業のまま長期で運営する姿勢を Patrick・John と共有。 引き際は語っていないが、Stripe以外への独立創業の可能性も残している。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 投資銀行 → エンジニアへの逆方向ジャンプ（2010）。</strong> Blackstone・Altamont Capital で
+        ファイナンスのトップ機関を歩んでいた Will が、 突然エンジニアとしてNYのスタートアップに飛び込む選択。
+        通常 PE からエンジニアへの転身は "格落ち" と見られるが、 Will は <strong>"自分でコードを書ける人間で
+        ありたい"</strong> という思想で逆走した。 これがなければ後の Thrive CTO・Stripe CPO は無かった。
+      </p>
+      <p>
+        <strong>② 投資家 → 経営者への転身（2015）。</strong> Thrive Capital で Stripe に投資していた Will が、
+        Patrickの深夜テキスト一通でCFOへ。 投資家側にとって、 投資先の経営者になるのはキャリア上の大決断
+        （ファンドへの利益相反、独立性喪失など）。 だが Will は反射の "very bad idea" を撤回して数ヶ月で
+        受諾した。 <strong>"compelling な人間と compelling な ミッションが揃っている場には乗る"</strong>
+        という induction 哲学の発露。
+      </p>
+      <p>
+        <strong>③ CFO → CPO への大ジャンプ（2021）。</strong> 5年以上 CFO を務めた Will が、 突然
+        プロダクト責任者へ。 ファイナンスのトップからプロダクトのトップへの横滑りは異例で、
+        通常は外部からCPOを招聘するか、 内部の長年のプロダクト責任者が昇格する。 Will は数学とエンジニア
+        経験を武器に、 Stripeのプロダクト全体を再設計。 これが2024年の Foundation Model for Payments と
+        Bridge 買収につながる。
+      </p>
+      <p>
+        <strong>④ Bridge $1.1B 買収（2024年10月）。</strong> Stripe 史上最大の買収。 暗号資産・stablecoin
+        インフラへの巨額投資は社内外から賛否両論あったが、 Will が "stablecoin は global money movement を
+        改善する強力な手段" という確信で押し切った。 Sequoia・Pat Grady等の投資家との対話、 規制当局
+        との折衝、 Bridge創業者 Zach Abrams らとの統合まで Will が一気通貫で指揮。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        2026年4月時点、 Will は <strong>引き際を全く語っていない</strong>。 41歳の現役 President として、
+        Stripe の AI・stablecoin・agentic commerce の3軸を主導している。 Collison兄弟が "あと14年やる"
+        と公言していることもあり、 Will も同じ船に乗り続ける可能性が高い。
+      </p>
+      <p>
+        だが Will の特殊性は、<strong>"いつでも独立創業できる人材"</strong> であることだ。 数学+法務+エンジニアリング+
+        投資の4方向のpolymathで、 過去には Maple Food Co の共同創業経験もある。 Thrive Capital に戻る選択肢、
+        独立してファンドを始める選択肢、 自社を起こす選択肢——すべてが現実的に残っている。 そのオプションを
+        持ったまま <strong>"今は Stripe で役割を変え続ける"</strong> という選択を毎年更新している。
+      </p>
+      <p>
+        この姿勢は、 John Collison（兄弟No.2）と対比される。 John は "兄弟の血縁" で繋がれ、 引き際を
+        考えていない。 Will は <strong>"血縁ではないが10年居続けている"</strong>。 後者の方が "意識的選択" の
+        重みが大きい。 役割が変わるたびに <strong>"今期も Stripe を選ぶか"</strong> を問い直しているNo.2。
+        これが Will の引き際の特徴であり、 翔太が学べる最大の構造。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">Will Gaybrick の No.2 型</div>
+        <div class="type-name">役割可変型 × 翻訳型 × 補完型 — Polymath No.2</div>
+        <div class="type-body">
+          肩書きを <strong>10年で4回変えながら同じNo.1の隣に居続ける</strong> 稀有な型。 数学+法務+エンジニアリング+
+          投資の4方向の専門性を持つ Polymath で、 一つの役割に圧縮されない。 Patrick の思想と John の顧客の
+          間にある <strong>"実装と数値とプロダクトの空白"</strong> を Will が完全に埋める。
+          <br><br>
+          ▸ <strong>"induction" 哲学</strong>: 設計（engineering）ではなく帰納（induction）でキャリアを
+          歩む。 最高の人材と最高のミッションが揃った場に飛び込む——肩書きや役割は後からついてくる。
+          投資家から経営者、 CFO から CPO、 CPO から President——どれも "induction" の結果。
+          <br><br>
+          ▸ <strong>"投資家 → 経営者" モデル</strong>: VC側で No.1 を観察した期間が信頼の前提として
+          機能する。 通常のスカウトより低い意思決定コストで C-suite に入れた稀少例。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">役割を固定するな——10年で4役を変える設計を持て</div>
+          <div class="lesson-body">
+            Will は CFO → Head of Payments → CPO → President と <strong>4回役割を変えながら同じ会社に居続けた</strong>。
+            これは "肩書きへの執着" を捨てた人にしか出来ない。 翔太がWLで COO → CEO へ進むにせよ、 独立して別の役割に
+            なるにせよ、 <strong>"自分は何屋か" を1つに固定しない</strong> 方が長期では強い。 Polymath が
+            複数役を兼ねられる時代に、 一芸特化は脆弱性になる。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">"最悪のアイデア" と思ったオファーに乗れ——induction で歩け</div>
+          <div class="lesson-body">
+            Patrickの "Do you want to be CFO?" に対する Will の最初の返答は <strong>"I think that's a very bad idea"</strong>
+            だった。 だが数ヶ月後に承諾。 Will は <strong>"compelling な人間 + compelling なミッション = 乗る"</strong> を
+            ルール化し、 反射的拒否を覆した。 翔太の人生哲学である "急がない" と Will の "induction" は表裏一体。
+            設計しすぎず、 圧倒的に良いオファーが来たら反射拒否を疑え。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">投資家側 → 経営者側 のキャリア軸は最強の信頼装置</div>
+          <div class="lesson-body">
+            Will が10年Stripeに居続けられたのは、 <strong>Thrive時代に投資家として Patrick を観察済み</strong>
+            だったから。 通常の経営参画より信頼コストが圧倒的に低い。 翔太が次のキャリアで投資家を経由する選択肢
+            （Wanderlust × VC的役回り、 独立後にエンジェル投資など）は、 後の経営参画の "履歴書" になる。
+            <strong>"先に資本で賭ける" → "後で経営で参画する"</strong> は最強の二段ロケット。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>Yale Law School 在学中に <strong>Hack Yale</strong> というプログラミング講座を立ち上げ、 ロースクール内に "ビルダー文化" を持ち込んだ。 数百人の応募が集まり、 法律学生のコーディング教育の先駆けに。</li>
+        <li><strong>Maple Food Co</strong> をニューヨークで共同創業（2014）。 高品質デリバリー食事サービスで、 後に競合 Deliveroo に資産売却。 起業家としての顔も持つ。</li>
+        <li>Stripe入社のきっかけは <strong>Patrick からの深夜のテキスト1通</strong>。 East Village のバーで「Do you want to be CFO?」を見た瞬間、 反射で「I think that's a very bad idea」と返信した。</li>
+        <li><strong>Alan Mulally</strong>（元Ford CEO・Boeing CFO）の "<strong>relentless implementation</strong>"（容赦ない実装）哲学を信奉。 派手な戦略よりも淡々と実行する経営者像を理想とする。</li>
+        <li>Stripe で <strong>50% 以上のコードが LLM によって書かれている</strong> と公言（2025年）。 "Minions" という社内ツールで開発を自動化。 だが "95%の企業は AI で ROI が悪化する" という HBR の研究も引用し、 慎重派でもある。</li>
+        <li>"<strong>Low margin keeps companies obsessively focused on customer needs</strong>" が Will の経営哲学。 高マージンビジネスは顧客への執着を失う、と語る。</li>
+        <li>Stripe を <strong>非公開のまま運営し続ける</strong> 立場。 "IPO の利点（資本・流動性・ブランド）はもう私達には適用されない" と語り、 Tender Offer Program で従業員流動性を確保している。</li>
+        <li>Bloomberg / Forbes 等の "成功の象徴" メディアでも個人生活の情報をほぼ出さない。 Collison兄弟同様、 プライバシーへの徹底ぶりがある。</li>
+        <li><strong>Segment.com</strong>（後にTwilioが$3.2Bで買収）の取締役を歴任。 Stripe 外でも複数のフィンテック・SaaSの取締役経験を持つ。</li>
+        <li>2020年代の Stripe AI戦略の中心に <strong>Foundation Model for Payments</strong>（決済データのベクトル埋め込みで詐欺・マネロンを検知）がある。 数学者としての Will のバックグラウンドが直接活きた製品。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Patrick Collison <span class="ja">パトリック・コリソン</span></div>
+            <span class="rel-tag">No.1 / Stripe CEO</span>
+          </div>
+          <div class="rel-body">
+            Stripe 共同創業者・CEO。 Will にとって "10年の主君"。 Thrive 時代の数年の back channel が前提にあったため、
+            "Do you want to be CFO?" のテキスト1通でC-suite が成立した。 Patrick = 思想・戦略、 Will = 実装・数値・製品
+            という役割分担が綺麗に決まっている。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">John Collison <span class="ja">ジョン・コリソン</span></div>
+            <span class="rel-tag">並列No.2 / 兄弟No.2</span>
+          </div>
+          <div class="rel-body">
+            Stripe 共同創業者・President。 Will と同じ "Stripe No.2級" だが、 John = 兄弟・顧客・対外、 Will = 後から参画・製品・技術。
+            兄弟No.2の安定性に対し、 Will は意識的選択の毎年更新で居続ける。 同じ会社の二極No.2の対比例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Josh Kushner <span class="ja">ジョシュ・クシュナー</span></div>
+            <span class="rel-tag muted">恩人 / Thrive創業者</span>
+          </div>
+          <div class="rel-body">
+            Thrive Capital創業者。 Hunch時代に Will を見出し、 $5Mファンドの "CTO of the Fund" として
+            引き入れた。 Will にとってベンチャー投資の世界の入口を開いた人物。 Thrive で Stripe Series C を
+            主導した経験が、後のStripe入社の伏線になる。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Dhivya Suryadevara <span class="ja">ディヴィヤ・スリヤデヴァラ</span></div>
+            <span class="rel-tag muted">CFO継承者</span>
+          </div>
+          <div class="rel-body">
+            元GM（General Motors）CFO。 2020年に Will の後任として Stripe CFO 就任。 2023年に家族の事情で退任。
+            Will の "投資家からの転身型CFO" と Suryadevara の "公開企業の CFOからの転身型" は対照的なキャリアパス。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steffan Tomlinson <span class="ja">ステファン・トムリンソン</span></div>
+            <span class="rel-tag muted">CFO後継 / 2023–</span>
+          </div>
+          <div class="rel-body">
+            Palo Alto Networks CFO 出身。 2023年2月に Stripe CFO 就任。 Will が CPO・President へ専念できる
+            ようにしたバトンタッチの相手。 公開企業 CFO 経験者を招聘することで、 Stripe の長期戦略を支える。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Alan Mulally <span class="ja">アラン・ムラーリー</span></div>
+            <span class="rel-tag muted">思想的影響 / 元Ford CEO</span>
+          </div>
+          <div class="rel-body">
+            元 Boeing CFO・Ford CEO。 Ford を金融危機で救った経営者。 "<strong>relentless implementation</strong>"
+            （容赦ない実装）の哲学で知られる。 Will の経営思想の根幹に Mulally の "egoless collaboration"
+            （自我のないコラボレーション）がある。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Greg Brockman <span class="ja">グレッグ・ブロックマン</span></div>
+            <span class="rel-tag muted">並列No.2 / 同時代</span>
+          </div>
+          <div class="rel-body">
+            OpenAI President。 Sam Altman の右腕。 Will と同じく "President" 肩書のテック界 No.2。
+            違いは Brockman = エンジニア出身の Builder-in-Chief、 Will = 数学+法務+エンジニア+投資の Polymath。
+            役割の "深さ vs 広さ" の対比。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Sheryl Sandberg <span class="ja">シェリル・サンドバーグ</span></div>
+            <span class="rel-tag muted">比較対象 / 雇われNo.2</span>
+          </div>
+          <div class="rel-body">
+            元 Meta COO。 Google から Facebook に来た雇われNo.2の最高峰。 Will との対比は、
+            Sandberg = ファイナンスから1社固定でCOO、 Will = 役割を変え続ける流動型。 引き際も Sandberg は
+            14年で退任、 Will はまだ語っていない。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://www.bloomberg.com/profile/person/20004053" target="_blank">Will Gaybrick, Stripe Inc: Profile and Biography — Bloomberg Markets</a></li>
+        <li><a href="https://theorg.com/org/stripe/org-chart/william-gaybrick" target="_blank">William Gaybrick — President, Technology & Business at Stripe — The Org</a></li>
+        <li><a href="https://ffnews.com/people/will-gaybrick/" target="_blank">Will Gaybrick — FF News (Fintech Finance)</a></li>
+        <li><a href="https://www.crunchbase.com/person/will-gaybrick" target="_blank">William Gaybrick — Crunchbase Person Profile</a></li>
+        <li><a href="https://lilapress.substack.com/p/from-blackstone-to-stripe-the-career" target="_blank">From Blackstone to Stripe: The Career Evolution and Insights of Stripe President Will Gaybrick — Lila Press</a></li>
+        <li><a href="https://www.thespl.it/p/inside-stripe-stablecoins-ai-and" target="_blank">Inside Stripe: Stablecoins, AI, and (not) Going Public with Will Gaybrick — The Splits</a></li>
+        <li><a href="https://www.youtube.com/watch?v=AM1_NADNSgI" target="_blank">Inside Stripe: Stablecoins, AI, and (not) Going Public — The Peel with Turner Novak</a></li>
+        <li><a href="https://www.youtube.com/watch?v=tEVL0yxdppY" target="_blank">EP 118: Will Gaybrick on Capital Allocation, Org Design, AI, and Global Growth — YouTube</a></li>
+        <li><a href="https://www.pymnts.com/news/2015/stripe-snags-will-gaybrick-as-first-cfo/" target="_blank">Stripe Snags Will Gaybrick As First CFO — PYMNTS (2015)</a></li>
+        <li><a href="https://stripe.com/sessions/2025/product-keynote" target="_blank">Stripe Sessions 2025 — Product Keynote</a></li>
+        <li><a href="https://fortune.com/crypto/2025/10/01/stripe-crypto-stablecoins-open-issuance-bridge-blockchain-tempo/" target="_blank">Stripe is already a payments colossus — Fortune (2025)</a></li>
+        <li><a href="https://jaykimshow.com/2019/07/will-gaybrick-transcript/" target="_blank">The Jay Kim Show: Will Gaybrick (transcript) — 2019</a></li>
+        <li><a href="https://www.linkedin.com/in/william-gaybrick-5730347" target="_blank">William Gaybrick — LinkedIn</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
