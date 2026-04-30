@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isao Moriyasu — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="守安"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; STARTUP</div>
+          <h1>Isao Moriyasu</h1>
+        </div>
+      </div>
+      <p class="summary">
+        東大院・航空宇宙工学から日本オラクルを経て、1999年DeNA入社（システムエンジニア）。 モバゲータウンの仕掛け人として
+        DeNAをモバイル時代のヒーローに押し上げ、 2011年、南場智子の <strong>夫の闘病</strong> という想定外の事情で
+        38歳でCEOへ。 ngmoco買収・球団買収・WELQ問題を経て10年経営を全うし、 2021年退任。 補完型 × 想定外継承型の
+        DeNA第二章を背負った"技術出身CEO"の代表。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">南場智子（DeNA創業者・元McKinseyパートナー / 1999–2011 を支え、 2011–2021 にCEOとして継承 / 通算 22年の関係）</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1973年9月21日（52歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">大阪府（日本）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">DeNA時価総額ピーク約4,500億円期のCEO / 役員報酬 約1.6億円（2018年期）</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味</div>
+          <div class="fact-value">ゲーム / プロ野球観戦（横浜DeNAベイスターズ）</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">学歴</div>
+          <div class="fact-value">茨城県立土浦第一高等学校 (1992) → 東京大学大学院 工学系研究科 航空宇宙工学専攻 修了 (1998)</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">DeNA 代表取締役社長兼CEO (2011.6–2021.6) / Mint Town 取締役COO (2023.5–) / じげん・エディオン 社外取締役 / Thirdverse 参画 (2022–)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR                                    -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>創業者の家族危機で予定外にCEOを継ぎ、10年回した想定外継承型 No.2</strong>」。
+        モバゲータウンの仕掛け人として南場智子の右腕に上り詰めたが、 2011年、南場の <strong>夫の膵臓癌(ステージ4)
+        診断</strong> という個人的事情で突如CEOバトンを渡された。 ngmoco買収を経て北米展開を主導、 横浜ベイスターズ
+        を買収し、 2016年の <strong>WELQキュレーション問題</strong> という大スキャンダルでも辞任せず10年完走。
+        ただし退任後にタイミーCOOを <strong>半年で不祥事退任</strong>——「美しい引き際」とは対極にある教訓型No.2。
+        彼の本音はWELQ会見での一言——「<strong>内容の精査までできていなかった</strong>」。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1973年9月21日、大阪府生まれ</strong>。 関西出身ながら高校進学時に茨城県へ。 派手なスタートアップ系
+            CEOに多い帰国子女・私立進学校コースとは無縁の、 公立進学校→国立大学のオーソドックスな経路を歩む。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校</div>
+          <div class="origins-body">
+            <strong>茨城県立土浦第一高等学校（1992年卒業）</strong>。 茨城県有数の公立進学校で、 旧制中学から続く
+            伝統校。 <strong>東京大学への合格者を毎年30〜40名輩出する硬派な進学校</strong>。 守安さんは
+            ここから理系トップコースに乗る。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>東京大学（1992年入学）</strong>。 工学部の中でも最難関と言われる <strong>航空宇宙工学</strong> へ。
+            「ロケット・宇宙」を志した、 当時の理系秀才の王道進路。 ベンチャー起業家タイプではなく、
+            <strong>研究室で手を動かす理系エンジニア</strong> として頭角を現す。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学院</div>
+          <div class="origins-body">
+            <strong>東京大学大学院 工学系研究科 航空宇宙工学専攻 修士課程（1998年修了）</strong>。 当時の航空宇宙
+            は就職口が極端に少なく、 多くの修了生がIT・コンサル・金融へ流れた時代。 守安さんも例外ではなく、
+            学位を取った瞬間からエンタープライズITへ進路を切る。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">最初の就職</div>
+          <div class="origins-body">
+            <strong>1998年4月 日本オラクル株式会社 入社（システムエンジニア）</strong>。 当時のOracleは日本企業の
+            基幹システムを支える花形ベンダー。 大企業向けデータベースSEとして1年半勤務。 「<strong>大企業の堅牢な
+            システム作り</strong>」を体に染み込ませた1.5年が、 後にDeNAの巨大トラフィックサイトを支える土台に。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">DeNAへ</div>
+          <div class="origins-body">
+            <strong>1999年11月、DeNAにシステムエンジニアとして転職</strong>。 当時のDeNAは創業1年目、 社員数十名、
+            南場智子（元McKinseyパートナー）が率いるオークションサイト「ビッダーズ」を運営する黎明期スタートアップ。
+            守安さんは <strong>"5番目クラス"の古参エンジニア</strong> としてサイトのバックエンドを書き続けた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>東大航空宇宙の修士 + Oracleの大企業SE経験 + 25歳でスタートアップに飛び込む覚悟</strong>」
+            という組み合わせ。 派手な起業家タイプではなく、 <strong>"巨大トラフィックを安定運用できる技術屋"</strong>
+            として南場さんに見出された。 後年の "モバゲータウンを動かしたエンジン" の出自は、 この時点ですでに揃っていた。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「内容の精査までできていなかった。 結果として読者の方やコンテンツの権利者の方を傷つけてしまった。 心から深くお詫びします。」</div>
+        <div class="src">— 守安 功（DeNA代表取締役社長 / 2016年12月7日 WELQ問題記者会見）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1973</td>
+            <td>大阪府に生まれる。 後に茨城県へ。 関西出身→関東で進学校というやや不規則な少年期。</td>
+            <td class="col-rate">★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">18</td>
+            <td class="col-year">1992</td>
+            <td><strong>茨城県立土浦第一高校から東京大学に合格</strong>、 工学部 航空宇宙工学コースへ。 ロケット少年が東大に届いた瞬間。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">24</td>
+            <td class="col-year">1998</td>
+            <td>東大院 航空宇宙工学修了。 <strong>日本オラクル入社（SE）</strong>。 ロケットではなく、 エンタープライズITへ進路転換した実利の判断。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">26</td>
+            <td class="col-year">1999.11</td>
+            <td><strong>DeNA入社</strong>。 創業1年目の数十人スタートアップに、 南場智子の隣で技術側を引き受ける形で合流。 No.2人生の起点。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">30</td>
+            <td class="col-year">2004</td>
+            <td><strong>モバイル事業部長へ昇格</strong>。 モバオク・ポケットアフィリエイトを立ち上げ、 DeNAをPC通販からモバイル企業へ転換させる旗手に。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2006.02</td>
+            <td><strong>モバゲータウンを立ち上げ（仕掛け人）</strong>。 ガラケー時代に無料SNS+アバターガチャモデルを発明。 後の"DeNAの代名詞"を作った最大の業績。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">32</td>
+            <td class="col-year">2006.06</td>
+            <td><strong>取締役就任</strong>。 創業以来No.1の南場さんから「事業の人」として正式に経営陣へ引き上げられる。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">35</td>
+            <td class="col-year">2009.04</td>
+            <td><strong>取締役兼COO就任</strong>。 名実ともに南場さんのNo.2に。 モバゲーのソーシャルゲーム化で売上を爆発的に伸ばす。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">役割確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2010.10</td>
+            <td><strong>米ngmoco買収（約342億円）を主導</strong>。 北米モバイルゲーム市場への本格進出。 DeNA史上最大級のM&A。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2011.04</td>
+            <td>南場智子の <strong>夫がステージ4の膵臓癌と診断</strong>、 看病のため退任意向を表明。 想定外のCEOバトンが守安さんに回ってくる。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">37</td>
+            <td class="col-year">2011.06</td>
+            <td><strong>代表取締役社長就任（38歳目前）</strong>。 創業者の私的事情による"想定外継承"。 30代CEOとしてDeNA第二章をスタート。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">38</td>
+            <td class="col-year">2011.12</td>
+            <td><strong>横浜DeNAベイスターズを約65億円で買収</strong>。 IT企業の球団参入として歴史的な意思決定。 守安CEOの初年度の大ベット。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">業績</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">39</td>
+            <td class="col-year">2013.04</td>
+            <td><strong>代表取締役社長兼CEOへ肩書き整理</strong>。 社内で実質的な最高執行責任者として完全に立ち位置を確立。 ガラケー → スマホ移行を仕切る。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2016.12</td>
+            <td><strong>WELQキュレーションメディア問題発覚</strong>、 12月7日に南場会長と共に記者会見で謝罪。 全10サイト非公開化、 翌年に <strong>役員報酬50%減額</strong>。 CEOキャリア最大の試練。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">45</td>
+            <td class="col-year">2018</td>
+            <td>自動車（タクシー配車・自動運転）・ヘルスケア・スポーツ事業へ多角化を加速。 ゲーム一本足からの脱却を進めるが、 業績は伸び悩み。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">事業</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">2021.02</td>
+            <td><strong>退任発表（10年経営の節目）</strong>。 後任は岡村信悟氏。 業績低迷を踏まえた経営体制刷新と説明。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">引き際</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">47</td>
+            <td class="col-year">2021.06</td>
+            <td><strong>代表取締役社長を正式退任</strong>。 22年間勤めたDeNAから去る。 No.2 → CEO → 引き継ぎを完走した10年の幕引き。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2021.10</td>
+            <td><strong>タイミー 取締役COO就任</strong>。 30歳の小川嶺CEOの右腕として再びNo.2に戻る。 元CEO → 若手創業者のNo.2という珍しい移籍。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2022.03</td>
+            <td><strong>タイミーCOOを半年で退任（コンプライアンス規程違反）</strong>。 送別会でのセクハラ報道。 「美しい引き際」とは対極の不本意な離脱。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">試練</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2022.06</td>
+            <td>GMO Web3顧問、 Thirdverse（國光宏尚氏のVR/Web3ゲーム企業）参画。 Web3・ブロックチェーンゲーム領域で再起を図る。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">再起</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2023.05</td>
+            <td><strong>Mint Town 取締役COO就任</strong>。 ブロックチェーンゲーム企業で再びCOO。 じげん・エディオンの社外取締役も兼任し、 経験を切り売りする"参謀型キャリア"へ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（南場智子）との関係                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（南場 智子）との関係構造</h2>
+      <p>
+        南場智子さんは津田塾大→ハーバードMBA→McKinseyのパートナー出身、 1999年に33歳でDeNAを創業した
+        日本ベンチャー史の象徴的人物。 <strong>戦略・対外交渉・カリスマ性</strong> を一身に体現する典型的No.1型。
+        守安さんはこの真逆の人物——東大院でロケットを設計していた静かなエンジニア——として、
+        「<strong>南場さんが出来ない領域(技術・運用・実装・モバイルプロダクト)</strong>」 を黙々と引き受ける役割で
+        12年間 (1999–2011) No.2を務めた。
+      </p>
+      <p>
+        2人の関係を決定づけたのは、 2006年の <strong>モバゲータウン</strong>。 当初は南場さんの 「PC事業に
+        モバイルを足す」 程度の構想だったが、 守安さんが <strong>"無料SNS + アバター + ガチャ課金"</strong>
+        という独自設計でこれを大化けさせた。 ここで2人は「ビジョナリーCEO + プロダクト実装者」という分業が
+        本物の収益エンジンを生むことを証明した。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「夫の闘病に専念したい。 守安にバトンを渡す。」<br>
+        — 南場智子（2011年5月、退任発表時の会見要旨）
+      </p>
+      <p>
+        2011年の継承は、 通常のCEO継承とは性質が違った。 <strong>事業上の判断ではなく、 創業者の家族危機による
+        "想定外継承"</strong>。 守安さんは「準備が整っていた次期CEO」ではなく「<strong>南場さんが信頼できる
+        唯一の人物だから渡された後継者</strong>」だった。 この"事情含みの継承"が、 後の経営判断のトーンを
+        決定づける。
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">McKinsey起業家がOracleエンジニアを採る</div>
+          <div class="stage-body">1999年、 創業1年目のDeNAに守安さんが合流。 南場さんが描く「日本のeBay (ビッダーズ)」を、 大企業システム経験のあるエンジニアとして実装。 派手さはないが <strong>"頼れる技術屋"</strong> として古参の信頼を獲得。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — モバゲーで大化け</div>
+          <div class="stage-title">No.2として収益エンジンを発明</div>
+          <div class="stage-body">2006年モバゲータウン立ち上げ。 守安さんの "無料SNS + ガチャ" モデルが大ヒットし、 DeNAは <strong>PC通販企業からモバイルゲーム王へ脱皮</strong>。 ここで南場さんは "事業を作る人" として守安さんを心から信頼するようになる。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 想定外継承</div>
+          <div class="stage-title">家族危機でバトンが回る</div>
+          <div class="stage-body">2011年4月、南場さんの夫がステージ4の膵臓癌診断。 看病のため退任を決断。 「<strong>守安以外に渡せる相手がいない</strong>」 という消極的選択ではなく、 12年の仕事ぶりへの絶対信頼の結果として継承。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 並走 → 退任</div>
+          <div class="stage-title">10年並走、 業績低迷で退任</div>
+          <div class="stage-body">南場さんは2017年に会長として復帰。 守安さんはCEOとして引き続きオペレーションを統括するが、 ゲーム事業の成熟・WELQ問題・新規事業の伸び悩みが重なり、 2021年に10年経営を区切って退任。 後任は岡村信悟氏、 南場さんが代表取締役会長兼CEOに復帰した。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        守安さんは <strong>"自ら選んだNo.2"というより、"気づいたらNo.2だった"タイプ</strong>。
+        東大院・航空宇宙→Oracle→DeNAという経歴に、 「自分で会社を起こす」という発想は最初からあまり見えない。
+        派手な野心や創業ビジョンを持つよりも、 <strong>"目の前の難しい問題を解く"</strong> ことに集中するタイプ
+        の理系エンジニアだった。
+      </p>
+      <p>
+        だからこそ、 南場さんとの相性が成立した。 南場さんが <strong>「DeNAをこうしたい」</strong> と方向を決め、
+        守安さんが <strong>「では、こう作ります」</strong> と実装する。 役割分担としてはサンドバーグ型・継承型に
+        近いが、 守安さんの場合は <strong>"継承するつもりがなかった継承者"</strong> だった点が独特。
+      </p>
+      <p>
+        2011年、 南場さんから「夫の看病のためにCEOを譲りたい」と言われた時、 守安さんは <strong>"自分から進んで
+        CEOになる選択をした人"</strong> ではなく、 <strong>"託された人"</strong> として就任した。 この
+        立ち位置の違いは、 後の10年の経営判断のトーンを決定づける——大胆な事業転換よりも、 既存事業の最適化と
+        多角化に重心が置かれた背景。
+      </p>
+      <p>
+        翔太の視点で重要なのは、 <strong>「No.2でいるべき人がCEOになると、本人も組織も苦しむ可能性がある」</strong>
+        という構造的リスクが守安さんの後半生に浮かび上がること。 自分のNo.2適性を見極めずに継承を受けると、
+        WELQのような <strong>"トップが踏ん張れない瞬間"</strong> に致命傷を負いやすい。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv">大企業SE仕込みの <strong>"巨大トラフィックを安定運用する技術力"</strong> + モバイルプロダクトの企画力。 モバゲータウンの "無料SNS + ガチャ" モデルは守安さんの発明で、 これがDeNAの収益基盤を10年支えた。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 (Complement) × 翻訳 (Translate)。 南場さんの戦略を実装し、 大企業SE経験を活かしてサービスを止めない。 ガラケー → スマホ移行・北米進出（ngmoco買収）も実装側として主導。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">守安さんがいなければ、 DeNAは <strong>モバゲータウンを発明できなかった</strong> 可能性が高い。 南場さんはMcKinseyの戦略家であってモバイルプロダクトの設計者ではなかった。 No.2が "創業者にない発明力" を持っていた稀な例。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">10年のCEO期に、 ngmoco買収・横浜ベイスターズ買収・自動車(タクシー配車)・ヘルスケア・スポーツへ多角化。 ただし <strong>WELQ問題で信頼を毀損</strong> し、 後半は防御戦に。 「攻めのCEO」より「守りのCEO」の側面が強い。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① モバゲータウン立ち上げ(2006)。</strong> 当時のDeNAはオークション・通販事業中心で、
+        モバイルSNSは社内で勝算が見えにくい挑戦だった。 守安さんは <strong>"無料SNS + アバター + ガチャ課金"</strong>
+        という日本独自の収益モデルを設計し、 ガラケー世代の若年層を一気に取り込んだ。 これが後にスマホゲーム
+        コンプガチャ規制問題（2012）の前史にもなる、 良くも悪くも時代を変えた発明。
+      </p>
+      <p>
+        <strong>② コンプガチャ規制問題(2012)。</strong> 守安CEO就任直後、 消費者庁がコンプリートガチャを
+        景品表示法違反と判断。 DeNAは即日廃止を決断。 業界全体への打撃の中で、 <strong>"自社の収益モデルを
+        自ら畳む"</strong> 痛みを伴う決断を下した。 これが後年、 WELQ問題で初動が鈍った遠因とも言える
+        ——「規制に追い込まれてから動く」癖。
+      </p>
+      <p>
+        <strong>③ WELQ問題(2016)、 CEOキャリア最大の汚点。</strong> 医療系キュレーションサイトWELQを中心に、
+        信頼性・著作権侵害が集中砲火。 2016年12月7日、 守安さんは南場会長と並んで記者会見で謝罪し、 全10サイトを
+        非公開化。 翌年に役員報酬50%減額の処分。 ただし <strong>辞任はせず</strong>、 「<strong>内容の精査までできて
+        いなかった</strong>」と認めて続投した。 この時の判断が <strong>"トップが踏み止まるか、辞めるか"</strong>
+        の典型例として、 日本IT業界のケーススタディに残る。
+      </p>
+      <p>
+        <strong>④ タイミーCOOを半年で退任(2022.03)。</strong> DeNA退任後、 30歳の小川嶺CEOの右腕として再起を
+        図ったが、 送別会でのコンプライアンス規程違反（セクハラと報じられた）でわずか半年で退任。
+        DeNAでの10年を <strong>"美しい引き際"</strong> で締めた直後にこの不祥事が起きたことで、 守安さんの
+        評価は分裂的なものになった——「実績ある名経営者」と「私的振る舞いに脇の甘さがあった人物」の両論。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        DeNAでの引き際は、 表面的には <strong>"10年完走の整然たる継承"</strong> に見える。 2021年2月10日に退任
+        発表、 同年6月に正式退任、 後任は副社長COOを務めていた岡村信悟氏。 南場さんが代表取締役会長兼CEO（後にCEOも
+        兼任）に復帰し、 「<strong>創業者カムバック型</strong>」 の体制を整えてから守安さんは退いた。
+      </p>
+      <p>
+        ただし、 引き際の <strong>裏事情は美しいだけではない</strong>。 2018年〜2021年のDeNAは業績低迷期で、
+        ゲーム事業の成熟・新規事業の伸び悩み・WELQ後の社内文化のリビルドが進行中だった。 退任の <strong>表向きの
+        理由は「10年の節目」</strong> だが、 実態は <strong>"創業者復帰のための席譲り"</strong> の側面もある。
+      </p>
+      <p>
+        さらに重要なのは、 <strong>退任後のキャリア</strong>。 普通であれば「10年DeNA社長を完走した名経営者」として
+        多くの上場企業が社外取締役・顧問に迎え入れる。 実際にじげん・エディオンの社外取締役は得たが、
+        <strong>タイミーCOOを半年で不祥事退任した時点で、 "名経営者"としてのブランドは大きく毀損</strong> した。
+        その後はThirdverse・Mint Townといった <strong>Web3・ブロックチェーンゲーム領域</strong> での再起を
+        模索しているが、 メインストリームへの完全復帰には至っていない（2026年4月時点）。
+      </p>
+      <p>
+        翔太への教訓として重要なのは、 <strong>"CEO退任は引き際ではなく、新しい章のスタート"</strong> である
+        こと。 No.2 → CEO を全うした後の <strong>"第三の章"</strong> をどう設計するかこそ、 真の引き際の質を決める。
+        守安さんはここで足を滑らせた。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">守安 功 の No.2 型</div>
+        <div class="type-name">想定外継承型 × エンジニア補完型</div>
+        <div class="type-body">
+          南場智子CEOの戦略を <strong>"技術と実装"</strong> に変換するエンジニア補完型。 モバゲータウンを発明し、
+          PC通販企業をモバイルゲーム王に変えた "発明力" を持っていた点で、 単なる補完型ではなく <strong>"創造型No.2"</strong>
+          の側面も併せ持つ。
+          <br><br>
+          ▸ ただし、 守安さんの本質的なユニークネスは <strong>"想定外継承"</strong> にある。 通常のNo.2 → CEO継承
+          とは違い、 創業者の家族危機（夫の闘病）という個人的事情で、 「<strong>準備の整っていない継承者</strong>」
+          として就任した。 ここから10年回したのは事実だが、 その間ずっと <strong>"託された人として動いている"</strong>
+          重みが残った。
+          <br><br>
+          ▸ そしてもう一つ重要なのは、 <strong>"引き際の不完全性"</strong>。 DeNAの10年完走自体は立派だが、
+          退任後のタイミー半年退任で、 後半生の評価が分裂的になった。 これは「<strong>No.2 → CEO → 引退後</strong>」
+          の3段階全部を完璧にこなすことの難しさを示す、 教訓型のNo.2像。
+          <br><br>
+          ▸ 翔太にとっての価値は、 <strong>"完璧な型"より"実在の型"を学べる</strong> 点にある。
+          光と影の両方を持つNo.2像こそ、 自分の人生設計に最も役立つ参考例になる。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"託された人"であることを、無理に隠そうとするな</div>
+          <div class="lesson-body">
+            守安さんはCEOとして <strong>"南場さんに託された"</strong> という事実から逃げなかった。 自分のビジョンを
+            ぶち上げる派手さよりも、 与えられた立場で堅実に運営する道を選んだ。 翔太の場合、 もしWLで
+            次期COO/CEOの席を引き継ぐ時が来たら、 「<strong>自分が選んだのか、託されたのか</strong>」を
+            自覚せよ。 託されたなら、 託した人への責任を10年単位で負う覚悟を決めよ。 後付けで "自分の野心" を
+            飾ろうとすると、 経営判断のトーンがぶれる。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">大スキャンダルでは、辞めるか、踏み止まるか、を48時間で決めよ</div>
+          <div class="lesson-body">
+            WELQ問題で守安さんは <strong>"踏み止まって謝罪と再発防止"</strong> を選んだ。 これは賛否ある
+            判断だが、 一貫していた。 辞任せずに残るなら、 <strong>"残った理由"を自分の言葉で説明できる
+            必要がある</strong>。 翔太の場合、 もし将来クライアント案件で重大な事故が起きた時、
+            「<strong>逃げる/留まる/責任の取り方</strong>」を <strong>48時間以内</strong> に決めるトレーニングを
+            積むこと。 中途半端な「とりあえず様子を見る」が一番ダメージが大きい。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">退任後の"第三の章"は、CEO期と同じ重さで設計せよ</div>
+          <div class="lesson-body">
+            守安さんが躓いたのは、 退任後すぐにタイミーCOOへ移り <strong>半年で不祥事退任</strong> した
+            ことだった。 「<strong>10年完走」の評価は、 退任後の3〜5年の振る舞いで上書きされる</strong>。
+            翔太がWLで一区切りをつけて独立する時、 「<strong>独立後の最初の3年で何を作るか</strong>」を
+            <strong>独立前から</strong> 設計しておけ。 引き際は単なる "終わり" ではなく <strong>"次の始まり"</strong>。
+            ここを軽く考えると、 過去の実績まで巻き添えで毀損する。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>東大院は <strong>航空宇宙工学</strong> 専攻。 ロケットを設計したかった理系秀才が、 結局はモバイルゲームのガチャを設計するキャリアになった——日本の理系院生のキャリア転換の典型例。</li>
+        <li>派手さがなく、 <strong>"地味な技術屋"</strong> と言われ続けた。 南場さんが社外向けの華やかな顔だったのに対し、 守安さんは社内・運用・実装側を黙々と回した。</li>
+        <li>横浜DeNAベイスターズの買収を主導。 <strong>守安さん自身が筋金入りの野球ファン</strong> で、 球場に頻繁に通った。 IT企業がプロ野球球団を持つ前例を作った。</li>
+        <li>WELQ問題の記者会見で、 <strong>南場会長の隣で深々と頭を下げる映像</strong> は、 日本のIT業界の歴史的瞬間として記録に残る。 「<strong>創業者と経営者が並んで謝罪する</strong>」 構図は、 No.2出身CEOならではの絵だった。</li>
+        <li>役員報酬は2018年期で約 <strong>1.6億円</strong>。 当時の日本IT企業CEOとしては高水準だが、 同時期のテックCEO（孫正義・三木谷浩史・柳井正等）と比べると控えめ。</li>
+        <li>ゲーム好きとしても知られ、 <strong>自身もモバゲーのユーザーとしてプレイしていた</strong>。 「自分がやりたくなるゲームを作る」という姿勢を貫いた。</li>
+        <li>2022年のタイミーCOO退任時、 <strong>送別会での振る舞い</strong> がコンプライアンス規程違反として報じられた。 これによりNHK・主要紙が報道し、 一気にレピュテーションが下がった。</li>
+        <li>退任後はBlockchain・Web3領域に活路を見出している。 <strong>Thirdverse（國光宏尚氏）・Mint Town</strong> など、 ゲーム業界の元同志が中心。 古巣のネットワークが第三の章を支えている。</li>
+        <li>表彰歴：日本ベンチャー大賞 (2007、 モバゲータウン関連)。 個人での大きな受賞よりも、 DeNAという企業の表彰経由が多い <strong>"裏方型のキャリア"</strong>。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">南場 智子 <span class="ja">Namba Tomoko</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            DeNA創業者・元McKinseyパートナー。 守安さんが22年間仕えたNo.1。 2011年、 夫の闘病のためにCEOを退き、 守安さんへ託す。 2017年に会長として復帰し、 2021年に守安退任後はCEOへ完全復帰。 <strong>"創業者カムバック型"</strong> の代表的事例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">岡村 信悟 <span class="ja">Okamura Shingo</span></div>
+            <span class="rel-tag">後継者</span>
+          </div>
+          <div class="rel-body">
+            元総務省官僚 → DeNA。 守安さん退任後の2021年にCEO就任。 守安体制で副社長COOだった人物が後を継いだ、 教科書的継承。 ただし南場会長兼CEOへの再集権が進み、 後年は実質的に南場体制へ移行。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小川 嶺 <span class="ja">Ogawa Ryo</span></div>
+            <span class="rel-tag">第二の主君</span>
+          </div>
+          <div class="rel-body">
+            タイミー創業者・CEO（1997年生まれ）。 守安さんが2021年にCOOとして仕えた30歳下のNo.1。 ただし半年で守安さんがコンプライアンス問題で退任し、 関係は悪い形で幕。 <strong>"年下のNo.1のNo.2に戻る"</strong> という珍しいキャリア選択の挫折例。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">國光 宏尚 <span class="ja">Kunimitsu Hironao</span></div>
+            <span class="rel-tag">第三の同盟者</span>
+          </div>
+          <div class="rel-body">
+            元gumi創業者、 現Thirdverse CEO。 ゲーム業界の同時代経営者。 守安さんがDeNA退任後に再起のフィールドとして選んだWeb3/VRゲーム領域のキーパーソン。 「<strong>業界仲間との復帰</strong>」 を選んだ第三の章の象徴。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Tim Cook <span class="ja">ティム・クック</span></div>
+            <span class="rel-tag muted">比較対象 / 継承型</span>
+          </div>
+          <div class="rel-body">
+            Steve Jobs没後にApple CEOを継承した世界最高の継承型No.2。 守安さんも同じく "創業者からの託付" で継承した点で構造は近い。 違いは、 Cookが <strong>10年で時価総額を10倍以上にした</strong> のに対し、 守安さんはDeNAを大きくは伸ばせなかった点。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小泉 文明 <span class="ja">Koizumi Fumiaki</span></div>
+            <span class="rel-tag muted">同時代 / 日本Tech No.2</span>
+          </div>
+          <div class="rel-body">
+            メルカリで山田進太郎に仕え、 一度CEOになった後に "自発的に" 山田さんに返した <strong>"逆継承型No.2"</strong>。 守安さんと同世代の日本テックNo.2の双璧だが、 引き際の美しさで対照的。 「<strong>渡されたCEOを返す</strong>」 か 「<strong>渡されたCEOを背負う</strong>」 かの2つの型。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">岩田 聡 <span class="ja">Iwata Satoru</span></div>
+            <span class="rel-tag muted">比較対象 / エンジニアCEO</span>
+          </div>
+          <div class="rel-body">
+            HAL研究所→任天堂、 山内溥のNo.2から6年で社長継承したエンジニア出身CEOの先駆。 守安さんも同じく "技術屋からCEO" の系譜。 違いは岩田さんが <strong>"DS・Wii の発明的成功"</strong> を引っ張ったのに対し、 守安さんは大きな新規発明を任期中に出せなかった点。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steve Ballmer <span class="ja">スティーブ・バルマー</span></div>
+            <span class="rel-tag muted">比較対象 / 継承後の成熟期CEO</span>
+          </div>
+          <div class="rel-body">
+            Bill Gatesから継承して14年Microsoft CEOを務めた。 売上は3倍にしたが、 株価は伸び悩んだ "成熟期の継承者"。 守安さんも同じく <strong>"成長期から成熟期への移行を任された継承者"</strong> という構造。 創業期の発明者ではなく、 既存事業の延命と多角化を担う立場。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://ja.wikipedia.org/wiki/%E5%AE%88%E5%AE%89%E5%8A%9F" target="_blank">守安功 — Wikipedia 日本語版</a></li>
+        <li><a href="https://ja.wikipedia.org/wiki/%E5%8D%97%E5%A0%B4%E6%99%BA%E5%AD%90" target="_blank">南場智子 — Wikipedia 日本語版（守安継承の経緯）</a></li>
+        <li><a href="https://www.itmedia.co.jp/news/articles/1105/25/news071.html" target="_blank">DeNA創業者・南場智子社長が退任、 後任は守安COO — ITmedia NEWS (2011)</a></li>
+        <li><a href="https://www.itmedia.co.jp/news/articles/2102/10/news066.html" target="_blank">DeNA、 10年ぶり社長交代 岡村氏が昇格、 守安氏退任 — ITmedia NEWS (2021)</a></li>
+        <li><a href="https://dena.com/jp/press/1925/" target="_blank">米国ngmoco社の買収について — DeNA プレスリリース (2010)</a></li>
+        <li><a href="https://jp.techcrunch.com/2016/12/01/dena-moriyashu/" target="_blank">DeNA守安氏「認識が甘かった」WELQ騒動 — TechCrunch Japan (2016)</a></li>
+        <li><a href="https://logmi.jp/business/articles/173899" target="_blank">DeNA守安社長らによる記者会見全文（WELQ問題） — ログミーBiz (2016)</a></li>
+        <li><a href="https://prtimes.jp/main/html/rd/p/000000125.000036375.html" target="_blank">タイミー、 元DeNA代表取締役社長 守安功氏がCOOに就任 — PR TIMES (2021)</a></li>
+        <li><a href="https://www.businessinsider.jp/post-252506" target="_blank">元DeNA社長 守安氏、 タイミーCOOを半年で辞任 — Business Insider Japan (2022)</a></li>
+        <li><a href="https://thirdverse.io/ja/management-members.html" target="_blank">Thirdverse 経営陣ページ — Thirdverse 公式</a></li>
+        <li><a href="https://minttown.jp/magazine/interview/former-dena-moriyasu-yamada/" target="_blank">元DeNA守安氏 × Mint Town 山田氏 対談インタビュー — Mint Town (2023)</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
