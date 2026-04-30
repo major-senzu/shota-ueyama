@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genichi Tamatsuka — No.2 Legend / Shota Ueyama</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #999;
+    --hero-line: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding: 44px 0 32px;
+    margin-bottom: 32px;
+  }
+
+  .hero-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--hero-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero .crumb a {
+    color: var(--hero-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero .crumb a:hover { color: var(--hero-fg); border-bottom-color: var(--hero-muted); }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+  .hero-face {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #555, #1a1a1a);
+    flex-shrink: 0;
+    border: 2px solid #2a2a2a;
+  }
+  .hero-face::before {
+    content: attr(data-initials);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .hero-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .hero-head-text { flex: 1; min-width: 0; }
+  .hero-head-text .crumb { margin-bottom: 14px; }
+  .hero-head-text h1 { margin-bottom: 0; }
+  @media (max-width: 700px) {
+    .hero-head { gap: 18px; }
+    .hero-face { width: 84px; height: 84px; }
+    .hero-face::before { font-size: 24px; }
+  }
+
+  .hero .summary {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8d8d8;
+    max-width: 820px;
+    margin-bottom: 20px;
+  }
+  .hero .summary strong {
+    color: var(--hero-fg);
+    font-weight: 700;
+  }
+
+  .hero hr {
+    border: none;
+    border-top: 1px solid var(--hero-line);
+    margin: 20px 0 18px;
+  }
+
+  .hero .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 14px;
+    font-size: 13px;
+  }
+
+  .hero .facts > div { line-height: 1.4; }
+
+  .hero .facts .fact-label {
+    font-size: 11px;
+    color: var(--hero-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero .facts .fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--hero-fg);
+    line-height: 1.45;
+  }
+
+  .hero .facts .fact-full {
+    grid-column: 1 / -1;
+  }
+
+  section.block {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h2 .num { color: var(--fg); margin-right: 12px; font-weight: 600; }
+
+  p {
+    margin-bottom: 14px;
+    color: #222;
+  }
+
+  p strong { font-weight: 600; color: var(--fg); }
+
+  .origins-head { margin-bottom: 18px; }
+
+  .origins-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .origins-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origins-table { border-bottom: 1px solid var(--line); }
+
+  .origins-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .origins-row:first-child { border-top: none; }
+
+  .origins-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .origins-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  .origins-body strong { font-weight: 600; }
+
+  .origins-quote {
+    margin-top: 28px;
+    background: var(--soft);
+    padding: 24px 28px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .origins-quote .q {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--fg);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .origins-quote .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .tldr {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+
+  .tldr-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+
+  .tldr-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .tldr-body strong { font-weight: 700; }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .timeline-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--fg);
+    font-weight: 500;
+  }
+
+  .timeline-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .timeline-table .col-age { width: 50px; font-weight: 600; }
+  .timeline-table .col-year { width: 70px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .timeline-table .col-rate { width: 110px; color: #d4861a; font-weight: 700; letter-spacing: 0.05em; font-size: 13px; }
+  .timeline-table .col-axis { width: 110px; }
+
+  .axis-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .duo-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .duo-stage {
+    background: var(--soft);
+    padding: 20px 22px;
+    border-left: 3px solid var(--fg);
+  }
+
+  .duo-stage .stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .duo-stage .stage-body {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .value-grid .vk, .value-grid .vv {
+    background: var(--bg);
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .value-grid .vk {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .type-card {
+    border: 2px solid var(--fg);
+    padding: 28px 32px;
+  }
+
+  .type-card .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-card .type-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .type-card .type-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.85;
+  }
+
+  ol.lessons {
+    list-style: none;
+    counter-reset: lesson;
+  }
+
+  ol.lessons li {
+    counter-increment: lesson;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.lessons li:last-child { border-bottom: none; }
+
+  ol.lessons li::before {
+    content: counter(lesson, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+  }
+
+  ol.lessons .lesson-head {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  ol.lessons .lesson-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  ul.trivia { list-style: none; }
+
+  ul.trivia li {
+    padding: 12px 0 12px 24px;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    border-bottom: 1px dotted var(--line);
+  }
+
+  ul.trivia li:last-child { border-bottom: none; }
+
+  ul.trivia li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources {
+    list-style: none;
+    counter-reset: src;
+    font-size: 13px;
+  }
+
+  ol.sources li {
+    counter-increment: src;
+    padding: 8px 0 8px 32px;
+    position: relative;
+    color: #444;
+  }
+
+  ol.sources li::before {
+    content: '[' counter(src) ']';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ol.sources a { color: #0066cc; text-decoration: none; }
+  ol.sources a:hover { text-decoration: underline; }
+
+  .relations {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .rel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 18px 22px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .rel:hover {
+    border-color: var(--fg);
+    transform: translateY(-2px);
+  }
+
+  .rel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .rel-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .rel-name .ja {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .rel-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .rel-tag.muted {
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .rel-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .facts { grid-template-columns: 1fr 1fr; }
+    .duo-stages { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: 1fr; }
+    .timeline-table .col-axis { display: none; }
+    .relations { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap, .hero-inner { padding: 0 22px; }
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero .facts { grid-template-columns: 1fr; }
+    .timeline-table .col-year, .timeline-table .col-rate { width: auto; }
+    .timeline-table th:nth-child(2), .timeline-table td:nth-child(2) { display: none; }
+    .type-card .type-name { font-size: 24px; }
+    .origins-row { grid-template-columns: 1fr; gap: 6px; }
+    .origins-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="./index.html" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <!-- ======================================== -->
+  <!-- HERO                                     -->
+  <!-- ======================================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-head">
+        <div class="hero-face" data-initials="玉塚"><img src="https://grandcentral.jp/renewal/wp-content/uploads/2024/07/b058c417a70aae367c3384ba1595dd07-1.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="hero-head-text">
+          <div class="crumb">人物リサーチ &nbsp;—&nbsp; No.2 LEGEND &nbsp;/&nbsp; CORPORATE</div>
+          <h1>Genichi Tamatsuka</h1>
+        </div>
+      </div>
+      <p class="summary">
+        慶應幼稚舎からの三代続く名門商家の御曹司。 慶應大ラグビー部フランカーで4年時に <strong>関東対抗戦全勝優勝・全国大学選手権準優勝</strong>。
+        旭硝子→米国MBA→日本IBMを経て1998年、 36歳で <strong>柳井正のファーストリテイリング</strong> に合流。 2002年40歳で
+        代表取締役社長兼COO就任、 ユニクロのNo.2となる。 2005年退任後はリヴァンプ創業 → ロッテリア → ローソン社長・会長
+        → デジタルハーツHD → <strong>2021年ロッテHD社長</strong>。 4社で社長を務めた "<strong>経営請負人型No.2</strong>"
+        の代表格。 自称 "回遊魚"。
+      </p>
+
+      <hr>
+
+      <div class="facts">
+        <div class="fact-full">
+          <div class="fact-label">支えた No.1</div>
+          <div class="fact-value">柳井 正（ファーストリテイリング創業者 / 1998–2005 を支えNo.2を全う / 通算 7年） — 加えて 新浪剛史（ローソン）、 重光昭夫（ロッテ）と複数のNo.1の下を渡り歩いた "回遊魚型"</div>
+        </div>
+        <div>
+          <div class="fact-label">生年</div>
+          <div class="fact-value">1962年5月23日（63歳）</div>
+        </div>
+        <div>
+          <div class="fact-label">出身</div>
+          <div class="fact-value">東京都（日本）</div>
+        </div>
+        <div>
+          <div class="fact-label">性別</div>
+          <div class="fact-value">男性 / セクシュアリティ非公表</div>
+        </div>
+        <div>
+          <div class="fact-label">影響力指標</div>
+          <div class="fact-value">上場企業4社で社長CEOを歴任 / ロッテHD（売上約1.3兆円）社長 / 経済同友会副代表幹事</div>
+        </div>
+        <div>
+          <div class="fact-label">家族</div>
+          <div class="fact-value">非公開（既婚）</div>
+        </div>
+        <div>
+          <div class="fact-label">趣味・特技</div>
+          <div class="fact-value">ラグビー（フランカー） / 身長181cm / リーグワン理事長として競技にも関与</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">学歴</div>
+          <div class="fact-value">慶應義塾幼稚舎・普通部・高等学校 → 慶應義塾大学法学部政治学科 (1985) → ケース・ウェスタン・リザーブ大学経営大学院 MBA (1997) → サンダーバード国際経営大学院 修了</div>
+        </div>
+        <div class="fact-full">
+          <div class="fact-label">主な肩書き</div>
+          <div class="fact-value">ロッテホールディングス代表取締役社長 (2021.6–) / ジャパンラグビーリーグワン 初代理事長 (2021.9–) / 千葉ロッテマリーンズ 取締役オーナー代行 (2022–) / 経済同友会 副代表幹事</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ======================================== -->
+    <!-- TL;DR                                    -->
+    <!-- ======================================== -->
+    <div class="tldr">
+      <div class="tldr-label">一言で言うと？</div>
+      <div class="tldr-body">
+        「<strong>柳井正のNo.2を3年で挫折し、 そこから上場企業4社の社長を歴任した"経営請負人型No.2"</strong>」。
+        慶應幼稚舎から続く名門の御曹司・元ラグビー日本代表候補が、 <strong>40歳でユニクロCOO</strong> に就任。
+        しかし2005年に <strong>"増収減益が柳井さんの逆鱗に触れ"</strong> 退任。 失意のリヴァンプ起業からロッテリア・
+        ローソン・デジタルハーツ・ロッテHDと <strong>"次の主君"を渡り歩く</strong>。 自称 "<strong>回遊魚</strong>"——
+        泳ぎ続けないと死ぬ魚のように、 一つの組織に長く残らず、 <strong>"創業者の隣で完成させるNo.2"</strong> よりも
+        <strong>"危機の組織を3〜5年で立て直すCEO"</strong> として生きる道を選んだ稀有なキャリア。 翔太と <strong>同じ
+        慶應法学部政治学科の40歳上の先輩</strong>。
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- ORIGINS                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <div class="origins-head">
+        <div class="origins-eyebrow">Origins</div>
+        <div class="origins-title">生い立ち・学歴</div>
+      </div>
+
+      <div class="origins-table">
+
+        <div class="origins-row">
+          <div class="origins-label">出生</div>
+          <div class="origins-body">
+            <strong>1962年5月23日、東京都生まれ</strong>。 三代続く東京の名門商家の御曹司。 <strong>曾祖父が玉塚證券
+            創業者</strong>、 祖父・玉塚栄次郎は <strong>東京証券取引所理事長</strong>、 父・玉塚和男は玉塚證券専務。
+            生まれた瞬間から「東京の上流階級」の人脈とリソースを持っていた典型的な "<strong>育ちの良い経営者</strong>"。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">幼稚舎・普通部</div>
+          <div class="origins-body">
+            <strong>慶應義塾幼稚舎入学 (1968)</strong>。 慶應の幼稚舎は日本でも最難関クラスの私立小学校で、
+            親の経済力・社会的地位がほぼ条件。 そこから <strong>普通部 (中学) → 高等学校 → 大学</strong> と
+            慶應の純血エスカレーターに乗り続ける。 中学からラグビーを始めた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">高校時代</div>
+          <div class="origins-body">
+            <strong>慶應義塾高等学校</strong>。 ラグビー部に所属し、 体格 (身長181cm) を活かしたフランカーへ。
+            慶應系の名門スポーツ校として、 練習の厳しさと "塾生としての品格" を両立させる文化の中で育つ。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">大学</div>
+          <div class="origins-body">
+            <strong>慶應義塾大学法学部政治学科 (1981年入学・1985年卒業)</strong>。 翔太と <strong>全く同じ学部・学科の
+            40歳上の先輩</strong>。 ラグビー部では <strong>3年生でレギュラー、 4年生で関東大学対抗戦全勝優勝、 全国
+            大学選手権準優勝</strong>。 1984年度の慶應ラグビー黄金期の中心メンバー。 体育会系のリーダーシップが
+            この時点で完成していた。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">最初の就職</div>
+          <div class="origins-body">
+            <strong>1985年 旭硝子 (現AGC) 入社</strong>。 BtoB素材メーカーの花形企業。 1989年に <strong>シンガポール
+            支社へ赴任</strong>、 海外営業を経験。 これが後のグローバル感覚の原点になる。 12年勤めた後、
+            <strong>1995–1997年に米国留学でMBA取得</strong>。 ケース・ウェスタン・リザーブ大学経営大学院 +
+            サンダーバード国際経営大学院 修了。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">転機</div>
+          <div class="origins-body">
+            <strong>1998年4月 日本IBMにコンサルタントとして転職</strong>。 ところが、 IBM時代のコンサル先で
+            <strong>柳井正・澤田貴司 (ファーストリテイリング)</strong> と出会い、 そのカリスマ性と事業の勢いに魅せられる。
+            <strong>わずか4ヶ月でIBMを退職</strong>、 同年 <strong>ファーストリテイリング入社</strong>。 36歳で
+            "ユニクロの隣にいる人"になる決断を下した。
+          </div>
+        </div>
+
+        <div class="origins-row">
+          <div class="origins-label">就職前のID</div>
+          <div class="origins-body">
+            「<strong>慶應純血のラグビー出身 + 旭硝子12年の事業経験 + 米国MBAのフレームワーク + 商家の御曹司育ち</strong>」
+            という日本企業エリートの教科書的経歴。 派手さや尖りはないが、 <strong>"育ちの良さと体育会系のリーダーシップを
+            両立できる珍しいタイプ"</strong> として、 柳井さんが「自分にないもの」として欲しがった。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="origins-quote">
+        <div class="q">「僕は回遊魚なんですよ。 泳ぎ続けないと死んでしまう。 だから一生、 挑戦をやめない。」</div>
+        <div class="src">— 玉塚 元一（ロッテHD社長就任時 / 日経マガジンインタビュー 2021）</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 微分ポイント                              -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>人生の微分ポイント / Inflection Points</h2>
+      <table class="timeline-table">
+        <thead>
+          <tr>
+            <th class="col-age">年齢</th>
+            <th class="col-year">西暦</th>
+            <th>出来事</th>
+            <th class="col-rate">変化率</th>
+            <th class="col-axis">軸</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-age">0</td>
+            <td class="col-year">1962</td>
+            <td>東京都に <strong>玉塚證券創業家の三代目</strong> として生まれる。 祖父・玉塚栄次郎は東証理事長。 生まれた時から経済界の最上流に近い環境。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">出自</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">6</td>
+            <td class="col-year">1968</td>
+            <td><strong>慶應義塾幼稚舎入学</strong>。 普通部・高校・大学と慶應純血コースに入る。 ここから人脈の核が形成される。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">教育</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">12</td>
+            <td class="col-year">1974頃</td>
+            <td>普通部 (中学) で <strong>ラグビーを始める</strong>。 体格を活かしたフランカーへ。 後の体育会系リーダーシップの原点。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">性格形成</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">22</td>
+            <td class="col-year">1984</td>
+            <td><strong>慶應大ラグビー部4年・関東大学対抗戦全勝優勝、 全国大学選手権準優勝</strong>。 慶應ラグビー黄金期の中心。 この成功体験が "<strong>勝ち癖</strong>" として人格に刻まれる。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">原体験</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">23</td>
+            <td class="col-year">1985</td>
+            <td><strong>慶應大法学部政治学科卒業、 旭硝子 (現AGC) 入社</strong>。 BtoB素材メーカーの花形に新卒入社。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">キャリア</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">27</td>
+            <td class="col-year">1989</td>
+            <td><strong>旭硝子シンガポール支社赴任</strong>。 海外駐在で英語とグローバル営業を体得。 帰国子女ではないが、 ここで国際感覚を身につける。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">経験</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">33</td>
+            <td class="col-year">1995</td>
+            <td><strong>米国留学開始</strong>。 ケース・ウェスタン・リザーブ大学経営大学院 + サンダーバード国際経営大学院でMBA取得。 30代前半でMBAは当時の日本企業エリートとして遅咲き寄り。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">学び直し</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">36</td>
+            <td class="col-year">1998.04</td>
+            <td><strong>旭硝子退職、 日本IBM入社 (コンサルタント)</strong>。 だがIBMでのファーストリテイリング向けコンサル業務で柳井さんと出会う。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">転換</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">36</td>
+            <td class="col-year">1998.08</td>
+            <td><strong>日本IBMをわずか4ヶ月で退社、 ファーストリテイリング入社</strong>。 柳井さんのカリスマと事業の勢いに惚れ込んでの "脱大企業" 決断。 No.2人生のスタート地点。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">人生軸</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">40</td>
+            <td class="col-year">2002.11</td>
+            <td><strong>ファーストリテイリング 代表取締役社長兼COO就任</strong>。 柳井さんが会長へ退き、 玉塚さんに経営を任せる "実質的バトンパス"。 ユニクロが日本一のSPAブランドに駆け上がる時期のNo.2。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">No.2確立</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">42</td>
+            <td class="col-year">2005.05</td>
+            <td><strong>05年8月期 増収減益が柳井さんの逆鱗に触れる</strong>。 「安定成長」志向の玉塚と「右肩上がり拡大」を求める柳井の経営哲学が決裂。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">破断</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2005.09</td>
+            <td><strong>ファーストリテイリング 代表取締役社長兼COO 退任</strong>。 任期途中での辞任。 「失意のうちに去った」と評される、 No.2人生最大の挫折。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">挫折</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">43</td>
+            <td class="col-year">2005.11</td>
+            <td><strong>株式会社リヴァンプ設立 (共同代表 / 元ファストリ副社長 澤田貴司と)</strong>。 企業再生事業会社。 失意を起業エネルギーに変えた "<strong>第二の章</strong>" のスタート。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">起業</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">44</td>
+            <td class="col-year">2006</td>
+            <td><strong>ロッテリア 会長兼CEO就任 (リヴァンプから経営委任)</strong>。 ハンバーガーチェーンの再生案件として4年経営。 "経営請負人" としての最初の本格案件。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">48</td>
+            <td class="col-year">2010</td>
+            <td><strong>ローソン顧問就任</strong>。 当時の社長・<strong>新浪剛史さんからのヘッドハンティング</strong>。 ファストリ・リヴァンプ・ロッテリア経験を買われた招聘。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">招聘</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">49</td>
+            <td class="col-year">2011</td>
+            <td><strong>ローソン副社長執行役員に昇格</strong>。 新浪さんのNo.2として2人三脚で運営。 14万店POSデータからのコンビニ経営の精緻化を学ぶ。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">No.2</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">52</td>
+            <td class="col-year">2014.05</td>
+            <td><strong>ローソン代表取締役社長就任</strong>。 新浪さんがサントリーHD社長へ転出するに伴う継承。 No.2 → No.1 への2度目の昇格。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">継承</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">2016.06</td>
+            <td><strong>ローソン代表取締役会長CEOへ昇格</strong>。 親会社・三菱商事の経営介入が強まる中で、 形式上トップに据え置かれる。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">役割</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">54</td>
+            <td class="col-year">2017.05</td>
+            <td><strong>ローソン会長CEO退任</strong>。 三菱商事による経営直接化、 後ろ盾の新浪さん不在で "居場所がなくなった" と報じられる。 7年で2社目を去る。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">退任</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">55</td>
+            <td class="col-year">2017.08</td>
+            <td><strong>デジタルハーツHD 代表取締役社長CEO就任</strong>。 ゲームデバッグ会社の経営再生を引き受ける。 業界経験ゼロからの挑戦。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">転身</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">59</td>
+            <td class="col-year">2021.06</td>
+            <td><strong>株式会社ロッテホールディングス 代表取締役社長就任</strong>。 重光宏之・昭夫の "骨肉の争い" の渦中で社長を引き受ける、 4社目の社長。 売上1.3兆円企業のトップ。</td>
+            <td class="col-rate">★★★★★</td>
+            <td><span class="axis-tag">No.1</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">59</td>
+            <td class="col-year">2021.09</td>
+            <td><strong>ジャパンラグビーリーグワン 初代理事長就任</strong>。 トップリーグを2022年改編した日本ラグビー新リーグの顔。 自身のラグビー原体験が一周して仕事になった。</td>
+            <td class="col-rate">★★★★</td>
+            <td><span class="axis-tag">原点回帰</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">60</td>
+            <td class="col-year">2022</td>
+            <td><strong>千葉ロッテマリーンズ 取締役オーナー代行就任</strong>。 プロ野球の経営にも関与。 ロッテHDのスポーツ・ビジネス領域全般を統括。</td>
+            <td class="col-rate">★★★</td>
+            <td><span class="axis-tag">役割拡大</span></td>
+          </tr>
+          <tr>
+            <td class="col-age">63</td>
+            <td class="col-year">2025</td>
+            <td><strong>経済同友会 副代表幹事</strong>として、 政財界へのオピニオン・リーダー的存在に。 トランプ関税に対し「日本の大きなチャンス」と発言するなど、 経営者の論客としての立ち位置確立。</td>
+            <td class="col-rate">★★</td>
+            <td><span class="axis-tag">影響力</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.1（柳井正）との関係                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.1（柳井 正）との関係構造</h2>
+      <p>
+        玉塚さんが7年間 (1998–2005) 仕えたのは、 <strong>柳井正さん</strong> ——山口県宇部の田舎の小さな紳士服店を
+        世界最大級のSPAブランド・ユニクロに育て上げた、 <strong>カリスマ創業者の極致</strong>。 玉塚さんとの関係は、
+        生い立ち・性格・経営哲学の <strong>"完全な対比"</strong> から始まる。
+      </p>
+      <p>
+        柳井さんは <strong>地方出身・苦労人・徹底した現場主義・「泳げない者は沈め」の苛烈な経営哲学</strong>。
+        玉塚さんは <strong>東京の名門商家の御曹司・慶應幼稚舎からのエスカレーター・体育会系の品格・「安定成長」志向</strong>。
+        柳井さんは「自分に最も足りない要素 (上品さ・育ちの良さ・組織を回す調整力)」 を玉塚さんに見出し、
+        <strong>カリスマと品格の補完</strong> という構図でNo.2に据えた。
+      </p>
+      <p style="padding-left: 20px; border-left: 2px solid var(--fg); color: #333; font-style: italic;">
+        「本物を見分けて、 これだと思った人からはとことん学び尽くす。 その謙虚で貪欲な姿勢は、 今でも忘れられません。」<br>
+        — 玉塚 元一（柳井正について / NewsPicks 2020）
+      </p>
+      <p>
+        2002年、 <strong>玉塚さんが40歳でCOO就任</strong>。 柳井さんは会長へ退いて 「玉塚にバトンを渡す」 構えを取った。
+        ところが、 <strong>2005年8月期の決算が増収減益</strong>——売上は伸びたが利益が落ちた。 柳井さんが許容できる
+        境界を超え、 <strong>"逆鱗に触れた"</strong>。 玉塚さんは任期途中で社長を解かれ、 <strong>3年で挫折</strong> する。
+      </p>
+      <p>
+        この破断は、 <strong>"カリスマ創業者の隣でNo.2を全うすることの構造的難しさ"</strong> を示す典型例。
+        柳井さんは "経営を任せたい" と言いながら、 数字が落ちた瞬間に介入してくる。 玉塚さんは "任された範囲で
+        判断したい" と思っても、 創業者の本能的な野心と一致しない判断は許されない。 <strong>サンドバーグや
+        ティム・クックのような "隣で全うする型" には、 創業者側の自制が不可欠</strong>——柳井さんはそれを
+        持たない型のNo.1だった。
+      </p>
+
+      <h3 style="font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 16px;">関係の4ステージ</h3>
+      <div class="duo-stages">
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 01 — 出会い</div>
+          <div class="stage-title">IBMコンサル経由の即決スカウト</div>
+          <div class="stage-body">1998年、 玉塚さんは日本IBMでファストリ向けコンサルを担当。 柳井さんは「カリスマと事業の勢い」を、 玉塚さんは「育ちの良さと体育会系の調整力」を相互に見出し、 <strong>4ヶ月でIBMから引き抜き</strong>。 即決の意思決定が後の関係性のトーンを決めた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 02 — 急速昇進</div>
+          <div class="stage-title">36歳→40歳でCOOへ</div>
+          <div class="stage-body">入社からわずか4年で <strong>代表取締役社長兼COO</strong>。 ユニクロのフリースブーム (1999) → 全国SPA展開 → 海外進出の急成長期を、 <strong>柳井さんの戦略を組織として運用する側</strong> として支えた。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 03 — 経営哲学の決裂</div>
+          <div class="stage-title">「安定成長」 vs 「右肩上がり」</div>
+          <div class="stage-body">2005年8月期の <strong>増収減益</strong> が決定打。 玉塚さんは "持続可能な成長率" を志向、 柳井さんは "毎年2割成長を続けないと潰れる" 哲学。 同じ会社の経営を、 全く違う温度で見ていた2人の哲学的乖離が表面化。</div>
+        </div>
+        <div class="duo-stage">
+          <div class="stage-label">STAGE 04 — 失意の退任 → 学び直し</div>
+          <div class="stage-title">"挫折" がキャリアの起点になる</div>
+          <div class="stage-body">2005年9月退任。 玉塚さんは後年も「<strong>柳井さんから学んだことが今も全ての土台</strong>」と語り、 リヴァンプ→ロッテリア→ローソン→デジタルハーツ→ロッテHDと <strong>"学んだことを別の組織で再現する"</strong> キャリアに転換した。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2を選んだ動機                         -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2を選んだ動機 / Why Number Two</h2>
+      <p>
+        玉塚さんは <strong>"No.2でいたい人"ではなく、"カリスマ創業者の隣で学びたい人"</strong>。
+        旭硝子12年・旭硝子シンガポール赴任・米国MBAという王道エリートコースを歩んだ後、 36歳で
+        <strong>"既存の安定キャリアを捨てて、 カリスマの隣で揉まれる"</strong> 選択をした。 これは
+        <strong>「学習への強い飢餓」</strong> がドライバー。
+      </p>
+      <p>
+        ラグビー部時代の <strong>「フランカー (FW のNo.7) として全勝チームの中心になる」</strong> 体験が、
+        玉塚さんの自己認識の核にある。 <strong>"自分でトライを取りに行くのではなく、 相手のボールを奪い、
+        味方が走るスペースを作る"</strong>——フランカーは典型的なNo.2型ポジション。 ボールを持つ司令塔
+        (スタンドオフ) を支える側として勝ちを呼ぶ役割。
+      </p>
+      <p>
+        だからこそ、 柳井さんという <strong>"絶対的なボール保持者"</strong> の隣で動くNo.2は、 玉塚さんの本能に
+        合っていた。 <strong>"司令塔の判断を否定しない、 ただし自分にしか取れないボールはきっちり奪う"</strong>。
+        これがNo.2としての玉塚さんのスタイルだった。
+      </p>
+      <p>
+        翔太の視点で重要なのは、 玉塚さんが <strong>"挫折後にもNo.2 → No.1 を繰り返した"</strong> こと。
+        ローソンでは新浪さんのNo.2 (2011–2014) → 社長 (2014–2016)、 ロッテHDでも実質No.2的役割から社長へ。
+        <strong>"完全に自分の会社を起こすNo.1"ではなく、 "誰かの構築物を引き継いで完成させるNo.1.5"</strong>
+        として生きるタイプだ。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 提供した独自価値                          -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>提供した独自価値 / Unique Contribution</h2>
+      <div class="value-grid">
+        <div class="vk">スキル軸</div>
+        <div class="vv"><strong>"カリスマ創業者の言語をマネジメント可能な組織言語に翻訳する力"</strong>。 旭硝子の大企業経験 + MBAのフレームワーク + 体育会系のリーダーシップを掛け合わせ、 創業者の "勘" を組織が再現できる仕組みに変える役割。</div>
+        <div class="vk">役割軸</div>
+        <div class="vv">補完 (Complement) × 翻訳 (Translate)。 柳井さんの "鋭い感覚" を、 数千人規模の組織が動く言葉に変換する。 ローソン時代も同じ役割を新浪さんに対して果たした。</div>
+        <div class="vk">不在仮想</div>
+        <div class="vv">玉塚さんがいなければ、 ファーストリテイリングは <strong>"組織化された大企業" になる速度が遅れた</strong> 可能性。 柳井さんの直感的な経営を、 上場企業として運営できるレベルの組織管理に整える役割を担った。</div>
+        <div class="vk">継承後の貢献</div>
+        <div class="vv">ファストリ後は <strong>4社で社長</strong> (ロッテリア・ローソン・デジタルハーツ・ロッテHD) を経験。 <strong>"創業者の隣で学んだことを別の場所で再現する"</strong> ことで、 日本企業の事業承継・組織再生市場に独自のポジションを作った。</div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 試練と決断                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>試練と決断 / Trials and Decisions</h2>
+      <p>
+        <strong>① 1998年の脱大企業決断 (36歳)。</strong> 旭硝子 → 日本IBMに移った直後、 <strong>4ヶ月でIBMを退社して
+        ファストリへ</strong>。 大企業の安定キャリアを捨て、 当時まだ「ユニクロのフリースが流行り始めた」程度の
+        ベンチャー的中堅企業に飛び込む決断。 <strong>育ちの良いエリートが"勝ち戦"を捨てて未確定領域に行った</strong>
+        最初の大きな賭け。
+      </p>
+      <p>
+        <strong>② 2005年の任期中退任 (43歳)、 No.2人生最大の挫折。</strong> 柳井さんに「逆鱗に触れた」増収減益決算を
+        受け、 任期途中での退任を余儀なくされた。 <strong>"自分が育てた会社のCOOを、 創業者の意思で離れる"</strong>
+        という、 No.2 にとって最も痛い別れ方。 ここで多くのキャリアは終わるが、 玉塚さんは <strong>"挫折を起業
+        エネルギーに変換した"</strong>。
+      </p>
+      <p>
+        <strong>③ 2017年のローソン会長CEO退任 (54歳)。</strong> 親会社・三菱商事による経営直接化が進み、
+        <strong>後ろ盾の新浪さん不在で居場所が消えた</strong>。 ファストリと違い "クビ" ではないが、
+        実質的には <strong>"組織として必要とされなくなった"</strong> 形での離脱。 2社目の "完成させ切れない退場"。
+      </p>
+      <p>
+        <strong>④ 2021年のロッテHD社長就任 (59歳)、 火中の栗を拾う決断。</strong> 重光宏之・昭夫兄弟の
+        <strong>「骨肉の争い (経営権訴訟)」</strong> が続く中、 創業家の外部から社長を引き受けた。 <strong>"派閥の
+        どちらにもつかず、 経営のプロとして整理する"</strong> という極めて難しい役割。 4社目の社長として、
+        過去3社で学んだ全てを動員する局面。
+      </p>
+      <p>
+        <strong>⑤ 評価の二極化を引き受け続ける覚悟。</strong> 玉塚さんへの世評は <strong>"上場企業4社の社長を歴任
+        する稀有な経営者"</strong> と <strong>"どこも完全な成功を残せていない経営請負人"</strong> の両方が並存する。
+        ファストリ・ローソンともに「3年で結果を出せず」という見方もあれば、 「立て直し役として求められ続ける
+        貴重な存在」とも見られる。 玉塚さんはこの両論を引き受けたまま、 回遊魚として泳ぎ続けている。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 引き際・継承                             -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>引き際・継承 / Succession</h2>
+      <p>
+        玉塚さんの引き際は、 <strong>"一つの会社を完成させて引退する"</strong> というクラシックな日本型経営者
+        モデルではない。 <strong>"3〜5年で次に移る"</strong> という、 米国型のシリアル・ターンアラウンド経営者に
+        近い。 ファストリ7年・ロッテリア4年・ローソン7年・デジタルハーツ4年・ロッテHDと <strong>意図的に
+        滞在期間を区切る</strong>。
+      </p>
+      <p>
+        この型の <strong>長所</strong> は、 <strong>"危機の組織を立て直す経験値が複利で蓄積する"</strong> こと。
+        4社の社長経験は日本では極めて希少で、 経済同友会副代表幹事という政財界の役割もこの希少性ゆえに付与
+        されている。 同じ社長を20年やった人には絶対に得られない知見の幅を持つ。
+      </p>
+      <p>
+        この型の <strong>短所</strong> は、 <strong>"どの組織でも、 完全な代名詞になり切れない"</strong> こと。
+        ファストリは柳井さん、 ローソンは新浪さんと "本物のNo.1" の影が常にある。 <strong>玉塚さんは
+        "回遊魚として泳いだ" 自由を得た代わりに、 "一つの城の主" としての完成度は手放した</strong>。
+        ロッテHDの今も、 創業家の影は濃い。
+      </p>
+      <p>
+        翔太への教訓として重要なのは、 <strong>"引き際は引退ではなく、 次の主君を選ぶ場所決め"</strong> という
+        玉塚モデルの考え方。 一社に骨を埋めることだけが正解ではない。 ただし、 <strong>"主君を渡り歩く"型は、
+        どの主君にも完全には所有されない覚悟</strong> が要る。
+      </p>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- No.2の型                                  -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>No.2の型 / The Archetype</h2>
+      <div class="type-card">
+        <div class="type-label">玉塚 元一 の No.2 型</div>
+        <div class="type-name">経営請負人型 × 回遊魚型</div>
+        <div class="type-body">
+          柳井正というカリスマ創業者の隣でNo.2 → 挫折 → 4社の社長を歴任、 という極めて日本では珍しい
+          <strong>"シリアル・ターンアラウンド経営者"</strong>。 一つの組織に長く残らず、 <strong>3〜5年単位で
+          危機の組織を立て直し、 次に移る</strong> 米国型に近いキャリア。
+          <br><br>
+          ▸ 玉塚さんの本質は、 <strong>"カリスマ創業者の隣で全うするNo.2"には向かなかったが、 学んだことを
+          別の組織で再現する経営者には向いた"</strong> という気付きにある。 ファストリで "全う型" を目指して
+          挫折したからこそ、 "請負人型" の道が開けた。
+          <br><br>
+          ▸ もう一つの特徴は、 <strong>"育ちの良さ × 体育会系のリーダーシップ"</strong> という、 日本では
+          珍しい組み合わせ。 三代続く商家の御曹司として人脈と品格を持ちながら、 慶應ラグビー部フランカーで
+          鍛えた泥臭い実行力を併せ持つ。 <strong>"最上流の出自と、 最前線の体力"</strong> を両立できた稀有な型。
+          <br><br>
+          ▸ 翔太にとっての価値は、 <strong>"完全な成功者ではない型"を学べる</strong> 点にある。 ファストリで
+          挫折した経験があるからこそ、 玉塚さんは「次の挑戦」を続けられる。 <strong>"挫折を活かす経営者"の
+          見本として、 翔太の人生哲学（急がない・余裕・優しさ）に直結する</strong> 学びがある。
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 翔太への設計図                           -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>翔太への設計図 / 3 Lessons</h2>
+      <ol class="lessons">
+        <li>
+          <div class="lesson-head">"完全な成功者"を目指さなくていい — 4社で社長を経験する道もある</div>
+          <div class="lesson-body">
+            玉塚さんはファストリで挫折し、 ローソンも完成させ切れず、 ロッテHDも創業家の影を背負っている。
+            それでも <strong>"4社の社長を歴任した日本でも稀有な経営者"</strong> として経済同友会副代表幹事まで
+            上り詰めた。 翔太は今、 WLで完璧なCOOを目指すか、 独立してCEOになるか、 で揺れているが、
+            <strong>玉塚モデルが示すのは "両方やってもいい" という第三の道</strong>。 WLで5〜7年No.2を全うし、
+            次の組織でNo.1になり、 さらに次の場所で別の役割を引き受ける。 <strong>キャリアは一回戦勝負ではない</strong>。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">挫折は終わりではなく、 起業エネルギーへの変換装置</div>
+          <div class="lesson-body">
+            玉塚さんは2005年に <strong>43歳でユニクロCOOを"クビ同然"で退任</strong>。 多くの人はそこでキャリアが
+            折れるが、 玉塚さんは2ヶ月後に元同僚の澤田さんとリヴァンプを起業し、 そこから次の20年を作り直した。
+            <strong>"挫折直後の3〜6ヶ月で何をするか" がその人の残り人生を決める</strong>。 翔太がもしWLで何らかの
+            破断 (例: 創業者の意向と決定的にずれる、 案件の大失敗等) を経験した時、 <strong>"次の主君を1ヶ月以内に
+            探し始める" 行動量</strong> が、 その後の自分を救う。 落ち込む期間は短く、 動き出す期間は長く。
+          </div>
+        </li>
+        <li>
+          <div class="lesson-head">"回遊魚型キャリア"の宿命を理解せよ — どの組織にも完全には所有されない覚悟</div>
+          <div class="lesson-body">
+            玉塚さんは4社で社長を務めたが、 <strong>"ファストリの玉塚"でも"ローソンの玉塚"でもない</strong>。
+            どの組織にも完全には属さない代わりに、 どの組織にも縛られない自由を得た。 翔太もWLを始めた時から、
+            「人生哲学=急がない・余裕・優しさ」 に従えば、 <strong>"WLに骨を埋める" 一択ではない</strong>。
+            ただし、 回遊魚型を選ぶなら覚悟が要る——<strong>"自分はどの組織のものでもない、 だから孤独だ"</strong>
+            という事実を引き受け続けること。 その代わり、 <strong>"どの主君にも貸せる経営力"</strong> という
+            希少資産が複利で積み上がる。
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 雑学・人柄                               -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>雑学・人柄 / Trivia</h2>
+      <ul class="trivia">
+        <li>身長 <strong>181cm</strong>、 慶應ラグビー部時代のポジションは <strong>フランカー</strong> (FW No.7)。 ボールを持つ司令塔ではなく、 相手のボールを奪うNo.2型ポジション。 経歴と一致する身体記号。</li>
+        <li>三代続く名門商家の御曹司。 <strong>曾祖父が玉塚證券創業者、 祖父・玉塚栄次郎は東京証券取引所理事長</strong>、 父・玉塚和男は玉塚證券専務。 「育ちの良さ」 はここから来る。</li>
+        <li>慶應 <strong>幼稚舎・普通部・高校・大学と純血エスカレーター</strong>。 翔太と同じ法学部政治学科。 翔太の40歳上の先輩。</li>
+        <li>米国MBAは <strong>ケース・ウェスタン・リザーブ大学経営大学院 + サンダーバード国際経営大学院</strong> の2校で修了。 当時の日本企業では珍しい組み合わせ。</li>
+        <li>1998年に日本IBMをわずか <strong>4ヶ月</strong> で退職してファストリへ。 同期からは "あいつ何やってんだ" と不思議がられた決断。 後にその "瞬発力" が玉塚さんのキャリアの代名詞になる。</li>
+        <li>2005年退任後、 リヴァンプを澤田貴司さんと起業。 澤田さんは後にファミマ社長になる、 もう一人の "ユニクロ卒業生"。 <strong>柳井門下からの双璧</strong>。</li>
+        <li>自称 <strong>"回遊魚"</strong>。 「泳ぎ続けないと死んでしまう」 と公言。 一つの組織に長く居ない自分の性質を、 マグロやカツオに例える。</li>
+        <li><strong>2021年9月、 ジャパンラグビーリーグワン初代理事長就任</strong>。 大学時代の原体験が一周してビジネスに繋がった象徴的な就任。</li>
+        <li>千葉ロッテマリーンズの <strong>取締役オーナー代行 (2022–)</strong>。 プロ野球の経営にも関与する珍しいビジネスマン。 父・祖父の証券業 + 自身のラグビー → スポーツビジネスへの自然な流れ。</li>
+        <li>経済同友会副代表幹事として、 <strong>トランプ関税問題でも積極発言</strong>。 「日本にとって大きなチャンス」 と楽観論を述べる、 時代の風を読む型の経営者論客。</li>
+        <li>身長181cmの偉丈夫だが、 <strong>講演や対談では "人懐っこく、 笑い声が大きい" タイプ</strong>。 体育会系のフランクさと商家の上品さが同居する珍しい雰囲気。</li>
+        <li>ファストリ時代の社員からは「<strong>柳井さんが怒っている時に、 真ん中で受け止めてくれた人</strong>」 と慕われた。 No.2としての本質は "緩衝材" でもあった。</li>
+      </ul>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 関連の深い人物                            -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>関連の深い人物 / Related Figures</h2>
+      <div class="relations">
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">柳井 正 <span class="ja">Yanai Tadashi</span></div>
+            <span class="rel-tag">No.1 / 創業者</span>
+          </div>
+          <div class="rel-body">
+            ファーストリテイリング創業者。 玉塚さんが7年仕えた最初のNo.1。 「カリスマと事業の勢い」で玉塚を引き抜き、 40歳でCOOへ昇格させたが、 2005年の増収減益で "逆鱗" が爆発し、 任期途中での退任に追い込んだ。 <strong>"創業者の自制が効かない型のNo.1"</strong> の象徴。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">澤田 貴司 <span class="ja">Sawada Takashi</span></div>
+            <span class="rel-tag">盟友 / 双璧</span>
+          </div>
+          <div class="rel-body">
+            元ファストリ副社長。 玉塚と並ぶ柳井正のもう一人の右腕。 2005年に2人でリヴァンプを共同創業。 後にファミマ社長として独立。 <strong>"柳井卒業生コンビ"の双璧</strong>。 玉塚=ロッテ、 澤田=ファミマと、 日本コンビニ・小売業界の双方の頂点に登り詰めた。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">新浪 剛史 <span class="ja">Niinami Takeshi</span></div>
+            <span class="rel-tag">第二の主君</span>
+          </div>
+          <div class="rel-body">
+            ローソン社長 (2002–2014) → サントリーHD社長。 2010年に玉塚をローソンへヘッドハント。 4年間玉塚を副社長として育て、 2014年に社長を譲った。 <strong>"カリスマでない、 知性派のNo.1"</strong> として柳井とは対極のタイプ。 玉塚との関係は柳井時代と違い、 円満な継承関係だった。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">重光 昭夫 <span class="ja">Shigemitsu Akio</span></div>
+            <span class="rel-tag">第三の主君</span>
+          </div>
+          <div class="rel-body">
+            ロッテHD会長。 兄・重光宏之との <strong>"骨肉の争い"</strong> の渦中で、 2021年に玉塚を社長として外部招聘。 玉塚は創業家の派閥外として "経営のプロ" の役割を引き受けた。 <strong>"創業家ではない経営請負人"</strong> としての玉塚キャリアの集大成。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">小泉 文明 <span class="ja">Koizumi Fumiaki</span></div>
+            <span class="rel-tag muted">比較対象 / 逆方向のNo.2</span>
+          </div>
+          <div class="rel-body">
+            メルカリで山田進太郎の右腕として活躍し、 一度CEOになった後 "自発的に山田に返した" 逆継承型No.2。 玉塚さんとは対照的——<strong>玉塚は"任せられたCEOを返さず4社で続けた"型、 小泉は"任せられたCEOを返した"型</strong>。 同じNo.2でも引き際の哲学が180度違う。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">守安 功 <span class="ja">Moriyasu Isao</span></div>
+            <span class="rel-tag muted">比較対象 / 想定外継承型</span>
+          </div>
+          <div class="rel-body">
+            DeNAで南場智子の右腕として10年CEOを務めた。 守安さんは <strong>"南場の家族危機による想定外継承"</strong> でCEOになり、 退任後タイミーCOOで失敗。 玉塚さんとは違い "一社で完走" した代わりに、 退任後の第三の章が短く終わった。 玉塚は "回遊魚" 戦略で第三・第四の章を持っているのが対照的。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">吉田 憲一郎 <span class="ja">Yoshida Kenichiro</span></div>
+            <span class="rel-tag muted">比較対象 / CFO型継承</span>
+          </div>
+          <div class="rel-body">
+            ソニーCFO → CEOへ昇格した、 平井一夫のNo.2。 玉塚さんと違い、 <strong>"一社で全うするタイプの継承型No.2"</strong>。 ソニーを内側から知り尽くした上での継承で、 玉塚さんの "外部招聘の請負人型" と対極。 同じ慶應出身の経済界リーダーだが、 キャリア哲学は逆方向。
+          </div>
+        </div>
+
+        <div class="rel">
+          <div class="rel-head">
+            <div class="rel-name">Steve Ballmer <span class="ja">スティーブ・バルマー</span></div>
+            <span class="rel-tag muted">比較対象 / 任期付きCEO</span>
+          </div>
+          <div class="rel-body">
+            Bill GatesからMicrosoft CEOを継承。 玉塚さんと共通するのは <strong>"創業者の隣で長く修行 → 継承 → 退任"</strong> という構造。 違いは Ballmer が一社で完走したのに対し、 玉塚は <strong>4社で同じパターンを繰り返した</strong> 点。 米国の "一社CEO型" と日本の "回遊魚型" の対比が浮き彫りになる組み合わせ。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- 参考資料                                 -->
+    <!-- ======================================== -->
+    <section class="block">
+      <h2><span class="num">▸</span>参考資料 / Sources</h2>
+      <ol class="sources">
+        <li><a href="https://ja.wikipedia.org/wiki/%E7%8E%89%E5%A1%9A%E5%85%83%E4%B8%80" target="_blank">玉塚元一 — Wikipedia 日本語版</a></li>
+        <li><a href="https://www.kouenirai.com/profile/4609" target="_blank">玉塚元一 プロフィール — 講演依頼.com</a></li>
+        <li><a href="https://newspicks.com/news/5223016/body/" target="_blank">【玉塚元一】僕が「柳井正」から学んだこと — NewsPicks</a></li>
+        <li><a href="https://diamond-rm.net/management/86367/" target="_blank">ロッテ新社長・玉塚元一氏とはどのような人物なのか — ダイヤモンド・チェーンストアオンライン</a></li>
+        <li><a href="https://toyokeizai.net/articles/-/53572" target="_blank">玉塚社長、「挫折から再起」の全てを語る！ ユニクロでの挫折、再起誓うローソン — 東洋経済</a></li>
+        <li><a href="https://academy.president.jp/articles/-/897" target="_blank">ロッテHD社長 玉塚元一 「ユニクロ柳井正との"濃密な日々"から学んだこと」 — プレジデント・オンライン</a></li>
+        <li><a href="https://www.dailyshincho.jp/article/2021/07091040/" target="_blank">「ロッテHD」社長に就いた「玉塚元一」 — デイリー新潮 (2021)</a></li>
+        <li><a href="https://www.data-max.co.jp/article/42401" target="_blank">社長請負・玉塚元一氏がロッテHD社長に — NetIB-News</a></li>
+        <li><a href="https://magazine.nikkei.com/article/DGXZQOLM0743L0X01C21A1000000" target="_blank">ロッテHD玉塚元一氏「僕は回遊魚、だから一生挑戦」 — 日経マガジン (2021)</a></li>
+        <li><a href="https://diamond.jp/articles/-/218528" target="_blank">ラグビー元慶應スター選手・玉塚元一氏「成功体験のルーツはラグビー」 — ダイヤモンド・オンライン</a></li>
+        <li><a href="https://news.jsports.co.jp/rugby/article/20190310216294/" target="_blank">ラグビーを愛するトップビジネスマンに聞く 玉塚元一社長 — J SPORTS</a></li>
+        <li><a href="https://the-ans.jp/column/210341/2/" target="_blank">慶大ラグビー部時代に伝説の決戦 ロッテ社長など歴任 — THE ANSWER</a></li>
+        <li><a href="https://www.mita-hyoron.keio.ac.jp/spotlight/202202-1.html" target="_blank">玉塚元一：ラグビー新リーグ「リーグワン」理事長に就任 — 三田評論 (慶應)</a></li>
+        <li><a href="https://toyokeizai.net/articles/-/876385" target="_blank">玉塚元一・経済同友会副代表幹事「トランプ関税の標的はあくまで中国」 — 東洋経済 (2025)</a></li>
+        <li><a href="https://lotte-hd.com/company/message/" target="_blank">代表メッセージ — 株式会社ロッテホールディングス</a></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
