@@ -114,19 +114,18 @@
   .day-selector button:hover { background: #fafafa; color: var(--fg); }
   .day-selector button.active { background: var(--fg); color: white; }
 
-  /* pie chart view */
+  /* day view: pie chart on top, list below */
   .day-view {
-    display: grid;
-    grid-template-columns: 400px 1fr;
-    gap: 48px;
-    align-items: start;
+    display: block;
     margin-bottom: 32px;
   }
 
   .chart-area {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    max-width: 760px;
+    aspect-ratio: 760 / 460;
+    margin: 0 auto 32px;
   }
   .chart-area svg { display: block; width: 100%; height: 100%; }
 
@@ -140,7 +139,7 @@
     pointer-events: none;
   }
   .chart-center .day-name {
-    font-size: 72px;
+    font-size: 80px;
     font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -157,7 +156,8 @@
   .schedule-list {
     list-style: none;
     border-top: 1px solid var(--line);
-    margin-top: 4px;
+    margin: 0 auto;
+    max-width: 760px;
   }
   .schedule-list li {
     padding: 11px 0;
@@ -274,11 +274,6 @@
   }
   .note-box strong { color: var(--fg); font-weight: 600; }
 
-  @media (max-width: 860px) {
-    .day-view { grid-template-columns: 1fr; gap: 32px; }
-    .chart-area { width: 100%; max-width: 360px; height: 360px; margin: 0 auto; }
-    .chart-center .day-name { font-size: 60px; }
-  }
   @media (max-width: 720px) {
     body { padding: 22px 16px 36px; }
     .hero h1 { font-size: 28px; }
@@ -288,6 +283,7 @@
     .habit-list li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
     .day-selector { width: 100%; flex-wrap: wrap; }
     .day-selector button { flex: 1; min-width: 14%; padding: 10px 6px; font-size: 13px; }
+    .chart-center .day-name { font-size: 56px; }
   }
 </style>
 </head>
@@ -343,7 +339,7 @@
       <div class="ess-card">
         <div class="num">003</div>
         <div class="title">技術キャッチアップ</div>
-        <div class="desc">毎日確保。平日夜のハンズオン or 休み日朝の集中時間</div>
+        <div class="desc">毎日夜 1h 固定 / 平日朝の集中時間も合わせて</div>
       </div>
     </div>
 
@@ -362,7 +358,7 @@
 
     <div class="day-view">
       <div class="chart-area">
-        <svg viewBox="0 0 400 400" id="pieChart" aria-label="Daily schedule pie chart"></svg>
+        <svg viewBox="0 0 760 460" id="pieChart" aria-label="Daily schedule pie chart"></svg>
         <div class="chart-center">
           <div class="day-name" id="dayName">月</div>
           <div class="day-sub" id="daySub">運動日</div>
@@ -382,15 +378,6 @@
       <li><span class="num">04</span><span class="label">英語 60分</span><span class="meta">daily</span></li>
       <li><span class="num">05</span><span class="label">noteジャーナル 10分</span><span class="meta">daily</span></li>
       <li><span class="num">06</span><span class="label">新しい人とご飯 3人</span><span class="meta">weekly</span></li>
-    </ul>
-
-    <!-- MONTHLY EVENTS -->
-    <div class="section-h"><span>Monthly Fixed <span class="ja">/ 月単位の固定枠</span></span></div>
-    <ul class="monthly-list">
-      <li><span class="when">月1</span><span>採用面接に同席（人を見抜く力）</span></li>
-      <li><span class="when">月1</span><span>創業者ミートアップ／OB訪問</span></li>
-      <li><span class="when">月1冊</span><span>技術書（Phase 1–3 ロードマップ）</span></li>
-      <li><span class="when">3ヶ月で1冊</span><span>経営数字本（『財務3表一体理解法』など）</span></li>
     </ul>
 
     <div class="note-box">
@@ -418,12 +405,12 @@
   <script src="../assets/site.js"></script>
 
   <script>
-  // === Pie chart rendering ===
+  // === Pie chart with leader-line labels ===
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  const cx = 200, cy = 200;
-  const innerR = 90, outerR = 175;
+  // viewBox 760x460. pie center placed slightly above center to leave label room.
+  const cx = 380, cy = 220;
+  const innerR = 90, outerR = 165;
 
-  // category colors (direct hex for SVG fills)
   const categories = [
     { id: 'morning',  name: '朝活',                color: '#f1f5f9' },
     { id: 'workout',  name: '運動',                color: '#fee2e2' },
@@ -438,10 +425,14 @@
     { id: 'free',     name: '自由 / 読書',          color: '#fafafa' },
     { id: 'sleep',    name: '就寝',                color: '#1e293b' },
   ];
-
   function getCat(id) { return categories.find(c => c.id === id); }
 
-  // schedule per day. 0:00-6:00 sleep added at start so 24h pie is complete.
+  // Schedule per day (lunch removed Mon-Fri, WL業務 = 10:00-19:00,
+  // ご飯/ミートアップ = 2h, 技術ハンズオン = 1h every night,
+  // 夜の自由時間 = シャワーとストレッチ,
+  // noteジャーナル = noteジャーナル（体組成 / 栄養素の更新）)
+  const NOTE_LABEL = 'noteジャーナル（体組成 / 栄養素の更新）';
+
   const schedule = {
     '月': { sub: '運動日', items: [
       ['0:00', '6:00',  '就寝', 'sleep'],
@@ -449,13 +440,12 @@
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務', 'work'],
-      ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務', 'work'],
+      ['9:10', '10:00', '移動・準備', 'morning'],
+      ['10:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
       ['20:00','21:00', '技術ハンズオン', 'tech'],
-      ['21:00','22:50', '自由・読書', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['21:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '火': { sub: '運動日', items: [
@@ -464,12 +454,12 @@
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務', 'work'],
-      ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務', 'work'],
-      ['19:00','22:00', 'ご飯 or ミートアップ', 'social'],
-      ['22:00','22:50', '自由', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['9:10', '10:00', '移動・準備', 'morning'],
+      ['10:00','19:00', 'WL業務', 'work'],
+      ['19:00','21:00', 'ご飯 or ミートアップ', 'social'],
+      ['21:00','22:00', '技術ハンズオン', 'tech'],
+      ['22:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '水': { sub: '運動日', items: [
@@ -478,13 +468,12 @@
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務', 'work'],
-      ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務', 'work'],
+      ['9:10', '10:00', '移動・準備', 'morning'],
+      ['10:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
       ['20:00','21:00', '技術ハンズオン', 'tech'],
-      ['21:00','22:50', '自由・読書', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['21:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '木': { sub: '休み日', items: [
@@ -493,13 +482,13 @@
       ['6:10', '7:40',  'AI/技術 集中 90分', 'tech'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務', 'work'],
-      ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務', 'work'],
+      ['9:10', '10:00', '移動・準備', 'morning'],
+      ['10:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
-      ['20:00','21:30', 'note 外向け記事執筆', 'note'],
-      ['21:30','22:50', '自由', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['20:00','21:00', '技術ハンズオン', 'tech'],
+      ['21:00','22:00', 'note 外向け記事執筆', 'note'],
+      ['22:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '金': { sub: '運動日', items: [
@@ -508,12 +497,12 @@
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務', 'work'],
-      ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務', 'work'],
-      ['19:00','22:00', 'ご飯 (新しい人 or 親友)', 'social'],
-      ['22:00','22:50', '自由', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['9:10', '10:00', '移動・準備', 'morning'],
+      ['10:00','19:00', 'WL業務', 'work'],
+      ['19:00','21:00', 'ご飯 or ミートアップ', 'social'],
+      ['21:00','22:00', '技術ハンズオン', 'tech'],
+      ['22:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '土': { sub: 'リサーチデイ', items: [
@@ -525,10 +514,11 @@
       ['9:10', '10:10', 'PL/BS 60分', 'study'],
       ['10:10','12:00', 'リサーチ・重い学習', 'study'],
       ['12:00','13:00', 'ランチ', 'meal'],
-      ['13:00','18:00', '自由 / 休息', 'free'],
-      ['18:00','22:00', 'ご飯 or 自由', 'social'],
-      ['22:00','22:50', '自由', 'free'],
-      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['13:00','19:00', '自由 / 休息', 'free'],
+      ['19:00','21:00', 'ご飯 or ミートアップ', 'social'],
+      ['21:00','22:00', '技術ハンズオン', 'tech'],
+      ['22:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '日': { sub: '休み日', items: [
@@ -540,11 +530,13 @@
       ['8:10', '9:10',  '英語 60分', 'english'],
       ['9:10', '12:00', 'note執筆 / 重い学習', 'study'],
       ['12:00','13:00', 'ランチ', 'meal'],
-      ['13:00','18:00', '自由 / 読書', 'free'],
-      ['18:00','21:00', '自由 or ご飯', 'free'],
-      ['21:00','22:30', '来週準備 + 自由', 'free'],
-      ['22:30','22:50', 'noteジャーナル', 'note'],
-      ['22:50','24:00', '就寝', 'sleep'],
+      ['13:00','19:00', '自由 / 読書', 'free'],
+      ['19:00','20:00', '夕食', 'meal'],
+      ['20:00','21:00', '技術ハンズオン', 'tech'],
+      ['21:00','22:00', '来週準備', 'review'],
+      ['22:00','22:50', 'シャワーとストレッチ', 'free'],
+      ['22:50','23:00', NOTE_LABEL, 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
     ]},
   };
 
@@ -580,19 +572,20 @@
     return node;
   }
 
+  function shortLabel(name) {
+    // strip duration "XX分"
+    let s = name.replace(/\s*\d+分\s*$/, '');
+    // strip parenthesized suffix
+    s = s.replace(/\s*[\(（].*$/, '').trim();
+    return s;
+  }
+
   function renderDay(day) {
     const data = schedule[day];
     const svg = document.getElementById('pieChart');
     svg.innerHTML = '';
 
-    // helpers
-    function shortLabel(name, maxChars) {
-      let s = name.replace(/\s*\d+分\s*$/, '').replace(/\s*[\(（].*$/, '');
-      if (s.length <= maxChars) return s;
-      return s.slice(0, maxChars - 1) + '…';
-    }
-
-    // Activity arcs (with in-segment labels)
+    // 1) Activity arcs
     data.items.forEach(([start, end, name, cat]) => {
       let s = timeToAngle(start);
       let e = timeToAngle(end);
@@ -607,73 +600,113 @@
       const title = document.createElementNS(SVG_NS, 'title');
       title.textContent = `${start}–${end}  ${name}`;
       path.appendChild(title);
-
-      // In-segment label
-      const segWidth = e - s;
-      if (segWidth < 3) return; // too tiny to label
-
-      let fontSize, maxChars;
-      if (segWidth >= 18)      { fontSize = 12; maxChars = 8; }
-      else if (segWidth >= 12) { fontSize = 11; maxChars = 6; }
-      else if (segWidth >= 7)  { fontSize = 10; maxChars = 5; }
-      else if (segWidth >= 4)  { fontSize = 9;  maxChars = 4; }
-      else                     { fontSize = 8;  maxChars = 3; }
-
-      const label = shortLabel(name, maxChars);
-      const midAngle = (s + e) / 2;
-      const midR = (innerR + outerR) / 2;
-      const pos = polarToCartesian(cx, cy, midR, midAngle);
-      // tangent rotation, with bottom-half flip for readability
-      let rot = midAngle;
-      if (midAngle > 90 && midAngle < 270) rot = midAngle - 180;
-
-      const isDarkBg = cat === 'sleep';
-      const text = el('text', {
-        x: pos.x.toFixed(2),
-        y: pos.y.toFixed(2),
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle',
-        'font-size': String(fontSize),
-        'font-family': "'Inter', -apple-system, sans-serif",
-        'font-weight': '500',
-        fill: isDarkBg ? '#e2e8f0' : '#1f2937',
-        transform: `rotate(${rot.toFixed(2)} ${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`,
-        'pointer-events': 'none',
-      }, svg);
-      text.textContent = label;
     });
 
-    // Hour ticks (every 3 hours)
+    // 2) Hour ticks (every 3 hours, just outside the donut)
     for (let h = 0; h < 24; h += 3) {
       const angle = (h / 24) * 360;
-      const tickInner = polarToCartesian(cx, cy, outerR + 4, angle);
-      const tickOuter = polarToCartesian(cx, cy, outerR + 12, angle);
+      const tickInner = polarToCartesian(cx, cy, innerR + 2, angle);
+      const tickOuter = polarToCartesian(cx, cy, innerR + 8, angle);
       el('line', {
         x1: tickInner.x.toFixed(2), y1: tickInner.y.toFixed(2),
         x2: tickOuter.x.toFixed(2), y2: tickOuter.y.toFixed(2),
         stroke: '#bbb', 'stroke-width': '1',
       }, svg);
-      const labelPos = polarToCartesian(cx, cy, outerR + 24, angle);
-      const text = el('text', {
+      const labelPos = polarToCartesian(cx, cy, innerR - 6, angle);
+      const t = el('text', {
         x: labelPos.x.toFixed(2), y: labelPos.y.toFixed(2),
         'text-anchor': 'middle',
         'dominant-baseline': 'middle',
-        'font-size': '11',
+        'font-size': '9',
         'font-family': "'JetBrains Mono', monospace",
-        fill: '#888',
+        fill: '#aaa',
       }, svg);
-      text.textContent = h === 0 ? '0' : String(h);
+      t.textContent = h === 0 ? '0' : String(h);
     }
 
-    // Center text
+    // 3) Build label specs (leader lines + outer labels)
+    const labelOffsetX = outerR + 70; // horizontal distance from cx to label end
+    const labels = data.items
+      .map(([start, end, name, cat]) => {
+        let s = timeToAngle(start);
+        let e = timeToAngle(end);
+        if (e === 0 && end === '24:00') e = 360;
+        if (e === s) return null;
+        if ((e - s) < 1) return null; // skip ultra-tiny < 4 min
+        const midAngle = (s + e) / 2;
+        const isRight = midAngle <= 180;
+        const arcEdge = polarToCartesian(cx, cy, outerR + 1, midAngle);
+        const elbow = polarToCartesian(cx, cy, outerR + 14, midAngle);
+        return {
+          start, end, name, cat, midAngle, isRight, arcEdge, elbow,
+          preferredY: elbow.y,
+        };
+      })
+      .filter(x => x !== null);
+
+    // 4) Adjust label Y to avoid overlap (per side)
+    const minSpacing = 16;
+    const right = labels.filter(l => l.isRight).sort((a, b) => a.midAngle - b.midAngle);
+    const left  = labels.filter(l => !l.isRight).sort((a, b) => a.midAngle - b.midAngle);
+
+    // Right side: midAngle 0→180 corresponds to Y small→large.
+    right.forEach((l, i) => {
+      l.y = (i === 0) ? l.preferredY : Math.max(l.preferredY, right[i - 1].y + minSpacing);
+    });
+
+    // Left side: midAngle 180→360 corresponds to Y large→small.
+    left.forEach((l, i) => {
+      l.y = (i === 0) ? l.preferredY : Math.min(l.preferredY, left[i - 1].y - minSpacing);
+    });
+
+    // Clamp to viewbox vertical bounds
+    const yMin = 14, yMax = 446;
+    [...right, ...left].forEach(l => {
+      l.y = Math.max(yMin, Math.min(yMax, l.y));
+    });
+
+    // 5) Draw leader lines and labels
+    [...right, ...left].forEach(l => {
+      const labelX = l.isRight ? cx + labelOffsetX : cx - labelOffsetX;
+
+      const points = [
+        `${l.arcEdge.x.toFixed(2)},${l.arcEdge.y.toFixed(2)}`,
+        `${l.elbow.x.toFixed(2)},${l.elbow.y.toFixed(2)}`,
+        `${labelX.toFixed(2)},${l.y.toFixed(2)}`,
+      ].join(' ');
+
+      el('polyline', {
+        points,
+        fill: 'none',
+        stroke: '#bbb',
+        'stroke-width': '0.8',
+      }, svg);
+
+      // small dot at the bend? skip.
+      // Text
+      const textX = l.isRight ? labelX + 5 : labelX - 5;
+      const text = el('text', {
+        x: textX.toFixed(2),
+        y: l.y.toFixed(2),
+        'text-anchor': l.isRight ? 'start' : 'end',
+        'dominant-baseline': 'middle',
+        'font-size': '11.5',
+        'font-family': "'Inter', -apple-system, sans-serif",
+        'font-weight': '500',
+        fill: '#1f2937',
+      }, svg);
+      text.textContent = shortLabel(l.name);
+    });
+
+    // 6) Center day text (HTML overlay)
     document.getElementById('dayName').textContent = day;
     document.getElementById('daySub').textContent = data.sub;
 
-    // Schedule list (hide morning sleep duplicate)
+    // 7) Schedule list (hide morning sleep duplicate at 0:00-6:00)
     const list = document.getElementById('scheduleList');
     list.innerHTML = '';
-    const visible = data.items.filter(([s, , , cat], i) => !(i === 0 && cat === 'sleep' && s === '0:00'));
-    visible.forEach(([start, end, name, cat]) => {
+    data.items.forEach(([start, end, name, cat], i) => {
+      if (i === 0 && cat === 'sleep' && start === '0:00') return;
       const li = document.createElement('li');
       li.innerHTML = `
         <span class="swatch" style="background: ${getCat(cat).color}"></span>
@@ -705,7 +738,6 @@
     renderDay(btn.dataset.day);
   });
 
-  // initial
   renderDay('月');
   </script>
 
