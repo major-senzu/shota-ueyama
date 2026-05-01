@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>016 · routine — Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+
+    /* activity category colors (pastel + clear) */
+    --c-morning: #f1f5f9;
+    --c-workout: #fee2e2;
+    --c-english: #dbeafe;
+    --c-tech:    #ede9fe;
+    --c-work:    #f3f4f6;
+    --c-meal:    #fef3c7;
+    --c-social:  #d1fae5;
+    --c-note:    #ffedd5;
+    --c-study:   #ccfbf1;
+    --c-review:  #e0e7ff;
+    --c-free:    #fafafa;
+    --c-sleep:   #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 32px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+
+  /* hero */
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .ja { font-size: 14px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  /* section heading */
+  .section-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 56px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .section-h .ja {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .section-h:first-of-type { margin-top: 16px; }
+
+  /* daily essentials cards */
+  .essentials {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .ess-card {
+    background: var(--soft);
+    padding: 22px 24px;
+    border-left: 3px solid var(--fg);
+  }
+  .ess-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .ess-card .title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .ess-card .desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* timeline grid */
+  .timeline-block {
+    margin-bottom: 8px;
+    overflow-x: auto;
+  }
+  .timeline {
+    min-width: 880px;
+    position: relative;
+    padding: 0 0 0 70px;
+    margin-bottom: 8px;
+  }
+  .hour-axis {
+    position: relative;
+    height: 22px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+  .hour-axis .mark {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .day-row {
+    position: relative;
+    height: 36px;
+    margin-bottom: 4px;
+  }
+  .day-label {
+    position: absolute;
+    left: -70px;
+    top: 0;
+    width: 60px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: 0.08em;
+    padding-right: 10px;
+  }
+  .day-label .sub {
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 6px;
+  }
+  .day-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--c-free);
+  }
+  .bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #1f2937;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.6);
+  }
+  .bar.tiny { padding: 0 2px; font-size: 9px; }
+  .bar.cat-sleep { color: #cbd5e1; }
+
+  /* legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 16px;
+    padding: 14px 0;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+  .legend-swatch { width: 14px; height: 14px; border: 1px solid rgba(0,0,0,0.06); }
+
+  /* habit list */
+  .habit-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .habit-list li {
+    list-style: none;
+    padding: 16px 22px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .habit-list li:nth-child(2n) { border-right: none; }
+  .habit-list li:nth-last-child(-n+2) { border-bottom: none; }
+  .habit-list .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    width: 26px;
+  }
+  .habit-list .label { font-weight: 500; }
+  .habit-list .meta {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* monthly events */
+  .monthly-list {
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .monthly-list li {
+    list-style: none;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    font-size: 14px;
+  }
+  .monthly-list li:last-child { border-bottom: none; }
+  .monthly-list .when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  /* meta note */
+  .note-box {
+    background: var(--soft);
+    padding: 18px 22px;
+    border-left: 3px solid var(--muted);
+    margin-top: 24px;
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--fg); font-weight: 600; }
+
+  @media (max-width: 720px) {
+    body { padding: 22px 16px 36px; }
+    .hero h1 { font-size: 28px; }
+    .essentials { grid-template-columns: 1fr; }
+    .habit-list { grid-template-columns: 1fr; }
+    .habit-list li { border-right: none !important; }
+    .habit-list li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <a href="./" class="nav-link active">routine</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <div class="hero">
+      <div class="crumb"><a href="../index.html">home</a> / 016 · routine</div>
+      <h1>Daily Routine</h1>
+      <div class="ja">毎日の積み上げが、2年後の自分を作る</div>
+    </div>
+
+    <!-- DAILY ESSENTIALS -->
+    <div class="section-h"><span>Daily Essentials <span class="ja">/ 毎日絶対やる3つ</span></span></div>
+    <div class="essentials">
+      <div class="ess-card">
+        <div class="num">001</div>
+        <div class="title">朝の運動・筋トレ</div>
+        <div class="desc">90分（筋トレ＋ランニング）／3日連続→1日休みのローテ</div>
+      </div>
+      <div class="ess-card">
+        <div class="num">002</div>
+        <div class="title">英語学習 60分</div>
+        <div class="desc">朝 8:10–9:10 / TOEFL過去問 or オンライン英会話</div>
+      </div>
+      <div class="ess-card">
+        <div class="num">003</div>
+        <div class="title">技術キャッチアップ</div>
+        <div class="desc">毎日確保。平日夜のハンズオン or 休み日朝の集中時間</div>
+      </div>
+    </div>
+
+    <!-- WEEKLY TIMELINE -->
+    <div class="section-h"><span>Weekly Timeline <span class="ja">/ 1週間のタイムライン</span></span></div>
+
+    <div class="timeline-block">
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="legend" id="legend"></div>
+
+    <!-- HABIT TRACKER -->
+    <div class="section-h"><span>Habit Tracker <span class="ja">/ 毎日◯/✗で記録する6項目</span></span></div>
+    <ul class="habit-list">
+      <li><span class="num">01</span><span class="label">23:00 就寝</span><span class="meta">daily</span></li>
+      <li><span class="num">02</span><span class="label">6:00 起床</span><span class="meta">daily</span></li>
+      <li><span class="num">03</span><span class="label">運動（運動日のみ）</span><span class="meta">5/週</span></li>
+      <li><span class="num">04</span><span class="label">英語 60分</span><span class="meta">daily</span></li>
+      <li><span class="num">05</span><span class="label">noteジャーナル 10分</span><span class="meta">daily</span></li>
+      <li><span class="num">06</span><span class="label">新しい人とご飯 3人</span><span class="meta">weekly</span></li>
+    </ul>
+
+    <!-- MONTHLY EVENTS -->
+    <div class="section-h"><span>Monthly Fixed <span class="ja">/ 月単位の固定枠</span></span></div>
+    <ul class="monthly-list">
+      <li><span class="when">月初 月曜朝</span><span>PL/BSの深掘り 30–60分</span></li>
+      <li><span class="when">月1</span><span>WL経営会議に参加（最重要）</span></li>
+      <li><span class="when">月1</span><span>採用面接に同席（人を見抜く力）</span></li>
+      <li><span class="when">月1</span><span>響さんと 1on1 キャッチアップ</span></li>
+      <li><span class="when">月1</span><span>創業者ミートアップ／OB訪問</span></li>
+      <li><span class="when">月1冊</span><span>技術書（Phase 1–3 ロードマップ）</span></li>
+      <li><span class="when">3ヶ月で1冊</span><span>経営数字本（『財務3表一体理解法』など）</span></li>
+    </ul>
+
+    <div class="note-box">
+      <strong>運用メモ：</strong>このルーティンは仮置き。1ヶ月実践してから調整する。完璧を目指さず、続けられる形に少しずつ近づけるのが habit 形成のコツ。
+      朝6時起き＋運動90分＋英語60分の前提条件は <strong>23:00 就寝</strong>。これを崩したら全部崩れるので最優先で死守。
+    </div>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+
+  <script>
+  // === Timeline rendering ===
+  const DAY_START = 6;   // 6:00
+  const DAY_END   = 24;  // 24:00 (= midnight)
+  const TOTAL_HOURS = DAY_END - DAY_START; // 18 hours
+
+  function timeToPercent(time) {
+    const [h, m] = time.split(':').map(Number);
+    const minutes = (h - DAY_START) * 60 + m;
+    return (minutes / (TOTAL_HOURS * 60)) * 100;
+  }
+
+  // category metadata
+  const categories = [
+    { id: 'morning',  name: '朝活',           color: 'var(--c-morning)' },
+    { id: 'workout',  name: '運動',           color: 'var(--c-workout)' },
+    { id: 'english',  name: '英語',           color: 'var(--c-english)' },
+    { id: 'tech',     name: '技術 / AI',      color: 'var(--c-tech)' },
+    { id: 'study',    name: '学習 (PL/BS等)', color: 'var(--c-study)' },
+    { id: 'review',   name: '週次レビュー',    color: 'var(--c-review)' },
+    { id: 'work',     name: 'WL業務 / 大学',   color: 'var(--c-work)' },
+    { id: 'meal',     name: '食事',           color: 'var(--c-meal)' },
+    { id: 'social',   name: 'ご飯 / ミートアップ', color: 'var(--c-social)' },
+    { id: 'note',     name: 'note / 発信',     color: 'var(--c-note)' },
+    { id: 'free',     name: '自由 / 読書',     color: 'var(--c-free)' },
+    { id: 'sleep',    name: '就寝',           color: 'var(--c-sleep)' },
+  ];
+
+  // schedule per day
+  const schedule = {
+    '月': { sub: '運動日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:40',  '運動 90分', 'workout'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['12:00','13:00', 'ランチ・読書', 'meal'],
+      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['19:00','20:00', '夕食', 'meal'],
+      ['20:00','21:00', '技術ハンズオン', 'tech'],
+      ['21:00','22:50', '自由・読書', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '火': { sub: '運動日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:40',  '運動 90分', 'workout'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['12:00','13:00', 'ランチ・読書', 'meal'],
+      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['19:00','22:00', 'ご飯 or ミートアップ', 'social'],
+      ['22:00','22:50', '自由', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '水': { sub: '運動日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:40',  '運動 90分', 'workout'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['12:00','13:00', 'ランチ・読書', 'meal'],
+      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['19:00','20:00', '夕食', 'meal'],
+      ['20:00','21:00', '技術ハンズオン', 'tech'],
+      ['21:00','22:50', '自由・読書', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '木': { sub: '休み日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:10',  'AI/技術 集中 60分', 'tech'],
+      ['7:10', '7:40',  'PL/BS 30分', 'study'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['12:00','13:00', 'ランチ・読書', 'meal'],
+      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['19:00','20:00', '夕食', 'meal'],
+      ['20:00','21:30', 'note 外向け記事執筆', 'note'],
+      ['21:30','22:50', '自由', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '金': { sub: '運動日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:40',  '運動 90分', 'workout'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['12:00','13:00', 'ランチ・読書', 'meal'],
+      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['19:00','22:00', 'ご飯 (新しい人 or 親友)', 'social'],
+      ['22:00','22:50', '自由', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '土': { sub: '運動日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:40',  '運動 90分', 'workout'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', '重い学習 / レポート', 'study'],
+      ['12:00','13:00', 'ランチ', 'meal'],
+      ['13:00','18:00', '自由 / 休息', 'free'],
+      ['18:00','22:00', 'ご飯 or 自由', 'social'],
+      ['22:00','22:50', '自由', 'free'],
+      ['22:50','23:00', 'noteジャーナル', 'note'],
+      ['23:00','24:00', '就寝', 'sleep'],
+    ]},
+    '日': { sub: '休み日', items: [
+      ['6:00', '6:10',  'ジャーナル', 'morning'],
+      ['6:10', '7:10',  'AI/技術 集中 60分', 'tech'],
+      ['7:10', '7:40',  '週次レビュー 30分', 'review'],
+      ['7:40', '8:10',  'シャワー・朝食', 'morning'],
+      ['8:10', '9:10',  '英語 60分', 'english'],
+      ['9:10', '12:00', 'note執筆 / 重い学習', 'study'],
+      ['12:00','13:00', 'ランチ', 'meal'],
+      ['13:00','18:00', '自由 / 読書', 'free'],
+      ['18:00','21:00', '自由 or ご飯', 'free'],
+      ['21:00','22:30', '来週準備 + 自由', 'free'],
+      ['22:30','22:50', 'note ジャーナル', 'note'],
+      ['22:50','24:00', '就寝', 'sleep'],
+    ]},
+  };
+
+  // render
+  const tl = document.getElementById('timeline');
+
+  // hour axis
+  const axis = document.createElement('div');
+  axis.className = 'hour-axis';
+  for (let h = DAY_START; h <= DAY_END; h++) {
+    const m = document.createElement('div');
+    m.className = 'mark';
+    m.textContent = h === 24 ? '24' : String(h);
+    m.style.left = ((h - DAY_START) / TOTAL_HOURS) * 100 + '%';
+    axis.appendChild(m);
+  }
+  tl.appendChild(axis);
+
+  // day rows
+  Object.entries(schedule).forEach(([day, data]) => {
+    const row = document.createElement('div');
+    row.className = 'day-row';
+
+    const label = document.createElement('div');
+    label.className = 'day-label';
+    label.innerHTML = day + '<span class="sub">' + data.sub + '</span>';
+    row.appendChild(label);
+
+    const bg = document.createElement('div');
+    bg.className = 'day-bg';
+    row.appendChild(bg);
+
+    data.items.forEach(([start, end, name, cat]) => {
+      const bar = document.createElement('div');
+      bar.className = 'bar cat-' + cat;
+      const left = timeToPercent(start);
+      const right = timeToPercent(end);
+      const width = right - left;
+      bar.style.left = left + '%';
+      bar.style.width = width + '%';
+      const catData = categories.find(c => c.id === cat);
+      bar.style.background = catData ? catData.color : 'var(--c-free)';
+      bar.title = `${start}–${end}  ${name}`;
+      if (width < 4) bar.classList.add('tiny');
+      bar.textContent = width >= 2.5 ? name : '';
+      row.appendChild(bar);
+    });
+
+    tl.appendChild(row);
+  });
+
+  // legend
+  const legend = document.getElementById('legend');
+  categories.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<span class="legend-swatch" style="background:${c.color}"></span><span>${c.name}</span>`;
+    legend.appendChild(item);
+  });
+  </script>
+
+</body>
+</html>
