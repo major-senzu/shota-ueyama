@@ -14,20 +14,6 @@
     --muted: #888;
     --line: #e5e5e5;
     --soft: #f7f7f7;
-
-    /* activity category colors (pastel + clear) */
-    --c-morning: #f1f5f9;
-    --c-workout: #fee2e2;
-    --c-english: #dbeafe;
-    --c-tech:    #ede9fe;
-    --c-work:    #f3f4f6;
-    --c-meal:    #fef3c7;
-    --c-social:  #d1fae5;
-    --c-note:    #ffedd5;
-    --c-study:   #ccfbf1;
-    --c-review:  #e0e7ff;
-    --c-free:    #fafafa;
-    --c-sleep:   #1e293b;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,7 +26,7 @@
     -webkit-font-smoothing: antialiased;
   }
   body { min-height: 100vh; padding: 32px 32px 48px; overflow-x: hidden; }
-  .wrap { max-width: 1280px; margin: 0 auto; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
 
   /* hero */
   .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
@@ -103,80 +89,100 @@
   .ess-card .title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
   .ess-card .desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-  /* timeline grid */
-  .timeline-block {
-    margin-bottom: 8px;
-    overflow-x: auto;
+  /* day selector */
+  .day-selector {
+    display: flex;
+    gap: 0;
+    margin: 24px 0 32px;
+    border: 1px solid var(--line);
+    width: fit-content;
   }
-  .timeline {
-    min-width: 880px;
-    position: relative;
-    padding: 0 0 0 70px;
-    margin-bottom: 8px;
-  }
-  .hour-axis {
-    position: relative;
-    height: 22px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 8px;
-  }
-  .hour-axis .mark {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
+  .day-selector button {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 22px;
+    background: white;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+    min-width: 56px;
+  }
+  .day-selector button + button { border-left: 1px solid var(--line); }
+  .day-selector button:hover { background: #fafafa; color: var(--fg); }
+  .day-selector button.active { background: var(--fg); color: white; }
+
+  /* pie chart view */
+  .day-view {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 32px;
+  }
+
+  .chart-area {
+    position: relative;
+    width: 400px;
+    height: 400px;
+  }
+  .chart-area svg { display: block; width: 100%; height: 100%; }
+
+  .chart-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .chart-center .day-name {
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .chart-center .day-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .schedule-list {
+    list-style: none;
+    border-top: 1px solid var(--line);
+    margin-top: 4px;
+  }
+  .schedule-list li {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 14px 100px 1fr;
+    gap: 14px;
+    align-items: center;
+    font-size: 13.5px;
+  }
+  .schedule-list .swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .schedule-list .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.04em;
   }
-  .day-row {
-    position: relative;
-    height: 36px;
-    margin-bottom: 4px;
-  }
-  .day-label {
-    position: absolute;
-    left: -70px;
-    top: 0;
-    width: 60px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
+  .schedule-list .label {
     color: var(--fg);
-    letter-spacing: 0.08em;
-    padding-right: 10px;
   }
-  .day-label .sub {
-    font-weight: 400;
-    color: var(--muted);
-    margin-left: 6px;
-  }
-  .day-bg {
-    position: absolute;
-    inset: 0;
-    background: var(--c-free);
-  }
-  .bar {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 6px;
-    font-size: 10.5px;
-    font-weight: 500;
-    color: #1f2937;
-    letter-spacing: 0.02em;
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 1px solid rgba(255,255,255,0.6);
-  }
-  .bar.tiny { padding: 0 2px; font-size: 9px; }
-  .bar.cat-sleep { color: #cbd5e1; }
 
   /* legend */
   .legend {
@@ -256,7 +262,7 @@
     flex-shrink: 0;
   }
 
-  /* meta note */
+  /* note box */
   .note-box {
     background: var(--soft);
     padding: 18px 22px;
@@ -268,6 +274,11 @@
   }
   .note-box strong { color: var(--fg); font-weight: 600; }
 
+  @media (max-width: 860px) {
+    .day-view { grid-template-columns: 1fr; gap: 32px; }
+    .chart-area { width: 100%; max-width: 360px; height: 360px; margin: 0 auto; }
+    .chart-center .day-name { font-size: 60px; }
+  }
   @media (max-width: 720px) {
     body { padding: 22px 16px 36px; }
     .hero h1 { font-size: 28px; }
@@ -275,6 +286,8 @@
     .habit-list { grid-template-columns: 1fr; }
     .habit-list li { border-right: none !important; }
     .habit-list li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .day-selector { width: 100%; flex-wrap: wrap; }
+    .day-selector button { flex: 1; min-width: 14%; padding: 10px 6px; font-size: 13px; }
   }
 </style>
 </head>
@@ -334,11 +347,28 @@
       </div>
     </div>
 
-    <!-- WEEKLY TIMELINE -->
-    <div class="section-h"><span>Weekly Timeline <span class="ja">/ 1週間のタイムライン</span></span></div>
+    <!-- DAY VIEW -->
+    <div class="section-h"><span>Daily Schedule <span class="ja">/ 曜日を選択</span></span></div>
 
-    <div class="timeline-block">
-      <div class="timeline" id="timeline"></div>
+    <div class="day-selector" id="daySelector">
+      <button data-day="月" class="active">月</button>
+      <button data-day="火">火</button>
+      <button data-day="水">水</button>
+      <button data-day="木">木</button>
+      <button data-day="金">金</button>
+      <button data-day="土">土</button>
+      <button data-day="日">日</button>
+    </div>
+
+    <div class="day-view">
+      <div class="chart-area">
+        <svg viewBox="0 0 400 400" id="pieChart" aria-label="Daily schedule pie chart"></svg>
+        <div class="chart-center">
+          <div class="day-name" id="dayName">月</div>
+          <div class="day-sub" id="daySub">運動日</div>
+        </div>
+      </div>
+      <ul class="schedule-list" id="scheduleList"></ul>
     </div>
 
     <div class="legend" id="legend"></div>
@@ -391,43 +421,40 @@
   <script src="../assets/site.js"></script>
 
   <script>
-  // === Timeline rendering ===
-  const DAY_START = 6;   // 6:00
-  const DAY_END   = 24;  // 24:00 (= midnight)
-  const TOTAL_HOURS = DAY_END - DAY_START; // 18 hours
+  // === Pie chart rendering ===
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const cx = 200, cy = 200;
+  const innerR = 90, outerR = 175;
 
-  function timeToPercent(time) {
-    const [h, m] = time.split(':').map(Number);
-    const minutes = (h - DAY_START) * 60 + m;
-    return (minutes / (TOTAL_HOURS * 60)) * 100;
-  }
-
-  // category metadata
+  // category colors (direct hex for SVG fills)
   const categories = [
-    { id: 'morning',  name: '朝活',           color: 'var(--c-morning)' },
-    { id: 'workout',  name: '運動',           color: 'var(--c-workout)' },
-    { id: 'english',  name: '英語',           color: 'var(--c-english)' },
-    { id: 'tech',     name: '技術 / AI',      color: 'var(--c-tech)' },
-    { id: 'study',    name: '学習 (PL/BS等)', color: 'var(--c-study)' },
-    { id: 'review',   name: '週次レビュー',    color: 'var(--c-review)' },
-    { id: 'work',     name: 'WL業務 / 大学',   color: 'var(--c-work)' },
-    { id: 'meal',     name: '食事',           color: 'var(--c-meal)' },
-    { id: 'social',   name: 'ご飯 / ミートアップ', color: 'var(--c-social)' },
-    { id: 'note',     name: 'note / 発信',     color: 'var(--c-note)' },
-    { id: 'free',     name: '自由 / 読書',     color: 'var(--c-free)' },
-    { id: 'sleep',    name: '就寝',           color: 'var(--c-sleep)' },
+    { id: 'morning',  name: '朝活',                color: '#f1f5f9' },
+    { id: 'workout',  name: '運動',                color: '#fee2e2' },
+    { id: 'english',  name: '英語',                color: '#dbeafe' },
+    { id: 'tech',     name: '技術 / AI',           color: '#ede9fe' },
+    { id: 'study',    name: '学習 (PL/BS等)',      color: '#ccfbf1' },
+    { id: 'review',   name: '週次レビュー',          color: '#e0e7ff' },
+    { id: 'work',     name: 'WL業務',              color: '#f3f4f6' },
+    { id: 'meal',     name: '食事',                color: '#fef3c7' },
+    { id: 'social',   name: 'ご飯 / ミートアップ',    color: '#d1fae5' },
+    { id: 'note',     name: 'note / 発信',          color: '#ffedd5' },
+    { id: 'free',     name: '自由 / 読書',          color: '#fafafa' },
+    { id: 'sleep',    name: '就寝',                color: '#1e293b' },
   ];
 
-  // schedule per day
+  function getCat(id) { return categories.find(c => c.id === id); }
+
+  // schedule per day. 0:00-6:00 sleep added at start so 24h pie is complete.
   const schedule = {
     '月': { sub: '運動日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['9:10', '12:00', 'WL業務', 'work'],
       ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['13:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
       ['20:00','21:00', '技術ハンズオン', 'tech'],
       ['21:00','22:50', '自由・読書', 'free'],
@@ -435,26 +462,28 @@
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '火': { sub: '運動日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['9:10', '12:00', 'WL業務', 'work'],
       ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['13:00','19:00', 'WL業務', 'work'],
       ['19:00','22:00', 'ご飯 or ミートアップ', 'social'],
       ['22:00','22:50', '自由', 'free'],
       ['22:50','23:00', 'noteジャーナル', 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '水': { sub: '運動日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['9:10', '12:00', 'WL業務', 'work'],
       ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['13:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
       ['20:00','21:00', '技術ハンズオン', 'tech'],
       ['21:00','22:50', '自由・読書', 'free'],
@@ -462,14 +491,15 @@
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '木': { sub: '休み日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:10',  'AI/技術 集中 60分', 'tech'],
       ['7:10', '7:40',  'PL/BS 30分', 'study'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['9:10', '12:00', 'WL業務', 'work'],
       ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['13:00','19:00', 'WL業務', 'work'],
       ['19:00','20:00', '夕食', 'meal'],
       ['20:00','21:30', 'note 外向け記事執筆', 'note'],
       ['21:30','22:50', '自由', 'free'],
@@ -477,19 +507,21 @@
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '金': { sub: '運動日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', 'WL業務 / 大学', 'work'],
+      ['9:10', '12:00', 'WL業務', 'work'],
       ['12:00','13:00', 'ランチ・読書', 'meal'],
-      ['13:00','19:00', 'WL業務 / 大学', 'work'],
+      ['13:00','19:00', 'WL業務', 'work'],
       ['19:00','22:00', 'ご飯 (新しい人 or 親友)', 'social'],
       ['22:00','22:50', '自由', 'free'],
       ['22:50','23:00', 'noteジャーナル', 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '土': { sub: '運動日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
@@ -503,6 +535,7 @@
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
     '日': { sub: '休み日', items: [
+      ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:10',  'AI/技術 集中 60分', 'tech'],
       ['7:10', '7:40',  '週次レビュー 30分', 'review'],
@@ -513,67 +546,129 @@
       ['13:00','18:00', '自由 / 読書', 'free'],
       ['18:00','21:00', '自由 or ご飯', 'free'],
       ['21:00','22:30', '来週準備 + 自由', 'free'],
-      ['22:30','22:50', 'note ジャーナル', 'note'],
+      ['22:30','22:50', 'noteジャーナル', 'note'],
       ['22:50','24:00', '就寝', 'sleep'],
     ]},
   };
 
-  // render
-  const tl = document.getElementById('timeline');
-
-  // hour axis
-  const axis = document.createElement('div');
-  axis.className = 'hour-axis';
-  for (let h = DAY_START; h <= DAY_END; h++) {
-    const m = document.createElement('div');
-    m.className = 'mark';
-    m.textContent = h === 24 ? '24' : String(h);
-    m.style.left = ((h - DAY_START) / TOTAL_HOURS) * 100 + '%';
-    axis.appendChild(m);
+  function timeToAngle(time) {
+    const [h, m] = time.split(':').map(Number);
+    return ((h * 60 + m) / 1440) * 360;
   }
-  tl.appendChild(axis);
 
-  // day rows
-  Object.entries(schedule).forEach(([day, data]) => {
-    const row = document.createElement('div');
-    row.className = 'day-row';
+  function polarToCartesian(centerX, centerY, radius, angleDeg) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return { x: centerX + radius * Math.cos(rad), y: centerY + radius * Math.sin(rad) };
+  }
 
-    const label = document.createElement('div');
-    label.className = 'day-label';
-    label.innerHTML = day + '<span class="sub">' + data.sub + '</span>';
-    row.appendChild(label);
+  function describeArc(centerX, centerY, innerRadius, outerRadius, startAngle, endAngle) {
+    const outerStart = polarToCartesian(centerX, centerY, outerRadius, startAngle);
+    const outerEnd   = polarToCartesian(centerX, centerY, outerRadius, endAngle);
+    const innerEnd   = polarToCartesian(centerX, centerY, innerRadius, endAngle);
+    const innerStart = polarToCartesian(centerX, centerY, innerRadius, startAngle);
+    const sweep = (endAngle - startAngle) > 180 ? 1 : 0;
+    return [
+      'M', outerStart.x.toFixed(2), outerStart.y.toFixed(2),
+      'A', outerRadius, outerRadius, 0, sweep, 1, outerEnd.x.toFixed(2), outerEnd.y.toFixed(2),
+      'L', innerEnd.x.toFixed(2), innerEnd.y.toFixed(2),
+      'A', innerRadius, innerRadius, 0, sweep, 0, innerStart.x.toFixed(2), innerStart.y.toFixed(2),
+      'Z',
+    ].join(' ');
+  }
 
-    const bg = document.createElement('div');
-    bg.className = 'day-bg';
-    row.appendChild(bg);
+  function el(name, attrs = {}, parent) {
+    const node = document.createElementNS(SVG_NS, name);
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+    if (parent) parent.appendChild(node);
+    return node;
+  }
 
+  function renderDay(day) {
+    const data = schedule[day];
+    const svg = document.getElementById('pieChart');
+    svg.innerHTML = '';
+
+    // Activity arcs
     data.items.forEach(([start, end, name, cat]) => {
-      const bar = document.createElement('div');
-      bar.className = 'bar cat-' + cat;
-      const left = timeToPercent(start);
-      const right = timeToPercent(end);
-      const width = right - left;
-      bar.style.left = left + '%';
-      bar.style.width = width + '%';
-      const catData = categories.find(c => c.id === cat);
-      bar.style.background = catData ? catData.color : 'var(--c-free)';
-      bar.title = `${start}–${end}  ${name}`;
-      if (width < 4) bar.classList.add('tiny');
-      bar.textContent = width >= 2.5 ? name : '';
-      row.appendChild(bar);
+      let s = timeToAngle(start);
+      let e = timeToAngle(end);
+      if (e === 0 && end === '24:00') e = 360;
+      if (e === s) return;
+      const path = el('path', {
+        d: describeArc(cx, cy, innerR, outerR, s, e),
+        fill: getCat(cat).color,
+        stroke: '#ffffff',
+        'stroke-width': '1',
+      }, svg);
+      const title = document.createElementNS(SVG_NS, 'title');
+      title.textContent = `${start}–${end}  ${name}`;
+      path.appendChild(title);
     });
 
-    tl.appendChild(row);
-  });
+    // Hour ticks (every 3 hours)
+    for (let h = 0; h < 24; h += 3) {
+      const angle = (h / 24) * 360;
+      const tickInner = polarToCartesian(cx, cy, outerR + 4, angle);
+      const tickOuter = polarToCartesian(cx, cy, outerR + 12, angle);
+      el('line', {
+        x1: tickInner.x.toFixed(2), y1: tickInner.y.toFixed(2),
+        x2: tickOuter.x.toFixed(2), y2: tickOuter.y.toFixed(2),
+        stroke: '#bbb', 'stroke-width': '1',
+      }, svg);
+      const labelPos = polarToCartesian(cx, cy, outerR + 24, angle);
+      const text = el('text', {
+        x: labelPos.x.toFixed(2), y: labelPos.y.toFixed(2),
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        'font-size': '11',
+        'font-family': "'JetBrains Mono', monospace",
+        fill: '#888',
+      }, svg);
+      text.textContent = h === 0 ? '0' : String(h);
+    }
+
+    // Center text
+    document.getElementById('dayName').textContent = day;
+    document.getElementById('daySub').textContent = data.sub;
+
+    // Schedule list (hide morning sleep duplicate)
+    const list = document.getElementById('scheduleList');
+    list.innerHTML = '';
+    const visible = data.items.filter(([s, , , cat], i) => !(i === 0 && cat === 'sleep' && s === '0:00'));
+    visible.forEach(([start, end, name, cat]) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="swatch" style="background: ${getCat(cat).color}"></span>
+        <span class="time">${start}–${end}</span>
+        <span class="label">${name}</span>
+      `;
+      list.appendChild(li);
+    });
+  }
 
   // legend
-  const legend = document.getElementById('legend');
-  categories.forEach(c => {
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.innerHTML = `<span class="legend-swatch" style="background:${c.color}"></span><span>${c.name}</span>`;
-    legend.appendChild(item);
+  (function renderLegend() {
+    const legend = document.getElementById('legend');
+    categories.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.innerHTML = `<span class="legend-swatch" style="background:${c.color}"></span><span>${c.name}</span>`;
+      legend.appendChild(item);
+    });
+  })();
+
+  // selector
+  const selector = document.getElementById('daySelector');
+  selector.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    selector.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderDay(btn.dataset.day);
   });
+
+  // initial
+  renderDay('月');
   </script>
 
 </body>
