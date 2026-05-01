@@ -387,10 +387,7 @@
     <!-- MONTHLY EVENTS -->
     <div class="section-h"><span>Monthly Fixed <span class="ja">/ 月単位の固定枠</span></span></div>
     <ul class="monthly-list">
-      <li><span class="when">月初 月曜朝</span><span>PL/BSの深掘り 30–60分</span></li>
-      <li><span class="when">月1</span><span>WL経営会議に参加（最重要）</span></li>
       <li><span class="when">月1</span><span>採用面接に同席（人を見抜く力）</span></li>
-      <li><span class="when">月1</span><span>響さんと 1on1 キャッチアップ</span></li>
       <li><span class="when">月1</span><span>創業者ミートアップ／OB訪問</span></li>
       <li><span class="when">月1冊</span><span>技術書（Phase 1–3 ロードマップ）</span></li>
       <li><span class="when">3ヶ月で1冊</span><span>経営数字本（『財務3表一体理解法』など）</span></li>
@@ -493,8 +490,7 @@
     '木': { sub: '休み日', items: [
       ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
-      ['6:10', '7:10',  'AI/技術 集中 60分', 'tech'],
-      ['7:10', '7:40',  'PL/BS 30分', 'study'],
+      ['6:10', '7:40',  'AI/技術 集中 90分', 'tech'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
       ['9:10', '12:00', 'WL業務', 'work'],
@@ -520,13 +516,14 @@
       ['22:50','23:00', 'noteジャーナル', 'note'],
       ['23:00','24:00', '就寝', 'sleep'],
     ]},
-    '土': { sub: '運動日', items: [
+    '土': { sub: 'リサーチデイ', items: [
       ['0:00', '6:00',  '就寝', 'sleep'],
       ['6:00', '6:10',  'ジャーナル', 'morning'],
       ['6:10', '7:40',  '運動 90分', 'workout'],
       ['7:40', '8:10',  'シャワー・朝食', 'morning'],
       ['8:10', '9:10',  '英語 60分', 'english'],
-      ['9:10', '12:00', '重い学習 / レポート', 'study'],
+      ['9:10', '10:10', 'PL/BS 60分', 'study'],
+      ['10:10','12:00', 'リサーチ・重い学習', 'study'],
       ['12:00','13:00', 'ランチ', 'meal'],
       ['13:00','18:00', '自由 / 休息', 'free'],
       ['18:00','22:00', 'ご飯 or 自由', 'social'],
@@ -588,7 +585,14 @@
     const svg = document.getElementById('pieChart');
     svg.innerHTML = '';
 
-    // Activity arcs
+    // helpers
+    function shortLabel(name, maxChars) {
+      let s = name.replace(/\s*\d+分\s*$/, '').replace(/\s*[\(（].*$/, '');
+      if (s.length <= maxChars) return s;
+      return s.slice(0, maxChars - 1) + '…';
+    }
+
+    // Activity arcs (with in-segment labels)
     data.items.forEach(([start, end, name, cat]) => {
       let s = timeToAngle(start);
       let e = timeToAngle(end);
@@ -603,6 +607,40 @@
       const title = document.createElementNS(SVG_NS, 'title');
       title.textContent = `${start}–${end}  ${name}`;
       path.appendChild(title);
+
+      // In-segment label
+      const segWidth = e - s;
+      if (segWidth < 3) return; // too tiny to label
+
+      let fontSize, maxChars;
+      if (segWidth >= 18)      { fontSize = 12; maxChars = 8; }
+      else if (segWidth >= 12) { fontSize = 11; maxChars = 6; }
+      else if (segWidth >= 7)  { fontSize = 10; maxChars = 5; }
+      else if (segWidth >= 4)  { fontSize = 9;  maxChars = 4; }
+      else                     { fontSize = 8;  maxChars = 3; }
+
+      const label = shortLabel(name, maxChars);
+      const midAngle = (s + e) / 2;
+      const midR = (innerR + outerR) / 2;
+      const pos = polarToCartesian(cx, cy, midR, midAngle);
+      // tangent rotation, with bottom-half flip for readability
+      let rot = midAngle;
+      if (midAngle > 90 && midAngle < 270) rot = midAngle - 180;
+
+      const isDarkBg = cat === 'sleep';
+      const text = el('text', {
+        x: pos.x.toFixed(2),
+        y: pos.y.toFixed(2),
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        'font-size': String(fontSize),
+        'font-family': "'Inter', -apple-system, sans-serif",
+        'font-weight': '500',
+        fill: isDarkBg ? '#e2e8f0' : '#1f2937',
+        transform: `rotate(${rot.toFixed(2)} ${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`,
+        'pointer-events': 'none',
+      }, svg);
+      text.textContent = label;
     });
 
     // Hour ticks (every 3 hours)
