@@ -289,9 +289,64 @@
     cursor: pointer;
     user-select: none;
     transition: filter 0.15s, transform 0.05s;
+    position: relative;
+    padding-right: 18px;
+  }
+  .badge.click::after {
+    content: '▾';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 9px;
+    opacity: 0.6;
   }
   .badge.click:hover { filter: brightness(0.95); }
   .badge.click:active { transform: translateY(1px); }
+
+  /* popup menu */
+  .popup-menu {
+    position: absolute;
+    z-index: 200;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+    min-width: 160px;
+    padding: 4px;
+    border-radius: 4px;
+    display: none;
+  }
+  .popup-menu.open { display: block; }
+  .popup-menu .pm-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 3px;
+    user-select: none;
+  }
+  .popup-menu .pm-item:hover { background: var(--soft); }
+  .popup-menu .pm-item.active { background: #fff7cc; }
+  .popup-menu .pm-item.active::before {
+    content: '✓';
+    color: #15803d;
+    font-weight: 700;
+    margin-right: -2px;
+  }
+  .popup-menu .pm-item:not(.active)::before {
+    content: '';
+    width: 14px;
+    flex-shrink: 0;
+  }
+  .popup-menu .pm-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .popup-menu .pm-label { flex: 1; }
 
   .due.click { cursor: pointer; }
   .due.click:hover { background: #fff7cc; }
@@ -559,11 +614,13 @@
       </div>
     </div>
 
+    <!-- popup menu (dropdown for status/priority/force) -->
+    <div class="popup-menu" id="popupMenu" role="menu"></div>
+
     <div class="note-box">
       <strong>操作ガイド：</strong>
-      <br>・<strong>チェックボタン</strong>: クリックで 実施前 → 実施中 → 完了 → 実施前 のサイクル
+      <br>・<strong>チェックボタン・ステータス・優先度・Forceバッジ</strong>: クリックでドロップダウンを表示 → 値を選択 (Escまたは外側クリックで閉じる)
       <br>・<strong>タスク名・参照</strong>: クリックで編集（Enterで確定 / Escでキャンセル）
-      <br>・<strong>ステータス・優先度・Forceバッジ</strong>: クリックで値を循環
       <br>・<strong>期日</strong>: クリックで YYYY-MM-DD 形式の編集ダイアログ
       <br>・<strong>削除</strong>: 行ホバーで右端に出る × ボタン
       <br><br>
@@ -692,17 +749,17 @@
     } else {
       list.innerHTML = filtered.map(t => `
         <div class="todo-row is-${t.status}" data-id="${t.id}">
-          <button class="check" data-action="cycle" aria-label="status">
+          <button class="check" data-action="pick-status" aria-label="ステータス変更">
             <svg viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4"/></svg>
           </button>
           <div class="task-name">
             <span class="editable" data-field="name" title="クリックで編集">${escape(t.name)}</span>
             <span class="sub editable" data-field="ref" title="クリックで編集">${escape(t.ref || '—')}</span>
           </div>
-          <div class="badge-status"><span class="badge s-${t.status} click" data-action="cycle-status" title="クリックでステータス変更">${STATUS_LABEL[t.status]}</span></div>
-          <div class="badge-priority"><span class="badge p-${t.priority} click" data-action="cycle-priority" title="クリックで優先度変更">優先度 ${PRIORITY_LABEL[t.priority]}</span></div>
+          <div class="badge-status"><span class="badge s-${t.status} click" data-action="pick-status" title="クリックで選択">${STATUS_LABEL[t.status]}</span></div>
+          <div class="badge-priority"><span class="badge p-${t.priority} click" data-action="pick-priority" title="クリックで選択">優先度 ${PRIORITY_LABEL[t.priority]}</span></div>
           <div class="badge-due due click ${dueClass(t.due)}" data-action="edit-due" title="クリックで期日変更">${fmtDue(t.due)}</div>
-          <div class="badge-force"><span class="badge f-${t.force.slice(1)} click" data-action="cycle-force" title="クリックでForce変更">${FORCE_LABEL[t.force]}</span></div>
+          <div class="badge-force"><span class="badge f-${t.force.slice(1)} click" data-action="pick-force" title="クリックで選択">${FORCE_LABEL[t.force]}</span></div>
           <div><button class="delete-btn" data-action="delete" aria-label="delete" title="削除">×</button></div>
         </div>
       `).join('');
@@ -725,8 +782,87 @@
   }
 
   // ==== events ====
-  const PRIORITY_CYCLE = ['low', 'med', 'high'];
-  const FORCE_CYCLE = ['f1', 'f2', 'f3'];
+  const FIELD_OPTIONS = {
+    status: [
+      { value: 'todo',  label: '実施前', sw: '#9ca3af' },
+      { value: 'doing', label: '実施中', sw: '#0e7490' },
+      { value: 'done',  label: '完了',   sw: '#15803d' },
+    ],
+    priority: [
+      { value: 'high', label: '優先度 高', sw: '#b91c1c' },
+      { value: 'med',  label: '優先度 中', sw: '#92400e' },
+      { value: 'low',  label: '優先度 低', sw: '#075985' },
+    ],
+    force: [
+      { value: 'f1', label: 'F1 コンサル', sw: '#6366f1' },
+      { value: 'f2', label: 'F2 推進',     sw: '#0ea5e9' },
+      { value: 'f3', label: 'F3 組織',     sw: '#14b8a6' },
+    ],
+  };
+
+  function openPicker(anchorEl, todo, field) {
+    const menu = document.getElementById('popupMenu');
+    const opts = FIELD_OPTIONS[field];
+    menu.innerHTML = opts.map(o => `
+      <div class="pm-item ${todo[field] === o.value ? 'active' : ''}" data-value="${o.value}" role="menuitem">
+        <span class="pm-swatch" style="background:${o.sw}"></span>
+        <span class="pm-label">${o.label}</span>
+      </div>
+    `).join('');
+
+    // position below anchor
+    const rect = anchorEl.getBoundingClientRect();
+    menu.style.display = 'block';
+    const menuRect = menu.getBoundingClientRect();
+    let top = rect.bottom + window.scrollY + 4;
+    let left = rect.left + window.scrollX;
+    // keep within viewport horizontally
+    const maxLeft = window.scrollX + window.innerWidth - menuRect.width - 8;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    menu.style.top = top + 'px';
+    menu.style.left = left + 'px';
+    menu.classList.add('open');
+
+    menu.dataset.todoId = todo.id;
+    menu.dataset.field = field;
+  }
+
+  function closePicker() {
+    const menu = document.getElementById('popupMenu');
+    menu.classList.remove('open');
+    menu.style.display = 'none';
+    delete menu.dataset.todoId;
+    delete menu.dataset.field;
+  }
+
+  document.getElementById('popupMenu').addEventListener('click', (e) => {
+    const item = e.target.closest('.pm-item');
+    if (!item) return;
+    const menu = document.getElementById('popupMenu');
+    const todo = todos.find(t => t.id === menu.dataset.todoId);
+    const field = menu.dataset.field;
+    if (todo && field) {
+      todo[field] = item.dataset.value;
+      save();
+    }
+    closePicker();
+    render();
+  });
+
+  // close popup on outside click / Esc / scroll
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('popupMenu');
+    if (!menu.classList.contains('open')) return;
+    if (e.target.closest('.popup-menu')) return;
+    if (e.target.closest('[data-action="pick-status"], [data-action="pick-priority"], [data-action="pick-force"]')) return;
+    closePicker();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePicker();
+  });
+  window.addEventListener('scroll', closePicker, { passive: true });
+  window.addEventListener('resize', closePicker);
 
   document.getElementById('todoList').addEventListener('click', (e) => {
     const row = e.target.closest('.todo-row');
@@ -735,24 +871,19 @@
     const todo = todos.find(t => t.id === id);
     if (!todo) return;
 
-    const action = e.target.closest('[data-action]')?.dataset.action;
+    const actionEl = e.target.closest('[data-action]');
+    const action = actionEl?.dataset.action;
 
-    if (action === 'cycle' || action === 'cycle-status') {
-      const idx = STATUS_CYCLE.indexOf(todo.status);
-      todo.status = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
-      save(); render();
-      return;
-    }
-    if (action === 'cycle-priority') {
-      const idx = PRIORITY_CYCLE.indexOf(todo.priority);
-      todo.priority = PRIORITY_CYCLE[(idx + 1) % PRIORITY_CYCLE.length];
-      save(); render();
-      return;
-    }
-    if (action === 'cycle-force') {
-      const idx = FORCE_CYCLE.indexOf(todo.force);
-      todo.force = FORCE_CYCLE[(idx + 1) % FORCE_CYCLE.length];
-      save(); render();
+    if (action === 'pick-status' || action === 'pick-priority' || action === 'pick-force') {
+      e.stopPropagation();
+      const field = action.replace('pick-', '');
+      const menu = document.getElementById('popupMenu');
+      // toggle: if same anchor is open, close
+      if (menu.classList.contains('open') && menu.dataset.todoId === id && menu.dataset.field === field) {
+        closePicker();
+      } else {
+        openPicker(actionEl, todo, field);
+      }
       return;
     }
     if (action === 'edit-due') {
