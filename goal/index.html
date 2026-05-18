@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>017 · goal — Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --soft2: #fafafa;
+    --accent-consult: #6366f1;
+    --accent-forward: #0ea5e9;
+    --accent-organize: #14b8a6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 32px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* hero */
+  .hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .hero .crumb a { color: var(--muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .ja { font-size: 14px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  /* page-switch */
+  .page-switch {
+    display: flex;
+    gap: 0;
+    margin-bottom: 40px;
+    border: 1px solid var(--line);
+    width: fit-content;
+  }
+  .page-switch a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+    text-decoration: none;
+    padding: 11px 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .page-switch a + a { border-left: 1px solid var(--line); }
+  .page-switch a:hover { background: #fafafa; color: var(--fg); }
+  .page-switch a.active { background: var(--fg); color: #fff; }
+
+  /* section heading */
+  .section-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 56px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .section-h .ja {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .section-h:first-of-type { margin-top: 16px; }
+
+  /* goal hero card */
+  .goal-card {
+    background: var(--fg);
+    color: #fff;
+    padding: 36px 40px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .goal-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 14px;
+  }
+  .goal-card .statement {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .goal-card .statement em {
+    font-style: normal;
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    padding-bottom: 1px;
+  }
+  .goal-card .note {
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.75;
+    max-width: 760px;
+  }
+
+  /* forces - three cards */
+  .forces {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .force-card {
+    background: var(--soft);
+    padding: 24px 26px;
+    border-left: 3px solid var(--fg);
+    position: relative;
+  }
+  .force-card.f1 { border-left-color: var(--accent-consult); }
+  .force-card.f2 { border-left-color: var(--accent-forward); }
+  .force-card.f3 { border-left-color: var(--accent-organize); }
+
+  .force-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+  .force-card .title { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .force-card .desc { font-size: 13px; color: #4b5563; line-height: 1.65; }
+  .force-card .pill-row { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .force-card .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: #555;
+    letter-spacing: 0.04em;
+  }
+
+  /* matrix */
+  .matrix-wrap { margin-top: 8px; }
+  .matrix {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .matrix > div {
+    padding: 16px 18px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .matrix > div:nth-child(3n) { border-right: none; }
+  .matrix > div:nth-last-child(-n+3) { border-bottom: none; }
+
+  .matrix .mhead {
+    background: var(--soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 600;
+  }
+  .matrix .mhead.corner { background: var(--fg); color: #fff; }
+  .matrix .row-label {
+    background: var(--soft2);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .matrix .row-label .ja {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .matrix .row-label.f1 { border-left: 3px solid var(--accent-consult); }
+  .matrix .row-label.f2 { border-left: 3px solid var(--accent-forward); }
+  .matrix .row-label.f3 { border-left: 3px solid var(--accent-organize); }
+
+  .matrix ul.actions {
+    list-style: none;
+    padding-left: 0;
+  }
+  .matrix ul.actions li {
+    padding: 6px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-bottom: 1px dashed #ececec;
+    font-size: 13.5px;
+  }
+  .matrix ul.actions li:last-child { border-bottom: none; }
+  .matrix ul.actions li::before {
+    content: '→';
+    color: var(--muted);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* framework intro */
+  .framework-intro {
+    background: var(--soft);
+    padding: 26px 30px;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--fg);
+  }
+  .framework-intro p { font-size: 14px; line-height: 1.8; margin-bottom: 14px; }
+  .framework-intro p:last-of-type { margin-bottom: 0; }
+  .framework-intro strong { color: var(--fg); font-weight: 700; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .how-box {
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 18px 20px;
+  }
+  .how-box .how-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+  .how-box .how-title { font-size: 15px; font-weight: 700; line-height: 1.45; margin-bottom: 8px; }
+  .how-box ul.how-sub {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    border-top: 1px dashed var(--line);
+    padding-top: 10px;
+  }
+  .how-box ul.how-sub li {
+    font-size: 12.5px;
+    color: #4b5563;
+    padding: 4px 0;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .how-box ul.how-sub li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    color: var(--muted);
+  }
+  .how-after {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .how-after li {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid #f59e0b;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* assessment */
+  .ass-sub-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 22px 0 10px;
+    padding-left: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .ass-sub-h .ja {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: #6b7280;
+  }
+  .ass-group {
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .ass-row {
+    display: grid;
+    grid-template-columns: 38px 1fr 200px 84px;
+    gap: 16px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+  }
+  .ass-row:last-child { border-bottom: none; }
+  .ass-row .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .ass-row .label { font-size: 14px; font-weight: 500; line-height: 1.45; }
+  .ass-row .label .sub {
+    display: block;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .ass-dots { display: flex; gap: 5px; }
+  .ass-dots .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .ass-dots .dot.f-strong { background: #14b8a6; border-color: #14b8a6; }
+  .ass-dots .dot.f-gap    { background: #ef4444; border-color: #ef4444; }
+  .ass-dots .dot.unknown {
+    background: repeating-linear-gradient(45deg, #f3f4f6 0 4px, #e5e7eb 4px 6px);
+    border-color: #d1d5db;
+  }
+  .ass-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .ass-tag.strong  { background: #ccfbf1; color: #115e59; border: 1px solid #99f6e4; }
+  .ass-tag.gap     { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  .ass-tag.unknown { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+
+  .ass-legend {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .ass-legend .li { display: flex; align-items: center; gap: 8px; }
+  .ass-legend .sw { width: 12px; height: 12px; border-radius: 50%; }
+
+  /* domain note (open question) */
+  .domain-note {
+    background: #fff8e1;
+    border-left: 3px solid #f59e0b;
+    padding: 18px 22px;
+    margin-top: 20px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #4b3a00;
+  }
+  .domain-note strong { color: #92400e; font-weight: 700; }
+  .domain-note .label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: #f59e0b;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    margin-right: 10px;
+    vertical-align: 2px;
+  }
+
+  /* database filters */
+  .db-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .db-filter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 7px 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: #555;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .db-filter:hover { background: var(--soft); color: var(--fg); }
+  .db-filter.active { background: var(--fg); color: #fff; border-color: var(--fg); }
+
+  .db-counts {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    align-self: center;
+  }
+
+  /* database table */
+  .db-table-wrap {
+    border: 1px solid var(--line);
+    background: #fff;
+    overflow-x: auto;
+  }
+  .db-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 880px;
+  }
+  .db-table thead th {
+    background: var(--soft);
+    text-align: left;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .db-table tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .db-table tbody tr:last-child td { border-bottom: none; }
+  .db-table tbody tr:hover { background: #fafafa; }
+
+  .col-name { font-weight: 600; min-width: 220px; }
+  .col-status { width: 110px; }
+  .col-env { width: 110px; }
+  .col-force { min-width: 160px; }
+  .col-milestone { color: #555; }
+
+  /* status badge */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge.todo  { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+  .badge.doing { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+  .badge.done  { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+  .badge.env-wl { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .badge.env-out { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+  .badge.force-1 { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .badge.force-2 { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+  .badge.force-3 { background: #ccfbf1; color: #115e59; border: 1px solid #99f6e4; }
+
+  .milestone-block {
+    display: block;
+  }
+  .milestone-block + .milestone-block { margin-top: 6px; }
+  .milestone-block .ms-label {
+    display: inline-block;
+    width: 86px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* note box */
+  .note-box {
+    background: var(--soft);
+    padding: 18px 22px;
+    border-left: 3px solid var(--muted);
+    margin-top: 24px;
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--fg); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .forces { grid-template-columns: 1fr; }
+    .matrix { grid-template-columns: 1fr; }
+    .matrix > div { border-right: none !important; }
+    .matrix > div:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+    .matrix > div:last-child { border-bottom: none; }
+    .how-grid { grid-template-columns: 1fr; }
+    .how-after { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    body { padding: 22px 16px 36px; }
+    .hero h1 { font-size: 28px; }
+    .goal-card { padding: 26px 22px; }
+    .goal-card .statement { font-size: 20px; }
+    .framework-intro { padding: 20px 18px; }
+    .ass-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 14px 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <a href="../routine/" class="nav-link">routine</a>
+    <a href="./" class="nav-link active">goal</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+  <main class="wrap">
+
+    <div class="hero">
+      <div class="crumb"><a href="../index.html">home</a> / 017 · goal</div>
+      <h1>Goal & Action Map</h1>
+      <div class="ja">なりたい人間像 / 伸ばしたい力 / 打ち手データベース</div>
+    </div>
+
+    <nav class="page-switch">
+      <a href="./index.html" class="active">Action Map</a>
+      <a href="./todo.html">Todo DB</a>
+      <a href="./journey.html">これまでの人生・課題整理</a>
+    </nav>
+
+    <!-- ============ GOAL ============ -->
+    <div class="section-h"><span>Goal <span class="ja">/ なりたい人間像</span></span></div>
+
+    <div class="goal-card">
+      <div class="label">North Star</div>
+      <div class="statement">
+        <em>人や組織を前進させ、強固な集団を形成できる人間</em>になる。
+      </div>
+      <div class="note">
+        特定の環境に依存せず、どの組織に置かれても貢献できる人間として成長していく。
+        「他者のために、ゼロから仕組みを設計し、回し、結果を出した経験を持つ」ことが達成の証。
+      </div>
+    </div>
+
+    <!-- ============ FRAMEWORK ============ -->
+    <div class="section-h"><span>Framework <span class="ja">/ 取りまとめ役になる構造（前提）</span></span></div>
+
+    <div class="framework-intro">
+      <p>
+        「人や組織を前進させ、強固な集団を形成できる人間」になる前提として、
+        <strong>組織で「取りまとめ役」になる</strong>必要がある。
+        取りまとめ役になるhow（＝どのように人からの信頼を得るか）は、主に2パターン:
+      </p>
+      <div class="how-grid">
+        <div class="how-box">
+          <div class="how-label">HOW 01</div>
+          <div class="how-title">該当競技の実力で昇進していく</div>
+        </div>
+        <div class="how-box">
+          <div class="how-label">HOW 02</div>
+          <div class="how-title">政治力で昇進していく</div>
+          <ul class="how-sub">
+            <li>真面目さ（他者からの信頼）</li>
+            <li>全体の現状・気持ちを考慮しながら、上手くまとまるように動く振る舞い</li>
+          </ul>
+        </div>
+      </div>
+      <p>
+        加えて、<strong>実際に取りまとめ役になった後に求められる追加の力</strong>が次の2つ:
+      </p>
+      <ul class="how-after">
+        <li>全体を巻き込みながら組織を前に進める推進力</li>
+        <li>強固で揺るがない組織を作る力</li>
+      </ul>
+    </div>
+
+    <div class="ass-sub-h"><span>Self-Assessment</span><span class="ja">/ 5軸の現在地（5段階・自己評価）</span></div>
+
+    <div class="ass-group">
+      <!-- 01: 該当競技の実力 -->
+      <div class="ass-row">
+        <div class="num">01</div>
+        <div class="label">
+          該当競技の実力
+          <span class="sub">HOW 01 — 実力で昇進する</span>
+        </div>
+        <div class="ass-dots">
+          <span class="dot unknown"></span>
+          <span class="dot unknown"></span>
+          <span class="dot unknown"></span>
+          <span class="dot unknown"></span>
+          <span class="dot unknown"></span>
+        </div>
+        <div class="ass-tag unknown">? 領域による</div>
+      </div>
+      <!-- 02: 真面目さ -->
+      <div class="ass-row">
+        <div class="num">02</div>
+        <div class="label">
+          真面目さ
+          <span class="sub">HOW 02-a — 他者からの信頼</span>
+        </div>
+        <div class="ass-dots">
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+        </div>
+        <div class="ass-tag strong">5 / 5</div>
+      </div>
+      <!-- 03: 折衝力 -->
+      <div class="ass-row">
+        <div class="num">03</div>
+        <div class="label">
+          チームの現状を俯瞰し、問題が生じないよう折衝する力
+          <span class="sub">HOW 02-b — 全体を上手くまとめる振る舞い</span>
+        </div>
+        <div class="ass-dots">
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot f-strong"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="ass-tag strong">4 / 5</div>
+      </div>
+      <!-- 04: 推進力 -->
+      <div class="ass-row">
+        <div class="num">04</div>
+        <div class="label">
+          全体を巻き込みながら組織を前に進める推進力
+          <span class="sub">取りまとめ役になった後に必要 ①</span>
+        </div>
+        <div class="ass-dots">
+          <span class="dot f-gap"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="ass-tag gap">1 / 5</div>
+      </div>
+      <!-- 05: 組織力 -->
+      <div class="ass-row">
+        <div class="num">05</div>
+        <div class="label">
+          強固で揺るがない組織を作る力
+          <span class="sub">取りまとめ役になった後に必要 ②</span>
+        </div>
+        <div class="ass-dots">
+          <span class="dot f-gap"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="ass-tag gap">1 / 5</div>
+      </div>
+    </div>
+
+    <div class="ass-legend">
+      <span class="li"><span class="sw" style="background:#14b8a6;"></span>すでに持っている力 (4以上)</span>
+      <span class="li"><span class="sw" style="background:#ef4444;"></span>これから伸ばすべき力 (1)</span>
+      <span class="li"><span class="sw" style="background:repeating-linear-gradient(45deg, #f3f4f6 0 4px, #e5e7eb 4px 6px);border:1px solid #d1d5db;"></span>領域依存・未確定</span>
+    </div>
+
+    <!-- ============ FORCES ============ -->
+    <div class="section-h"><span>3 Forces to Build <span class="ja">/ 5軸のうち、伸ばすべき3つ</span></span></div>
+
+    <div class="forces">
+      <div class="force-card f1">
+        <div class="num">FORCE 01 · 5軸の 01</div>
+        <div class="title">コンサル力<br><span style="font-size:12px;font-weight:400;color:var(--muted);">＝ 該当競技の実力</span></div>
+        <div class="desc">
+          相手の課題を発見し、構造化し、解像度の高い解を返す力。
+          現在AIコンサルティング会社に所属しているため、まずこの土俵で磨き切る。
+        </div>
+        <div class="pill-row">
+          <span class="pill">課題発見</span>
+          <span class="pill">構造化</span>
+          <span class="pill">提案</span>
+        </div>
+      </div>
+
+      <div class="force-card f2">
+        <div class="num">FORCE 02 · 5軸の 04</div>
+        <div class="title">組織を前進させる力<br><span style="font-size:12px;font-weight:400;color:var(--muted);">＝ 推進力（取りまとめ役後）</span></div>
+        <div class="desc">
+          全体を巻き込みながら組織を前に進める推進力。
+          関係者を動かし、合意形成し、停滞を打開する。
+        </div>
+        <div class="pill-row">
+          <span class="pill">巻き込み</span>
+          <span class="pill">合意形成</span>
+          <span class="pill">推進</span>
+        </div>
+      </div>
+
+      <div class="force-card f3">
+        <div class="num">FORCE 03 · 5軸の 05</div>
+        <div class="title">強固で揺るがない組織を作る力<br><span style="font-size:12px;font-weight:400;color:var(--muted);">＝ 組織設計力（取りまとめ役後）</span></div>
+        <div class="desc">
+          人が辞めず、結果が再現される組織を設計する力。
+          02と密接に紐づく。前進させる先で、続く構造を残す。
+        </div>
+        <div class="pill-row">
+          <span class="pill">組織設計</span>
+          <span class="pill">文化</span>
+          <span class="pill">持続性</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DOMAIN OPEN QUESTION ============ -->
+    <div class="domain-note">
+      <span class="label">OPEN</span>
+      <strong>「どのドメインで、これらの力を発揮できるようになりたいのか」</strong>
+      はまだ明確ではない。打ち手を回しながら、解像度を上げていく。これがこの2年で答えを出すべき最大の問い。
+    </div>
+
+    <!-- ============ MATRIX ============ -->
+    <div class="section-h"><span>Action Matrix <span class="ja">/ WL内 × WL外 で打ち手を整理</span></span></div>
+
+    <div class="matrix-wrap">
+      <div class="matrix">
+        <div class="mhead corner">— / —</div>
+        <div class="mhead">Inside Wanderlust</div>
+        <div class="mhead">Outside Wanderlust</div>
+
+        <div class="row-label f1">
+          コンサル力
+          <span class="ja">FORCE 01</span>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>オプテージ案件を通じて、飯野さん・星野さん・小野沢さんの3人から学ぶ</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>コンサルティング関連書籍を読み込む</li>
+            <li>コンサルティング系インターンに申し込み、解像度を上げる</li>
+          </ul>
+        </div>
+
+        <div class="row-label f2">
+          組織を前進させる力
+          <span class="ja">FORCE 02</span>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>オプテージ案件で先方とのコミュニケーション量・接触回数を増やす</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>外部の人との接触量を増やす</li>
+            <li>リーダーシップに関する活動への参加</li>
+            <li>各種交流会への参加</li>
+          </ul>
+        </div>
+
+        <div class="row-label f3">
+          強固な組織を作る力
+          <span class="ja">FORCE 03</span>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>オプテージ先での組織観察・関係構築を継続（FORCE 02と同根）</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="actions">
+            <li>リーダーシップ活動を通した組織運営の実地観察</li>
+            <li>交流会・コミュニティ運営の体験</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DATABASE ============ -->
+    <div class="section-h"><span>Action Database <span class="ja">/ 打ち手の進捗管理</span></span></div>
+
+    <div class="db-controls" id="dbControls">
+      <button class="db-filter active" data-filter="all">All</button>
+      <button class="db-filter" data-filter="todo">実施前</button>
+      <button class="db-filter" data-filter="doing">実施中</button>
+      <button class="db-filter" data-filter="done">実施後</button>
+      <button class="db-filter" data-filter="f1">F1 コンサル力</button>
+      <button class="db-filter" data-filter="f2">F2 前進力</button>
+      <button class="db-filter" data-filter="f3">F3 組織力</button>
+      <span class="db-counts" id="dbCounts"></span>
+    </div>
+
+    <div class="db-table-wrap">
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th class="col-name">打ち手</th>
+            <th class="col-status">ステータス</th>
+            <th class="col-env">環境</th>
+            <th class="col-force">伸ばしたい力</th>
+            <th class="col-milestone">マイルストーン</th>
+          </tr>
+        </thead>
+        <tbody id="dbBody"></tbody>
+      </table>
+    </div>
+
+    <div class="note-box">
+      <strong>運用メモ：</strong>このマップは仮置き。実施前→実施中→実施後の遷移、マイルストーンの達成・更新は週次レビューで回す。
+      ドメイン(<em>どの領域で力を発揮するか</em>)が固まるまでは、解像度を上げる打ち手を多めに走らせる方針。
+    </div>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+
+  <script>
+  // ============== Action Database ==============
+  const STATUS = {
+    todo:  { label: '実施前', cls: 'todo'  },
+    doing: { label: '実施中', cls: 'doing' },
+    done:  { label: '実施後', cls: 'done'  },
+  };
+  const FORCE = {
+    f1: { label: 'コンサル力',           cls: 'force-1' },
+    f2: { label: '組織を前進させる力',     cls: 'force-2' },
+    f3: { label: '強固な組織を作る力',     cls: 'force-3' },
+  };
+  const ENV = {
+    wl:  { label: 'WL内', cls: 'env-wl'  },
+    out: { label: 'WL外', cls: 'env-out' },
+  };
+
+  const ACTIONS = [
+    {
+      name: 'オプテージ案件で飯野さん・星野さん・小野沢さんから学ぶ',
+      status: 'doing',
+      env: 'wl',
+      forces: ['f1'],
+      next: '週次の振り返りに「3人から学んだこと」欄を追加',
+      monthGoal: '3人それぞれの強みを1つずつ言語化する',
+    },
+    {
+      name: 'オプテージ先方とのコミュニケーション量・接触回数を増やす',
+      status: 'doing',
+      env: 'wl',
+      forces: ['f2', 'f3'],
+      next: '次回定例で発言1回・1on1を1件設定',
+      monthGoal: '先方キーパーソン3名と1on1を設定',
+    },
+    {
+      name: 'コンサルティング関連書籍を読む',
+      status: 'todo',
+      env: 'out',
+      forces: ['f1'],
+      next: '読む3冊を選定（『コンサル一年目が学ぶこと』他）',
+      monthGoal: '2冊読了 + note1本にまとめる',
+    },
+    {
+      name: 'コンサルティング系インターンに申し込む',
+      status: 'todo',
+      env: 'out',
+      forces: ['f1'],
+      next: '候補ファーム3社をリストアップ',
+      monthGoal: '1社に応募完了',
+    },
+    {
+      name: '外部の人との接触を増やす（meetup・ご飯）',
+      status: 'doing',
+      env: 'out',
+      forces: ['f2'],
+      next: '今週中に新しい3人とご飯（routine の週次目標と連動）',
+      monthGoal: '新規12人と接触',
+    },
+    {
+      name: 'リーダーシップに関する活動に参加する',
+      status: 'todo',
+      env: 'out',
+      forces: ['f2', 'f3'],
+      next: '候補となるコミュニティ/プログラムを3つリサーチ',
+      monthGoal: '1つにコミット決定',
+    },
+    {
+      name: '各種交流会への参加',
+      status: 'todo',
+      env: 'out',
+      forces: ['f2'],
+      next: '5月中に1件参加（経営者・スタートアップ系優先）',
+      monthGoal: '2件参加・3名と継続接点',
+    },
+    {
+      name: 'ドメイン仮説の作成（どの領域で力を発揮するか）',
+      status: 'todo',
+      env: 'out',
+      forces: ['f1', 'f2', 'f3'],
+      next: '「興味の沸く領域」を5つ書き出す',
+      monthGoal: '3つに絞り、それぞれ仮説を立てる',
+    },
+  ];
+
+  function badge(text, cls) {
+    return `<span class="badge ${cls}">${text}</span>`;
+  }
+
+  function forceBadges(forces) {
+    return forces.map(f => badge(FORCE[f].label, FORCE[f].cls)).join(' ');
+  }
+
+  function renderRow(a) {
+    const st = STATUS[a.status];
+    const en = ENV[a.env];
+    return `
+      <tr data-status="${a.status}" data-env="${a.env}" data-forces="${a.forces.join(' ')}">
+        <td class="col-name">${a.name}</td>
+        <td class="col-status">${badge(st.label, st.cls)}</td>
+        <td class="col-env">${badge(en.label, en.cls)}</td>
+        <td class="col-force">${forceBadges(a.forces)}</td>
+        <td class="col-milestone">
+          <span class="milestone-block"><span class="ms-label">Next</span>${a.next}</span>
+          <span class="milestone-block"><span class="ms-label">1ヶ月後</span>${a.monthGoal}</span>
+        </td>
+      </tr>
+    `;
+  }
+
+  function render(filter = 'all') {
+    const body = document.getElementById('dbBody');
+    const rows = ACTIONS.filter(a => {
+      if (filter === 'all') return true;
+      if (['todo','doing','done'].includes(filter)) return a.status === filter;
+      if (['f1','f2','f3'].includes(filter)) return a.forces.includes(filter);
+      return true;
+    });
+    body.innerHTML = rows.map(renderRow).join('') || `<tr><td colspan="5" style="text-align:center;color:#888;padding:24px;">該当する打ち手はありません</td></tr>`;
+    document.getElementById('dbCounts').textContent =
+      `${rows.length} / ${ACTIONS.length} actions`;
+  }
+
+  document.getElementById('dbControls').addEventListener('click', (e) => {
+    const btn = e.target.closest('.db-filter');
+    if (!btn) return;
+    document.querySelectorAll('.db-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  });
+
+  render('all');
+  </script>
+
+</body>
+</html>
