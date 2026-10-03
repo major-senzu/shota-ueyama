@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal 2026 — Itinerary / Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../../../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --accent: #ff3b30;
+    --ok: #2b6b2b; --ok-bg: #eef7ee; --ok-line: #8fcf8f;
+    --warn: #6b4f0a; --warn-bg: #fff8dc; --warn-line: #d4a017;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 32px; letter-spacing: 0.04em; }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .crumb .sep { margin: 0 8px; }
+
+  .hero { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hero .ja { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .hero .route { margin-top: 14px; font-size: 15px; color: var(--muted); letter-spacing: 0.01em; }
+  .hero .route b { color: var(--fg); font-weight: 600; }
+
+  /* meta strip — same grid as travel counters */
+  .meta {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 36px;
+  }
+  .meta .cell { background: var(--bg); padding: 16px 18px; }
+  .meta .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .meta .value { font-size: 14px; font-weight: 500; line-height: 1.5; }
+  .meta .value small { color: var(--muted); font-weight: 400; font-size: 12px; }
+  @media (max-width: 760px) { .meta { grid-template-columns: repeat(2, 1fr); } body { padding: 24px 20px 32px; } }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .tabs button {
+    background: none; border: none; cursor: pointer; white-space: nowrap;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 12px 18px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s;
+  }
+  .tabs button:hover { color: var(--fg); }
+  .tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+  .tabs button .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-left: 6px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .sec-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; font-weight: 500;
+  }
+
+  /* pills */
+  .pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; color: var(--muted); white-space: nowrap; }
+  .pill.ok   { background: var(--ok-bg);   border-color: var(--ok-line);   color: var(--ok); }
+  .pill.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
+  .pill.tag  { color: #555; border-color: #ddd; background: var(--soft); }
+  .pill.chosen { background: var(--fg); border-color: var(--fg); color: #fff; }
+
+  /* ===== schedule ===== */
+  .day { border: 1px solid var(--line); margin-bottom: 14px; }
+  .day-head {
+    display: grid; grid-template-columns: 110px 1fr auto; gap: 16px; align-items: center;
+    padding: 14px 20px; background: var(--soft); border-bottom: 1px solid var(--line);
+  }
+  .day-head .date { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .day-head .date .wd { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-left: 6px; font-weight: 400; }
+  .day-head .where { font-size: 14px; }
+  .day-head .where .ja { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .day-head .stay { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.02em; text-align: right; }
+  .day-head .stay a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .day-head .stay a:hover { border-bottom-color: var(--fg); }
+  .day-head .stay .alt { color: var(--accent); margin-left: 6px; }
+  .items { padding: 6px 20px 10px; }
+  .item { display: grid; grid-template-columns: 110px 1fr auto; gap: 16px; padding: 9px 0; border-bottom: 1px dashed var(--line); align-items: start; font-size: 14px; }
+  .item:last-child { border-bottom: none; }
+  .item .time { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--fg); padding-top: 2px; }
+  .item .time.soft { color: var(--muted); }
+  .item .what .sub { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .flight {
+    margin-top: 8px; border: 1px solid var(--line); padding: 10px 14px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px 16px;
+    font-size: 12px;
+  }
+  .flight .f-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; display: block; }
+  .flight .f-val { color: var(--fg); }
+  .flight .f-val b { font-weight: 600; }
+  @media (max-width: 760px) {
+    .tabs button { padding: 12px 11px; font-size: 13px; }
+    .day-head { grid-template-columns: 1fr; gap: 6px; }
+    .day-head .stay { text-align: left; }
+    .item { grid-template-columns: 1fr; gap: 4px; }
+    .item .tagcol { order: -1; }
+  }
+
+  /* ===== return routes ===== */
+  .routes { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .route-card { border: 1px solid var(--line); padding: 18px 20px; }
+  .route-card.chosen { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+  .route-card .r-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .route-card .r-title { font-size: 16px; font-weight: 600; }
+  .leg { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+  .leg:last-child { border-bottom: none; }
+  .leg .l-when { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); padding-top: 2px; }
+  .leg .l-main b { font-weight: 600; }
+  .leg .l-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+  .leg .or { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin: 2px 0 0; }
+
+  /* ===== checklists (todo / packing) ===== */
+  .check-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .progress { flex: 1 1 220px; display: flex; align-items: center; gap: 12px; }
+  .progress .bar { flex: 1; height: 6px; background: var(--soft); }
+  .progress .bar > span { display: block; height: 100%; background: var(--fg); transition: width 0.2s; }
+  .progress .num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .seg { display: inline-flex; border: 1px solid var(--line); }
+  .seg button { background: var(--bg); border: none; border-right: 1px solid var(--line); padding: 6px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); cursor: pointer; }
+  .seg button:last-child { border-right: none; }
+  .seg button.active { background: var(--fg); color: #fff; }
+  .btn { background: var(--bg); border: 1px solid var(--line); padding: 6px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); cursor: pointer; }
+  .btn:hover { color: var(--fg); border-color: var(--fg); }
+
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+  .cat { border: 1px solid var(--line); }
+  .cat-head { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 16px; background: var(--soft); border-bottom: 1px solid var(--line); }
+  .cat-head h4 { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  .cat-head .cnt { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  .cat-head .hint { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+  .cat ul { list-style: none; padding: 6px 10px 8px; }
+  .cat li { display: flex; align-items: flex-start; gap: 10px; padding: 6px 6px; font-size: 14px; border-radius: 2px; }
+  .cat li:hover { background: var(--soft); }
+  .cat li.done .txt { color: var(--muted); text-decoration: line-through; }
+  .cat li input[type=checkbox] { width: 16px; height: 16px; margin-top: 4px; accent-color: var(--fg); cursor: pointer; flex: 0 0 auto; }
+  .cat li label { flex: 1; cursor: pointer; }
+  .cat li .txt .note { display: block; font-size: 11px; color: var(--muted); }
+  .cat li .del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 4px 6px; opacity: 0; }
+  .cat li:hover .del { opacity: 1; }
+  .cat li .del:hover { color: var(--accent); }
+  .cat li.hidden { display: none; }
+  .cat .add { display: flex; gap: 6px; padding: 6px 10px 10px; }
+  .cat .add input { flex: 1; border: 1px solid var(--line); padding: 6px 10px; font-family: inherit; font-size: 13px; background: var(--bg); }
+  .cat .add input:focus { outline: none; border-color: var(--fg); }
+  .cat.all-done .cat-head { background: var(--ok-bg); }
+
+  .note-box { background: var(--soft); padding: 12px 16px; font-size: 12px; color: var(--muted); margin: 32px 0 0; border-left: 3px solid var(--muted); line-height: 1.55; }
+  .note-box a { color: var(--fg); }
+  .note-box code { background: var(--bg); padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid var(--line); }
+  .foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .foot a { color: var(--muted); }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../../../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu"><span></span><span></span><span></span></button>
+  </header>
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../../../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../../../profile/" class="nav-link">profile</a>
+    <a href="../../../health/" class="nav-link">health</a>
+    <a href="../../index.html" class="nav-link">travel</a>
+    <a href="../../../book/" class="nav-link">book</a>
+    <a href="../../../philosophy/" class="nav-link">philosophy</a>
+    <div class="cat-label">RESEARCH</div>
+    <a href="../../../geo-history/" class="nav-link">geo-history</a>
+    <a href="../../../no2-legends/" class="nav-link">No.2 Legends</a>
+    <a href="../../../map/" class="nav-link">map</a>
+    <a class="nav-link disabled">startup</a>
+  </aside>
+
+<main class="wrap">
+  <div class="crumb">
+    <a href="../../../index.html">home</a><span class="sep">/</span>
+    <span>personal</span><span class="sep">/</span>
+    <a href="../../index.html">013 travel</a><span class="sep">/</span>
+    <a href="../index.html">trips</a><span class="sep">/</span>
+    <span>nepal 2026</span>
+  </div>
+
+  <header class="hero">
+    <h1>Nepal 2026 — Itinerary</h1>
+    <div class="ja">013 / trips / Travel Plan · Oct 24 (Sat) — Nov 3 (Tue, holiday)</div>
+    <div class="route">Tokyo → <b>Pokhara</b> → <b>Kathmandu</b> → <b>Everest Region</b> → <b>Guangzhou</b> → Tokyo</div>
+  </header>
+
+  <div class="meta">
+    <div class="cell"><div class="label">Dates</div><div class="value">Oct 24 — Nov 3 <small>· 11 days</small></div></div>
+    <div class="cell"><div class="label">Tour</div><div class="value">Japanese Alpine Club<br><small>Everest View Trekking · join Oct 26 eve – Oct 30 AM</small></div></div>
+    <div class="cell"><div class="label">Members</div><div class="value">Kyo · Shota · Shogo · Haruto <small>(4 · Shogo &amp; Haruto from Oct 26)</small></div></div>
+    <div class="cell"><div class="label">Time / Work</div><div class="value">Nepal −3h15m <small>· Work blocks on weekdays / Off: Tue–Thu, Fri AM</small></div></div>
+  </div>
+
+  <nav class="tabs">
+    <button class="active" data-tab="schedule">Schedule</button>
+    <button data-tab="return">Return</button>
+    <button data-tab="todo">ToDo<span class="badge" id="todo-badge"></span></button>
+    <button data-tab="packing">Packing<span class="badge" id="packing-badge"></span></button>
+  </nav>
+
+  <!-- ============ SCHEDULE ============ -->
+  <section class="panel active" id="panel-schedule">
+    <div id="schedule"></div>
+  </section>
+
+  <!-- ============ RETURN ============ -->
+  <section class="panel" id="panel-return">
+    <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">KTM → Tokyo の帰路候補。Route 3（Guangzhou 経由）を選択済み。Nov 3 の CAN → HND は未確定。</p>
+    <div class="routes" id="routes"></div>
+  </section>
+
+  <!-- ============ TODO ============ -->
+  <section class="panel" id="panel-todo">
+    <div class="check-toolbar">
+      <div class="progress"><div class="bar"><span id="todo-bar"></span></div><span class="num" id="todo-num"></span></div>
+      <button class="btn" id="todo-reset">reset to source</button>
+    </div>
+    <div class="cat-grid" id="todo-list"></div>
+    <div class="note-box">初期状態は Kyo のページ（2026-10-02 時点）の予約ステータス。チェックはこのブラウザに保存される（<code>localStorage</code>）。</div>
+  </section>
+
+  <!-- ============ PACKING ============ -->
+  <section class="panel" id="panel-packing">
+    <div class="check-toolbar">
+      <div class="progress"><div class="bar"><span id="packing-bar"></span></div><span class="num" id="packing-num"></span></div>
+      <div class="seg" id="packing-filter">
+        <button class="active" data-f="all">all</button>
+        <button data-f="todo">remaining</button>
+        <button data-f="done">packed</button>
+      </div>
+      <button class="btn" id="packing-reset">uncheck all</button>
+    </div>
+    <div class="cat-grid" id="packing-list"></div>
+    <div class="note-box">
+      Lukla → Phakding → Namche → Hotel Everest View（3,880m）の3泊トレッキング＋ポカラ／カトマンズ／広州の市内滞在＋平日ワーク前提。10月下旬の標高3,000〜3,900mは朝晩 −5〜5℃、日中 10〜15℃を想定。
+      各カテゴリ末尾の入力欄から項目を追加できる。チェック・追加・削除はこのブラウザに保存される。
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Source: <a href="https://kyo24111.github.io/040_personal/0451_travel/261002_nepal_itinerary.html" target="_blank" rel="noopener">Kyo — Nepal 2026 Itinerary</a> (2026-10-02)</span>
+    <span>Last updated 2026-10-04</span>
+  </div>
+</main>
+
+<script>
+// ============ DATA: SCHEDULE ============
+// time: 表示文字列 / soft: 時刻でない区分（Daytime等）/ tag: 種別 / sub: 補足 / flight: 便詳細
+const HOTELS = {
+  fishtail: { name: 'Fish Tail Lodge', url: 'https://maps.app.goo.gl/6oGGrcXSeSwkAu4c9' },
+  marriott: { name: 'Kathmandu Marriott', url: 'https://maps.app.goo.gl/ojCadfAEmnzkE1zq8' }
+};
+const DAYS = [
+  { date: 'Oct 24', wd: 'Sat', where: 'Tokyo → KTM → Pokhara', ja: '東京 → カトマンズ → ポカラ', stay: 'fishtail', stayLabel: 'Pokhara',
+    items: [
+      { time: '10:30–15:00', what: 'Flight to KTM', tag: 'Flight',
+        flight: { Flight: 'Nepal Airlines <b>RA434</b>', Aircraft: 'Airbus A330-200 / Economy', Depart: '10:30 NRT Narita T2', Arrive: '15:00 KTM Tribhuvan Intl (local)', Duration: '7h45m · direct', Passengers: '3', Status: 'ok:Booked' } },
+      { time: '17:45–18:10', what: 'Flight to Pokhara', tag: 'Flight',
+        flight: { Flight: 'Buddha Air <b>U4669</b>', Depart: '17:45 KTM', Arrive: '18:10 PHH Pokhara Intl', Duration: '25m · direct', Passengers: '3', Status: 'ok:Booked' } },
+      { time: '19:00', what: 'Hotel check-in', sub: 'Fish Tail Lodge', tag: 'Hotel' },
+      { time: '20:30', what: 'Stargazing', tag: 'Free' }
+    ] },
+  { date: 'Oct 25', wd: 'Sun', where: 'Pokhara → Kathmandu', ja: 'ポカラ → カトマンズ', stay: 'marriott', stayLabel: 'Kathmandu',
+    items: [
+      { time: 'Daytime', soft: true, what: 'Sightseeing', sub: 'Phewa Lake · International Mountain Museum', tag: 'Sightseeing' },
+      { time: '18:55–19:20', what: 'Flight to KTM', tag: 'Flight',
+        flight: { Flight: 'Yeti Airlines <b>YT686</b>', Depart: '18:55 PKR Pokhara (old domestic)', Arrive: '19:20 KTM', Duration: '25m · direct', Passengers: '3', Status: 'ok:Booked' } },
+      { time: '20:30', what: 'Hotel check-in', sub: 'Kathmandu Marriott', tag: 'Hotel' },
+      { time: '23:00', what: 'Marriott all in', tag: 'Hotel' }
+    ] },
+  { date: 'Oct 26', wd: 'Mon', where: 'Kathmandu', ja: 'カトマンズ', stay: 'marriott', stayLabel: 'Kathmandu',
+    items: [
+      { time: 'Daytime', soft: true, what: 'Work', tag: 'Work' },
+      { time: '16:30', what: 'Shogo & Haruto arrive at KTM', tag: 'Meet' },
+      { time: 'Evening', soft: true, what: 'Join tour · Orientation · Dinner', sub: 'Japanese Alpine Club Everest View Trekking', tag: 'Tour' }
+    ] },
+  { date: 'Oct 27', wd: 'Tue', where: 'Kathmandu → Lukla → Phakding', ja: 'カトマンズ → ルクラ → パクディン', stayText: 'Phakding lodge', stayLabel: 'Phakding · 2,610m',
+    items: [
+      { time: '04:30', what: 'Hotel check-out', sub: 'Kathmandu Marriott', tag: 'Hotel' },
+      { time: '06:00', what: 'Charter flight to Lukla', sub: 'Tenzing-Hillary Airport · 2,840m', tag: 'Charter' },
+      { time: 'Daytime', soft: true, what: 'Trek to Phakding', sub: '5.5h', tag: 'Trek' }
+    ] },
+  { date: 'Oct 28', wd: 'Wed', where: 'Phakding → Namche Bazar', ja: 'パクディン → ナムチェバザール', stayText: 'Namche Bazar lodge', stayLabel: 'Namche · 3,440m',
+    items: [
+      { time: 'Daytime', soft: true, what: 'Trek to Namche Bazar', sub: '7h · Sagarmatha National Park entrance', tag: 'Trek' }
+    ] },
+  { date: 'Oct 29', wd: 'Thu', where: 'Namche → Hotel Everest View', ja: 'ナムチェ → ホテル・エベレスト・ビュー', stayText: 'Hotel Everest View', stayLabel: 'EVH · 3,880m', stayAlt: 'unbooked',
+    items: [
+      { time: 'Morning', soft: true, what: 'Trek to Hotel Everest View', sub: 'Everest · Lhotse · Ama Dablam view', tag: 'Trek' },
+      { time: 'Night', soft: true, what: 'Stay at Hotel Everest View (3,880m)', tag: 'Hotel' }
+    ] },
+  { date: 'Oct 30', wd: 'Fri', where: 'EVH → KTM → CAN', ja: 'EVH → カトマンズ → 広州', stayText: 'Overnight flight', stayLabel: 'none',
+    items: [
+      { time: 'Morning', soft: true, what: 'Helicopter to KTM', sub: 'Hotel Everest View → Kathmandu · 4 pax', tag: 'Heli', alt: 'unbooked' },
+      { time: 'Afternoon', soft: true, what: 'Work', tag: 'Work' },
+      { time: '18:00', what: 'Dinner with the President of Nepal', tag: 'Dinner' },
+      { time: '23:30–05:55+1', what: 'Flight to CAN', tag: 'Flight',
+        flight: { Flight: 'Nepal Airlines <b>(Option 1)</b> · alt. China Southern (Option 2)', Depart: 'Oct 30 23:30 KTM', Arrive: 'Oct 31 05:55 CAN', Duration: '3h55m (RA) / 4h10m (CZ)', Passengers: '4', Status: 'ok:Booked · ¥31,480/person' } }
+    ] },
+  { date: 'Oct 31', wd: 'Sat', where: 'Guangzhou', ja: '広州', stayText: 'Guangzhou', stayLabel: 'Guangzhou', stayAlt: 'TBD',
+    items: [
+      { time: '05:55', what: 'Arrive CAN (Guangzhou)', tag: 'Flight' },
+      { time: 'Daytime', soft: true, what: 'Sightseeing', tag: 'Sightseeing' }
+    ] },
+  { date: 'Nov 1', wd: 'Sun', where: 'Guangzhou', ja: '広州', stayText: 'Guangzhou', stayLabel: 'Guangzhou', stayAlt: 'TBD',
+    items: [
+      { time: 'All day', soft: true, what: 'Sightseeing', tag: 'Sightseeing' }
+    ] },
+  { date: 'Nov 2', wd: 'Mon', where: 'Guangzhou', ja: '広州', stayText: 'Guangzhou', stayLabel: 'Guangzhou', stayAlt: 'TBD',
+    items: [
+      { time: 'Daytime', soft: true, what: 'Work', tag: 'Work' },
+      { time: 'Night', soft: true, what: 'Free time', tag: 'Free' }
+    ] },
+  { date: 'Nov 3', wd: 'Tue · holiday', where: 'CAN → Tokyo', ja: '広州 → 東京', stayText: '—', stayLabel: 'home',
+    items: [
+      { time: 'TBD', soft: true, what: 'Flight to Tokyo', sub: 'China Southern 15:10 CAN → HND (¥57,370) or ANA 15:05 (¥84,769) · pending', tag: 'Flight', alt: 'unbooked' }
+    ] }
+];
+
+// ============ DATA: RETURN ROUTES ============
+const ROUTES = [
+  { title: 'Route 1 — via Singapore', legs: [
+      { when: 'Oct 30 22:55', main: 'Singapore Airlines <b>SQ441</b> · KTM → SIN', sub: '5h05m · direct' },
+      { when: 'Nov 3 00:40', main: 'ZIPAIR <b>ZG54</b> · SIN → NRT', sub: '6h50m · direct', or: true },
+      { when: 'Nov 3 10:45', main: 'ANA <b>SQ5908</b> · SIN → HND', sub: '6h40m · direct' } ] },
+  { title: 'Route 2 — via Bangkok', legs: [
+      { when: 'Oct 31 00:25', main: 'Thai Airways <b>TG310</b> · KTM → BKK', sub: '3h30m · direct' },
+      { when: '—', main: 'BKK → Tokyo', sub: 'no return flight specified' } ] },
+  { title: 'Route 3 — via Guangzhou', chosen: true, legs: [
+      { when: 'Oct 30 23:45', main: 'Nepal Airlines · KTM → CAN', sub: '3h55m · direct · ¥31,480/person · ✅ booked' },
+      { when: 'Nov 3 15:10', main: 'China Southern · CAN → HND', sub: '3h50m · direct · ¥57,370/person', or: true },
+      { when: 'Nov 3 15:05', main: 'ANA · CAN → HND', sub: '3h55m · direct · ¥84,769/person' } ] },
+  { title: 'Route 4 — via Hong Kong', legs: [
+      { when: 'Oct 30 22:55', main: 'Cathay Pacific · KTM → HKG', sub: '4h10m · direct · ¥76,761/person' },
+      { when: 'Nov 3 19:55', main: 'HK Express <b>UO628</b> · HKG → HND', sub: '3h50m · direct · arrives Nov 4 00:45' } ] }
+];
+
+// ============ DATA: TODO（初期状態 = Kyo ページ 2026-10-02 のステータス） ============
+const TODO = [
+  { cat: 'Flights', hint: '航空券', items: [
+      { id: 'f-ra434', text: 'NRT → KTM · Nepal Airlines RA434 (Oct 24, 3 pax)', done: true },
+      { id: 'f-u4669', text: 'KTM → PHH · Buddha Air U4669 (Oct 24, 3 pax)', done: true },
+      { id: 'f-yt686', text: 'PKR → KTM · Yeti Airlines YT686 (Oct 25, 3 pax)', done: true },
+      { id: 'f-ktm-can', text: 'KTM → CAN · Nepal Airlines (Oct 30, 4 pax)', done: true },
+      { id: 'f-can-hnd', text: 'CAN → HND · China Southern 15:10 or ANA 15:05 (Nov 3)', done: false } ] },
+  { cat: 'Hotels', hint: '宿泊', items: [
+      { id: 'h-fishtail', text: 'Pokhara · Fish Tail Lodge (Oct 24, 1 night, 3 pax)', note: '~¥17,673/night incl. breakfast', done: false },
+      { id: 'h-marriott-1', text: 'Kathmandu Marriott · Room 1 · Kyo & Shota (Oct 25–27, 2 nights)', done: false },
+      { id: 'h-marriott-2', text: 'Kathmandu Marriott · Room 2 · Shogo & Haruto (Oct 26 incl.)', done: false },
+      { id: 'h-evh', text: 'Hotel Everest View (Oct 29, 1 night, 4 pax)', done: false },
+      { id: 'h-can', text: 'Guangzhou hotel (Oct 31 – Nov 2, 3 nights)', done: false } ] },
+  { cat: 'Transport & Admin', hint: '移動・手続き', items: [
+      { id: 't-heli', text: 'Helicopter · Hotel Everest View → KTM (Oct 30 AM, 4 pax)', done: false },
+      { id: 'a-visa-np', text: 'Nepal visa (on arrival · USD cash or online pre-apply)', done: false },
+      { id: 'a-visa-cn', text: 'China entry · 日本人は240時間トランジット免除 or 短期ビザ免除の条件確認', done: false },
+      { id: 'a-permit', text: 'Sagarmatha NP permit / Khumbu Pasang Lhamu fee（ツアー側で手配か確認）', done: false },
+      { id: 'a-insurance', text: '海外旅行保険（ヘリ救助・高所トレッキング対応か確認）', done: false },
+      { id: 'a-work', text: 'Work 調整 · Oct 26 / Oct 30 PM / Nov 2 のブロック確保', done: false } ] }
+];
+
+// ============ DATA: PACKING ============
+const PACKING = [
+  { cat: 'Documents & Money', hint: '書類・お金', items: [
+      'パスポート（残存6ヶ月以上・ビザ用空白ページ）', 'パスポートコピー＋証明写真2枚（ネパールビザ用）', 'USD 現金（ビザ代・チップ・山中はカードほぼ不可）', 'クレジットカード2枚（別ブランド）', 'eチケット・ホテル予約控え（オフライン保存）', '海外旅行保険の証券・緊急連絡先', 'ツアー（JAC）集合案内・連絡先' ] },
+  { cat: 'Trek — Layers', hint: 'トレッキング・ウェア', items: [
+      'ベースレイヤー（メリノ長袖）×2', 'トレッキングパンツ×2', 'フリース or 薄手ダウン（中間着）', 'ダウンジャケット（EVH 朝晩 −5℃想定）', 'レインシェル（上）・レインパンツ', 'トレッキングソックス×4（厚手含む）', 'アンダーウェア×5', 'ニット帽・サンハット（キャップ）', 'バフ / ネックゲイター', 'グローブ（薄手＋防寒）' ] },
+  { cat: 'Trek — Gear', hint: 'トレッキング・ギア', items: [
+      'トレッキングシューズ（履き慣らし済み）', 'ロッジ用サンダル', 'ザック 30〜35L＋レインカバー', 'ダッフルバッグ（ポーター用・ツアー支給か確認）', 'トレッキングポール', 'ヘッドランプ＋予備電池', 'サングラス（UV400）', '水筒 1L＋ハイドレーション or ボトル2本', '浄水タブレット / 浄水ボトル', 'インナーシーツ（ロッジ寝具対策）', 'ドライバッグ・ジップロック', 'タオル（速乾）' ] },
+  { cat: 'Health & Altitude', hint: '健康・高山病対策', items: [
+      'ダイアモックス（高山病・医師処方）', '頭痛薬・解熱鎮痛剤', '胃腸薬・下痢止め・経口補水塩', '絆創膏・テーピング・マメ対策', '日焼け止め SPF50＋リップクリーム', '保湿クリーム（乾燥対策）', 'パルスオキシメーター', '常備薬・コンタクト／メガネ', 'マスク（ルクラ便・KTMの粉塵）', 'ウェットティッシュ・除菌ジェル・トイレットペーパー' ] },
+  { cat: 'Electronics & Work', hint: '電子機器・ワーク', items: [
+      'ノートPC＋充電器（Oct 26 / 30 / Nov 2 のワーク）', 'スマホ・充電ケーブル', 'モバイルバッテリー 20,000mAh（ロッジ充電は有料）', '変換プラグ（ネパール C/D/M型・中国 A/I型）', 'ネパール SIM（Ncell）or eSIM・中国用 eSIM / VPN', 'イヤホン', 'カメラ・予備バッテリー・SDカード', 'Kindle / 本（ロッジの夜）' ] },
+  { cat: 'City & Guangzhou', hint: '市内・広州', items: [
+      '街歩き用の服 3日分', '夕食（大統領ディナー 10/30）用の襟付きシャツ・ジャケット', '小さめの折りたたみバッグ', 'Alipay / WeChat Pay 設定（広州の決済）', '翻訳アプリ・地図のオフラインダウンロード', '洗濯用洗剤（小分け）' ] }
+];
+
+// ============ STORAGE ============
+const KEY = 'trip-2026-10-nepal';
+const store = {
+  get(k, fb) { try { const v = localStorage.getItem(KEY + ':' + k); return v == null ? fb : JSON.parse(v); } catch (e) { return fb; } },
+  set(k, v) { try { localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+
+// ============ RENDER: SCHEDULE ============
+function renderSchedule() {
+  const pill = v => {
+    if (!v) return '';
+    const m = String(v).match(/^(ok|warn):(.*)$/);
+    return m ? `<span class="pill ${m[1]}">${m[2]}</span>` : v;
+  };
+  document.getElementById('schedule').innerHTML = DAYS.map(d => {
+    const h = d.stay ? HOTELS[d.stay] : null;
+    const stay = h ? `<a href="${h.url}" target="_blank" rel="noopener">${h.name}</a>` : (d.stayText || '—');
+    const items = d.items.map(it => `
+      <div class="item">
+        <div class="time ${it.soft ? 'soft' : ''}">${it.time}</div>
+        <div class="what">${it.what}${it.sub ? `<span class="sub">${it.sub}</span>` : ''}
+          ${it.flight ? `<div class="flight">${Object.entries(it.flight).map(([k, v]) => `<div><span class="f-label">${k}</span><span class="f-val">${pill(v)}</span></div>`).join('')}</div>` : ''}
+        </div>
+        <div class="tagcol"><span class="pill tag">${it.tag}</span>${it.alt ? ` <span class="pill warn">${it.alt}</span>` : ''}</div>
+      </div>`).join('');
+    return `
+      <article class="day">
+        <div class="day-head">
+          <div class="date">${d.date}<span class="wd">${d.wd}</span></div>
+          <div class="where">${d.where}<span class="ja">${d.ja}</span></div>
+          <div class="stay">${d.stayLabel ? `${d.stayLabel} · ` : ''}${stay}${d.stayAlt ? `<span class="alt">${d.stayAlt}</span>` : ''}</div>
+        </div>
+        <div class="items">${items}</div>
+      </article>`;
+  }).join('');
+}
+
+// ============ RENDER: RETURN ============
+function renderRoutes() {
+  document.getElementById('routes').innerHTML = ROUTES.map(r => `
+    <div class="route-card ${r.chosen ? 'chosen' : ''}">
+      <div class="r-head"><span class="r-title">${r.title}</span>${r.chosen ? '<span class="pill chosen">✅ Chosen</span>' : ''}</div>
+      ${r.legs.map(l => `
+        <div class="leg">
+          <div class="l-when">${l.when}</div>
+          <div><div class="l-main">${l.main}</div><div class="l-sub">${l.sub}</div>${l.or ? '<div class="or">— or —</div>' : ''}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ============ RENDER: CHECKLISTS（todo / packing 共通） ============
+// state = { done: {id:true}, extra: {cat:[text]}, removed: {id:true} }
+function makeChecklist(opts) {
+  const { root, data, storeKey, barId, numId, badgeId, filterable, defaults } = opts;
+  let state = Object.assign({ done: {}, extra: {}, removed: {} }, store.get(storeKey, {}));
+  let filter = 'all';
+  // データを id 付きの行に正規化
+  const rows = () => data.map((c, ci) => {
+    const base = c.items.map((it, i) => typeof it === 'string'
+      ? { id: `${storeKey}-${ci}-${i}`, text: it, def: false }
+      : { id: it.id, text: it.text, note: it.note, def: !!it.done });
+    const extra = (state.extra[c.cat] || []).map((t, i) => ({ id: `${storeKey}-x-${ci}-${i}`, text: t, extra: true, def: false }));
+    return { cat: c.cat, hint: c.hint, items: base.concat(extra).filter(r => !state.removed[r.id]) };
+  });
+  const isDone = r => (r.id in state.done) ? !!state.done[r.id] : r.def;
+  const save = () => store.set(storeKey, state);
+
+  function render() {
+    const cats = rows();
+    let total = 0, done = 0;
+    root.innerHTML = cats.map((c, ci) => {
+      const n = c.items.length, k = c.items.filter(isDone).length;
+      total += n; done += k;
+      return `
+        <div class="cat ${n && k === n ? 'all-done' : ''}">
+          <div class="cat-head"><h4>${c.cat}${c.hint ? `<span class="hint">${c.hint}</span>` : ''}</h4><span class="cnt">${k}/${n}</span></div>
+          <ul>${c.items.map(r => {
+            const d = isDone(r);
+            const hidden = (filter === 'todo' && d) || (filter === 'done' && !d);
+            return `<li class="${d ? 'done' : ''} ${hidden ? 'hidden' : ''}" data-id="${r.id}">
+              <input type="checkbox" id="${r.id}" ${d ? 'checked' : ''}>
+              <label for="${r.id}"><span class="txt">${esc(r.text)}${r.note ? `<span class="note">${esc(r.note)}</span>` : ''}</span></label>
+              <button class="del" title="remove" data-del="${r.id}">×</button>
+            </li>`; }).join('')}
+          </ul>
+          <div class="add"><input type="text" placeholder="＋ 追加…" data-cat="${esc(c.cat)}"></div>
+        </div>`;
+    }).join('');
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById(barId).style.width = pct + '%';
+    document.getElementById(numId).textContent = `${done}/${total} · ${pct}%`;
+    if (badgeId) document.getElementById(badgeId).textContent = `${total - done}`;
+  }
+
+  root.addEventListener('change', e => {
+    if (e.target.type === 'checkbox') { state.done[e.target.id] = e.target.checked; save(); render(); }
+  });
+  root.addEventListener('click', e => {
+    const id = e.target.dataset.del;
+    if (id) { state.removed[id] = true; save(); render(); }
+  });
+  root.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' && e.target.type === 'text' && e.key === 'Enter') {
+      const t = e.target.value.trim(); if (!t) return;
+      const cat = e.target.dataset.cat;
+      (state.extra[cat] = state.extra[cat] || []).push(t); save(); render();
+      const again = root.querySelector(`input[data-cat="${cat.replace(/"/g, '\\"')}"]`); if (again) again.focus();
+    }
+  });
+  if (filterable) {
+    filterable.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      filterable.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); filter = b.dataset.f; render();
+    }));
+  }
+  render();
+  return {
+    reset() { state = { done: {}, extra: state.extra, removed: state.removed }; save(); render(); }
+  };
+}
+
+const todoList = makeChecklist({ root: document.getElementById('todo-list'), data: TODO, storeKey: 'todo', barId: 'todo-bar', numId: 'todo-num', badgeId: 'todo-badge' });
+const packList = makeChecklist({ root: document.getElementById('packing-list'), data: PACKING, storeKey: 'packing', barId: 'packing-bar', numId: 'packing-num', badgeId: 'packing-badge', filterable: document.getElementById('packing-filter') });
+document.getElementById('todo-reset').addEventListener('click', () => { if (confirm('ToDo のチェックを Kyo ページの初期状態に戻しますか？')) todoList.reset(); });
+document.getElementById('packing-reset').addEventListener('click', () => { if (confirm('持ち物のチェックをすべて外しますか？（追加した項目は残ります）')) packList.reset(); });
+
+// ============ TABS ============
+document.querySelectorAll('.tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('panel-' + b.dataset.tab).classList.add('active');
+    store.set('tab', b.dataset.tab);
+  });
+});
+// URL ハッシュ（#packing 等）があれば優先、なければ前回開いたタブを復元
+const hashTab = location.hash.replace('#', '');
+const lastTab = hashTab || store.get('tab', null);
+if (lastTab && document.querySelector(`.tabs button[data-tab="${lastTab}"]`)) document.querySelector(`.tabs button[data-tab="${lastTab}"]`).click();
+
+// ============ INIT ============
+renderSchedule();
+renderRoutes();
+</script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

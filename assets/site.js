@@ -8,6 +8,10 @@
    * `match` is the URL ending used to detect the active sub-page.
    */
   var SUBNAV = {
+    'travel': [
+      { sub: '',       label: 'flight log', match: 'travel' },
+      { sub: 'trips/', label: 'trips',      match: 'travel/trips', prefix: true }
+    ],
     'health': [
       { sub: '',           label: '体組成', match: 'health' },
       { sub: 'nutrition/', label: '栄養素', match: 'health/nutrition' },
@@ -52,7 +56,9 @@
         link.className = 'nav-sub';
         link.href = parentDir + sub.sub;
         link.textContent = sub.label;
-        if (current.endsWith('/' + sub.match)) {
+        // prefix: true → 配下のページ（travel/trips/<slug>/ など）でも active にする
+        if (current.endsWith('/' + sub.match) ||
+            (sub.prefix && current.indexOf('/' + sub.match + '/') !== -1)) {
           link.classList.add('active');
         }
         container.appendChild(link);
