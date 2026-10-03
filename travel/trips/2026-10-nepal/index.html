@@ -160,6 +160,38 @@
   .cat .add input:focus { outline: none; border-color: var(--fg); }
   .cat.all-done .cat-head { background: var(--ok-bg); }
 
+  /* ===== altitude profile ===== */
+  .profile-wrap { margin-bottom: 28px; }
+  .profile-scroll { overflow-x: auto; border: 1px solid var(--line); }
+  #profile { min-width: 720px; position: relative; }
+  #profile svg { display: block; width: 100%; height: auto; }
+  #profile .grid { stroke: var(--line); stroke-width: 1; }
+  #profile .axis-t { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--muted); }
+  #profile .area { fill: var(--soft); }
+  #profile .seg { fill: none; stroke: var(--fg); stroke-linecap: round; stroke-linejoin: round; }
+  #profile .seg.trek { stroke-width: 3; }
+  #profile .seg.fly { stroke-width: 1.5; stroke: #777; }
+  #profile .seg.heli { stroke-width: 2; stroke: var(--accent); stroke-dasharray: 5 4; }
+  #profile .pt { fill: var(--fg); stroke: #fff; stroke-width: 2; }
+  #profile .pt.peak { fill: var(--accent); }
+  #profile .pt.hit { fill: transparent; stroke: none; cursor: pointer; }
+  #profile .lbl { font-family: 'Inter', sans-serif; font-size: 12px; fill: var(--fg); font-weight: 600; }
+  #profile .lbl .alt { font-family: 'JetBrains Mono', monospace; font-weight: 400; fill: #555; }
+  #profile .lbl.peak { fill: var(--accent); }
+  #profile .hours { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #555; }
+  #profile .hours.heli { fill: var(--accent); }
+  #profile .night { font-family: 'JetBrains Mono', monospace; font-size: 9px; fill: var(--muted); letter-spacing: 0.04em; }
+  #profile .tip { position: absolute; pointer-events: none; background: var(--fg); color: #fff; font-size: 12px; line-height: 1.5; padding: 8px 10px; white-space: nowrap; transform: translate(-50%, calc(-100% - 12px)); display: none; z-index: 2; }
+  #profile .tip b { font-weight: 600; }
+  #profile .tip .m { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #ccc; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: #555; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .lg { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--fg); }
+  .legend .lg.fly { border-top: 1.5px solid #777; }
+  .legend .lg.heli { border-top: 2px dashed var(--accent); }
+  .legend .lg.dot { width: 9px; height: 9px; border: 2px solid #fff; border-radius: 50%; background: var(--fg); box-shadow: 0 0 0 1px var(--fg); }
+  .legend .lg-note { margin-left: auto; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
   .note-box { background: var(--soft); padding: 12px 16px; font-size: 12px; color: var(--muted); margin: 32px 0 0; border-left: 3px solid var(--muted); line-height: 1.55; }
   .note-box a { color: var(--fg); }
   .note-box code { background: var(--bg); padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid var(--line); }
@@ -220,6 +252,17 @@
 
   <!-- ============ SCHEDULE ============ -->
   <section class="panel active" id="panel-schedule">
+    <div class="profile-wrap">
+      <div class="sec-title">Altitude Profile · 標高推移（宿泊地点ベース）</div>
+      <div class="profile-scroll"><div id="profile"></div></div>
+      <div class="legend">
+        <span><i class="lg trek"></i>Trek（所要時間）</span>
+        <span><i class="lg fly"></i>Flight</span>
+        <span><i class="lg heli"></i>Helicopter</span>
+        <span><i class="lg dot"></i>宿泊地点</span>
+        <span class="lg-note">● にホバー / タップで詳細</span>
+      </div>
+    </div>
     <div id="schedule"></div>
   </section>
 
@@ -536,9 +579,103 @@ const hashTab = location.hash.replace('#', '');
 const lastTab = hashTab || store.get('tab', null);
 if (lastTab && document.querySelector(`.tabs button[data-tab="${lastTab}"]`)) document.querySelector(`.tabs button[data-tab="${lastTab}"]`).click();
 
+// ============ DATA: ALTITUDE PROFILE ============
+// day: 0=Oct24 … 10=Nov3（小数は1日の中の時刻感）/ alt: m / via: 到達手段 / hours: 移動所要 / night: 宿泊
+const PROFILE_DATES = ['10/24','10/25','10/26','10/27','10/28','10/29','10/30','10/31','11/1','11/2','11/3'];
+const PROFILE = [
+  { day: 0.05, alt: 40,   name: 'Tokyo',          via: 'start' },
+  { day: 0.75, alt: 820,  name: 'Pokhara',        via: 'fly',  hours: 'RA434 → U4669', night: true,  label: 'Pokhara (820m)', lpos: 'below' },
+  { day: 1.8,  alt: 1350, name: 'Kathmandu',      via: 'fly',  hours: 'YT686 25m',     night: true,  label: 'カトマンズ (1,350m)', lpos: 'above' },
+  { day: 2.8,  alt: 1350, name: 'Kathmandu',      via: 'stay', night: true },
+  { day: 3.25, alt: 2840, name: 'Lukla',          via: 'fly',  hours: 'charter 06:00', label: 'ルクラ (2,840m)', lpos: 'left' },
+  { day: 3.8,  alt: 2610, name: 'Phakding',       via: 'trek', hours: '5.5h', night: true, label: 'パクディン (2,610m)', lpos: 'below', hdx: -34, hdy: -22 },
+  { day: 4.8,  alt: 3440, name: 'Namche Bazar',   via: 'trek', hours: '7h',   night: true, label: 'ナムチェ (3,440m)', lpos: 'above' },
+  { day: 5.6,  alt: 3880, name: 'Hotel Everest View', via: 'trek', hours: '~3h', night: true, label: 'EVH (3,880m)', lpos: 'above', peak: true, ldx: 28 },
+  { day: 6.3,  alt: 1350, name: 'Kathmandu',      via: 'heli', hours: 'heli ~45m', label: 'KTM 帰還 (1,350m)', lpos: 'below' },
+  { day: 7.25, alt: 20,   name: 'Guangzhou',      via: 'fly',  hours: 'RA 23:30 → 05:55', night: true, label: '広州 (20m)', lpos: 'above' },
+  { day: 9.8,  alt: 20,   name: 'Guangzhou',      via: 'stay', night: true },
+  { day: 10.85, alt: 40,  name: 'Tokyo',          via: 'fly',  hours: 'CZ/NH 15:10 → HND', label: 'Tokyo', lpos: 'above' }
+];
+
+// ============ RENDER: ALTITUDE PROFILE（inline SVG） ============
+function renderProfile() {
+  const W = 1000, H = 300, L = 56, R = 24, T = 36, B = 40;
+  const pw = W - L - R, ph = H - T - B;
+  const maxAlt = 4500, nDays = PROFILE_DATES.length;
+  const x = d => L + (d / nDays) * pw;
+  const y = a => T + ph - (a / maxAlt) * ph;
+  let g = '';
+  // y grid
+  [0, 1000, 2000, 3000, 4000].forEach(a => {
+    g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(a)}" y2="${y(a)}"/>`;
+    g += `<text class="axis-t" x="${L - 8}" y="${y(a) + 4}" text-anchor="end">${a.toLocaleString()}m</text>`;
+  });
+  // x axis dates (centered in each day column)
+  PROFILE_DATES.forEach((d, i) => {
+    g += `<text class="axis-t" x="${x(i + 0.5)}" y="${H - 14}" text-anchor="middle">${d}</text>`;
+    if (i) g += `<line class="grid" x1="${x(i)}" x2="${x(i)}" y1="${T + ph}" y2="${T + ph + 5}"/>`;
+  });
+  // area
+  const pts = PROFILE.map(p => `${x(p.day)},${y(p.alt)}`);
+  g += `<path class="area" d="M${x(PROFILE[0].day)},${y(0)} L${pts.join(' L')} L${x(PROFILE[PROFILE.length - 1].day)},${y(0)} Z"/>`;
+  // segments by via
+  for (let i = 1; i < PROFILE.length; i++) {
+    const a = PROFILE[i - 1], b = PROFILE[i];
+    const cls = b.via === 'trek' ? 'trek' : b.via === 'heli' ? 'heli' : b.via === 'fly' ? 'fly' : 'trek';
+    g += `<line class="seg ${cls}" x1="${x(a.day)}" y1="${y(a.alt)}" x2="${x(b.day)}" y2="${y(b.alt)}"/>`;
+    // hours label at segment midpoint (trek / heli のみ図上に出す)
+    if (b.hours && (b.via === 'trek' || b.via === 'heli')) {
+      const mx = (x(a.day) + x(b.day)) / 2, my = (y(a.alt) + y(b.alt)) / 2;
+      const up = b.via === 'heli' ? -10 : 14;
+      g += `<text class="hours ${b.via}" x="${mx + (b.via === 'heli' ? 14 : 10) + (b.hdx || 0)}" y="${my + up + (b.hdy || 0)}" text-anchor="start">${b.hours}</text>`;
+    }
+  }
+  // night markers under axis（宿泊地点の日に ●）
+  // points + labels
+  PROFILE.forEach((p, i) => {
+    if (p.via === 'start' || p.via === 'stay') return;
+    const px = x(p.day), py = y(p.alt);
+    g += `<circle class="pt ${p.peak ? 'peak' : ''}" cx="${px}" cy="${py}" r="${p.peak ? 6 : 4.5}"/>`;
+    if (p.label) {
+      const lp = p.lpos || 'above';
+      const dy = (lp === 'above' ? -12 : lp === 'below' ? 20 : 4) + (p.ldy || 0);
+      const dx = (lp === 'left' ? -12 : lp === 'right' ? 12 : 0) + (p.ldx || 0);
+      const anchor = lp === 'left' ? 'end' : lp === 'right' ? 'start' : 'middle';
+      const m = p.label.match(/^(.*?)\s*(\(.*\))?$/);
+      g += `<text class="lbl ${p.peak ? 'peak' : ''}" x="${px + dx}" y="${py + dy}" text-anchor="${anchor}">${m[1]}${m[2] ? ` <tspan class="alt">${m[2]}</tspan>` : ''}</text>`;
+    }
+  });
+  // hit targets (bigger than the mark) — last so they sit on top
+  PROFILE.forEach((p, i) => {
+    if (p.via === 'start' || p.via === 'stay') return;
+    g += `<circle class="pt hit" cx="${x(p.day)}" cy="${y(p.alt)}" r="16" data-i="${i}"/>`;
+  });
+  const root = document.getElementById('profile');
+  root.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="標高推移">${g}</svg><div class="tip" id="profile-tip"></div>`;
+
+  // tooltip
+  const tip = document.getElementById('profile-tip');
+  const show = (el) => {
+    const p = PROFILE[+el.dataset.i];
+    const viaJa = { fly: 'Flight', trek: 'Trek', heli: 'Helicopter', stay: 'Stay', start: 'Start' }[p.via];
+    tip.innerHTML = `<b>${p.name}</b> · ${p.alt.toLocaleString()}m<br><span class="m">${PROFILE_DATES[Math.floor(p.day)]} · ${viaJa}${p.hours ? ' · ' + p.hours : ''}${p.night ? ' · 宿泊' : ''}</span>`;
+    const rb = root.getBoundingClientRect(), eb = el.getBoundingClientRect();
+    tip.style.left = (eb.left + eb.width / 2 - rb.left) + 'px';
+    tip.style.top = (eb.top + eb.height / 2 - rb.top) + 'px';
+    tip.style.display = 'block';
+  };
+  root.querySelectorAll('.pt.hit').forEach(el => {
+    el.addEventListener('mouseenter', () => show(el));
+    el.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+    el.addEventListener('click', (e) => { e.stopPropagation(); show(el); });
+  });
+  document.addEventListener('click', () => { tip.style.display = 'none'; });
+}
+
 // ============ INIT ============
 renderSchedule();
 renderRoutes();
+renderProfile();
 </script>
 <script src="../../../assets/site.js"></script>
 </body>
