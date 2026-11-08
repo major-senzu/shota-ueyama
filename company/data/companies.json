@@ -1,0 +1,34 @@
+{
+  "updated": "2026-11-08",
+  "companies": [
+    {
+      "slug": "tsmc",
+      "name": "TSMC (Taiwan Semiconductor Manufacturing Company)",
+      "name_ja": "台湾積体電路製造",
+      "listed": true,
+      "industry": "半導体受託製造(専業ファウンドリ)",
+      "hq": "台湾・新竹(Hsinchu Science Park)",
+      "leaders": [
+        {
+          "role": "創業者",
+          "name": "Morris Chang(張忠謀)"
+        },
+        {
+          "role": "会長兼CEO",
+          "name": "C.C. Wei(魏哲家)"
+        }
+      ],
+      "research_date": "2026-11-08",
+      "updated_date": "2026-11-08",
+      "version": "261108",
+      "key_metric": {
+        "value": 122.42,
+        "unit": "B USD",
+        "period": "FY2025",
+        "label": "fact"
+      },
+      "url": "./tsmc.html",
+      "history": []
+    }
+  ]
+}
