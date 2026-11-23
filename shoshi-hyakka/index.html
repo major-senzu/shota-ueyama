@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>025 · 諸子百家 — Shota Ueyama (植山翔太)</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #888;
+    --line: #e5e5e5;
+    --soft: #f7f7f7;
+    --card: #f5f5f5;
+    --serif: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { min-height: 100vh; padding: 32px 48px 48px; overflow-x: hidden; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* hero（philosophy/index.html と同じ型） */
+  .hero { margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero .crumb { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 16px; letter-spacing: 0.04em; }
+  .hero .crumb a { color: var(--muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--fg); border-bottom: 1px solid var(--muted); }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .ja { font-size: 14px; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+
+  .page-switch { display: flex; gap: 0; margin-bottom: 48px; border: 1px solid var(--line); width: fit-content; }
+  .page-switch a {
+    font-family: var(--mono); font-size: 11px; font-weight: 500; color: #555; text-decoration: none;
+    padding: 11px 24px; letter-spacing: 0.12em; text-transform: uppercase; transition: all 0.15s; background: #fff;
+  }
+  .page-switch a + a { border-left: 1px solid var(--line); }
+  .page-switch a:hover { background: #fafafa; color: var(--fg); }
+  .page-switch a.active { background: var(--fg); color: #fff; }
+
+  /* 見出し */
+  section.block { margin-bottom: 64px; }
+  .block-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    padding-bottom: 14px; border-bottom: 2px solid var(--fg); margin-bottom: 24px;
+  }
+  .block-title { font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .block-title .ja { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; margin-left: 14px; text-transform: none; }
+  .block-count { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap; }
+
+  /* 今日読み返す一節（記録が1件以上あるときだけ出す） */
+  .today { background: var(--fg); color: #fff; padding: 28px 32px; margin-bottom: 48px; }
+  .today .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
+  .today .text { font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.8; margin-bottom: 10px; }
+  .today .meaning { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 10px; }
+  .today .src { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.04em; }
+
+  /* マップ */
+  .map-scroll { overflow-x: auto; border: 1px solid var(--line); -webkit-overflow-scrolling: touch; }
+  .map-scroll svg { display: block; width: 100%; min-width: 980px; height: auto; }
+  .map-hint { display: none; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+  svg text { font-family: 'Inter', -apple-system, 'Hiragino Sans', sans-serif; fill: var(--fg); }
+  svg .serif { font-family: var(--serif); }
+  svg .mono { font-family: var(--mono); }
+  svg .muted { fill: var(--muted); }
+  svg .band { fill: var(--soft); }
+  svg .rule { stroke: var(--line); stroke-width: 1; }
+  svg .edge { stroke: var(--fg); stroke-width: 1.5; fill: none; }
+  svg .edge.dashed { stroke: #999; stroke-dasharray: 4 4; }
+
+  /* 人物ノード */
+  .node { cursor: pointer; outline: none; }
+  .node rect { fill: #fff; stroke: var(--fg); stroke-width: 1.5; transition: fill 0.15s; }
+  .node.minor rect { stroke: #999; stroke-dasharray: 4 3; }
+  .node .name { font-family: var(--serif); font-weight: 700; font-size: 19px; }
+  .node.minor .name { font-size: 13px; font-weight: 500; }
+  .node:hover rect { fill: #ececec; }
+  .node:focus-visible rect { stroke-width: 3; }
+  .node.selected rect { fill: var(--fg); stroke: var(--fg); stroke-dasharray: none; }
+  .node.selected .name { fill: #fff; }
+  .node .face-ring { fill: none; stroke: var(--fg); stroke-width: 1; }
+  .node.selected .face-ring { stroke: #fff; }
+  .node .count circle { fill: var(--fg); stroke: #fff; stroke-width: 2; }
+  .node .count text { fill: #fff; font-family: var(--mono); font-size: 10px; font-weight: 600; }
+
+  .notes { list-style: none; margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .notes li { font-size: 13px; color: #444; line-height: 1.75; padding-top: 12px; border-top: 1px solid var(--line); }
+  .notes li strong { display: block; font-size: 13px; color: var(--fg); margin-bottom: 4px; }
+
+  /* 人物の解説 */
+  .person { display: none; background: var(--card); padding: 28px 32px; margin-top: 24px; }
+  .person.open { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .person .school { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: var(--muted); background: var(--bg); border: 1px solid #d0d0d0; padding: 4px 9px; display: inline-block; margin-bottom: 12px; }
+  .person .portraits { display: flex; gap: 10px; margin-bottom: 16px; }
+  .person .portraits img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: 50% 12%; border: 1px solid #d0d0d0; background: #fff; }
+  .person h2 { font-family: var(--serif); font-size: 28px; font-weight: 700; line-height: 1.3; }
+  .person h2 small { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 10px; }
+  .person .era { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.02em; margin: 6px 0 14px; }
+  .person .summary { font-size: 14px; line-height: 1.9; color: #222; }
+  .person .q-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .person .q-text { font-family: var(--serif); font-size: 19px; font-weight: 500; line-height: 1.8; margin-bottom: 10px; }
+  .person .q-meaning { font-size: 13px; line-height: 1.85; color: #444; margin-bottom: 12px; }
+  .person .q-src { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 12px; border-top: 1px solid #d8d8d8; }
+
+  /* 学んだ言葉 */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .chip {
+    font-family: inherit; font-size: 13px; color: #444; background: #fff; border: 1px solid #d0d0d0;
+    padding: 6px 14px; cursor: pointer; transition: all 0.15s;
+  }
+  .chip .c { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: 6px; }
+  .chip:hover { border-color: var(--fg); color: var(--fg); }
+  .chip.active { background: var(--fg); border-color: var(--fg); color: #fff; }
+  .chip.active .c { color: rgba(255,255,255,0.6); }
+
+  .entries { list-style: none; border-top: 1px solid var(--line); }
+  .entry { display: grid; grid-template-columns: 130px 1fr; gap: 28px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .entry .date { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .entry .who { font-family: var(--serif); font-size: 15px; font-weight: 700; margin-top: 4px; }
+  .entry .date-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.12em; margin-bottom: 2px; }
+  .entry .text { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.8; }
+  .entry .kanbun { font-family: var(--serif); font-size: 14px; color: var(--muted); letter-spacing: 0.08em; margin-top: 4px; }
+  .entry .rows { margin-top: 16px; display: grid; grid-template-columns: 76px 1fr; gap: 10px 16px; }
+  .entry .rows dt { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; padding-top: 5px; }
+  .entry .rows dd { font-size: 14px; color: #222; line-height: 1.85; }
+  .entry .rows dd .page { font-family: var(--mono); font-size: 12px; color: #555; margin-left: 10px; white-space: nowrap; }
+  .entry .rows dd .page.none { color: #bbb; }
+  .credits { margin-top: -24px; font-size: 11px; color: var(--muted); line-height: 1.9; }
+  .credits summary { font-family: var(--mono); letter-spacing: 0.06em; cursor: pointer; }
+  .credits ul { list-style: none; margin-top: 8px; }
+  .credits b { color: #555; font-weight: 500; margin-right: 8px; }
+  .empty { padding: 40px 0; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--line); }
+
+  @media (max-width: 900px) {
+    .person.open { grid-template-columns: 1fr; gap: 24px; }
+    .notes { grid-template-columns: 1fr; gap: 0; }
+    .map-hint { display: block; }
+  }
+  @media (max-width: 600px) {
+    body { padding: 24px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    .page-switch { width: 100%; }
+    .page-switch a { flex: 1; text-align: center; padding: 10px 6px; font-size: 10px; letter-spacing: 0.06em; }
+    .block-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .block-title .ja { margin-left: 0; display: block; margin-top: 4px; }
+    .today { padding: 22px 20px; }
+    .today .text { font-size: 18px; }
+    .person { padding: 22px 20px; }
+    .entry { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
+    .entry .text { font-size: 17px; }
+    .entry .rows { grid-template-columns: 1fr; gap: 2px; }
+    .entry .rows dd { margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <a href="../routine/" class="nav-link">routine</a>
+    <a href="../goal/" class="nav-link">goal</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a href="../company/" class="nav-link">company</a>
+    <a href="./index.html" class="nav-link active">諸子百家</a>
+  </aside>
+
+  <main class="wrap">
+
+    <div class="hero">
+      <div class="crumb"><a href="../index.html">home</a> &nbsp;/&nbsp; 025 · shoshi-hyakka</div>
+      <h1>諸子百家</h1>
+      <div class="ja">人物と思想のマップ、学んだ言葉の記録</div>
+    </div>
+
+    <!-- 今日読み返す一節（JS が記録から日替わりで1つ選ぶ） -->
+    <div class="today" id="today" hidden></div>
+
+    <!-- マップ -->
+    <section class="block" id="map">
+      <div class="block-head">
+        <div class="block-title">MAP <span class="ja">誰が、何を説いたか</span></div>
+        <div class="block-count">人物を選ぶと解説と記録が出る</div>
+      </div>
+
+      <div class="map-scroll">
+        <!-- 縦に学派を並べ、右端に後の世での姿を置く。人物ノードは data/shoshi.js から JS が描く -->
+        <svg viewBox="0 80 1200 510" role="group" aria-label="諸子百家の人物と思想のマップ">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#0a0a0a"/>
+            </marker>
+            <marker id="arrow-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
+            </marker>
+          </defs>
+
+          <!-- 主流の二つ（儒家・道家）の帯 -->
+          <rect class="band" x="0" y="80" width="870" height="152"/>
+          <rect class="band" x="0" y="392" width="870" height="100"/>
+
+          <!-- 行の区切り -->
+          <line class="rule" x1="0" y1="232" x2="870" y2="232"/>
+          <line class="rule" x1="0" y1="312" x2="870" y2="312"/>
+          <line class="rule" x1="0" y1="392" x2="870" y2="392"/>
+          <line class="rule" x1="0" y1="492" x2="870" y2="492"/>
+
+          <!-- 学派の見出し -->
+          <text class="serif" x="20" y="150" font-size="22" font-weight="700">儒家</text>
+          <text class="muted" x="20" y="172" font-size="11">仁と礼で治める</text>
+          <text class="serif" x="20" y="266" font-size="18" font-weight="700">墨家</text>
+          <text class="muted" x="20" y="286" font-size="11">分け隔てなく愛する</text>
+          <text class="serif" x="20" y="346" font-size="18" font-weight="700">法家</text>
+          <text class="muted" x="20" y="366" font-size="11">法と賞罰で治める</text>
+          <text class="serif" x="20" y="436" font-size="22" font-weight="700">道家</text>
+          <text class="muted" x="20" y="458" font-size="11">作為を捨て自然に従う</text>
+          <text class="serif" x="20" y="530" font-size="18" font-weight="700">兵家</text>
+          <text class="muted" x="20" y="550" font-size="11">戦いの理を究める</text>
+
+          <!-- 人物どうしの関係 -->
+          <line class="edge" x1="297" y1="141" x2="350" y2="126" marker-end="url(#arrow)"/>
+          <line class="edge" x1="488" y1="118" x2="536" y2="118" marker-end="url(#arrow)"/>
+          <path class="edge" d="M297,162 C 410,200 600,192 716,186" marker-end="url(#arrow)"/>
+          <line class="edge dashed" x1="664" y1="132" x2="728" y2="162" marker-start="url(#arrow-g)" marker-end="url(#arrow-g)"/>
+          <text class="muted" x="704" y="132" font-size="11">人の本性をめぐって対立</text>
+          <line class="edge dashed" x1="358" y1="254" x2="282" y2="181" marker-end="url(#arrow-g)"/>
+          <text class="muted" x="332" y="218" font-size="11">儒家を批判</text>
+          <line class="edge" x1="780" y1="232" x2="780" y2="314" marker-end="url(#arrow)"/>
+          <text class="muted" x="790" y="278" font-size="11">師弟</text>
+          <line class="edge" x1="297" y1="434" x2="536" y2="434" marker-end="url(#arrow)"/>
+          <text class="muted" x="417" y="424" font-size="11" text-anchor="middle">老荘思想</text>
+
+          <!-- 右の列へ向かう矢印 -->
+          <line class="edge" x1="876" y1="153" x2="900" y2="153" marker-end="url(#arrow)"/>
+          <line class="edge" x1="876" y1="442" x2="900" y2="442" marker-end="url(#arrow)"/>
+          <line class="edge" x1="876" y1="536" x2="900" y2="536" marker-end="url(#arrow)"/>
+
+          <!-- その後：儒教 -->
+          <rect x="904" y="92" width="286" height="122" fill="#0a0a0a"/>
+          <text class="serif" x="924" y="126" font-size="22" font-weight="700" style="fill:#fff">儒教</text>
+          <text x="924" y="152" font-size="13" font-weight="600" style="fill:#fff">人の上に立つ者の心構え</text>
+          <text x="924" y="176" font-size="12" style="fill:rgba(255,255,255,0.75)">後の世で国の学問となり、</text>
+          <text x="924" y="195" font-size="12" style="fill:rgba(255,255,255,0.75)">長く政治と教育の土台になった</text>
+
+          <!-- その後：墨家 -->
+          <text class="muted" x="924" y="268" font-size="12">墨家は、のちに</text>
+          <text class="muted" x="924" y="287" font-size="12">学派としては途絶える</text>
+
+          <!-- その後：道教 -->
+          <rect x="904" y="400" width="286" height="86" fill="#0a0a0a"/>
+          <text class="serif" x="924" y="427" font-size="20" font-weight="700" style="fill:#fff">道教</text>
+          <text x="978" y="426" font-size="13" font-weight="600" style="fill:#fff">成功や出世にとらわれない生き方</text>
+          <text x="924" y="452" font-size="12" style="fill:rgba(255,255,255,0.75)">老荘の思想は、後に民間の信仰と</text>
+          <text x="924" y="471" font-size="12" style="fill:rgba(255,255,255,0.75)">結びつき、道教の源流の一つになる</text>
+
+          <!-- その後：兵法 -->
+          <rect x="904" y="502" width="286" height="68" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+          <text class="serif" x="924" y="528" font-size="16" font-weight="700">『孫子』</text>
+          <text x="924" y="546" font-size="12" style="fill:#444">戦略の古典として、今も経営や</text>
+          <text x="924" y="562" font-size="12" style="fill:#444">交渉の場で読まれている</text>
+
+          <!-- 人物ノード（JS が挿入） -->
+          <g id="nodes"></g>
+        </svg>
+      </div>
+      <div class="map-hint">← 横にスクロールできます →</div>
+
+      <ul class="notes">
+        <li><strong>大きな流れは二つ</strong>儒家は、人と社会にどう関わるかを説く。道家は、そこから一歩引いて自然に従うことを説く。この二つが後の儒教と道教につながる。</li>
+        <li><strong>儒家の中の分かれ目</strong>孟子は「人は生まれつき善に向かう」と見て、荀子は「放っておくと欲に流れる」と見た。荀子の弟子から、法家の韓非子が出る。</li>
+        <li><strong>徳治と法治</strong>儒家は上に立つ者の徳で人を導き、法家は法と賞罰で人を動かす。後の世では、徳を表に立てながら法の仕組みも使う形が長く続いた。</li>
+      </ul>
+
+      <!-- 選んだ人物の解説（JS が中身を入れる） -->
+      <div class="person" id="person" aria-live="polite"></div>
+    </section>
+
+    <!-- 学んだ言葉 -->
+    <section class="block" id="words">
+      <div class="block-head">
+        <div class="block-title">WORDS <span class="ja">学んだ言葉</span></div>
+        <div class="block-count" id="entry-count"></div>
+      </div>
+      <div class="chips" id="chips"></div>
+      <ul class="entries" id="entries"></ul>
+    </section>
+
+    <!-- 顔の画像の出典（JS が data/shoshi.js から入れる） -->
+    <details class="credits" id="credits" hidden>
+      <summary>顔の画像の出典</summary>
+      <ul></ul>
+    </details>
+
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="./data/shoshi.js"></script>
+  <script src="./data/words.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var SVG_NS = 'http://www.w3.org/2000/svg';
+    var PEOPLE = window.SHOSHI_PEOPLE || [];
+    var ENTRIES = (window.SHOSHI_ENTRIES || []).slice().sort(function (a, b) {
+      return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;   // 新しい順
+    });
+    var selected = null;   // 選択中の人物 id（null = すべて）
+    var faceFailed = {};   // 読み込めなかった顔画像のパス
+
+    var personById = {};
+    PEOPLE.forEach(function (p) { personById[p.id] = p; });
+
+    /* 要素を作る小さな道具。文字は必ず textContent で入れる */
+    function el(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+    function svgEl(tag, attrs) {
+      var e = document.createElementNS(SVG_NS, tag);
+      Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+      return e;
+    }
+    function countFor(id) {
+      return ENTRIES.filter(function (e) { return entryPerson(e) === id; }).length;
+    }
+    /* マップにいない人物の記録は「その他」にまとめる */
+    function entryPerson(e) { return personById[e.person] ? e.person : 'other'; }
+    function personName(id) { return personById[id] ? personById[id].name : 'その他'; }
+    /* 一覧に出す名前。マップにいない人物は、ノートに書かれた名前をそのまま出す */
+    function entryWho(e) { return personById[e.person] ? personById[e.person].name : (e.who || 'その他'); }
+    function pageText(e) { return e.page ? 'p.' + e.page : 'ページ未記入'; }
+
+    /* ---- マップの人物ノード ---- */
+    function renderNodes() {
+      var layer = document.getElementById('nodes');
+      layer.textContent = '';
+      PEOPLE.forEach(function (p) {
+        var w = p.minor ? 136 : 124, h = p.minor ? 40 : 52;
+        var n = countFor(p.id);
+        /* 読み込めなかった画像は出さない */
+        var faces = (p.faces || []).filter(function (src) { return !faceFailed[src]; });
+        var r = p.minor ? 15 : 21;                 // 顔の丸の半径
+        var faceX = p.x - w / 2 + h / 2;           // 1つ目の顔の中心（枠の左端）
+        var facesRight = faceX + (faces.length - 1) * r * 1.5 + r;
+        /* 名前は、顔の右側の空きの中央に置く。顔が無ければ枠の中央 */
+        var nameX = faces.length ? (facesRight + p.x + w / 2) / 2 - 2 : p.x;
+        var g = svgEl('g', {
+          'class': 'node' + (p.minor ? ' minor' : '') + (selected === p.id ? ' selected' : ''),
+          tabindex: '0', role: 'button',
+          'aria-pressed': selected === p.id ? 'true' : 'false',
+          'aria-label': p.name + '（' + p.school + '）' + (n ? '、記録 ' + n + ' 件' : '')
+        });
+        g.appendChild(svgEl('rect', { x: p.x - w / 2, y: p.y - h / 2, width: w, height: h, rx: h / 2 }));
+
+        var name = svgEl('text', { 'class': 'name', x: nameX, y: p.y, 'text-anchor': 'middle', 'dominant-baseline': 'central' });
+        name.textContent = p.name;
+        g.appendChild(name);
+
+        faces.forEach(function (src, i) {
+          var cx = faceX + i * r * 1.5, clipId = 'clip-' + p.id + '-' + i;
+          var clip = svgEl('clipPath', { id: clipId });
+          clip.appendChild(svgEl('circle', { cx: cx, cy: p.y, r: r }));
+          g.appendChild(clip);
+          g.appendChild(svgEl('circle', { cx: cx, cy: p.y, r: r, fill: '#fff' }));
+          /* 縦長の肖像は上側（顔のあたり）を丸く切り抜く */
+          var img = svgEl('image', {
+            href: src, x: cx - r, y: p.y - r, width: r * 2, height: r * 2,
+            preserveAspectRatio: 'xMidYMin slice', 'clip-path': 'url(#' + clipId + ')'
+          });
+          img.addEventListener('error', function () { faceFailed[src] = true; renderNodes(); });
+          g.appendChild(img);
+          g.appendChild(svgEl('circle', { 'class': 'face-ring', cx: cx, cy: p.y, r: r }));
+        });
+
+        var kw = svgEl('text', { 'class': 'muted', x: p.x, y: p.y + h / 2 + 14, 'text-anchor': 'middle', 'font-size': '11' });
+        kw.textContent = p.keyword;
+        g.appendChild(kw);
+
+        /* 記録の件数バッジ */
+        if (n > 0) {
+          var badge = svgEl('g', { 'class': 'count' });
+          badge.appendChild(svgEl('circle', { cx: p.x + w / 2 - 6, cy: p.y - h / 2 + 2, r: 10 }));
+          var t = svgEl('text', { x: p.x + w / 2 - 6, y: p.y - h / 2 + 2, 'text-anchor': 'middle', 'dominant-baseline': 'central' });
+          t.textContent = n;
+          badge.appendChild(t);
+          g.appendChild(badge);
+        }
+
+        g.addEventListener('click', function () { select(selected === p.id ? null : p.id); });
+        g.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(selected === p.id ? null : p.id); }
+        });
+        layer.appendChild(g);
+      });
+    }
+
+    /* ---- 選んだ人物の解説 ---- */
+    function renderPerson() {
+      var box = document.getElementById('person');
+      box.textContent = '';
+      var p = personById[selected];
+      box.classList.toggle('open', !!p);
+      if (!p) return;
+
+      var left = el('div');
+      var portraits = el('div', 'portraits');
+      (p.faces || []).forEach(function (src) {
+        if (faceFailed[src]) return;
+        var img = el('img');
+        img.src = src;
+        img.alt = p.name + 'の肖像';
+        img.addEventListener('error', function () { img.remove(); if (!portraits.children.length) portraits.remove(); });
+        portraits.appendChild(img);
+      });
+      if (portraits.children.length) left.appendChild(portraits);
+      left.appendChild(el('div', 'school', p.school));
+      var h2 = el('h2', null, p.name);
+      h2.appendChild(el('small', null, p.reading));
+      left.appendChild(h2);
+      left.appendChild(el('div', 'era', p.era));
+      left.appendChild(el('p', 'summary', p.summary));
+
+      var right = el('div');
+      right.appendChild(el('div', 'q-label', '代表的な言葉'));
+      right.appendChild(el('div', 'q-text', p.quote.text));
+      right.appendChild(el('div', 'q-meaning', p.quote.meaning));
+      right.appendChild(el('div', 'q-src', p.quote.source));
+
+      box.appendChild(left);
+      box.appendChild(right);
+    }
+
+    /* ---- 絞り込みのチップ ---- */
+    function renderChips() {
+      var wrap = document.getElementById('chips');
+      wrap.textContent = '';
+      var items = [{ id: null, name: 'すべて', n: ENTRIES.length }];
+      PEOPLE.forEach(function (p) { items.push({ id: p.id, name: p.name, n: countFor(p.id) }); });
+      if (countFor('other') > 0) items.push({ id: 'other', name: 'その他', n: countFor('other') });
+
+      items.forEach(function (it) {
+        var b = el('button', 'chip' + (selected === it.id ? ' active' : ''), it.name);
+        b.type = 'button';
+        b.setAttribute('aria-pressed', selected === it.id ? 'true' : 'false');
+        b.appendChild(el('span', 'c', String(it.n)));
+        b.addEventListener('click', function () { select(it.id); });
+        wrap.appendChild(b);
+      });
+    }
+
+    /* ---- 学んだ言葉の一覧 ---- */
+    function renderEntries() {
+      var list = document.getElementById('entries');
+      list.textContent = '';
+      var shown = ENTRIES.filter(function (e) { return selected === null || entryPerson(e) === selected; });
+      document.getElementById('entry-count').textContent = ENTRIES.length + ' 件';
+
+      if (shown.length === 0) {
+        var msg = selected === null
+          ? 'まだ記録がありません。毎日のノートで出会った一節が、ここに溜まっていきます。'
+          : personName(selected) + 'の言葉は、まだ記録がありません。';
+        list.appendChild(el('li', 'empty', msg));
+        return;
+      }
+      shown.forEach(function (e) {
+        var li = el('li', 'entry');
+        var meta = el('div');
+        meta.appendChild(el('div', 'date-label', '日記'));
+        meta.appendChild(el('div', 'date', e.date));
+        meta.appendChild(el('div', 'who', entryWho(e)));
+
+        var body = el('div');
+        body.appendChild(el('div', 'text', e.original));
+        if (e.kanbun) body.appendChild(el('div', 'kanbun', e.kanbun));
+
+        /* 現代語訳・意義・本（ページ）を、項目名つきで並べる */
+        var rows = el('dl', 'rows');
+        rows.appendChild(el('dt', null, '現代語訳'));
+        rows.appendChild(el('dd', null, e.translation));
+        rows.appendChild(el('dt', null, '意義'));
+        rows.appendChild(el('dd', null, e.significance));
+        rows.appendChild(el('dt', null, '本'));
+        var book = el('dd', null, e.book);
+        book.appendChild(el('span', 'page' + (e.page ? '' : ' none'), pageText(e)));
+        rows.appendChild(book);
+        body.appendChild(rows);
+        li.appendChild(meta);
+        li.appendChild(body);
+        list.appendChild(li);
+      });
+    }
+
+    /* ---- 今日読み返す一節（日付から1つ決める。同じ日は同じ一節） ---- */
+    function renderToday() {
+      var box = document.getElementById('today');
+      if (ENTRIES.length === 0) { box.hidden = true; return; }
+      var now = new Date();
+      var dayNumber = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86400000);
+      var e = ENTRIES[dayNumber % ENTRIES.length];
+      box.textContent = '';
+      box.appendChild(el('div', 'label', '今日読み返す一節'));
+      box.appendChild(el('div', 'text', e.original));
+      box.appendChild(el('div', 'meaning', e.translation));
+      box.appendChild(el('div', 'src', entryWho(e) + ' · ' + e.book + (e.page ? ' · p.' + e.page : '')));
+      box.hidden = false;
+    }
+
+    function select(id) {
+      selected = id;
+      renderNodes();
+      renderPerson();
+      renderChips();
+      renderEntries();
+    }
+
+    /* ---- 顔の画像の出典 ---- */
+    function renderCredits() {
+      var credits = window.SHOSHI_CREDITS || [];
+      var box = document.getElementById('credits');
+      if (!credits.length) return;
+      var ul = box.querySelector('ul');
+      credits.forEach(function (c) {
+        var li = el('li');
+        li.appendChild(el('b', null, c.who));
+        li.appendChild(document.createTextNode(c.text + '（Wikimedia Commons より）'));
+        ul.appendChild(li);
+      });
+      box.hidden = false;
+    }
+
+    renderToday();
+    renderCredits();
+    select(null);
+  })();
+  </script>
+  <script src="../assets/site.js"></script>
+</body>
+</html>
