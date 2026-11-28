@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>キングダムの世界 / Shota Ueyama</title>
+<meta name="description" content="漫画・アニメ『キングダム』を見るための歴史ガイド。戦国時代の流れ、七雄の地図と現代の省、秦の組織図と勢力図、他国の主要人物。">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Shippori+Mincho+B1:wght@600;800&display=swap">
+<style>
+  /*
+   * Layout: サイト共通（白・墨・等幅ラベル・黒 hero）に合わせ、
+   * アクセントは朱（印章の朱）1色だけ。国と派閥の色は図の中だけで使う。
+   * サイトはライトテーマのみなので、このページもライト固定。
+   */
+  :root {
+    color-scheme: light;
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --ink-2: #333333;
+    --muted: #888888;
+    --line: #e5e5e5;
+    --soft: #f7f7f6;
+    --accent: #b8322a;          /* 朱 */
+    --accent-soft: #f6e4e1;
+    --hero-bg: #0a0a0a;
+    --hero-fg: #ffffff;
+    --hero-muted: #9a9a9a;
+    --hero-line: #2a2a2a;
+
+    /* 七雄（地図・他国キャラ用） */
+    --qin: #2b2b2b;
+    --zhao: #d0763b;
+    --wei: #c9a23a;
+    --han: #8b6bb0;
+    --chu: #4f8a4f;
+    --qi: #3f78b5;
+    --yan: #3c9c97;
+    --other: #dcdad4;
+    --sea: #eef2f4;
+
+    /* 秦の派閥（組織図・勢力図用） */
+    --f-king: #b8322a;    /* 大王派（＝アクセント） */
+    --f-ryo: #3b4a8c;     /* 呂不韋派 */
+    --f-otouto: #8a8530;  /* 王弟派 */
+    --f-army: #6b6f76;    /* 軍部（中立の大物） */
+    --f-harem: #8a4b7a;   /* 後宮 */
+    --f-ally: #5e7f3a;    /* 同盟（山の民） */
+
+    --font-body: 'Inter', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+    --font-display: 'Shippori Mincho B1', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap, .hero-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-left: max(22px, env(safe-area-inset-left, 0px));
+    padding-right: max(22px, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 900px) {
+    .wrap, .hero-inner { padding-left: 48px; padding-right: 48px; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--hero-fg);
+    padding-block: 44px 36px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    /* 背景の大きな「秦」。始皇帝が水徳＝黒を国の色にした故事にちなむ */
+    content: '秦';
+    position: absolute;
+    right: -0.04em;
+    top: 50%;
+    transform: translateY(-52%);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(180px, 30vw, 360px);
+    line-height: 1;
+    color: #ffffff;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .hero .crumb { font-family: var(--font-mono); font-size: 11px; color: var(--hero-muted); margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hero .crumb a { color: var(--hero-muted); text-decoration: none; }
+  .hero .crumb a:hover { color: var(--hero-fg); }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 6.4vw, 64px);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    text-wrap: balance;
+  }
+  .hero h1 .seal {
+    display: inline-block;
+    font-size: 0.42em;
+    vertical-align: 0.5em;
+    margin-left: 0.4em;
+    padding: 0.12em 0.32em;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    letter-spacing: 0.08em;
+  }
+  .hero .ja { font-size: 15px; color: #cfcfcf; margin-bottom: 22px; max-width: 40em; position: relative; z-index: 1; }
+  .hero hr { border: none; border-top: 1px solid var(--hero-line); margin: 22px 0 18px; position: relative; z-index: 1; }
+  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 28px; position: relative; z-index: 1; }
+  .fact-label { font-family: var(--font-mono); font-size: 11px; color: var(--hero-muted); letter-spacing: 0.06em; margin-bottom: 2px; }
+  .fact-value { font-size: 13px; font-weight: 600; line-height: 1.45; }
+
+  /* ---------- TOC ---------- */
+  .toc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 16px; margin-bottom: 56px; padding: 16px 20px; background: var(--soft); border: 1px solid var(--line); }
+  .toc a { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); text-decoration: none; padding: 3px 0; }
+  .toc a:hover { color: var(--fg); text-decoration: underline; }
+  .toc .num { color: var(--muted); margin-right: 8px; font-weight: 600; }
+
+  /* ---------- SECTION ---------- */
+  section.block { margin-bottom: 72px; scroll-margin-top: 84px; }
+  h2 {
+    font-family: var(--font-mono); font-size: 13px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px;
+  }
+  h2 .num { color: var(--fg); font-weight: 600; }
+  h2 .ja-title { font-family: var(--font-body); font-size: 17px; font-weight: 700; color: var(--fg); letter-spacing: 0.01em; text-transform: none; }
+  .lead { font-size: 14px; color: var(--ink-2); margin: 12px 0 24px; max-width: 46em; }
+  h3 { font-size: 15px; font-weight: 700; margin: 32px 0 12px; }
+  .note { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* spoiler toggle */
+  .spoiler-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    padding: 10px 14px; margin-bottom: 18px; border: 1px dashed var(--line); background: var(--soft);
+    font-size: 13px; color: var(--ink-2);
+  }
+  .btn {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    border: 1px solid var(--fg); background: var(--bg); color: var(--fg);
+    padding: 7px 14px; cursor: pointer;
+  }
+  .btn:hover { background: var(--fg); color: var(--bg); }
+  .btn:focus-visible, .chip:focus-visible, [data-state]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .future { transition: filter 0.25s, opacity 0.25s; }
+  body:not(.reveal) .future { filter: blur(5px); opacity: 0.55; user-select: none; }
+  body:not(.reveal) svg .future { filter: url(#blur); }
+
+  /* ---------- 01 TIMELINE ---------- */
+  .tl-svg { display: block; width: 100%; min-width: 860px; height: auto; }
+  .tl-svg text { font-family: var(--font-body); }
+  .ev-list { list-style: none; border-top: 1px solid var(--line); margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+  .ev-list li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
+  .ev-list .y { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 1px; }
+  .ev-list strong { font-weight: 700; }
+  .ev-list li.start .y, .ev-list li.start strong { color: var(--accent); }
+
+  /* ---------- 02 MAP ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); background: var(--bg);
+    cursor: pointer; font-family: var(--font-body); color: var(--fg);
+  }
+  .chip i { width: 10px; height: 10px; display: inline-block; }
+  .chip:hover, .chip.on { border-color: var(--fg); }
+  .map-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .panel { border: 1px solid var(--line); padding: 14px; min-width: 0; }
+  .panel-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .panel svg { display: block; width: 100%; height: auto; }
+  .map-svg text, .tile-svg text { font-family: var(--font-body); }
+  [data-state] { transition: opacity 0.2s; }
+  .map-wrap[data-active] [data-state]:not(.on) { opacity: 0.18; }
+  .map-wrap[data-active] tr[data-state]:not(.on) { opacity: 0.35; }
+  .map-svg [data-state], .tile-svg [data-state] { cursor: pointer; }
+
+  table.dt { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 20px; }
+  table.dt th { text-align: left; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; padding: 10px 12px; border-bottom: 2px solid var(--fg); font-weight: 500; white-space: nowrap; }
+  table.dt td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.6; }
+  table.dt td.state { font-family: var(--font-display); font-weight: 800; font-size: 20px; white-space: nowrap; }
+  table.dt td.state i { display: inline-block; width: 10px; height: 10px; margin-right: 8px; vertical-align: 3px; }
+  table.dt td.cap { white-space: nowrap; }
+
+  /* ---------- 03 ORG CHART ---------- */
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--ink-2); margin-bottom: 18px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .badge-key { margin-left: auto; color: var(--muted); }
+
+  .person { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 10px; background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--fc, var(--line)); min-width: 0; }
+  /* 顔: SVGイラストの上に img/<id>.jpg を重ねる。画像が無ければ img を消してイラストを見せる */
+  .av { position: relative; display: block; width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+  .av svg { width: 100%; height: 100%; display: block; }
+  .av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; background: #f1f0ec; }
+  .person .nm { font-weight: 700; font-size: 14.5px; line-height: 1.3; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 6px; }
+  .person .yomi { font-weight: 400; font-size: 11px; color: var(--muted); }
+  .person .rl { font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+  .person .ds { font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+  .tag { font-family: var(--font-mono); font-size: 10px; font-weight: 500; padding: 0 5px; border: 1px solid currentColor; line-height: 1.6; letter-spacing: 0.02em; white-space: nowrap; }
+  .tag.real { color: #2f6b3a; }
+  .tag.mod { color: #9a6a12; }
+  .tag.fic { color: #8a8a8a; }
+
+  .org-top { display: flex; justify-content: center; }
+  .org-top .person { width: min(340px, 100%); border-width: 2px; border-left-width: 5px; }
+  .org-top .person .av { width: 64px; height: 64px; }
+  .org-top .person { grid-template-columns: 64px minmax(0, 1fr); }
+  .org-rail { position: relative; height: 34px; }
+  .org-rail::before { content: ''; position: absolute; left: 50%; top: 0; height: 17px; border-left: 1px solid var(--fg); }
+  .org-rail::after { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 17px; height: 17px; border: 1px solid var(--fg); border-bottom: none; }
+  .org-cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .org-col { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .org-head { text-align: center; padding: 8px 6px; background: var(--fg); color: var(--bg); font-weight: 700; font-size: 14px; line-height: 1.35; }
+  .org-head small { display: block; font-weight: 400; font-size: 11px; opacity: 0.7; font-family: var(--font-mono); letter-spacing: 0.04em; }
+  .org-sub { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; padding-bottom: 4px; border-bottom: 1px dotted var(--line); }
+  .indent { margin-left: 14px; position: relative; }
+  .indent::before { content: ''; position: absolute; left: -9px; top: -8px; bottom: 50%; width: 8px; border-left: 1px solid var(--muted); border-bottom: 1px solid var(--muted); }
+
+  .field { margin-top: 28px; border: 1px solid var(--line); background: var(--soft); padding: 16px; }
+  .field-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .field-head strong { font-size: 14px; }
+  .field-head span { font-size: 12px; color: var(--muted); }
+  .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+
+  /* rank ladder */
+  .ladder { display: grid; gap: 4px; margin-top: 8px; }
+  .rung { display: grid; grid-template-columns: 88px minmax(0, 1fr) 76px; gap: 10px; align-items: center; font-size: 13px; }
+  .rung .rk { font-weight: 700; }
+  .rung .bar { height: 14px; background: var(--fg); min-width: 4px; }
+  .rung .n { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .rung.gen .bar { background: var(--accent); }
+
+  /* ---------- 04 FACTIONS ---------- */
+  .power { display: flex; height: 44px; border: 1px solid var(--fg); margin: 8px 0 6px; overflow: hidden; }
+  .power div { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; padding: 0 6px; min-width: 0; }
+  .power-scale { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
+  .factions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+  .fac { border: 1px solid var(--line); border-top: 4px solid var(--fc); padding: 14px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .fac h4 { font-size: 16px; font-weight: 800; color: var(--fc); line-height: 1.3; }
+  .fac h4 small { display: block; font-size: 11px; font-weight: 500; color: var(--muted); font-family: var(--font-mono); letter-spacing: 0.04em; margin-top: 2px; }
+  .fac dl { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 4px 8px; font-size: 12.5px; line-height: 1.55; }
+  .fac dt { color: var(--muted); font-family: var(--font-mono); font-size: 11px; padding-top: 1px; }
+  .faces { display: flex; flex-wrap: wrap; gap: 6px; }
+  .face { display: flex; flex-direction: column; align-items: center; width: 56px; font-size: 11px; line-height: 1.25; text-align: center; }
+  .face .av { width: 46px; height: 46px; }
+  .fac-extra { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+  .fac-extra .fac { flex-direction: row; align-items: center; gap: 14px; }
+  .fac-extra .fac > div:last-child { min-width: 0; }
+  .fac-extra p { font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+
+  /* ---------- 05 OTHER STATES ---------- */
+  .states { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .st { border: 1px solid var(--line); min-width: 0; display: flex; flex-direction: column; }
+  .st-head { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .st-head b { font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1; color: var(--sc); }
+  .st-head span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+  .st-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+  /* ---------- 06 GLOSSARY ---------- */
+  .gloss { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); column-gap: 32px; }
+  .gloss div { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; line-height: 1.65; min-width: 0; }
+  .gloss b { display: block; font-size: 14.5px; margin-bottom: 2px; }
+  .gloss b small { font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 6px; }
+  .related a { color: var(--fg); }
+  .colophon { font-size: 12px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 16px; margin-bottom: 40px; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 960px) {
+    .org-cols, .factions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .org-rail::after { left: 25%; right: 25%; }
+    .states { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .toc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .map-grid { grid-template-columns: minmax(0, 1fr); }
+    .ev-list, .gloss, .fac-extra { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .hero { padding-block: 32px 26px; }
+    .org-cols, .factions, .states { grid-template-columns: minmax(0, 1fr); }
+    .org-rail { height: 18px; }
+    .org-rail::after { display: none; }
+    .toc { grid-template-columns: minmax(0, 1fr); }
+    table.dt { font-size: 12.5px; }
+    table.dt th, table.dt td { padding: 8px 6px; }
+    .rung { grid-template-columns: 72px minmax(0, 1fr) 64px; }
+    .badge-key { margin-left: 0; }
+  }
+  /* ふりがな */
+  ruby rt { font-size: 0.55em; font-weight: 400; color: var(--muted); letter-spacing: 0; font-family: var(--font-body); }
+  .org-head ruby rt, .power ruby rt { color: inherit; opacity: 0.75; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="../index.html" class="logo">Shota Ueyama</a>
+    <button class="menu-toggle" aria-label="open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer-overlay"></div>
+  <aside class="drawer">
+    <a href="../index.html" class="home-link">↑ home</a>
+
+    <div class="cat-label">PERSONAL</div>
+    <a href="../profile/" class="nav-link">profile</a>
+    <a href="../health/" class="nav-link">health</a>
+    <a href="../travel/" class="nav-link">travel</a>
+    <a href="../book/" class="nav-link">book</a>
+    <a href="../philosophy/" class="nav-link">philosophy</a>
+    <a href="../routine/" class="nav-link">routine</a>
+    <a href="../goal/" class="nav-link">goal</a>
+
+    <div class="cat-label">RESEARCH</div>
+    <a href="../geo-history/" class="nav-link">geo-history</a>
+    <a href="../no2-legends/" class="nav-link">No.2 Legends</a>
+    <a href="../map/" class="nav-link">map</a>
+    <a href="../company/" class="nav-link">company</a>
+    <a href="../shoshi-hyakka/" class="nav-link">諸子百家</a>
+    <a href="./" class="nav-link">キングダム</a>
+  </aside>
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="crumb"><a href="../index.html">home</a> / research / kingdom</div>
+      <h1>キングダムの世界<span class="seal">観る前に</span></h1>
+      <div class="ja">漫画・アニメ『キングダム』を見るための歴史の地図帳。どの時代の、どの部分の話か。国はどう並び、秦の宮廷は誰がどこにいるのか。</div>
+      <hr>
+      <div class="facts">
+        <div><div class="fact-label">ERA</div><div class="fact-value">中国・戦国時代の末期</div></div>
+        <div><div class="fact-label">SCOPE</div><div class="fact-value">前245年ごろ 〜 前221年（約25年）</div></div>
+        <div><div class="fact-label">GOAL</div><div class="fact-value">秦による中華統一・始皇帝の誕生</div></div>
+        <div><div class="fact-label">ORIGINAL</div><div class="fact-value">原泰久（週刊ヤングジャンプ, 2006〜）</div></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <nav class="toc" aria-label="目次">
+      <a href="#timeline"><span class="num">01</span>時代の流れ</a>
+      <a href="#map"><span class="num">02</span>七雄の地図と現代の省</a>
+      <a href="#org"><span class="num">03</span>秦の組織図</a>
+      <a href="#factions"><span class="num">04</span>秦の勢力図</a>
+      <a href="#states"><span class="num">05</span>他国の主要人物</a>
+      <a href="#glossary"><span class="num">06</span>用語と見どころ</a>
+    </nav>
+
+    <!-- ================= 01 TIMELINE ================= -->
+    <section class="block" id="timeline">
+      <h2><span class="num">01</span>Timeline <span class="ja-title">時代の流れと、物語の範囲</span></h2>
+      <p class="lead">周王朝の権威が崩れてから約550年、諸国が争い続けた最後の四半世紀がキングダムの舞台です。上段は中国史全体の中での位置、下段は戦国時代を拡大したものです。</p>
+
+      <div class="spoiler-bar">
+        <span>物語開始（前245年）より後の出来事は、史実＝作品の先の展開になるのでぼかしています。</span>
+        <button class="btn" id="revealBtn" type="button" aria-pressed="false">史実の先も表示する</button>
+      </div>
+
+      <div class="scroll-x">
+        <svg class="tl-svg" id="tlSvg" viewBox="0 0 1040 380" role="img" aria-label="殷から漢までの年表と、戦国時代の拡大年表"></svg>
+      </div>
+
+      <ul class="ev-list" id="evList"></ul>
+    </section>
+
+    <!-- ================= 02 MAP ================= -->
+    <section class="block" id="map">
+      <h2><span class="num">02</span>Seven States <span class="ja-title">戦国七雄の地図と、現在の省</span></h2>
+      <p class="lead">物語開始時（前245年ごろ）の勢力範囲です。国名か凡例を押すと、その国の範囲と現在の省が同時に光ります。</p>
+
+      <div class="map-wrap" id="mapWrap">
+        <div class="chips" id="stateChips"></div>
+        <div class="map-grid">
+          <div class="panel">
+            <div class="panel-label"><span>前245年ごろの七雄</span><span>境界はおおよそ</span></div>
+            <svg class="map-svg" id="mapSvg" role="img" aria-label="戦国七雄の勢力図"></svg>
+          </div>
+          <div class="panel">
+            <div class="panel-label"><span>現在の中国の省</span><span>1マス＝1省（位置は模式）</span></div>
+            <svg class="tile-svg" id="tileSvg" role="img" aria-label="現在の省と七雄の対応"></svg>
+            <p class="note">2色のマスは、その省の中で国が分かれていたことを示します（例: 河北省は北が燕、南が趙）。</p>
+          </div>
+        </div>
+
+        <div class="scroll-x">
+          <table class="dt" id="stateTable">
+            <thead><tr><th>国</th><th>都</th><th>現在の主な省</th><th>作中での立ち位置</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03 ORG ================= -->
+    <section class="block" id="org">
+      <h2><span class="num">03</span>Qin Court <span class="ja-title">秦の組織図（物語開始時）</span></h2>
+      <p class="lead">王の下に文官（丞相府）、武官（軍）、王族・後宮が並びます。ただし開始時点の嬴政は「名ばかりの王」で、実権は相国の呂不韋が握っています。枠の左の色が所属する派閥です。</p>
+
+      <div class="legend" id="facLegend"></div>
+
+      <div class="org-top" id="orgTop"></div>
+      <div class="org-rail" aria-hidden="true"></div>
+      <div class="org-cols" id="orgCols"></div>
+
+      <div class="field">
+        <div class="field-head"><strong>戦場の若い世代 — 主人公たちの目線</strong><span>宮廷の外、最前線から出世していく面々</span></div>
+        <div class="people-grid" id="fieldGrid"></div>
+      </div>
+
+      <h3>信の出世ものさし — 軍の階級と率いる兵数</h3>
+      <p class="lead" style="margin:0 0 6px">秦は商鞅の改革以来、戦場で首を取った数で爵位が上がる「軍功爵制」の国です。だから下僕出身の信が成り上がれます。バーの長さは率いる兵数（対数）です。</p>
+      <div class="ladder" id="ladder"></div>
+      <p class="note">作中の呼び方に基づく目安です。三百人将・三千人将などは作中で使われる中間の階級です。</p>
+    </section>
+
+    <!-- ================= 04 FACTIONS ================= -->
+    <section class="block" id="factions">
+      <h2><span class="num">04</span>Power Map <span class="ja-title">秦の勢力図 — 序盤の宮廷は四つ巴</span></h2>
+      <p class="lead">序盤の政治ドラマは「嬴政がどうやって実権を取り戻すか」です。下のバーは物語開始時の宮廷での発言力のイメージ（作中描写からの目安）です。</p>
+
+      <div class="power" id="powerBar" aria-label="派閥の力関係"></div>
+      <div class="power-scale"><span>小</span><span>宮廷での発言力の割合（イメージ）</span><span>大</span></div>
+
+      <div class="factions" id="facCards"></div>
+      <div class="fac-extra" id="facExtra"></div>
+    </section>
+
+    <!-- ================= 05 OTHER STATES ================= -->
+    <section class="block" id="states">
+      <h2><span class="num">05</span>Rivals <span class="ja-title">他国の主要人物</span></h2>
+      <p class="lead">秦の前に立ちはだかる六国の顔ぶれです。作中で重要な人物を国ごとに並べました。紹介は登場時点の立場だけにとどめています。</p>
+      <div class="states" id="stateCards"></div>
+    </section>
+
+    <!-- ================= 06 GLOSSARY ================= -->
+    <section class="block" id="glossary">
+      <h2><span class="num">06</span>Glossary <span class="ja-title">用語と見どころ</span></h2>
+      <div class="gloss">
+        <div><b>戦国七雄<small>せんごくしちゆう</small></b>戦国時代を生き残った7つの大国。秦・趙・魏・韓・楚・燕・斉。</div>
+        <div><b>合従と連衡<small>がっしょう・れんこう</small></b>合従は六国が縦に連合して秦に対抗する策。連衡は秦が各国と個別に手を結ぶ策。秦の基本戦略は「遠交近攻（遠くと組み、近くを攻める）」。</div>
+        <div><b>六大将軍<small>ろくだいしょうぐん</small></b>昭王の時代に、王から自由に戦争する権限を与えられた6人の将軍。白起・王騎など。作品独自の設定で、物語の大きな柱。</div>
+        <div><b>趙の三大天<small>さんだいてん</small></b>趙の最高位の3将軍。かつては廉頗・藺相如・趙奢。作中では新しい三大天が秦を苦しめる。</div>
+        <div><b>戦国四君<small>せんごくしくん</small></b>食客（スカウトした人材）を数千人抱えた4人の大貴族。楚の春申君など。呂不韋も同じ型の人物。</div>
+        <div><b>長平の戦い<small>前260</small></b>秦の白起が趙を破り、降伏兵約40万を生き埋めにしたとされる戦い。趙の人々が秦を憎む理由として作中で何度も出てくる。</div>
+        <div><b>法家と儒家<small>思想</small></b>法で国を治める法家（商鞅・韓非・李斯）と、徳で治める儒家。秦は法家の国。政と呂不韋の国家観の違いにも重なる。</div>
+        <div><b>函谷関<small>かんこくかん</small></b>秦の東の玄関口にある天然の要塞。六国が秦を攻めるには、ここを抜く必要がある。</div>
+      </div>
+      <p class="note related" style="margin-top:18px">関連: 韓非と李斯は同じ荀子の門下です。思想の背景は <a href="../shoshi-hyakka/">諸子百家</a> のページへ。</p>
+    </section>
+
+    <div class="colophon">
+      人物の顔写真は TVアニメ「キングダム」公式サイト（kingdom-anime.com）のキャラクター画像から切り出したものです。公式サイトに画像がない人物は、このページ用に描いた記号的なイラストで表示しています。<br>
+      史実の典拠は主に『史記』（秦始皇本紀・各世家・列伝）。地図の境界・派閥の力関係は理解のための概略です。<br>
+      『キングダム』© 原泰久／集英社。本ページは個人の学習メモです。
+    </div>
+  </main>
+
+  <footer class="bottombar">
+    <a href="https://x.com/shota122937" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=100052666599136" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073"/></svg>
+    </a>
+    <a href="https://www.instagram.com/shotta2314/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/shota-ueyama-43a93a3ba" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var SVGNS = 'http://www.w3.org/2000/svg';
+    function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+    /* =====================================================================
+     * 0. 史実ネタバレのぼかし切り替え（閲覧者のブラウザにだけ記憶）
+     * ===================================================================== */
+    var revealBtn = document.getElementById('revealBtn');
+    function setReveal(on) {
+      document.body.classList.toggle('reveal', on);
+      revealBtn.textContent = on ? '史実の先をぼかす' : '史実の先も表示する';
+      revealBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      try { localStorage.setItem('kingdom-reveal', on ? '1' : '0'); } catch (e) { /* 保存できない環境では無視 */ }
+    }
+    revealBtn.addEventListener('click', function () { setReveal(!document.body.classList.contains('reveal')); });
+    try { if (localStorage.getItem('kingdom-reveal') === '1') setReveal(true); } catch (e) {}
+
+    /* =====================================================================
+     * 1. 年表（上段: 殷〜漢の全体 / 下段: 戦国時代の拡大）
+     * ===================================================================== */
+    (function drawTimeline() {
+      var svg = document.getElementById('tlSvg');
+      var L = 20, R = 1020, W = R - L;
+      var ink = css('--fg'), muted = css('--muted'), line = css('--line'), accent = css('--accent');
+      var h = [];
+
+      // ぼかし用フィルター（SVG 内の要素に CSS blur が効かない環境向け）
+      h.push('<defs><filter id="blur"><feGaussianBlur stdDeviation="3"/></filter></defs>');
+
+      // --- 上段: 全体 ---
+      var a0 = -1100, a1 = 250;
+      function ax(y) { return L + (y - a0) / (a1 - a0) * W; }
+      var eras = [
+        { n: '殷', s: -1100, e: -1046, f: '#cfcfcf' },
+        { n: '西周', s: -1046, e: -771, f: '#bdbdbd' },
+        { n: '春秋時代', s: -770, e: -403, f: '#a8a8a8' },
+        { n: '戦国', s: -403, e: -221, f: '#555555' },
+        { n: '', s: -221, e: -206, f: accent },
+        { n: '漢（前漢・後漢）', s: -206, e: 220, f: '#cfcfcf' }
+      ];
+      h.push('<text x="' + L + '" y="14" font-size="11" fill="' + muted + '" font-family="JetBrains Mono, monospace" letter-spacing="1">CHINA 1100 BC — AD 220</text>');
+      eras.forEach(function (e) {
+        var x0 = ax(e.s), x1 = ax(e.e);
+        h.push('<rect x="' + x0 + '" y="24" width="' + (x1 - x0) + '" height="28" fill="' + e.f + '"/>');
+        if (e.n) h.push('<text x="' + (x0 + x1) / 2 + '" y="43" text-anchor="middle" font-size="12" font-weight="600" fill="' + (e.f === '#555555' ? '#fff' : ink) + '">' + e.n + '</text>');
+      });
+      // 物語の位置マーカー
+      var kx0 = ax(-245), kx1 = ax(-221);
+      h.push('<path d="M' + kx0 + ' 20 L' + kx1 + ' 20" stroke="' + accent + '" stroke-width="3"/>');
+      h.push('<text x="' + (kx1 + 6) + '" y="16" font-size="11.5" font-weight="700" fill="' + accent + '">▼ キングダム（前245〜前221）と秦王朝（前221〜前206）</text>');
+      // 年目盛
+      [-1000, -500, 1].forEach(function (y) {
+        h.push('<text x="' + ax(y) + '" y="66" text-anchor="middle" font-size="10" fill="' + muted + '" font-family="JetBrains Mono, monospace">' + (y < 0 ? '前' + (-y) : '後1') + '</text>');
+      });
+
+      // --- 下段: 戦国拡大 ---
+      var b0 = -410, b1 = -195;
+      function bx(y) { return L + (y - b0) / (b1 - b0) * W; }
+      var BY = 206, BH = 26; // 帯の位置
+      // ズームの台形
+      h.push('<path d="M' + ax(-403) + ' 52 L' + ax(-195) + ' 52 L' + R + ' ' + (BY - 74) + ' L' + L + ' ' + (BY - 74) + ' Z" fill="#000" opacity="0.04"/>');
+      h.push('<path d="M' + ax(-403) + ' 52 L' + L + ' ' + (BY - 74) + ' M' + ax(-195) + ' 52 L' + R + ' ' + (BY - 74) + '" stroke="' + line + '"/>');
+
+      var bEras = [
+        { n: '戦国時代（前403〜前221）', s: -410, e: -221, f: '#555555', fg: '#fff' },
+        { n: '秦', s: -221, e: -206, f: accent, fg: '#fff' },
+        { n: '漢', s: -206, e: -195, f: '#cfcfcf', fg: ink }
+      ];
+      bEras.forEach(function (e) {
+        var x0 = bx(e.s), x1 = bx(e.e);
+        h.push('<rect x="' + x0 + '" y="' + BY + '" width="' + (x1 - x0) + '" height="' + BH + '" fill="' + e.f + '"/>');
+        h.push('<text x="' + (e.n.length > 3 ? x0 + 10 : (x0 + x1) / 2) + '" y="' + (BY + 17) + '" text-anchor="' + (e.n.length > 3 ? 'start' : 'middle') + '" font-size="12" font-weight="600" fill="' + e.fg + '">' + e.n + '</text>');
+      });
+      // 物語の範囲
+      var sx0 = bx(-245), sx1 = bx(-221);
+      h.push('<rect x="' + sx0 + '" y="' + (BY - 4) + '" width="' + (sx1 - sx0) + '" height="' + (BH + 8) + '" fill="none" stroke="' + accent + '" stroke-width="2.5"/>');
+      // 目盛
+      for (var y = -400; y <= -200; y += 50) {
+        var tx = bx(y);
+        h.push('<line x1="' + tx + '" y1="' + (BY + BH) + '" x2="' + tx + '" y2="' + (BY + BH + 5) + '" stroke="' + muted + '"/>');
+        h.push('<text x="' + tx + '" y="' + (BY + BH + 16) + '" text-anchor="middle" font-size="10" fill="' + muted + '" font-family="JetBrains Mono, monospace">前' + (-y) + '</text>');
+      }
+
+      // 出来事ラベル: up=上段（1が帯に近い）/ down=下段
+      var ev = [
+        { y: -403, t: '三家分晋', r: 'さんかぶんしん', pos: 'up', lv: 1 },
+        { y: -356, t: '商鞅の変法', r: 'しょうおうのへんぽう', pos: 'up', lv: 2 },
+        { y: -307, t: '胡服騎射', r: 'こふくきしゃ', pos: 'up', lv: 1 },
+        { y: -278, t: '秦が楚の都を落とす', r: 'しん・そ', pos: 'up', lv: 3, anchor: 'end' },
+        { y: -260, t: '長平の戦い', r: 'ちょうへい', pos: 'up', lv: 1, anchor: 'end' },
+        { y: -256, t: '周の滅亡', r: 'しゅう', pos: 'up', lv: 2, anchor: 'end' },
+        { y: -247, t: '嬴政が13歳で即位', r: 'えいせい', pos: 'up', lv: 3 },
+        { y: -245, t: '物語スタート', pos: 'down', lv: 1, start: true, anchor: 'end' },
+        { y: -241, t: '合従軍', r: 'がっしょうぐん', pos: 'up', lv: 1, future: true },
+        { y: -238, t: '嫪毐の乱', r: 'ろうあい', pos: 'up', lv: 2, future: true },
+        { y: -221, t: '統一・始皇帝', r: 'しこうてい', pos: 'down', lv: 1, future: true },
+        { y: -206, t: '秦の滅亡', pos: 'down', lv: 2, future: true }
+      ];
+      var upY = { 1: BY - 14, 2: BY - 44, 3: BY - 74 };
+      var dnY = { 1: BY + BH + 40, 2: BY + BH + 70, 3: BY + BH + 100 };
+      ev.forEach(function (e) {
+        var x = bx(e.y);
+        var ty = e.pos === 'up' ? upY[e.lv] : dnY[e.lv];
+        var y1 = e.pos === 'up' ? BY : BY + BH;
+        var col = e.start ? accent : ink;
+        var anchor = e.anchor || 'start';
+        var dx = anchor === 'end' ? -5 : 5;
+        var g = '<g' + (e.future ? ' class="future"' : '') + '>';
+        g += '<line x1="' + x + '" y1="' + y1 + '" x2="' + x + '" y2="' + (e.pos === 'up' ? ty + 4 : ty - 12) + '" stroke="' + col + '" stroke-width="' + (e.start ? 2 : 1) + '"/>';
+        g += '<circle cx="' + x + '" cy="' + (e.pos === 'up' ? ty + 4 : ty - 12) + '" r="2.5" fill="' + col + '"/>';
+        g += '<text x="' + (x + dx) + '" y="' + ty + '" text-anchor="' + anchor + '" font-size="12.5" font-weight="' + (e.start ? 800 : 600) + '" fill="' + col + '">' + e.t + '</text>';
+        g += '<text x="' + (x + dx) + '" y="' + (ty + (e.pos === 'up' ? -14 : 14)) + '" text-anchor="' + anchor + '" font-size="10" fill="' + muted + '" font-family="JetBrains Mono, monospace">前' + (-e.y) + (e.r ? '<tspan font-family="Inter, sans-serif" font-size="10">・' + e.r + '</tspan>' : '') + '</text>';
+        g += '</g>';
+        h.push(g);
+      });
+      // 統一戦争の括弧（前230〜前221）
+      var ux0 = bx(-230), ux1 = bx(-221), uy = BY + BH + 112;
+      h.push('<g class="future"><path d="M' + ux0 + ' ' + (uy - 8) + ' V' + uy + ' H' + ux1 + ' V' + (uy - 8) + '" fill="none" stroke="' + accent + '" stroke-width="1.5"/>' +
+        '<text x="' + ux1 + '" y="' + (uy + 16) + '" text-anchor="end" font-size="12" font-weight="700" fill="' + accent + '">統一戦争 前230〜221: 韓→趙→魏→楚→燕→斉</text></g>');
+
+      svg.innerHTML = h.join('');
+    })();
+
+    // 年表の下の解説リスト
+    (function eventList() {
+      var items = [
+        ['前403', '三家分晋', '大国・晋が家臣の韓・魏・趙の3家に分割され、周王が正式に諸侯と認める。戦国時代の始まり。'],
+        ['前356', '商鞅の変法', '秦が法家の商鞅を登用し、法による統治と軍功爵制を導入。秦が強国になる出発点。'],
+        ['前307', '胡服騎射', '趙が遊牧民の服と騎馬戦術を取り入れる。趙の騎馬軍団の源流。'],
+        ['前278', '秦が楚の都・郢を落とす', '名将・白起の活躍。楚は東へ遷都を繰り返すことになる。'],
+        ['前260', '長平の戦い', '秦が趙を大破。降伏兵約40万を生き埋めにしたとされ、趙の恨みが残る。'],
+        ['前256', '周の滅亡', '名目上の天下の主だった周王朝を秦が滅ぼす。「次の王者は誰か」の争いになる。'],
+        ['前247', '嬴政が13歳で即位', '父・荘襄王の死去による。実権は相国の呂不韋が握る。'],
+        ['前245', '物語スタート', '作中ではこのころ、下僕の少年・信が若き王・嬴政と出会う。', 'start'],
+        ['前241', '合従軍', '五国が連合して秦を攻める（史実）。', 'future'],
+        ['前238', '嫪毐の乱と政の親政', '後宮で起きた反乱を政が鎮め、成人して自ら政治を行い始める（史実）。', 'future'],
+        ['前230–221', '統一戦争', '韓・趙・魏・楚・燕・斉の順に六国が滅び、前221年に統一。嬴政は「始皇帝」を名乗る（史実）。', 'future'],
+        ['前206', '秦の滅亡', '前210年の始皇帝の死後わずか4年で滅び、項羽と劉邦の争いを経て漢王朝へ（史実）。', 'future']
+      ];
+      document.getElementById('evList').innerHTML = items.map(function (it) {
+        return '<li class="' + (it[3] || '') + '"><span class="y">' + it[0] + '</span><span><strong>' + it[1] + '</strong> — ' + it[2] + '</span></li>';
+      }).join('');
+    })();
+
+    /* =====================================================================
+     * 2. 七雄の地図 と 現在の省タイル
+     * ===================================================================== */
+    var STATES = [
+      { id: 'qin', n: '秦', c: '--qin', cap: '咸陽', prov: '陝西・甘粛東部・寧夏南部・四川・重慶・湖北西部・山西中南部', role: '主人公の国。法と軍功で強くなった西の大国。函谷関の内側に守られる' },
+      { id: 'zhao', n: '趙', c: '--zhao', cap: '邯鄲', prov: '河北南部・山西北部・内モンゴル南部', role: '最大のライバル。騎馬軍団と名将を抱える。長平の戦いの恨みを持つ' },
+      { id: 'wei', n: '魏', c: '--wei', cap: '大梁', prov: '河南東部・山東西部の一部', role: '中原（黄河中流域）の古い強国。衰えつつあるが軍は精強' },
+      { id: 'han', n: '韓', c: '--han', cap: '新鄭', prov: '河南中部', role: '秦の隣にある最小の国。秦の東進を真っ先に受ける' },
+      { id: 'chu', n: '楚', c: '--chu', cap: '陳→寿春', prov: '湖北東部・湖南・河南南部・安徽・江蘇・上海・江西・浙江', role: '南の超大国。領土も兵の数も最大。秦に押されて都を東へ移してきた' },
+      { id: 'yan', n: '燕', c: '--yan', cap: '薊（今の北京）', prov: '北京・天津・河北北部・遼寧', role: '北東の辺境の国。北方の異民族とも接する' },
+      { id: 'qi', n: '斉', c: '--qi', cap: '臨淄', prov: '山東', role: '東の海沿いの豊かな国。秦から遠く、中立的な立場をとりがち' }
+    ];
+    var READ = { qin: 'しん', zhao: 'ちょう', wei: 'ぎ', han: 'かん', chu: 'そ', yan: 'えん', qi: 'せい' };
+    STATES.forEach(function (s) { s.r = READ[s.id]; });
+    var SC = {};
+    STATES.forEach(function (s) { SC[s.id] = css(s.c); });
+    SC.other = css('--other');
+
+    // 経度・緯度 → SVG 座標（正距円筒図法、緯度方向を約1.22倍して歪みを補正）
+    var LON0 = 101.5, LON1 = 124.5, LAT0 = 25.5, LAT1 = 43, K = 24, KY = K * 1.22;
+    function P(p) { return [((p[0] - LON0) * K).toFixed(1), ((LAT1 - p[1]) * KY).toFixed(1)]; }
+    function poly(pts) { return pts.map(function (p) { return P(p).join(','); }).join(' '); }
+    function path(pts) { return 'M' + pts.map(function (p) { return P(p).join(' '); }).join(' L'); }
+
+    (function drawMap() {
+      var svg = document.getElementById('mapSvg');
+      var w = (LON1 - LON0) * K, hgt = (LAT1 - LAT0) * KY;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + hgt.toFixed(0));
+      var ink = css('--fg'), muted = css('--muted');
+
+      // 陸地（海岸線はおおよそ。古代の海岸線とは一部異なる）
+      var land = [[100, 44], [126, 44], [126, 40.0], [124.3, 39.9], [123.0, 39.6], [121.6, 39.0], [121.2, 38.8], [121.7, 39.4], [122.2, 40.4], [121.5, 40.9],
+        [120.5, 40.3], [119.6, 39.9], [118.9, 39.2], [117.8, 39.0], [117.6, 38.5], [118.3, 37.9], [119.0, 37.3], [119.8, 37.1], [120.4, 37.6], [121.4, 37.5],
+        [122.6, 37.4], [122.1, 36.9], [121.0, 36.6], [120.4, 36.1], [119.5, 35.4], [119.2, 34.8], [120.2, 34.3], [120.6, 33.4], [121.0, 32.5], [121.9, 31.8],
+        [121.9, 31.0], [120.9, 30.4], [121.6, 29.9], [122.0, 29.4], [121.6, 28.6], [121.0, 27.9], [120.3, 27.2], [119.7, 26.4], [119.5, 25.5], [118.6, 24.6],
+        [117.0, 23.5], [100, 23.5]];
+
+      // 前245年ごろの勢力（概略）
+      var shapes = {
+        chu: [[113.3, 32.6], [112.8, 33.6], [113.6, 33.4], [114.3, 33.9], [115.0, 33.8], [116.0, 34.0], [116.4, 35.0], [116.6, 35.6], [117.9, 35.9], [119.6, 35.1],
+          [126, 35], [126, 28.5], [119.0, 27.8], [117.0, 26.2], [114.0, 25.6], [111.0, 25.6], [109.5, 26.6], [109.0, 28.6], [111.0, 29.4], [112.8, 29.8], [113.6, 30.5], [113.8, 31.8]],
+        qin: [[100, 38.2], [104, 38.6], [106, 39.6], [110.5, 39.5], [111.5, 38.6], [112.8, 38.3], [113.6, 37.6], [113.6, 36.4], [114.0, 35.6], [113.6, 34.9],
+          [112.6, 34.2], [112.8, 33.6], [113.3, 32.6], [113.8, 31.8], [113.6, 30.5], [112.8, 29.8], [111.0, 29.4], [109.0, 28.6], [106.0, 28.0], [103.0, 27.3], [100, 27.5]],
+        han: [[113.6, 34.9], [114.3, 34.6], [114.3, 33.9], [113.6, 33.4], [112.8, 33.6], [112.6, 34.2]],
+        wei: [[114.0, 35.6], [115.2, 36.2], [116.2, 35.9], [116.6, 35.6], [116.4, 35.0], [116.0, 34.0], [115.0, 33.8], [114.3, 33.9], [114.3, 34.6], [113.6, 34.9]],
+        zhao: [[108.8, 39.6], [108.8, 41.6], [112.0, 41.9], [114.5, 41.2], [115.6, 39.6], [116.7, 38.7], [116.4, 37.2], [116.2, 35.9], [115.2, 36.2], [114.0, 35.6],
+          [113.6, 36.4], [113.6, 37.6], [112.8, 38.3], [111.5, 38.6], [110.5, 39.5]],
+        yan: [[114.5, 41.2], [115.5, 44], [126, 44], [126, 38.45], [117.6, 38.45], [116.7, 38.7], [115.6, 39.6]],
+        qi: [[116.2, 35.9], [116.4, 37.2], [116.7, 38.7], [117.6, 38.45], [126, 38.45], [126, 35], [119.6, 35.1], [117.9, 35.9], [116.6, 35.6]]
+      };
+
+      var rivers = {
+        huang: [[101.5, 36.0], [103.8, 36.1], [105.3, 37.4], [106.4, 39.3], [107.5, 40.6], [109.5, 40.7], [111.2, 40.3], [111.0, 38.6], [110.5, 36.6], [110.3, 34.7],
+          [112.0, 34.8], [113.6, 34.95], [114.6, 35.6], [115.6, 36.6], [116.5, 37.8], [117.4, 38.7]],
+        chang: [[101.5, 27.0], [103.2, 28.4], [104.6, 28.8], [106.5, 29.6], [108.4, 30.8], [110.4, 31.0], [111.3, 30.7], [112.2, 30.3], [113.0, 29.5], [114.3, 30.6],
+          [115.9, 29.7], [117.0, 30.5], [118.4, 31.3], [118.8, 32.1], [120.0, 32.2], [121.6, 31.5]],
+        wei: [[105.5, 34.6], [107.2, 34.35], [108.7, 34.4], [110.2, 34.6]],
+        huai: [[113.4, 32.4], [115.0, 32.5], [116.6, 32.8], [118.2, 33.2], [119.6, 33.8]]
+      };
+
+      var cities = [
+        { n: '咸陽', r: 'かんよう', p: [108.7, 34.35], s: 'qin', capital: true, dx: -6, dy: 16, a: 'middle' },
+        { n: '邯鄲', r: 'かんたん', p: [114.5, 36.6], s: 'zhao', capital: true, dx: -7, dy: 4, a: 'end' },
+        { n: '大梁', r: 'たいりょう', p: [114.35, 34.8], s: 'wei', capital: true, dx: 6, dy: 12, a: 'start' },
+        { n: '', p: [113.7, 34.4], s: 'han', capital: true, dx: 0, dy: 0, a: 'end' },  // 新鄭（狭いので名前は表で）
+        { n: '寿春', r: 'じゅしゅん', p: [116.8, 32.6], s: 'chu', capital: true, dx: 6, dy: 4, a: 'start' },
+        { n: '薊', r: 'けい', p: [116.4, 39.9], s: 'yan', capital: true, dx: 6, dy: 4, a: 'start' },
+        { n: '臨淄', r: 'りんし', p: [118.3, 36.85], s: 'qi', capital: true, dx: 6, dy: 4, a: 'start' },
+        { n: '洛陽（旧周）', r: 'らくよう', p: [112.45, 34.65], s: 'qin', dx: 0, dy: -8, a: 'middle', rUp: true },
+        { n: '函谷関', r: 'かんこくかん', p: [110.9, 34.6], s: 'qin', gate: true, dx: 0, dy: 16, a: 'middle' },
+        { n: '長平', r: 'ちょうへい', p: [112.9, 35.8], s: 'qin', battle: true, dx: -7, dy: 4, a: 'end' }
+      ];
+      var labels = [
+        { s: 'qin', p: [106.6, 33.6] }, { s: 'zhao', p: [112.7, 39.9] }, { s: 'yan', p: [119.0, 41.6] }, { s: 'qi', p: [121.1, 36.85] },
+        { s: 'wei', p: [115.75, 35.55] }, { s: 'han', p: [113.3, 34.05], small: true }, { s: 'chu', p: [115.2, 30.4] }
+      ];
+      var others = [{ t: '匈奴', p: [104.5, 41.2] }, { t: '月氏・羌', p: [102.4, 36.5] }, { t: '百越', p: [113.0, 26.3] }, { t: '渤海', p: [119.7, 38.75], sea: true }, { t: '黄海', p: [123.0, 35.8], sea: true }];
+
+      var h = [];
+      h.push('<defs><clipPath id="landClip"><polygon points="' + poly(land) + '"/></clipPath></defs>');
+      h.push('<rect width="100%" height="100%" fill="' + css('--sea') + '"/>');
+      h.push('<polygon points="' + poly(land) + '" fill="' + SC.other + '"/>');
+      h.push('<g clip-path="url(#landClip)">');
+      ['chu', 'qin', 'han', 'wei', 'zhao', 'yan', 'qi'].forEach(function (id) {
+        h.push('<polygon data-state="' + id + '" tabindex="0" points="' + poly(shapes[id]) + '" fill="' + SC[id] + '" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"><title>' + STATES.filter(function (s) { return s.id === id; })[0].n + '</title></polygon>');
+      });
+      h.push('</g>');
+      // 川
+      Object.keys(rivers).forEach(function (k) {
+        h.push('<path d="' + path(rivers[k]) + '" fill="none" stroke="#9cc3dc" stroke-width="' + (k === 'huang' || k === 'chang' ? 2.4 : 1.4) + '" stroke-linejoin="round" stroke-linecap="round" opacity="0.95"/>');
+      });
+      var hp = P([111.6, 40.95]), cp = P([109.2, 31.3]);
+      h.push('<text x="' + hp[0] + '" y="' + hp[1] + '" font-size="10" fill="#4a86ad">黄河</text>');
+      h.push('<text x="' + cp[0] + '" y="' + cp[1] + '" font-size="10" fill="#e9f2f8">長江</text>');
+      // 周辺の民族・海
+      others.forEach(function (o) {
+        var p = P(o.p);
+        h.push('<text x="' + p[0] + '" y="' + p[1] + '" text-anchor="middle" font-size="' + (o.sea ? 11 : 11) + '" fill="' + (o.sea ? '#7fa6bf' : muted) + '" font-style="' + (o.sea ? 'italic' : 'normal') + '">' + o.t + '</text>');
+      });
+      // 国名
+      labels.forEach(function (l) {
+        var p = P(l.p);
+        var fs = l.small ? 16 : 30;
+        h.push('<text data-state="' + l.s + '" x="' + p[0] + '" y="' + p[1] + '" text-anchor="middle" font-size="' + fs + '" font-weight="800" font-family="Shippori Mincho B1, Hiragino Mincho ProN, serif" fill="#fff" stroke="rgba(0,0,0,0.25)" stroke-width="0.6" paint-order="stroke">' + STATES.filter(function (s) { return s.id === l.s; })[0].n + '</text>');
+        // 国名の読み（国名の下に小さく）
+        var rd = STATES.filter(function (s) { return s.id === l.s; })[0].r;
+        h.push('<text data-state="' + l.s + '" x="' + p[0] + '" y="' + (+p[1] + (l.small ? 9 : 13)) + '" text-anchor="middle" font-size="' + (l.small ? 7.5 : 10) + '" font-weight="600" fill="#fff" stroke="rgba(0,0,0,0.3)" stroke-width="1.6" paint-order="stroke">' + rd + '</text>');
+      });
+      // 都市
+      cities.forEach(function (c) {
+        var p = P(c.p);
+        var mark;
+        if (c.gate) mark = '<rect x="' + (p[0] - 4) + '" y="' + (p[1] - 4) + '" width="8" height="8" fill="' + css('--accent') + '" stroke="#fff" stroke-width="1"/>';
+        else if (c.battle) mark = '<path d="M' + (p[0] - 4) + ' ' + (p[1] - 4) + ' L' + (+p[0] + 4) + ' ' + (+p[1] + 4) + ' M' + (+p[0] + 4) + ' ' + (p[1] - 4) + ' L' + (p[0] - 4) + ' ' + (+p[1] + 4) + '" stroke="#fff" stroke-width="2"/>';
+        else if (c.capital) mark = '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4" fill="#fff" stroke="' + ink + '" stroke-width="1.6"/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.4" fill="' + ink + '"/>';
+        else mark = '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.6" fill="#fff" stroke="' + ink + '" stroke-width="1.2"/>';
+        h.push('<g data-state="' + c.s + '">' + mark + '<text x="' + (+p[0] + c.dx) + '" y="' + (+p[1] + c.dy) + '" text-anchor="' + c.a + '" font-size="11" font-weight="600" fill="#fff" stroke="rgba(0,0,0,0.55)" stroke-width="2.4" paint-order="stroke">' + c.n + '</text>' +
+          (c.r ? '<text x="' + (+p[0] + c.dx) + '" y="' + (+p[1] + c.dy + (c.rUp ? -11 : 10)) + '" text-anchor="' + c.a + '" font-size="8.5" fill="#fff" stroke="rgba(0,0,0,0.55)" stroke-width="2" paint-order="stroke">' + c.r + '</text>' : '') + '</g>');
+      });
+      // 凡例
+      var ly = hgt - 12;
+      h.push('<g font-size="10.5" fill="' + ink + '">' +
+        '<circle cx="12" cy="' + (ly - 4) + '" r="4" fill="#fff" stroke="' + ink + '" stroke-width="1.6"/><text x="22" y="' + ly + '">都</text>' +
+        '<rect x="44" y="' + (ly - 8) + '" width="8" height="8" fill="' + css('--accent') + '"/><text x="56" y="' + ly + '">関所</text>' +
+        '<path d="M88 ' + (ly - 8) + ' L96 ' + ly + ' M96 ' + (ly - 8) + ' L88 ' + ly + '" stroke="' + ink + '" stroke-width="2"/><text x="100" y="' + ly + '">古戦場</text></g>');
+      svg.innerHTML = h.join('');
+    })();
+
+    (function drawTiles() {
+      // [省名, 列, 行, 国1, 国2(分割時)]
+      var T = [
+        ['黒龍江', 8, 0, 'other'],
+        ['新疆', 0, 1, 'other'], ['内モンゴル', 4, 1, 'zhao', 'other'], ['北京', 6, 1, 'yan'], ['遼寧', 7, 1, 'yan'], ['吉林', 8, 1, 'other'],
+        ['甘粛', 2, 2, 'qin', 'other'], ['寧夏', 3, 2, 'qin', 'other'], ['山西', 4, 2, 'zhao', 'qin'], ['河北', 5, 2, 'yan', 'zhao'], ['天津', 6, 2, 'yan'],
+        ['チベット', 0, 3, 'other'], ['青海', 1, 3, 'other'], ['陝西', 3, 3, 'qin'], ['河南', 4, 3, 'han', 'wei'], ['山東', 5, 3, 'qi'],
+        ['四川', 2, 4, 'qin'], ['重慶', 3, 4, 'qin'], ['湖北', 4, 4, 'qin', 'chu'], ['安徽', 5, 4, 'chu'], ['江蘇', 6, 4, 'chu'],
+        ['雲南', 1, 5, 'other'], ['貴州', 2, 5, 'other'], ['湖南', 3, 5, 'chu'], ['江西', 4, 5, 'chu'], ['浙江', 5, 5, 'chu'], ['上海', 6, 5, 'chu'],
+        ['広西', 2, 6, 'other'], ['広東', 3, 6, 'other'], ['福建', 5, 6, 'other'], ['台湾', 7, 6, 'other'],
+        ['海南', 3, 7, 'other']
+      ];
+      var S = 52, G = 4, PAD = 2;
+      var svg = document.getElementById('tileSvg');
+      var cols = 9, rows = 8;
+      svg.setAttribute('viewBox', '0 0 ' + (cols * (S + G) + PAD) + ' ' + (rows * (S + G) + PAD));
+      var dark = { qin: 1, han: 1, chu: 1, qi: 1, yan: 1, zhao: 1, wei: 1 };
+      var h = [];
+      T.forEach(function (t) {
+        var x = PAD + t[1] * (S + G), y = PAD + t[2] * (S + G);
+        var a = t[3], b = t[4];
+        var states = [a, b].filter(function (v) { return v && v !== 'other'; });
+        var g = '<g' + (states.length ? ' data-state="' + states.join(' ') + '" tabindex="0"' : '') + '>';
+        if (!b) {
+          g += '<rect x="' + x + '" y="' + y + '" width="' + S + '" height="' + S + '" fill="' + SC[a] + '"/>';
+        } else {
+          // 左上の三角＝1つ目の国、右下＝2つ目
+          g += '<path d="M' + x + ' ' + y + ' H' + (x + S) + ' L' + x + ' ' + (y + S) + ' Z" fill="' + SC[a] + '"/>';
+          g += '<path d="M' + (x + S) + ' ' + y + ' V' + (y + S) + ' H' + x + ' Z" fill="' + SC[b] + '"/>';
+        }
+        var isOther = a === 'other' && !b;
+        var label = t[0];
+        var fs = label.length >= 5 ? 9.5 : label.length >= 4 ? 10.5 : 12;
+        g += '<text x="' + (x + S / 2) + '" y="' + (y + S / 2 + 4) + '" text-anchor="middle" font-size="' + fs + '" font-weight="600" fill="' + (isOther ? '#8a8780' : '#fff') + '"' + (isOther ? '' : ' stroke="rgba(0,0,0,0.35)" stroke-width="2" paint-order="stroke"') + '>' + label + '</text>';
+        g += '<title>' + label + '：' + [a, b].filter(Boolean).map(function (s) { return s === 'other' ? '七雄の外' : STATES.filter(function (x) { return x.id === s; })[0].n; }).join('／') + '</title>';
+        g += '</g>';
+        h.push(g);
+      });
+      svg.innerHTML = h.join('');
+    })();
+
+    (function stateTableAndChips() {
+      document.querySelector('#stateTable tbody').innerHTML = STATES.map(function (s) {
+        return '<tr data-state="' + s.id + '"><td class="state"><i style="background:' + SC[s.id] + '"></i><ruby>' + s.n + '<rt>' + s.r + '</rt></ruby></td><td class="cap">' + s.cap + '</td><td>' + s.prov + '</td><td>' + s.role + '</td></tr>';
+      }).join('');
+      var chips = document.getElementById('stateChips');
+      chips.innerHTML = STATES.map(function (s) {
+        return '<button type="button" class="chip" data-chip="' + s.id + '"><i style="background:' + SC[s.id] + '"></i>' + s.n + '<small style="color:var(--muted);font-size:10.5px">' + s.r + '</small></button>';
+      }).join('') + '<button type="button" class="chip" data-chip="">すべて表示</button>';
+
+      var wrap = document.getElementById('mapWrap');
+      function activate(id) {
+        if (!id || wrap.getAttribute('data-active') === id) {
+          wrap.removeAttribute('data-active');
+          id = null;
+        } else {
+          wrap.setAttribute('data-active', id);
+        }
+        wrap.querySelectorAll('[data-state]').forEach(function (el) {
+          var list = el.getAttribute('data-state').split(' ');
+          el.classList.toggle('on', !!id && list.indexOf(id) >= 0);
+        });
+        chips.querySelectorAll('.chip').forEach(function (c) { c.classList.toggle('on', !!id && c.getAttribute('data-chip') === id); });
+      }
+      chips.addEventListener('click', function (e) {
+        var c = e.target.closest('[data-chip]');
+        if (c) activate(c.getAttribute('data-chip'));
+      });
+      wrap.addEventListener('click', function (e) {
+        var el = e.target.closest('svg [data-state], tr[data-state]');
+        if (el) activate(el.getAttribute('data-state').split(' ')[0]);
+      });
+      wrap.addEventListener('keydown', function (e) {
+        if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-state]')) {
+          e.preventDefault();
+          activate(e.target.getAttribute('data-state').split(' ')[0]);
+        }
+      });
+    })();
+
+    /* =====================================================================
+     * 3. 顔アイコン（このページ用のオリジナル記号イラスト）
+     *    av = { hair, style, hat, beard, eyes, mouth, old, female, big, cloth, hatColor, ornament }
+     * ===================================================================== */
+    function avatar(av, cloth) {
+      av = av || {};
+      var skin = av.skin || '#f0d2b4';
+      var hair = av.old ? '#b9b6b0' : (av.hair || '#2a221d');
+      var c = cloth || '#555';
+      var fx = av.big ? 14 : 12.2;          // 顔の横幅
+      var s = [];
+      s.push('<svg viewBox="0 0 64 64" aria-hidden="true">');
+      s.push('<circle cx="32" cy="32" r="32" fill="#f1f0ec"/>');
+      s.push('<clipPath id="cl' + (avatar.n = (avatar.n || 0) + 1) + '"><circle cx="32" cy="32" r="32"/></clipPath><g clip-path="url(#cl' + avatar.n + ')">');
+      // 後ろ髪（長髪）
+      if (av.style === 'long' || av.style === 'wild') {
+        s.push('<path d="M' + (32 - fx - 3) + ' 28 Q' + (32 - fx - 6) + ' 52 ' + (32 - fx + 1) + ' 58 L' + (32 + fx - 1) + ' 58 Q' + (32 + fx + 6) + ' 52 ' + (32 + fx + 3) + ' 28 Z" fill="' + hair + '"/>');
+      }
+      // 体
+      s.push('<path d="M4 66 C6 50 18 45 32 45 C46 45 58 50 60 66 Z" fill="' + c + '"/>');
+      s.push('<path d="M25 46 L32 56 L39 46" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="2"/>');
+      if (av.armor) s.push('<path d="M10 54 Q32 47 54 54 L56 60 Q32 53 8 60 Z" fill="#000" fill-opacity="0.25"/>');
+      // 首と顔
+      s.push('<rect x="27.5" y="38" width="9" height="9" fill="' + skin + '"/>');
+      s.push('<ellipse cx="' + (32 - fx) + '" cy="32" rx="2.2" ry="3" fill="' + skin + '"/><ellipse cx="' + (32 + fx) + '" cy="32" rx="2.2" ry="3" fill="' + skin + '"/>');
+      s.push('<ellipse cx="32" cy="31" rx="' + fx + '" ry="' + (av.big ? 14.5 : 14) + '" fill="' + skin + '"/>');
+      // 前髪・髪型
+      var top = '';
+      switch (av.style) {
+        case 'spiky':
+          top = 'M19 29 L15 18 L21 20 L21 11 L27 16 L31 7 L35 15 L41 9 L41 18 L48 15 L46 29 Q41 20 32 21 Q23 20 19 29 Z'; break;
+        case 'wild':
+          top = 'M18 30 L14 20 L19 19 L18 12 L25 14 L28 8 L33 13 L38 8 L40 14 L47 12 L45 20 L50 21 L46 30 Q42 21 32 21 Q22 21 18 30 Z'; break;
+        case 'short':
+          top = 'M' + (32 - fx) + ' 27 Q' + (32 - fx) + ' 16 32 16 Q' + (32 + fx) + ' 16 ' + (32 + fx) + ' 27 Q40 20 32 20 Q24 20 ' + (32 - fx) + ' 27 Z'; break;
+        case 'bald':
+          top = ''; break;
+        default: // neat / long
+          top = 'M' + (32 - fx - 0.5) + ' 29 Q' + (32 - fx) + ' 15 32 15 Q' + (32 + fx) + ' 15 ' + (32 + fx + 0.5) + ' 29 Q42 19 33 20 Q30 23 ' + (32 - fx - 0.5) + ' 29 Z';
+      }
+      if (top) s.push('<path d="' + top + '" fill="' + hair + '"/>');
+      if ((av.style === 'neat' || !av.style) && !av.hat) s.push('<circle cx="32" cy="12" r="4.6" fill="' + hair + '"/><rect x="28" y="11" width="8" height="2" fill="' + (av.ornament || '#c9a23a') + '"/>');
+      // 被り物
+      var hc = av.hatColor || '#1b1b1b';
+      switch (av.hat) {
+        case 'crown': // 冕冠（板と垂れ飾り）
+          s.push('<path d="M24 20 L40 20 L39 12 L25 12 Z" fill="' + hc + '"/>');
+          s.push('<rect x="13" y="8" width="38" height="4.5" rx="1" fill="' + hc + '"/>');
+          [16, 19.5, 44.5, 48].forEach(function (x) { s.push('<line x1="' + x + '" y1="12" x2="' + x + '" y2="22" stroke="' + hc + '" stroke-width="0.9"/><circle cx="' + x + '" cy="17" r="1.1" fill="#c9a23a"/><circle cx="' + x + '" cy="21.5" r="1.1" fill="#c9a23a"/>'); });
+          break;
+        case 'kan': // 文官の冠
+          s.push('<path d="M26 19 L38 19 L37 9 L27 9 Z" fill="' + hc + '"/>');
+          s.push('<line x1="21" y1="14" x2="43" y2="14" stroke="#c9a23a" stroke-width="1.4"/>');
+          break;
+        case 'helmet': // 将軍の兜（羽根飾り付き）
+          s.push('<path d="M' + (32 - fx - 2) + ' 28 Q' + (32 - fx - 2) + ' 11 32 11 Q' + (32 + fx + 2) + ' 11 ' + (32 + fx + 2) + ' 28 L' + (32 + fx - 1) + ' 28 Q' + (32 + fx - 3) + ' 19 32 19 Q' + (32 - fx + 3) + ' 19 ' + (32 - fx + 1) + ' 28 Z" fill="' + (av.hatColor || '#4f545b') + '"/>');
+          s.push('<rect x="30.5" y="11" width="3" height="8" fill="#000" fill-opacity="0.2"/>');
+          s.push('<path d="M32 11 Q29 3 36 1 Q33.5 6 34.5 11 Z" fill="' + (av.plume || '#b8322a') + '"/>');
+          break;
+        case 'hood':
+          s.push('<path d="M15 36 Q13 9 32 9 Q51 9 49 36 Q47 21 32 20 Q17 21 15 36 Z" fill="' + (av.hatColor || '#6b5a45') + '"/>');
+          break;
+        case 'feather': // 山の民の頭飾り
+          s.push('<path d="M20 24 Q32 18 44 24 L44 21 Q32 15 20 21 Z" fill="#c9a23a"/>');
+          s.push('<path d="M24 20 L19 6 L28 18 Z M32 18 L32 3 L35 17 Z M40 20 L46 6 L37 18 Z" fill="' + (av.plume || '#5e7f3a') + '"/>');
+          break;
+        case 'pin': // 女性の簪
+          s.push('<circle cx="32" cy="12" r="5.5" fill="' + hair + '"/><line x1="22" y1="16" x2="42" y2="8" stroke="#c9a23a" stroke-width="1.6"/><circle cx="42" cy="8" r="2" fill="#b8322a"/>');
+          break;
+      }
+      // 眉・目
+      var browW = av.thick ? 2 : 1.2;
+      if (av.eyes === 'sharp') {
+        s.push('<path d="M24 28 L30 30 M40 28 L34 30" stroke="#1b1b1b" stroke-width="' + browW + '" stroke-linecap="round"/>');
+        s.push('<path d="M25 33 L30 32.4 M34 32.4 L39 33" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round"/>');
+      } else if (av.eyes === 'calm') {
+        s.push('<path d="M24 28.5 Q27 27.5 30 28.5 M34 28.5 Q37 27.5 40 28.5" fill="none" stroke="#1b1b1b" stroke-width="' + browW + '" stroke-linecap="round"/>');
+        s.push('<path d="M25 33 Q27.5 31.5 30 33 M34 33 Q36.5 31.5 39 33" fill="none" stroke="#1b1b1b" stroke-width="1.5" stroke-linecap="round"/>');
+      } else {
+        s.push('<path d="M24 28 Q27 26.8 30 28 M34 28 Q37 26.8 40 28" fill="none" stroke="#1b1b1b" stroke-width="' + browW + '" stroke-linecap="round"/>');
+        s.push('<ellipse cx="27.3" cy="32.5" rx="1.7" ry="2.1" fill="#1b1b1b"/><ellipse cx="36.7" cy="32.5" rx="1.7" ry="2.1" fill="#1b1b1b"/>');
+        if (av.female) s.push('<path d="M25 30.6 L24 30 M39 30.6 L40 30" stroke="#1b1b1b" stroke-width="1"/>');
+      }
+      if (av.old) s.push('<path d="M26 23 Q32 22 38 23" fill="none" stroke="#c9a88a" stroke-width="0.8"/>');
+      // 口
+      var lip = av.female ? '#b8504a' : '#7a4a3a';
+      if (av.mouth === 'grin') s.push('<path d="M27 38 Q32 43 37 38 Z" fill="#fff" stroke="' + lip + '" stroke-width="1.2"/>');
+      else if (av.mouth === 'smirk') s.push('<path d="M28.5 39.5 Q33 40.5 36 38" fill="none" stroke="' + lip + '" stroke-width="1.3" stroke-linecap="round"/>');
+      else if (av.mouth === 'stern') s.push('<path d="M29 39.5 L35 39.5" stroke="' + lip + '" stroke-width="1.4" stroke-linecap="round"/>');
+      else s.push('<path d="M29 39 Q32 41 35 39" fill="none" stroke="' + lip + '" stroke-width="1.3" stroke-linecap="round"/>');
+      // ひげ
+      var bc = av.old ? '#d8d5cf' : hair;
+      if (av.beard === 'mustache') s.push('<path d="M26.5 37.5 Q32 34.5 37.5 37.5 Q32 36.6 26.5 37.5 Z" fill="' + bc + '" stroke="' + bc + '" stroke-width="1.2"/>');
+      if (av.beard === 'goatee') s.push('<path d="M27 37.4 Q32 35 37 37.4 M30 42 L32 48 L34 42 Z" fill="' + bc + '" stroke="' + bc + '" stroke-width="1.2"/>');
+      if (av.beard === 'full') s.push('<path d="M' + (32 - fx + 1) + ' 33 Q' + (32 - fx + 2) + ' 48 32 48.5 Q' + (32 + fx - 2) + ' 48 ' + (32 + fx - 1) + ' 33 Q' + (32 + fx - 4) + ' 41 37 41.5 Q32 43 27 41.5 Q' + (32 - fx + 4) + ' 41 ' + (32 - fx + 1) + ' 33 Z" fill="' + bc + '"/><path d="M27 37.4 Q32 35 37 37.4" stroke="' + bc + '" stroke-width="2"/>');
+      if (av.beard === 'long') s.push('<path d="M' + (32 - fx + 2) + ' 34 Q' + (32 - fx + 3) + ' 50 32 58 Q' + (32 + fx - 3) + ' 50 ' + (32 + fx - 2) + ' 34 Q36 42 32 42.5 Q28 42 ' + (32 - fx + 2) + ' 34 Z" fill="' + bc + '"/><path d="M27 37.4 Q32 35 37 37.4" stroke="' + bc + '" stroke-width="2"/>');
+      s.push('</g></svg>');
+      return s.join('');
+    }
+
+    /* =====================================================================
+     * 4. 人物データ（紹介は登場時点の立場のみ。今後の展開は書かない）
+     *    real: 実在 / mod: 実在の人物を大きく脚色 / fic: 作品の創作
+     * ===================================================================== */
+    var FAC = {
+      king: { n: '大王派', c: '--f-king' },
+      ryo: { n: '呂不韋派', c: '--f-ryo' },
+      otouto: { n: '王弟派', c: '--f-otouto' },
+      army: { n: '軍部（中立の大物）', c: '--f-army' },
+      harem: { n: '後宮', c: '--f-harem' },
+      ally: { n: '同盟（山の民）', c: '--f-ally' }
+    };
+    Object.keys(FAC).forEach(function (k) { FAC[k].col = css(FAC[k].c); });
+
+    var P_ = {
+      // ---- 秦 ----
+      sei:      { n: '嬴政', y: 'えいせい', role: '秦王（第31代）', ds: '13歳で即位した若き王。のちの始皇帝。', f: 'king', real: 'real', av: { hat: 'crown', eyes: 'sharp', mouth: 'stern' } },
+      shobun:   { n: '昌文君', y: 'しょうぶんくん', role: '文官・大王派の筆頭', ds: '政を支える数少ない重臣。元は武官。', f: 'king', real: 'mod', av: { hat: 'kan', old: true, beard: 'full', eyes: 'calm' } },
+      heki:     { n: '壁', y: 'へき', role: '昌文君配下の武将', ds: '実直な若手の将。信たちと共に戦う。', f: 'king', real: 'fic', av: { hat: 'helmet', plume: '#b8322a', mouth: 'stern', armor: true } },
+      ryofui:   { n: '呂不韋', y: 'りょふい', role: '相国（文官のトップ）', ds: '商人から成り上がった最高権力者。宮廷の最大派閥を率いる。', f: 'ryo', real: 'real', av: { hat: 'kan', hatColor: '#3b2a1a', big: true, beard: 'mustache', eyes: 'calm', mouth: 'smirk' } },
+      shohei:   { n: '昌平君', y: 'しょうへいくん', role: '呂氏四柱・軍の総司令', ds: '軍略の天才。軍師学校で若い軍師を育てる。', f: 'ryo', real: 'real', av: { style: 'long', eyes: 'sharp', mouth: 'stern' } },
+      rishi:    { n: '李斯', y: 'りし', role: '呂氏四柱・法の担い手', ds: '法家の切れ者。秦の法を司る。', f: 'ryo', real: 'real', av: { hat: 'kan', beard: 'goatee', eyes: 'sharp', thick: true, mouth: 'stern' } },
+      moubu:    { n: '蒙武', y: 'もうぶ', role: '呂氏四柱・将軍', ds: '力で押す猛将。蒙驁の子、蒙恬の父。', f: 'ryo', real: 'real', av: { hat: 'helmet', hatColor: '#3d3d3d', big: true, beard: 'full', thick: true, mouth: 'stern', armor: true } },
+      sakutaku: { n: '蔡沢', y: 'さいたく', role: '呂氏四柱・外交', ds: '元宰相の老練な外交官。', f: 'ryo', real: 'real', av: { hat: 'kan', old: true, beard: 'long', eyes: 'calm' } },
+      kesshi:   { n: '竭氏', y: 'けっし', role: '左丞相', ds: '王弟派の首領格の文官。', f: 'otouto', real: 'fic', av: { hat: 'kan', big: true, beard: 'mustache', eyes: 'sharp', mouth: 'smirk' } },
+      seikyo:   { n: '成蟜', y: 'せいきょう', role: '王弟', ds: '政の異母弟。王族の血筋を誇り、王位を狙う。', f: 'otouto', real: 'real', av: { eyes: 'sharp', mouth: 'smirk', ornament: '#c9a23a' } },
+      taigo:    { n: '太后', y: 'たいごう', role: '王の母', ds: '政の実母。後宮の頂点に立つ。', f: 'harem', real: 'real', av: { female: true, style: 'long', hat: 'pin', eyes: 'calm' } },
+      rouai:    { n: '嫪毐', y: 'ろうあい', role: '後宮の宦官', ds: '太后のそばに仕える男。物語の中盤に登場。', f: 'harem', real: 'real', av: { style: 'short', beard: 'mustache', mouth: 'smirk' } },
+      ouki:     { n: '王騎', y: 'おうき', role: '大将軍・六大将軍の最後の一人', ds: '伝説の怪鳥と呼ばれる大将軍。どの派閥にも属さない。', f: 'army', real: 'mod', av: { hat: 'helmet', hatColor: '#2f3640', plume: '#c9a23a', big: true, beard: 'mustache', eyes: 'calm', mouth: 'smirk', armor: true } },
+      mougou:   { n: '蒙驁', y: 'もうごう', role: '大将軍', ds: '斉から来た老将。蒙一族の長。', f: 'army', real: 'real', av: { hat: 'helmet', old: true, big: true, beard: 'full', eyes: 'calm', armor: true } },
+      hyoukou:  { n: '麃公', y: 'ひょうこう', role: '将軍', ds: '戦場の勘で戦う「本能型」の猛将。', f: 'army', real: 'real', av: { hat: 'helmet', hatColor: '#6a4b2c', big: true, beard: 'full', mouth: 'grin', thick: true, armor: true } },
+      tou:      { n: '騰', y: 'とう', role: '王騎軍の副官', ds: '王騎の右腕。冷静沈着な実力者。', f: 'army', real: 'real', av: { style: 'short', beard: 'mustache', eyes: 'calm', mouth: 'stern' } },
+      ousen:    { n: '王翦', y: 'おうせん', role: '将軍', ds: '王一族の当主。何を考えているか読めない知将。', f: 'army', real: 'real', av: { hat: 'helmet', hatColor: '#1e2a33', plume: '#555', eyes: 'sharp', mouth: 'stern', armor: true } },
+      kanki:    { n: '桓騎', y: 'かんき', role: '将軍', ds: '野盗出身。奇策と残虐さで恐れられる。', f: 'army', real: 'real', av: { style: 'wild', hair: '#3b2b22', eyes: 'sharp', mouth: 'smirk' } },
+      youtanwa: { n: '楊端和', y: 'ようたんわ', role: '山の民の王', ds: '秦の西の山岳民族を束ねる女王。', f: 'ally', real: 'mod', av: { female: true, style: 'long', hat: 'feather', eyes: 'sharp', mouth: 'stern' } },
+      // ---- 戦場の若手 ----
+      shin:     { n: '信', y: 'しん', role: '主人公・下僕出身の剣士', ds: '天下の大将軍を夢見る少年。モデルは秦の将軍・李信。', f: 'king', real: 'mod', av: { style: 'spiky', hair: '#3a2a20', mouth: 'grin', thick: true } },
+      karyo:    { n: '河了貂', y: 'かりょうてん', role: '山民族の末裔', ds: '信と旅を共にする仲間。のちに軍師を志す。', f: 'king', real: 'fic', av: { hat: 'hood', female: true } },
+      kyokai:   { n: '羌瘣', y: 'きょうかい', role: '暗殺一族出身の剣士', ds: '信と同じ部隊に入る、無口な少女。', f: 'king', real: 'mod', av: { female: true, style: 'long', hair: '#2b2b33', eyes: 'sharp', mouth: 'stern' } },
+      moten:    { n: '蒙恬', y: 'もうてん', role: '楽華隊の隊長', ds: '蒙武の子。飄々とした名門の若手。', f: 'ryo', real: 'real', av: { style: 'long', hair: '#4a3626', eyes: 'calm' } },
+      ouhon:    { n: '王賁', y: 'おうほん', role: '玉鳳隊の隊長', ds: '王翦の子。槍の名手でエリート意識が強い。', f: 'army', real: 'real', av: { style: 'short', eyes: 'sharp', mouth: 'stern' } },
+
+      // ---- 他国 ----
+      riboku:   { n: '李牧', y: 'りぼく', role: '趙の三大天', ds: '北の国境を守ってきた名将。秦の最大の壁になる。', real: 'real', av: { style: 'long', eyes: 'calm' } },
+      hoken:    { n: '龐煖', y: 'ほうけん', role: '趙の三大天', ds: '「武神」を名乗る求道者。', real: 'mod', av: { style: 'wild', big: true, eyes: 'sharp', mouth: 'stern', hair: '#1f1f1f' } },
+      renpa:    { n: '廉頗', y: 'れんぱ', role: '元・趙の三大天 → 魏へ亡命', ds: '六大将軍と渡り合った往年の大将軍。', real: 'real', av: { hat: 'helmet', old: true, big: true, beard: 'full', mouth: 'grin', armor: true } },
+      gokei:    { n: '呉慶', y: 'ごけい', role: '魏の大将軍', ds: '兵法家・呉起の一族を名乗る将。', real: 'fic', av: { hat: 'helmet', hatColor: '#5b4a1e', beard: 'mustache', eyes: 'sharp', armor: true } },
+      gohomei:  { n: '呉鳳明', y: 'ごほうめい', role: '魏の軍略家', ds: '呉慶の子。兵器開発にも長けた天才。', real: 'fic', av: { style: 'neat', eyes: 'sharp', mouth: 'smirk' } },
+      kanpi:    { n: '韓非', y: 'かんぴ', role: '韓の公子・思想家', ds: '法家思想を大成した人物。李斯と同じ荀子の門下。', real: 'real', av: { hat: 'kan', eyes: 'calm', mouth: 'stern' } },
+      seikai:   { n: '成恢', y: 'せいかい', role: '韓の将軍', ds: '毒を使う異色の将。', real: 'fic', av: { hat: 'hood', hatColor: '#3a2f45', eyes: 'sharp', mouth: 'stern' } },
+      shunshin: { n: '春申君', y: 'しゅんしんくん', role: '楚の宰相', ds: '戦国四君の一人。楚の政治を動かす実力者。', real: 'real', av: { hat: 'kan', beard: 'goatee', eyes: 'calm', old: true } },
+      kanmei:   { n: '汗明', y: 'かんめい', role: '楚の大将軍', ds: '巨体を誇る楚の大将軍。', real: 'mod', av: { hat: 'helmet', hatColor: '#2f4a2f', big: true, beard: 'full', mouth: 'grin', armor: true } },
+      karin:    { n: '媧燐', y: 'かりん', role: '楚の将軍', ds: '奇抜な策を好む女性の将。', real: 'fic', av: { female: true, style: 'long', hat: 'pin', eyes: 'sharp', mouth: 'smirk' } },
+      kouen:    { n: '項燕', y: 'こうえん', role: '楚の将軍', ds: '楚の名門・項一族の将。のちの項羽の祖父。', real: 'real', av: { hat: 'helmet', hatColor: '#283a28', beard: 'full', eyes: 'sharp', armor: true } },
+      ordo:     { n: 'オルド', y: '', role: '燕の大将軍', ds: '山岳民族出身で、山での戦いを得意とする。', real: 'fic', av: { hat: 'feather', plume: '#3c9c97', big: true, beard: 'full', mouth: 'grin' } },
+      ouken:    { n: '王建', y: 'おうけん', role: '斉王', ds: '大国・斉を長く治める老王。秦とは距離を置く。', real: 'real', av: { hat: 'crown', old: true, beard: 'long', eyes: 'calm' } }
+    };
+
+    var REAL = { real: ['実在', 'real'], mod: ['脚色', 'mod'], fic: ['創作', 'fic'] };
+
+    // 顔の枠: kingdom/img/<id>.jpg があればそれを表示し、無ければイラストを表示する
+    function avBox(id, color) {
+      return '<span class="av">' + avatar(P_[id].av, color) +
+        '<img src="img/' + id + '.jpg" alt="' + esc(P_[id].n) + '" loading="lazy" onerror="this.remove()"></span>';
+    }
+    function personCard(id, opts) {
+      var p = P_[id];
+      opts = opts || {};
+      var color = opts.color || (p.f ? FAC[p.f].col : '#888');
+      var r = REAL[p.real];
+      return '<div class="person' + (opts.cls ? ' ' + opts.cls : '') + '" style="--fc:' + color + '">' + avBox(id, color) +
+        '<div style="min-width:0"><div class="nm">' + esc(p.n) + (p.y ? '<span class="yomi">' + esc(p.y) + '</span>' : '') + '<span class="tag ' + r[1] + '">' + r[0] + '</span></div>' +
+        '<div class="rl">' + esc(p.role) + '</div>' + (opts.short ? '' : '<div class="ds">' + esc(p.ds) + '</div>') + '</div></div>';
+    }
+    function face(id) {
+      var p = P_[id];
+      return '<div class="face">' + avBox(id, FAC[p.f].col) + '<span>' + esc(p.n) + '</span></div>';
+    }
+
+    /* ---------- 3. 組織図 ---------- */
+    document.getElementById('facLegend').innerHTML = ['king', 'ryo', 'otouto', 'army', 'harem', 'ally'].map(function (k) {
+      return '<span><i style="background:' + FAC[k].col + '"></i>' + FAC[k].n + '</span>';
+    }).join('') + '<span class="badge-key"><span class="tag real">実在</span> <span class="tag mod">脚色</span> <span class="tag fic">創作</span>＝史実との関係</span>';
+
+    document.getElementById('orgTop').innerHTML = personCard('sei');
+
+    var ORG = [
+      { h: '文官（丞相府）', sub: 'CIVIL — 政治・法・外交', groups: [
+        { label: '相国', ids: ['ryofui'] },
+        { label: '呂氏四柱（呂不韋の4本柱）', ids: ['shohei', 'rishi', 'moubu', 'sakutaku'], indent: true },
+        { label: '丞相・重臣', ids: ['kesshi', 'shobun'] }
+      ] },
+      { h: '武官（軍）', sub: 'MILITARY — 大将軍と将軍', groups: [
+        { label: '大将軍', ids: ['ouki', 'mougou'] },
+        { label: '将軍・副官', ids: ['hyoukou', 'tou', 'ousen', 'kanki', 'heki'] }
+      ] },
+      { h: '王族・後宮', sub: 'ROYAL — 血筋と王の母', groups: [
+        { label: '王族', ids: ['seikyo'] },
+        { label: '後宮', ids: ['taigo', 'rouai'] }
+      ] },
+      { h: '同盟', sub: 'ALLY — 秦の外の勢力', groups: [
+        { label: '西の山岳民族', ids: ['youtanwa'] }
+      ] }
+    ];
+    document.getElementById('orgCols').innerHTML = ORG.map(function (col) {
+      return '<div class="org-col"><div class="org-head">' + col.h + '<small>' + col.sub + '</small></div>' +
+        col.groups.map(function (g) {
+          return '<div class="org-sub">' + g.label + '</div>' + g.ids.map(function (id) { return personCard(id, { cls: g.indent ? 'indent' : '' }); }).join('');
+        }).join('') + '</div>';
+    }).join('');
+
+    document.getElementById('fieldGrid').innerHTML = ['shin', 'karyo', 'kyokai', 'moten', 'ouhon'].map(function (id) { return personCard(id); }).join('');
+
+    // 階級のものさし
+    (function ladder() {
+      var R = [['伍長', 5], ['什長', 10], ['百人将', 100], ['三百人将', 300], ['千人将', 1000], ['三千人将', 3000], ['五千人将', 5000], ['将軍', 10000, '1万〜'], ['大将軍', 100000, '数万〜十万超']];
+      var max = Math.log10(100000);
+      document.getElementById('ladder').innerHTML = R.map(function (r) {
+        var pct = Math.max(2, Math.log10(r[1]) / max * 100);
+        var gen = r[0] === '将軍' || r[0] === '大将軍';
+        return '<div class="rung' + (gen ? ' gen' : '') + '"><span class="rk">' + r[0] + '</span><span><span class="bar" style="display:block;width:' + pct.toFixed(1) + '%"></span></span><span class="n">' + (r[2] || r[1].toLocaleString('ja-JP') + '人') + '</span></div>';
+      }).join('');
+    })();
+
+    /* ---------- 4. 勢力図 ---------- */
+    (function factions() {
+      var power = [['king', 10, '大王派'], ['army', 18, '軍部（中立）'], ['otouto', 22, '王弟派'], ['ryo', 50, '呂不韋派']];
+      document.getElementById('powerBar').innerHTML = power.map(function (p) {
+        return '<div style="flex:' + p[1] + ';background:' + FAC[p[0]].col + '" title="' + p[2] + '">' + p[2] + '</div>';
+      }).join('');
+
+      var cards = [
+        { k: 'king', en: 'THE KING', ids: ['sei', 'shobun', 'heki', 'shin', 'karyo'], goal: '王として実権を取り戻し、中華を統一する', str: '王の正統性。信のような在野の力', weak: '人も兵も少ない。宮廷では孤立' },
+        { k: 'ryo', en: 'LU BUWEI', ids: ['ryofui', 'shohei', 'rishi', 'moubu', 'sakutaku'], goal: '政を飾りの王にとどめ、自らが国を動かす', str: '財力・人材・官僚機構。宮廷の最大派閥', weak: '王ではない。正統性は王に及ばない' },
+        { k: 'otouto', en: 'THE BROTHER', ids: ['seikyo', 'kesshi'], goal: '成蟜を王位に就ける', str: '両親とも王族という血筋。保守的な貴族の支持', weak: '民や兵からの人望が薄い' },
+        { k: 'army', en: 'THE GENERALS', ids: ['ouki', 'mougou', 'hyoukou', 'ousen', 'kanki'], goal: '戦場で国を守り、武功を立てる', str: '実際の兵力。誰も無視できない', weak: '政治的には一枚岩でない。各自の思惑で動く' }
+      ];
+      document.getElementById('facCards').innerHTML = cards.map(function (c) {
+        return '<div class="fac" style="--fc:' + FAC[c.k].col + '"><h4>' + FAC[c.k].n + '<small>' + c.en + '</small></h4>' +
+          '<div class="faces">' + c.ids.map(face).join('') + '</div>' +
+          '<dl><dt>目的</dt><dd>' + c.goal + '</dd><dt>強み</dt><dd>' + c.str + '</dd><dt>弱み</dt><dd>' + c.weak + '</dd></dl></div>';
+      }).join('');
+
+      document.getElementById('facExtra').innerHTML =
+        '<div class="fac" style="--fc:' + FAC.harem.col + '">' + face('taigo') + '<div><h4>後宮<small>THE HAREM</small></h4><p>序盤は表に出ませんが、王の母である太后は宮廷で大きな力を持ちます。物語が進むにつれて第五の勢力として存在感を増します。</p></div></div>' +
+        '<div class="fac" style="--fc:' + FAC.ally.col + '">' + face('youtanwa') + '<div><h4>山の民<small>THE MOUNTAIN TRIBES</small></h4><p>秦の西の山岳地帯に住む民族の連合。かつて秦と同盟していた歴史があり、政が再び手を結べるかが序盤の鍵になります。</p></div></div>';
+    })();
+
+    /* ---------- 5. 他国 ---------- */
+    (function rivals() {
+      var groups = [
+        { s: 'zhao', note: '最大のライバル。名将ぞろい', ids: ['riboku', 'hoken'] },
+        { s: 'wei', note: '中原の古豪。趙の名将も亡命', ids: ['renpa', 'gokei', 'gohomei'] },
+        { s: 'chu', note: '南の超大国。将の層が厚い', ids: ['shunshin', 'kanmei', 'karin', 'kouen'] },
+        { s: 'han', note: '最小の国。知と毒で抗う', ids: ['kanpi', 'seikai'] },
+        { s: 'yan', note: '北東の辺境国', ids: ['ordo'] },
+        { s: 'qi', note: '東の大国。秦とは距離を置く', ids: ['ouken'] }
+      ];
+      document.getElementById('stateCards').innerHTML = groups.map(function (g) {
+        var st = STATES.filter(function (s) { return s.id === g.s; })[0];
+        return '<div class="st" style="--sc:' + SC[g.s] + '"><div class="st-head"><b><ruby>' + st.n + '<rt>' + st.r + '</rt></ruby></b><span>都・' + st.cap + '<br>' + g.note + '</span></div>' +
+          '<div class="st-body">' + g.ids.map(function (id) { return personCard(id, { color: SC[g.s] }); }).join('') + '</div></div>';
+      }).join('');
+    })();
+
+    /* =====================================================================
+     * 6. ふりがな: 本文中の難しい語句に <ruby> を自動で振る
+     *    （SVG・人物名の欄（読みを併記済み）・既存の ruby は対象外）
+     * ===================================================================== */
+    (function furigana() {
+      var Y = {
+        // 出来事・用語
+        '三家分晋': 'さんかぶんしん', '商鞅': 'しょうおう', '変法': 'へんぽう', '胡服騎射': 'こふくきしゃ', '長平': 'ちょうへい',
+        '合従軍': 'がっしょうぐん', '合従': 'がっしょう', '連衡': 'れんこう', '遠交近攻': 'えんこうきんこう', '親政': 'しんせい',
+        '始皇帝': 'しこうてい', '函谷関': 'かんこくかん', '軍功爵制': 'ぐんこうしゃくせい', '法家': 'ほうか', '儒家': 'じゅか',
+        '戦国七雄': 'せんごくしちゆう', '七雄': 'しちゆう', '三大天': 'さんだいてん', '六大将軍': 'ろくだいしょうぐん', '戦国四君': 'せんごくしくん',
+        '呂氏四柱': 'りょししちゅう', '相国': 'しょうこく', '丞相': 'じょうしょう', '左丞相': 'さじょうしょう', '宦官': 'かんがん', '食客': 'しょっかく',
+        '中原': 'ちゅうげん', '伍長': 'ごちょう', '什長': 'じゅうちょう', '後宮': 'こうきゅう', '王弟': 'おうてい', '亡命': 'ぼうめい',
+        '殷': 'いん', '西周': 'せいしゅう', '匈奴': 'きょうど', '月氏': 'げっし', '百越': 'ひゃくえつ', '楽華隊': 'がくかたい', '玉鳳隊': 'ぎょくほうたい',
+        // 地名・都
+        '咸陽': 'かんよう', '邯鄲': 'かんたん', '大梁': 'たいりょう', '新鄭': 'しんてい', '寿春': 'じゅしゅん', '臨淄': 'りんし',
+        '洛陽': 'らくよう', '薊': 'けい', '郢': 'えい', '陳': 'ちん',
+        '陝西': 'せんせい', '甘粛': 'かんしゅく', '寧夏': 'ねいか', '四川': 'しせん', '重慶': 'じゅうけい', '湖北': 'こほく', '山西': 'さんせい',
+        '河北': 'かほく', '河南': 'かなん', '山東': 'さんとう', '安徽': 'あんき', '江蘇': 'こうそ', '江西': 'こうせい', '浙江': 'せっこう',
+        '湖南': 'こなん', '遼寧': 'りょうねい', '天津': 'てんしん',
+        // 人物
+        '嬴政': 'えいせい', '呂不韋': 'りょふい', '昌文君': 'しょうぶんくん', '昌平君': 'しょうへいくん', '李斯': 'りし', '蒙武': 'もうぶ',
+        '蒙驁': 'もうごう', '蒙恬': 'もうてん', '蔡沢': 'さいたく', '竭氏': 'けっし', '成蟜': 'せいきょう', '王騎': 'おうき', '王翦': 'おうせん',
+        '王賁': 'おうほん', '桓騎': 'かんき', '麃公': 'ひょうこう', '楊端和': 'ようたんわ', '河了貂': 'かりょうてん', '羌瘣': 'きょうかい',
+        '嫪毐': 'ろうあい', '太后': 'たいごう', '李牧': 'りぼく', '龐煖': 'ほうけん', '廉頗': 'れんぱ', '藺相如': 'りんしょうじょ', '趙奢': 'ちょうしゃ',
+        '白起': 'はくき', '呉起': 'ごき', '呉慶': 'ごけい', '呉鳳明': 'ごほうめい', '韓非': 'かんぴ', '荀子': 'じゅんし', '春申君': 'しゅんしんくん',
+        '汗明': 'かんめい', '媧燐': 'かりん', '項燕': 'こうえん', '項羽': 'こうう', '劉邦': 'りゅうほう', '荘襄王': 'そうじょうおう', '昭王': 'しょうおう',
+        '王建': 'おうけん', '成恢': 'せいかい', '騰': 'とう', '李信': 'りしん'
+      };
+      var keys = Object.keys(Y).sort(function (a, b) { return b.length - a.length; });
+      var re = new RegExp(keys.join('|'), 'g');
+      var SKIP = 'svg, script, style, ruby, .nm, .tag, .toc, .hero h1, .chip, td.state, .st-head b, .gloss b';
+      var walker = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT, {
+        acceptNode: function (n) {
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          return n.parentElement.closest(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (n) {
+        var t = n.nodeValue;
+        re.lastIndex = 0;
+        if (!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment(), last = 0, m;
+        while ((m = re.exec(t))) {
+          if (m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var r = document.createElement('ruby');
+          r.appendChild(document.createTextNode(m[0]));
+          var rt = document.createElement('rt'); rt.textContent = Y[m[0]];
+          r.appendChild(rt);
+          frag.appendChild(r);
+          last = m.index + m[0].length;
+        }
+        if (last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        n.parentNode.replaceChild(frag, n);
+      });
+    })();
+  })();
+  </script>
+</body>
+</html>
